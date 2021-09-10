@@ -27,10 +27,12 @@ export const LoginService = (event) => {
             return console.error(err);
         }
 
-        console.log(res)
+        console.log('query response:', res)
 
         dispatch({ type: types.LOGIN_GET_DATA_FROM_SALESFORCE, payload: res });
       });
+
+      console.log('connection:', conn)
     }
     });
 
