@@ -1,8 +1,24 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import * as types from '../../../store/actionTypes';
+import { LoginService } from '../../services/login.service';
 
-import { useAuth0 } from "@auth0/auth0-react";
 const Login = () => {
-  const { loginWithRedirect } = useAuth0();
+  const dispatch = useDispatch();
+  const [loginData, setLoginData] = useState([]);
+  // const style = loginStyle();
+  
+  useEffect(() => {
+    const getLoginData = async () => {
+      const loginData = await LoginService();
+      setLoginData(loginData)
+      dispatch({ type: types.LOGIN_GET_DATA_FROM_SALESFORCE, payload: loginData });
+      console.log('loginData', loginData)
+    }
+    
+     getLoginData()
+    
+  }, []);
   
   
 // https://community.auth0.com/t/how-do-i-set-up-a-dynamic-allowed-callback-url/60268
@@ -36,7 +52,7 @@ const Login = () => {
             When you click the sign in button below a new Salesforce window will be presented. Enter your user login credentials to sign in Wallboards.
           </p>
         </div>
-        <button className="c-login-start__btn" onClick={() => loginWithRedirect()}>Login</button>
+        <button className="c-login-start__btn" onClick={() => loginData.client.loginWithRedirect()}>Login</button>
       </div>
     </div>
   )

@@ -1,0 +1,149 @@
+.c-login {
+  height: 100vh;
+  display: flex;
+  grid-template-columns: 1fr 1fr;
+  
+  &-brand {
+    width: 337px;
+    margin-left: 136px;
+
+    &__logo {
+      background-image: url('../../../src/assets/static/images/logo_small.png');
+      height: 60px;
+      width: 337px;
+      margin: 0;
+    }
+
+    &__headline {
+      font-size: 30px;
+      color: $turquoise-blue;
+      margin: 0;
+      text-align: left;
+      font-family: $varela-round;
+    }
+  }
+
+  &-info {
+    max-width: 600px;
+    margin: 0 auto;
+    margin-top: 220px;
+
+    &__subheadline {
+      font-size: 20px;
+      text-align: center;
+      color: $turquoise-blue;
+      font-family: $inter-regular;
+    }
+
+    &__cards {
+      background-image: url('../../../src/assets/static/images/cards_double.png');
+      height: 251px;
+      width: 488px;
+      background-size: cover;
+      margin: 40px auto;
+    }
+
+    &__description {
+      font-size: 18px;
+      text-align: center;
+      font-family: $public-sans-regular;
+      color: $grey;
+    }
+  }
+
+  &-salesforce {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &__logo {
+      background-image: url('../../../src/assets/static/images/logo_salesforce.svg');
+      height: 35px;
+      width: 50px;
+      background-size: cover;
+    }
+
+    &__text {
+      font-size: 12px;
+      font-family: $public-sans-regular;
+      color: $sf-brand-blue;
+      margin: 0 0 0 15px;
+    }
+  }
+
+  &-start {
+    max-width: 600px;
+    margin: 0 auto;
+
+    &__headline {
+      color: $white;
+      font-size: 30px;
+      font-family: $inter-regular;
+      font-weight: 600;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+
+    &__description {
+      color: $white;
+      font-size: 18px;
+      font-family: $public-sans-regular;
+      margin-bottom: 36px;
+    }
+
+    &__btn {
+      max-width: 292px;
+      width: 229px;
+      height: 38px;
+      display: block;
+      outline: none;
+      margin: 0 auto;
+      border-radius: 5px;
+      background-color: $natterbox-green;
+      color: $natterbox-dark-blue-grey;
+      font-family: $public-sans-regular;
+      border: none;
+      cursor: pointer;
+    }
+  }
+
+  &-left {
+    width: 50%;
+    padding: 60px 0 88px 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  &-right {
+    width: 50%;
+    background: $turquoise-blue;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .c-login-left,
+  .c-login-right {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  .c-login {
+    &-brand {
+      margin-left: 0;
+    }
+
+    &-info {
+      margin-top: 265px;
+
+      &__cards {
+        width: 250px;
+        background-size: contain;
+        background-repeat: no-repeat;
+      }
+    }
+  }
+}

@@ -1,0 +1,38 @@
+@mixin font-face($name, $path, $weight: null, $style: null, $exts: eot woff2 woff ttf svg) {
+	$src: null;
+
+	$extmods: (
+		eot: "?",
+		svg: "#" + str-replace($name, " ", "_")
+	);
+
+	$formats: (
+		otf: "opentype",
+		ttf: "truetype"
+	);
+
+	@each $ext in $exts {
+		$extmod: if(map-has-key($extmods, $ext), $ext + map-get($extmods, $ext), $ext);
+		$format: if(map-has-key($formats, $ext), map-get($formats, $ext), $ext);
+		$src: append($src, url(quote($path + "." + $extmod)) format(quote($format)), comma);
+	}
+
+	@font-face {
+		font-family: quote($name);
+		font-style: $style;
+		font-weight: $weight;
+		src: $src;
+	}
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Varela+Round&display=swap');
+
+@include font-face("Inter-Regular", "../../../src/assets/static/fonts/Inter-Regular", 500, normal, ttf);
+@include font-face("Inter-Bold", "../../../src/assets/static/fonts/Inter-Bold", 700, bold, ttf);
+@include font-face("Inter-Medium", "../../../src/assets/static/fonts/Inter-Medium", 500, normal, ttf);
+@include font-face("Inter-Thin", "../../../src/assets/static/fonts/Inter-Thin", 300, normal, ttf);
+
+@include font-face("PublicSans-Regular", "../../../src/assets/static/fonts/PublicSans-Regular", 500, normal, ttf);
+@include font-face("PublicSans-Bold", "../../../src/assets/static/fonts/PublicSans-Bold", 700, bold, ttf);
+@include font-face("PublicSans-Medium", "../../../src/assets/static/fonts/PublicSans-Medium", 500, normal, ttf);
+@include font-face("PublicSans-Thin", "../../../src/assets/static/fonts/PublicSans-Thin", 300, normal, ttf);

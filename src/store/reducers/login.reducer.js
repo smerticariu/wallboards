@@ -9,6 +9,18 @@ export const loginReducer = (state = initialState, action) => {
         ...state,
         ...action.payload,
       };
+
+      case types.SET_SIGN_IN:
+        return state;
+      
+      case types.SET_SIGN_OUT:
+        return state;
+      
+      case types.AUTH_TOKEN:
+        return state;
+      
+      case types.AUTH_TOKEN_EXPIRY:
+        return state;
     
     default:
       return state;

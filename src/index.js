@@ -3,19 +3,26 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter, Route } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import store from 'src/store/store';
-import './index.css';
+import './style/main.scss'
 import App from './App';
-import LoginCallback from 'src/common/components/loginCallback/loginCallback'
+import { Auth0Provider } from "@auth0/auth0-react";
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <BrowserRouter>
     <Provider store={store}>
       <Route path="/">
-        <App />
-      </Route>
-      <Route path="/callback">
-        <LoginCallback />
+        <Auth0Provider
+          domain="redmatter-qa01.eu.auth0.com"
+          clientId="40leAQozuSfAQGf52Lf4JBeY6QIXBvmc"
+          redirectUri='http://localhost:3000/'
+          audience= 'https://sapien-proxy.redmatter-qa01.pub/'
+          scope= 'enduser:basic openid'
+          responseType= 'id_token'
+          cacheLocation= 'localstorage'
+        >
+          <App />
+        </Auth0Provider>
       </Route>
     </Provider>
   </BrowserRouter>,
