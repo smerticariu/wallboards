@@ -1,0 +1,40 @@
+.c-landing {
+  &-sidebar {
+    width: 253px;
+    background-color: $light-grey;
+    // height: 100vh;
+
+    &-list {
+      list-style: none;
+      padding: 0;
+      
+      li {
+        cursor: pointer;
+        height: 40px;
+        display: flex;
+        align-items: center;
+      }
+
+      &__filter {
+        padding: 10px 8px;
+        color: $grey;
+        font-family: $public-sans-bold;
+        font-size: 16px;
+        font-weight: 600;
+
+        &--selected {
+          background-color: $turquoise-blue;
+          color: $white;
+        }
+      }
+
+      &__headline {
+        font-family: $inter-bold;
+        font-weight: 600;
+        font-size: 20px;
+        color: $turquoise-blue;
+        border-bottom: 1px solid $turquoise-blue;
+      }
+    }
+  }
+}

@@ -1,6 +1,32 @@
 @import 'common/variables.scss';
 @import 'common/fonts.scss';
 @import 'components/login.scss';
+@import 'components/landing.scss';
 
+body {
+  margin: 0;
+}
 
+.c-banner {
+  height: 50px;
+  background-color: $turquoise-blue;
+  padding: 0 23px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 
+  &-logo {
+    width: 161px;
+    height: 29px;
+    background-image: url('../../src/assets/static/images/logo_small.png');
+    background-size: contain;
+  }
+
+  &-brand {
+    color: $white;
+    font-family: $inter-bold;
+    font-weight: 600;
+    margin: 0;
+    font-size: 20px;
+  }
+}

@@ -1,8 +1,10 @@
-import { useAuth0 } from "@auth0/auth0-react";
 import React, { useState, useEffect } from 'react';
+import { useAuth0 } from "@auth0/auth0-react";
 import axios from "axios";
-import Login from 'src/common/components/login/login'
 import config from 'src/config/auth'
+import Login from 'src/components/login/login'
+import Landing from 'src/components/landing/landing';
+
 function App() {
   const [data, setData] = useState({});
   const [token, setToken] = useState('');
@@ -51,12 +53,20 @@ function App() {
       {(objectIsEmpty(data) === 0 && isAuthenticated) && <p>Loading...</p>}
       {objectIsEmpty(data) > 0 &&
         <>
-          <p>Logged in as {data.firstName} {data.lastName}</p>
+          {/* <p>Logged in as {data.firstName} {data.lastName}</p> */}
+          <div className="c-banner">
+            <div className="c-banner-logo"></div>
+            <h1 className="c-banner-brand">Wallboards</h1>
+          </div>
+          <Landing />
           <button onClick={() => {handleLogout()}}>logout</button>
         </>
       }
+      
+      
 
       {(!isAuthenticated) && <Login />}
+      
     </div>
   );
 }
