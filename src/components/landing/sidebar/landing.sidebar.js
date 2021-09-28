@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import React from 'react';
+import { useDispatch } from 'react-redux';
 import * as actionTypes from '../../../store/actionTypes';
 import { LANDING_DEFAULTS } from '../landing.defaults';
 

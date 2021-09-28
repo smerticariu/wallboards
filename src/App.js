@@ -1,22 +1,29 @@
 import React, { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { useAuth0 } from "@auth0/auth0-react";
 import axios from "axios";
 import config from 'src/config/auth'
 import Login from 'src/components/login/login'
 import Landing from 'src/components/landing/landing';
+import * as actionTypes from '../src/store/actionTypes';
+import jwtExtractor from 'src/common/utils/jwtExtractor';
 
 function App() {
   const [data, setData] = useState({});
   const [token, setToken] = useState('');
+  const dispatch = useDispatch();
   const objectIsEmpty = obj => Object.keys(obj).length;
 
   const { isAuthenticated, getAccessTokenSilently, logout } = useAuth0();
-
+  
+  console.log(useAuth0())
   useEffect( () =>{
     const fetchData = async () => {
       try {
         await getAccessTokenSilently(config).then(res  => {
           setToken(res);
+          dispatch({ type: actionTypes.SET_ACCESS_TOKEN, payload: res });
+          dispatch({ type: actionTypes.SET_USER_INFO, payload: jwtExtractor(res) });
         })
 
         const options = {

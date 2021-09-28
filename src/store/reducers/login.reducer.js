@@ -4,14 +4,16 @@ const initialState = {}
 
 export const loginReducer = (state = initialState, action) => {
   switch (action.type) {
-    // case types.LOGIN_GET_DATA_FROM_SALESFORCE:
-    //   return {
-    //     ...state,
-    //     ...action.payload,
-    //   };
-
-      // case types.SET_SIGN_IN:
-      //   return state;
+    case types.SET_ACCESS_TOKEN:
+      return {
+        ...state,
+        token: action.payload,
+      };
+      case types.SET_USER_INFO:
+        return {
+          ...state,
+          userInfo: action.payload,
+        };
       
       // case types.SET_SIGN_OUT:
       //   return state;

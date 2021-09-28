@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import React from 'react';
+import { useSelector } from 'react-redux';
 
 import LandingSidebar from './sidebar/landing.sidebar';
+import LandingTable from './table/landing.table';
 
 const Landing = () => {
   const category = useSelector(state => state.landing);
@@ -9,6 +10,7 @@ const Landing = () => {
   return (
     <div className="c-landing">
       <LandingSidebar />
+      <LandingTable />
     </div>
   );
 }
