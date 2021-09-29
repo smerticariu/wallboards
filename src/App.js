@@ -60,13 +60,13 @@ function App() {
       {(objectIsEmpty(data) === 0 && isAuthenticated) && <p>Loading...</p>}
       {objectIsEmpty(data) > 0 &&
         <>
-          <p>Logged in as {data.firstName} {data.lastName}</p>
+          <span>Logged in as {data.firstName} {data.lastName}</span>
+          <button onClick={() => {handleLogout()}}>logout</button>
           <div className="c-banner">
             <div className="c-banner-logo"></div>
-            <h1 className="c-banner-brand">Wallboards</h1>
+            <div className="c-banner-brand"></div>
           </div>
           <Landing />
-          <button onClick={() => {handleLogout()}}>logout</button>
         </>
       }
       

@@ -8,10 +8,11 @@
     margin-left: 136px;
 
     &__logo {
-      background-image: url('../../../src/assets/static/images/logo_small.png');
-      height: 60px;
+      background-image: url('../../../src/assets/static/images/logo_with_text.png');
+      height: 94px;
       width: 337px;
       margin: 0;
+      background-size: contain;
     }
 
     &__headline {
@@ -48,6 +49,7 @@
       text-align: center;
       font-family: $public-sans-regular;
       color: $grey;
+      text-align: center;
     }
   }
 
@@ -72,8 +74,9 @@
   }
 
   &-start {
-    max-width: 600px;
+    max-width: 615px;
     margin: 0 auto;
+    text-align: center;
 
     &__headline {
       color: $white;

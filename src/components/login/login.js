@@ -11,7 +11,6 @@ const Login = () => {
       <div className="c-login-left">
         <div className="c-login-brand">
           <a href="/"><div className="c-login-brand__logo"></div></a>
-          <h1 className="c-login-brand__headline">Wallboards</h1>
         </div>
 
         <div className="c-login-info">
