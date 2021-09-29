@@ -14,7 +14,7 @@ function App() {
   const dispatch = useDispatch();
   const objectIsEmpty = obj => Object.keys(obj).length;
 
-  const { isAuthenticated, getAccessTokenSilently, logout } = useAuth0();
+  const { isAuthenticated, getAccessTokenSilently, logout, isLoading } = useAuth0();
   
   console.log(useAuth0())
   useEffect( () =>{
@@ -60,7 +60,7 @@ function App() {
       {(objectIsEmpty(data) === 0 && isAuthenticated) && <p>Loading...</p>}
       {objectIsEmpty(data) > 0 &&
         <>
-          {/* <p>Logged in as {data.firstName} {data.lastName}</p> */}
+          <p>Logged in as {data.firstName} {data.lastName}</p>
           <div className="c-banner">
             <div className="c-banner-logo"></div>
             <h1 className="c-banner-brand">Wallboards</h1>
@@ -72,7 +72,7 @@ function App() {
       
       
 
-      {(!isAuthenticated) && <Login />}
+      {(!isAuthenticated && !isLoading) && <Login />}
       
     </div>
   );

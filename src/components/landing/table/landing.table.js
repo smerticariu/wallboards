@@ -6,8 +6,8 @@ import { useSelector } from 'react-redux';
 const LandingTable = () => {
   const [wb, setWb] = useState([]);
   const { token, userInfo } = useSelector(state => state.login);
-  const test = useSelector(state => state.login);
-  console.log( userInfo)
+  // const test = useSelector(state => state.login);
+  // console.log( userInfo)
   
 
   useEffect(() => {
