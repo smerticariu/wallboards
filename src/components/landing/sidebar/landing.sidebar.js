@@ -11,7 +11,7 @@ const LandingSidebar = () => {
     if(selectedElement) selectedElement.classList.remove('c-landing-sidebar-list__filter--selected');
 
     e.target.classList.add('c-landing-sidebar-list__filter--selected');
-    dispatch({ type: actionTypes.LANDING_SELECTED_WALLBOARD_FILTER, payload: category });
+    dispatch({ type: actionTypes.LANDING_SELECTED_WALLBOARD_CATEGORY, payload: category });
   }
   
   return (

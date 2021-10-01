@@ -1,7 +1,10 @@
 .c-landing {
-  display: flex;
   height: 100vh;
-  padding: 15px;
+  padding: 0 15px 15px 15px;
+
+  &__content {
+    display: flex;
+  }
 
   &-sidebar {
     width: 253px;

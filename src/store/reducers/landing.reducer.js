@@ -1,10 +1,10 @@
 import * as types from '../actionTypes';
 
-const initialState = '';
+const initialState = 'Most Recent';
 
 export const landingReducer = (state = initialState, action) => {
   switch (action.type) {
-    case types.LANDING_SELECTED_WALLBOARD_FILTER:
+    case types.LANDING_SELECTED_WALLBOARD_CATEGORY:
       return action.payload;
   
   default:

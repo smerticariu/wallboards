@@ -17,7 +17,7 @@ function App() {
   const { isAuthenticated, getAccessTokenSilently, logout, isLoading } = useAuth0();
   
   console.log(useAuth0())
-  useEffect( () =>{
+  useEffect(() => {
     const fetchData = async () => {
       try {
         await getAccessTokenSilently(config).then(res  => {
