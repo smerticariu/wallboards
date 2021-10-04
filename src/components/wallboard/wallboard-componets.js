@@ -7,7 +7,7 @@ const WallboardComponents = () => {
   useEffect(() => {
     const el = document.querySelector(".c-panel");
     if (el) {
-      el.style.height = window.innerHeight - el.offsetTop - 24 + "px";
+      // el.style.height = window.innerHeight - el.offsetTop - 24 + "px";
     }
   }, []);
 
