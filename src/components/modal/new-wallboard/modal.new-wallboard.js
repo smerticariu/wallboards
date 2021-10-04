@@ -20,6 +20,7 @@ const ModalNewWallboard = ({
   const [activeSectionValue, setActiveSectionValue] = useState(
     MODAL_NEW_WALLBOARD_SECITONS.QUEUES
   );
+
   const [selectedListItem, setSelectedListItem] = useState();
   useOnClickOutside(modalRef, () => onClose());
   const dispatch = useDispatch();
@@ -102,10 +103,6 @@ const ModalNewWallboard = ({
   const handleFilterInput = () => {
     const updateFilterInput = (e) => {
       setNewWbFilter(e.target.value);
-      dispatch({
-        type: actionTypes.SET_FILTERED_WALLBOARDS,
-        payload: e.target.value,
-      });
     };
 
     return (
