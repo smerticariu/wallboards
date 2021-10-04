@@ -8,35 +8,31 @@ import {
   MODAL_ADD_COMPONENT_OPTIONS,
 } from "./modal.new-wallboard.defaults";
 
-const ModalNewWallboard = ({ isOpen, onOpen, onClose, ...props }) => {
+const ModalNewWallboard = ({
+  isOpen,
+  onOpen = () => {},
+  onClose = () => {},
+  ...props
+}) => {
   const modalRef = useRef(null);
-  const [wbFilter, setWbFilter] = useState("");
+  const [newWbFilter, setNewWbFilter] = useState("");
 
   const [activeSectionValue, setActiveSectionValue] = useState(
     MODAL_NEW_WALLBOARD_SECITONS.QUEUES
   );
+  const [selectedListItem, setSelectedListItem] = useState();
   useOnClickOutside(modalRef, () => onClose());
   const dispatch = useDispatch();
 
   React.useEffect(() => {
-    if (onOpen) onOpen();
+    onOpen();
     return () => {
-      if (onClose) onClose();
+      onClose();
     };
   }, []);
 
   const handleLeftSidebar = () => {
     const handleClick = (e, category) => {
-      const selectedElement = document.querySelector(
-        ".c-modal--new-wallboard__nav-item--selected"
-      );
-
-      if (selectedElement)
-        selectedElement.classList.remove(
-          "c-modal--new-wallboard__nav-item--selected"
-        );
-
-      e.target.classList.add("c-modal--new-wallboard__nav-item--selected");
       setActiveSectionValue(category);
     };
 
@@ -48,7 +44,11 @@ const ModalNewWallboard = ({ isOpen, onOpen, onClose, ...props }) => {
         {MODAL_NEW_WALLBOARD_DEFAULTS.map((navItem) => (
           <div
             key={navItem.value}
-            className="c-modal--new-wallboard__nav-item"
+            className={`c-modal--new-wallboard__nav-item ${
+              activeSectionValue === navItem.value
+                ? "c-modal--new-wallboard__nav-item--selected"
+                : ""
+            }`}
             onClick={(e) => handleClick(e, navItem.value)}
           >
             {navItem.text}
@@ -59,23 +59,37 @@ const ModalNewWallboard = ({ isOpen, onOpen, onClose, ...props }) => {
   };
 
   const handleList = () => {
+    const handleSelectedItem = (name) => {
+      setSelectedListItem(name);
+    };
+
     return (
       <div className="c-modal--new-wallboard__list">
-        {MODAL_ADD_COMPONENT_OPTIONS.map((option) => (
-          <div key={option.NAME} className="c-modal--new-wallboard__list__item">
-            <div className="c-modal--new-wallboard__list__title">
+        {MODAL_ADD_COMPONENT_OPTIONS.filter((option) =>
+          option.NAME.toLowerCase().includes(newWbFilter.toLowerCase())
+        ).map((option) => (
+          <div
+            key={option.NAME}
+            onClick={() => handleSelectedItem(option.NAME)}
+            className={`c-modal--new-wallboard__list-item ${
+              selectedListItem === option.NAME
+                ? "c-modal--new-wallboard__list-item--selected"
+                : ""
+            }`}
+          >
+            <div className="c-modal--new-wallboard__list-title">
               {option.NAME}
             </div>
-            <div className="c-modal--new-wallboard__list__subtitle">
-              <div className="c-modal--new-wallboard__list__text">
+            <div className="c-modal--new-wallboard__list-subtitle">
+              <div className="c-modal--new-wallboard__list-text">
                 {option.SERVICE}
               </div>
-              <div className="c-modal--new-wallboard__list__separator">|</div>
-              <div className="c-modal--new-wallboard__list__text">
+              <div className="c-modal--new-wallboard__list-separator">|</div>
+              <div className="c-modal--new-wallboard__list-text">
                 {option.DATE}
               </div>
-              <div className="c-modal--new-wallboard__list__separator">|</div>
-              <div className="c-modal--new-wallboard__list__text">
+              <div className="c-modal--new-wallboard__list-separator">|</div>
+              <div className="c-modal--new-wallboard__list-text">
                 {option.STATUS}
               </div>
             </div>
@@ -87,7 +101,7 @@ const ModalNewWallboard = ({ isOpen, onOpen, onClose, ...props }) => {
 
   const handleFilterInput = () => {
     const updateFilterInput = (e) => {
-      setWbFilter(e.target.value);
+      setNewWbFilter(e.target.value);
       dispatch({
         type: actionTypes.SET_FILTERED_WALLBOARDS,
         payload: e.target.value,
@@ -96,7 +110,9 @@ const ModalNewWallboard = ({ isOpen, onOpen, onClose, ...props }) => {
 
     return (
       <input
-        value={wbFilter}
+        className="c-input"
+        value={newWbFilter}
+        placeholder="Search list…"
         type="text"
         onChange={(e) => updateFilterInput(e)}
       />
@@ -105,7 +121,7 @@ const ModalNewWallboard = ({ isOpen, onOpen, onClose, ...props }) => {
 
   const handleCancelButton = () => {
     const onClickCancelButton = (e) => {
-      if (onClose) onClose();
+      onClose();
     };
 
     return (
@@ -123,7 +139,9 @@ const ModalNewWallboard = ({ isOpen, onOpen, onClose, ...props }) => {
     return (
       <>
         <button
-          className="c-button c-button--grey c-button--m-left  "
+          className={`c-button c-button--m-left ${
+            selectedListItem ? "c-button--blue" : "c-button--disabled"
+          }`}
           onClick={onClickSelectButton}
         >
           Select

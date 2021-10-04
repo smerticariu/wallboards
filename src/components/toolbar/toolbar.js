@@ -38,7 +38,9 @@ const Toolbar = (props) => {
 
     return (
       <input
+        className="c-input"
         value={wbFilter}
+        placeholder="Search dashboards…"
         type="text"
         onChange={(e) => updateFilterInput(e)}
       />
@@ -62,10 +64,12 @@ const Toolbar = (props) => {
         >
           + New Wallboard
         </button>
-        <ModalNewWallboard
-          onClose={() => handleIsModalNewWallboardShow(false)}
-          isOpen={isModalNewWallboardShow}
-        />
+        {isModalNewWallboardShow && (
+          <ModalNewWallboard
+            onClose={() => handleIsModalNewWallboardShow(false)}
+            isOpen={isModalNewWallboardShow}
+          />
+        )}
       </>
     );
   };
