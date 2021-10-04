@@ -1,45 +1,17 @@
 import axios from "axios";
 
 import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import * as actionTypes from "../../../store/actionTypes";
 
-const LandingTable = () => {
+const LandingTable = ({ userInfo }) => {
   const [allWbs, setAllWbs] = useState([]);
   const [filteredWbs, setFilteredWbs] = useState([]);
-  const [wbsByCategory, setWbsByCategory] = useState([]);
 
-  const category = useSelector((state) => state.landing);
-  const filter = useSelector((state) => state.wallboards.filtredWallboards);
-  console.log("selected category in table", category, filter);
+  const category = useSelector((state) => state.landing.category);
 
-  const dispatch = useDispatch();
-  // const test = useSelector(state => state.login);
-  // console.log( userInfo)
-
-  const filterWbsByCategory = (category) => {
-    switch (category) {
-      case "Most Recent":
-        const wbsByDate = allWbs.sort(
-          (a, b) => new Date(b.createdOn) - new Date(a.createdOn)
-        );
-        setWbsByCategory(wbsByDate.slice(0, 10));
-        return wbsByDate.slice(0, 10);
-      // setWbsByCategory(wbsByDate);
-
-      default:
-        return allWbs;
-    }
-  };
-
-  const filterWbs = () => {
-    const filteredWbsByCategory = filterWbsByCategory(category);
-    const filteredWbs = filteredWbsByCategory.map((wb) => {
-      if (wb.name.includes(filter) || wb.createdBy.includes(filter)) return wb;
-    });
-
-    setFilteredWbs(filteredWbs);
-  };
+  const filter = useSelector((state) => state.landing.filterWallboards);
+  console.log("[LandingTable] - selected category in table", category, filter);
 
   useEffect(() => {
     // const getWb = async () => {
@@ -67,6 +39,7 @@ const LandingTable = () => {
         by: "Sergiu on RO",
         createdBy: "Sergiu Merticariu",
         createdOn: "2021/03/01",
+        natterboxUserId: "5601879",
       },
       {
         name: "Second wallboard",
@@ -74,6 +47,7 @@ const LandingTable = () => {
         by: "Natterbox on UK",
         createdBy: "James Radford",
         createdOn: "2021/01/01",
+        natterboxUserId: "1",
       },
       {
         name: "Third Wallboard",
@@ -81,6 +55,7 @@ const LandingTable = () => {
         by: "Natterbox on US",
         createdBy: "Stefan",
         createdOn: "2021/05/19",
+        natterboxUserId: "2",
       },
       {
         name: "Customer Support Wallboard",
@@ -88,6 +63,7 @@ const LandingTable = () => {
         by: "Natterbox on UK",
         createdBy: "James Radford",
         createdOn: "2021/03/19",
+        natterboxUserId: "1",
       },
       {
         name: "Customer Support Wallboard",
@@ -95,6 +71,7 @@ const LandingTable = () => {
         by: "Natterbox on UK",
         createdBy: "James Radford",
         createdOn: "2021/03/19",
+        natterboxUserId: "1",
       },
       {
         name: "Customer Support Wallboard",
@@ -102,6 +79,7 @@ const LandingTable = () => {
         by: "Natterbox on UK",
         createdBy: "James Radford",
         createdOn: "2021/03/19",
+        natterboxUserId: "1",
       },
       {
         name: "Customer Support Wallboard",
@@ -109,6 +87,7 @@ const LandingTable = () => {
         by: "Natterbox on UK",
         createdBy: "James Radford",
         createdOn: "2021/03/19",
+        natterboxUserId: "1",
       },
       {
         name: "Customer Support Wallboard",
@@ -116,6 +95,7 @@ const LandingTable = () => {
         by: "Natterbox on UK",
         createdBy: "James Radford",
         createdOn: "2021/03/19",
+        natterboxUserId: "1",
       },
       {
         name: "Customer Support Wallboard",
@@ -123,6 +103,7 @@ const LandingTable = () => {
         by: "Natterbox on UK",
         createdBy: "James Radford",
         createdOn: "2021/03/19",
+        natterboxUserId: "1",
       },
       {
         name: "Customer Support Wallboard",
@@ -130,6 +111,7 @@ const LandingTable = () => {
         by: "Natterbox on UK",
         createdBy: "James Radford",
         createdOn: "2021/03/19",
+        natterboxUserId: "1",
       },
       {
         name: "Customer Support Wallboard",
@@ -137,6 +119,7 @@ const LandingTable = () => {
         by: "Natterbox on UK",
         createdBy: "James Radford",
         createdOn: "2021/03/19",
+        natterboxUserId: "1",
       },
       {
         name: "Customer Support Wallboard",
@@ -144,6 +127,7 @@ const LandingTable = () => {
         by: "Natterbox on UK",
         createdBy: "James Radford",
         createdOn: "2021/03/19",
+        natterboxUserId: "1",
       },
       {
         name: "Customer Support Wallboard",
@@ -151,6 +135,7 @@ const LandingTable = () => {
         by: "Natterbox on UK",
         createdBy: "James Radford",
         createdOn: "2021/03/19",
+        natterboxUserId: "1",
       },
     ];
 
@@ -159,35 +144,30 @@ const LandingTable = () => {
     const filterWbsByCategory = (category) => {
       switch (category) {
         case "Most Recent":
-          const wbsByDate = allWbs.sort(
-            (a, b) => new Date(b.createdOn) - new Date(a.createdOn)
+          const wbsByDate = allWbs
+            .sort((a, b) => new Date(b.createdOn) - new Date(a.createdOn))
+            .slice(0, 10);
+          return wbsByDate;
+        case "Created By Me":
+          const wbsByUser = allWbs.filter(
+            (wb) => wb.natterboxUserId === userInfo.natterboxUserId
           );
-          setWbsByCategory(wbsByDate.slice(0, 10));
-        // return wbsByDate.slice(0,10);
-        // setWbsByCategory(wbsByDate);
-
+          return wbsByUser;
         default:
           return allWbs;
       }
     };
 
-    const filterWbs = () => {
-      const filteredWbsByCategory = filterWbsByCategory(category);
-      const filteredWbs = filteredWbsByCategory.map((wb) => {
-        if (wb.name.includes(filter) || wb.createdBy.includes(filter))
-          return wb;
-      });
+    const filteredWbsByCategory = filterWbsByCategory(category);
 
-      setFilteredWbs(filteredWbs);
-    };
+    const wallboards = filteredWbsByCategory.filter(
+      (wb) =>
+        wb.name.toLowerCase().includes(filter.toLowerCase()) ||
+        wb.createdBy.toLowerCase().includes(filter.toLowerCase())
+    );
 
-    filterWbs();
-  }, [filteredWbs.length]);
-
-  // const wbByCategory =
-  // // const list = this.state.users
-  // //   .filter(d => this.state.input === '' || d.includes(this.state.input))
-  // //   .map((d, index) => <li key={index}>{d}</li>);
+    setFilteredWbs(wallboards);
+  }, [category, filter]);
 
   return (
     <div className="c-landing-table">

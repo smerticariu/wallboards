@@ -15,6 +15,7 @@
     &-list {
       list-style: none;
       padding: 0;
+      margin-bottom: 40px;
 
       li {
         cursor: pointer;
@@ -51,6 +52,7 @@
     background-color: $light-grey;
     width: calc(100% - 265px);
     overflow: scroll;
+    height: 90asvh;
     border-top-right-radius: 12px;
 
     &__wb-name {

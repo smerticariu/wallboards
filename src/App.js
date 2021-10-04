@@ -80,7 +80,7 @@ function App() {
           </div>
 
           <Route exact path="/">
-            <Landing />
+            <Landing userInfo={jwtExtractor(token)} />
           </Route>
           <Route path="/wallboard/new">
             <WallboardNew />

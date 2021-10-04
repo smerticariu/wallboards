@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import * as actionTypes from '../../../store/actionTypes';
 import { LANDING_DEFAULTS } from '../landing.defaults';
 
 const LandingSidebar = () => {
   const dispatch = useDispatch();
+  
+
   const handleClick = (e, category) => {
     
     const selectedElement = document.querySelector('.c-landing-sidebar-list__filter--selected');
@@ -12,7 +14,14 @@ const LandingSidebar = () => {
 
     e.target.classList.add('c-landing-sidebar-list__filter--selected');
     dispatch({ type: actionTypes.LANDING_SELECTED_WALLBOARD_CATEGORY, payload: category });
+    console.log('[SIDEBAR] - ', category )
   }
+
+  useEffect(() => {
+    const firstElement = document.querySelector('.c-landing-sidebar-list__filter');
+    if(firstElement)
+    firstElement.classList.add('c-landing-sidebar-list__filter--selected');
+  }, [])
   
   return (
     <div className="c-landing-sidebar">

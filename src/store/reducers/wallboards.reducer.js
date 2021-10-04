@@ -1,7 +1,7 @@
 import * as types from "../actionTypes";
 
 const initialState = {
-  filtredWallboards: [],
+  filterWallboards: [],
   isAddComponentModalShow: false,
   newWallboardData: {
     title: "My New Wallboard",
@@ -30,6 +30,6 @@ export const wallboardsReducer = (state = initialState, action) => {
       };
 
     default:
-      return initialState;
+      return { ...state };
   }
 };
