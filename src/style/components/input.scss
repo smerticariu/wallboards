@@ -5,6 +5,10 @@
   padding: 11px 29px;
   font-size: 14px;
 
+  &--landing-search {
+    width: 560px;
+  }
+
   &:focus-visible {
     border: none;
     outline: none;

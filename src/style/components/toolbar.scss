@@ -5,6 +5,9 @@
   align-items: center;
   justify-content: space-between;
 
+  &-right {
+    display: flex;
+  }
   &-left {
     &__heading {
       color: $turquoise-blue;
@@ -12,27 +15,11 @@
       font-family: $inter-regular;
       margin: 0 0 5px 0;
     }
-
     &__wb-no {
       font-size: 12px;
       font-family: $public-sans-regular;
       color: $grey;
       margin: 0;
-    }
-  }
-
-  &-right {
-    &__search {
-      border-radius: 28px;
-      background-color: $dark-grey;
-      font-size: 14px;
-      font-family: $public-sans-thin;
-      font-weight: 300;
-      border: none;
-      width: 560px;
-      outline: none;
-      padding: 15px 29px;
-      color: $grey;
     }
   }
 }
