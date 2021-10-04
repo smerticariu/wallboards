@@ -1,0 +1,25 @@
+.c-button {
+  padding: 7px 19px;
+  border-radius: 5px;
+  border: solid 1px $pinkish-grey;
+  background-color: $white;
+  font-family: $poppins-regular;
+  font-size: 14px;
+  color: $sf-brand-blue;
+  cursor: pointer;
+
+  &--blue {
+    background-color: $sf-brand-blue;
+    color: $white;
+  }
+
+  &--disabled {
+    background-color: $pinkish-grey;
+    color: $white;
+    cursor: default;
+  }
+
+  &--m-left {
+    margin-left: 16px;
+  }
+}

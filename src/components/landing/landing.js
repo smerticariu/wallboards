@@ -1,9 +1,9 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React from "react";
+import { useSelector } from "react-redux";
 
-import LandingSidebar from './sidebar/landing.sidebar';
-import LandingTable from './table/landing.table';
-import Toolbar from '../toolbar/toolbar';
+import LandingSidebar from "./sidebar/landing.sidebar";
+import LandingTable from "./table/landing.table";
+import Toolbar from "../toolbar/toolbar";
 
 const Landing = ({userInfo}) => {  
   return (
@@ -15,6 +15,6 @@ const Landing = ({userInfo}) => {
       </div>
     </div>
   );
-}
+};
 
 export default Landing;
