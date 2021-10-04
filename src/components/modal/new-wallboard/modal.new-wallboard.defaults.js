@@ -21,7 +21,7 @@ export const MODAL_NEW_WALLBOARD_DEFAULTS = [
 
 export const MODAL_ADD_COMPONENT_OPTIONS = [
   {
-    NAME: "Agen5da List",
+    NAME: "Agent List",
     STATUS: "Natterbox Admin",
     DATE: "19/03/2021 at 14:19",
     SERVICE: "Customer Service Calls",
@@ -40,30 +40,6 @@ export const MODAL_ADD_COMPONENT_OPTIONS = [
   },
   {
     NAME: "Queue Status",
-    STATUS: "Natterbox Admin",
-    DATE: "19/03/2021 at 14:19",
-    SERVICE: "Customer Service Calls",
-  },
-  {
-    NAME: "Agen51da List",
-    STATUS: "Natterbox Admin",
-    DATE: "19/03/2021 at 14:19",
-    SERVICE: "Customer Service Calls",
-  },
-  {
-    NAME: "Queue 2List",
-    STATUS: "Natterbox Admin",
-    DATE: "19/03/2021 at 14:19",
-    SERVICE: "Customer Service Calls",
-  },
-  {
-    NAME: "Queue 3Tracking",
-    STATUS: "Natterbox Admin",
-    DATE: "19/03/2021 at 14:19",
-    SERVICE: "Customer Service Calls",
-  },
-  {
-    NAME: "Queue4 Status",
     STATUS: "Natterbox Admin",
     DATE: "19/03/2021 at 14:19",
     SERVICE: "Customer Service Calls",

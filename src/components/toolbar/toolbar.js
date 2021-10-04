@@ -50,10 +50,6 @@ const Toolbar = (props) => {
   const handleNewWallboardButton = () => {
     const onClickNewWallboardButton = (e) => {
       handleIsModalNewWallboardShow(true);
-      // dispatch({
-      //   type: actionTypes.SET_FILTERED_WALLBOARDS,
-      //   payload: e.target.value,
-      // });
     };
 
     return (
