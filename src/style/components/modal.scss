@@ -6,6 +6,7 @@
   width: 100%;
   height: 100%;
   background-color: rgba($slate-gray, 0.28);
+
   &__container {
     width: 100%;
     max-height: 90vh;
@@ -16,10 +17,12 @@
     animation-name: animatetop;
     animation-duration: 0.4s;
     overflow: auto;
+
     &--new-wallboard {
       max-width: 1450px;
     }
   }
+
   &--open {
     display: flex;
     align-items: center;
@@ -34,17 +37,20 @@
     align-items: center;
     border-bottom: solid 1px $pinkish-grey;
   }
+
   &__title {
     font-family: $inter-regular;
     font-size: 18px;
     color: $slate-gray;
   }
+
   &__body {
     &--new-wallboard {
       display: flex;
       width: 100%;
     }
   }
+
   &--new-wallboard {
     &__categories {
       display: flex;
@@ -55,12 +61,14 @@
       max-width: 300px;
       background-color: $dark-grey;
     }
+
     &__header {
       font-family: $inter-bold;
       font-size: 20px;
       color: $turquoise-blue;
       margin: 8px 0 11px 15px;
     }
+
     &__nav-item {
       display: flex;
       width: 100%;
@@ -73,17 +81,20 @@
       height: 40px;
       user-select: none;
       cursor: pointer;
+
       &--selected {
         background-color: $turquoise-blue;
         color: $white;
       }
     }
+
     &__form {
       display: flex;
       flex-direction: column;
       width: 100%;
       padding: 20px;
     }
+
     &__list {
       display: flex;
       flex-direction: column;
@@ -94,14 +105,17 @@
       height: 425px;
       padding-right: 10px;
     }
+
     &__list-item {
       display: flex;
       width: 100%;
       flex-direction: column;
       cursor: pointer;
+
       &--selected {
         background-color: #f4f2f2;
       }
+
       &:not(:last-child) {
         &:after {
           content: "";
@@ -112,6 +126,7 @@
         }
       }
     }
+
     &__list-title {
       font-family: $inter-bold;
       font-size: 16px;
@@ -120,6 +135,7 @@
       margin-bottom: 2px;
       padding-left: 5px;
     }
+
     &__list-subtitle {
       display: flex;
       align-items: center;
@@ -127,11 +143,13 @@
       margin-bottom: 15px;
       padding-left: 5px;
     }
+
     &__list-text {
       font-family: $public-sans-regular;
       font-size: 10px;
       color: $turquoise-blue;
     }
+
     &__list-separator {
       color: $pinkish-grey;
       font-size: 10px;
@@ -151,6 +169,7 @@
         flex-direction: column;
       }
     }
+
     &--new-wallboard {
       &__categories {
         width: 100%;
