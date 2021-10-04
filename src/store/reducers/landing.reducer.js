@@ -19,6 +19,6 @@ export const landingReducer = (state = initialState, action) => {
       };
 
     default:
-      return initialState;
+      return state;
   }
 };

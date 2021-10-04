@@ -30,6 +30,6 @@ export const wallboardsReducer = (state = initialState, action) => {
       };
 
     default:
-      return { ...state };
+      return state;
   }
 };
