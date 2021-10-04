@@ -130,26 +130,14 @@ const Toolbar = (props) => {
   };
 
   const handleSaveButton = () => {
-    return (
-      <Link to="/wallboard/new">
-        <button className="c-button c-button--m-left">Save</button>
-      </Link>
-    );
+    return <button className="c-button c-button--m-left">Save</button>;
   };
   const handleCloseButton = () => {
-    return (
-      <Link to="/wallboard/new">
-        <button className="c-button c-button--m-left">Close</button>
-      </Link>
-    );
+    return <button className="c-button c-button--m-left">Close</button>;
   };
   const handleRunButton = () => {
     return (
-      <Link to="/wallboard/new">
-        <button className="c-button c-button--blue c-button--m-left">
-          Run
-        </button>
-      </Link>
+      <button className="c-button c-button--blue c-button--m-left">Run</button>
     );
   };
 
