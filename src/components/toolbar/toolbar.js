@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import * as actionTypes from '../../store/actionTypes';
 
-const Toolbar = (props) => {
+const Toolbar = props => {
   const [wbFilter, setWbFilter] = useState('');
   const dispatch = useDispatch();
-  
   const heading = () => {
     return (
       <div className="c-toolbar-left__wrapper">
@@ -32,17 +31,13 @@ const Toolbar = (props) => {
       dispatch({ type: actionTypes.SET_FILTERED_WALLBOARDS, payload: e.target.value });
     }
 
-    return <input value={wbFilter} type="text" onChange={e => updateFilterInput(e)}/>    
+    return <input className="c-toolbar-right__search" placeholder="Search Wallboards..." value={wbFilter} type="text" onChange={e => updateFilterInput(e)}/>    
   }
   
-  
-            
-  
-
   const handleRightToolbar = template => {
     switch(template) {
       case 'landing':
-        return handleFilterInput();
+        return handleFilterInput()
     }
   }
 

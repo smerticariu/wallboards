@@ -66,7 +66,7 @@ function App() {
             <div className="c-banner-logo"></div>
             <div className="c-banner-brand"></div>
           </div>
-          <Landing />
+          <Landing userInfo={jwtExtractor(token)} />
         </>
       }
       
