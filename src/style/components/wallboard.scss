@@ -1,0 +1,27 @@
+.c-new-wallboard {
+  padding: 0 15px;
+  margin-bottom: 24px;
+}
+.c-panel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  border-radius: 12px;
+  background-color: $light-grey;
+  &__info {
+    display: flex;
+    max-width: 380px;
+    text-align: center;
+    flex-direction: column;
+    &-text {
+      display: flex;
+      flex-direction: column;
+      font-family: $public-sans-bold;
+      font-size: 14px;
+      font-weight: 600;
+      color: $slate-gray;
+      margin-bottom: 40px;
+    }
+  }
+}

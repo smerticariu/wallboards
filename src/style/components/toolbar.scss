@@ -5,6 +5,9 @@
   align-items: center;
   justify-content: space-between;
 
+  &-right {
+    display: flex;
+  }
   &-left {
     &__heading {
       color: $turquoise-blue;
@@ -12,7 +15,6 @@
       font-family: $inter-regular;
       margin: 0 0 5px 0;
     }
-
     &__wb-no {
       font-size: 12px;
       font-family: $public-sans-regular;

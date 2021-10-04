@@ -1,6 +1,4 @@
 import React, { useRef, useState } from "react";
-import { useDispatch } from "react-redux";
-import * as actionTypes from "../../../store/actionTypes";
 import useOnClickOutside from "../../../common/hooks/useOnClickOutside";
 import {
   MODAL_NEW_WALLBOARD_DEFAULTS,
@@ -23,13 +21,9 @@ const ModalNewWallboard = ({
 
   const [selectedListItem, setSelectedListItem] = useState();
   useOnClickOutside(modalRef, () => onClose());
-  const dispatch = useDispatch();
 
   React.useEffect(() => {
     onOpen();
-    return () => {
-      onClose();
-    };
   }, []);
 
   const handleLeftSidebar = () => {

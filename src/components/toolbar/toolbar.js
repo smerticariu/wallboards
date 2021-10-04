@@ -1,13 +1,16 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import { CheckIcon } from "src/assets/static/icons/check";
 import * as actionTypes from "../../store/actionTypes";
-import ModalNewWallboard from "../modal/new-wallboard/modal.new-wallboard";
 const Toolbar = (props) => {
   const [wbFilter, setWbFilter] = useState("");
-  const [isModalNewWallboardShow, handleIsModalNewWallboardShow] =
-    useState(false);
+  useState(false);
   const dispatch = useDispatch();
-
+  const userData = useSelector((state) => state.login.userInfo);
+  const newWallboardTitle = useSelector(
+    (state) => state.wallboards.newWallboardData.title
+  );
   const heading = () => {
     return (
       <div className="c-toolbar-left__wrapper">
@@ -16,11 +19,34 @@ const Toolbar = (props) => {
       </div>
     );
   };
+  const newWallboardHeading = () => {
+    const handleChangeTitle = (event) => {
+      dispatch({
+        type: actionTypes.HANDLE_NEW_WALLBOARD_TITLE,
+        payload: event.currentTarget.textContent,
+      });
+    };
+    return (
+      <div className="c-toolbar-left__wrapper">
+        <h1
+          onChange={handleChangeTitle}
+          className="c-toolbar-left__heading c-toolbar-left__heading--new-wallboard"
+        >
+          {newWallboardTitle}
+        </h1>
+        <p className="c-toolbar-left__wb-no">
+          Viewing as {userData.firstName} {userData.lastName}
+        </p>
+      </div>
+    );
+  };
 
   const handleLeftToolbar = (template) => {
     switch (template) {
       case "landing":
         return heading();
+      case "new-wallboard":
+        return newWallboardHeading();
 
       default:
         return null;
@@ -38,7 +64,7 @@ const Toolbar = (props) => {
 
     return (
       <input
-        className="c-input"
+        className="c-input c-input--landing-search"
         value={wbFilter}
         placeholder="Search dashboards…"
         type="text"
@@ -48,28 +74,12 @@ const Toolbar = (props) => {
   };
 
   const handleNewWallboardButton = () => {
-    const onClickNewWallboardButton = (e) => {
-      handleIsModalNewWallboardShow(true);
-    };
-
     return (
-      <>
-        <button
-          className="c-button c-button--m-left"
-          onClick={onClickNewWallboardButton}
-        >
-          + New Wallboard
-        </button>
-        {isModalNewWallboardShow && (
-          <ModalNewWallboard
-            onClose={() => handleIsModalNewWallboardShow(false)}
-            isOpen={isModalNewWallboardShow}
-          />
-        )}
-      </>
+      <Link to="/wallboard/new">
+        <button className="c-button c-button--m-left">+ New Wallboard</button>
+      </Link>
     );
   };
-
   const handleNewWallboardGroupButton = () => {
     const onClickNewWallboardGroupButton = (e) => {
       dispatch({
@@ -88,6 +98,61 @@ const Toolbar = (props) => {
     );
   };
 
+  const handleNewComponentButton = () => {
+    const onClickNewComponentModal = () => {
+      dispatch({
+        type: actionTypes.HANDLE_ADD_COMPONENT_MODAL_SHOW_STATUS,
+      });
+    };
+
+    return (
+      <button
+        onClick={onClickNewComponentModal}
+        className="c-button c-button--blue"
+      >
+        + Add Component
+      </button>
+    );
+  };
+
+  const handleBackToButton = () => {
+    return (
+      <div className="c-arrow-button c-arrow-button--m-left ">
+        <button className="c-arrow-button__arrow">
+          <CheckIcon />
+        </button>
+        <hr className="c-arrow-button__separator" />
+        <button className="c-arrow-button__arrow">
+          <CheckIcon />
+        </button>
+      </div>
+    );
+  };
+
+  const handleSaveButton = () => {
+    return (
+      <Link to="/wallboard/new">
+        <button className="c-button c-button--m-left">Save</button>
+      </Link>
+    );
+  };
+  const handleCloseButton = () => {
+    return (
+      <Link to="/wallboard/new">
+        <button className="c-button c-button--m-left">Close</button>
+      </Link>
+    );
+  };
+  const handleRunButton = () => {
+    return (
+      <Link to="/wallboard/new">
+        <button className="c-button c-button--blue c-button--m-left">
+          Run
+        </button>
+      </Link>
+    );
+  };
+
   const handleRightToolbar = (template) => {
     switch (template) {
       case "landing":
@@ -96,6 +161,16 @@ const Toolbar = (props) => {
             {handleFilterInput()}
             {handleNewWallboardButton()}
             {handleNewWallboardGroupButton()}
+          </>
+        );
+      case "new-wallboard":
+        return (
+          <>
+            {handleNewComponentButton()}
+            {handleBackToButton()}
+            {handleSaveButton()}
+            {handleCloseButton()}
+            {handleRunButton()}
           </>
         );
     }
