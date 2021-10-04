@@ -1,0 +1,17 @@
+.c-input {
+  background-color: #f4f2f2;
+  border-radius: 28px;
+  border: none;
+  padding: 11px 29px;
+  font-size: 14px;
+
+  &:focus-visible {
+    border: none;
+    outline: none;
+  }
+
+  &::placeholder {
+    font-family: $public-sans-thin;
+    color: $input-text-colour;
+  }
+}

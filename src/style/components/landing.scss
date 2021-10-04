@@ -15,7 +15,7 @@
     &-list {
       list-style: none;
       padding: 0;
-      
+
       li {
         cursor: pointer;
         height: 40px;
@@ -52,26 +52,25 @@
     width: calc(100% - 265px);
     overflow: scroll;
     border-top-right-radius: 12px;
-    
 
     &__wb-name {
-      width: 693px!important;
-      
+      width: 693px !important;
+
       p {
         margin-bottom: 10px;
       }
     }
 
     &__edit-btn {
-      background-image: url('../../assets/static/images/edit_icon.svg');
+      background-image: url("../../assets/static/images/edit_icon.svg");
     }
 
     &__copy-btn {
-      background-image: url('../../assets/static/images/copy_icon.svg');
+      background-image: url("../../assets/static/images/copy_icon.svg");
     }
 
     &__delete-btn {
-      background-image: url('../../assets/static/images/delete_icon.svg');
+      background-image: url("../../assets/static/images/delete_icon.svg");
     }
 
     button {
@@ -109,7 +108,7 @@
           &:last-child {
             background-color: transparent;
           }
-          
+
           p {
             margin: 0;
             font-family: $public-sans-bold;
@@ -134,9 +133,12 @@
   width: 7px;
 }
 
-.c-landing  ::-webkit-scrollbar-thumb {
+.c-landing ::-webkit-scrollbar-thumb {
   border-radius: 4px;
-  background-color: rgba(0, 0, 0, .5);
-  box-shadow: 0 0 1px rgba(255, 255, 255, .5);
+  background-color: $input-text-colour;
+  box-shadow: 0 0 1px rgba(255, 255, 255, 0.5);
   padding-left: 20px;
+}
+.c-landing ::-webkit-scrollbar-track {
+  background: $dark-grey;
 }

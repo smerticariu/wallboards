@@ -1,11 +1,22 @@
-@import 'common/variables.scss';
-@import 'common/fonts.scss';
-@import 'components/login.scss';
-@import 'components/landing.scss';
-@import 'components/toolbar.scss';
+@import "common/variables.scss";
+@import "common/fonts.scss";
+@import "components/login.scss";
+@import "components/landing.scss";
+@import "components/toolbar.scss";
+@import "components/button.scss";
+@import "components/modal.scss";
+@import "components/input.scss";
 
 body {
   margin: 0;
+}
+
+*,
+::before,
+::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 .c-banner {
@@ -19,14 +30,14 @@ body {
   &-logo {
     width: 161px;
     height: 29px;
-    background-image: url('../../src/assets/static/images/logo_white.webp');
+    background-image: url("../../src/assets/static/images/logo_white.webp");
     background-size: contain;
   }
 
   &-brand {
     width: 120px;
     height: 24px;
-    background-image: url('../../src/assets/static/images/wallboard_header.png');
+    background-image: url("../../src/assets/static/images/wallboard_header.png");
     background-size: contain;
   }
 }

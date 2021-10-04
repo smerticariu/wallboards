@@ -1,13 +1,13 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React from "react";
+import { useSelector } from "react-redux";
 
-import LandingSidebar from './sidebar/landing.sidebar';
-import LandingTable from './table/landing.table';
-import Toolbar from '../toolbar/toolbar';
+import LandingSidebar from "./sidebar/landing.sidebar";
+import LandingTable from "./table/landing.table";
+import Toolbar from "../toolbar/toolbar";
 
 const Landing = () => {
-  const category = useSelector(state => state.landing);
-  console.log('Selected category:', category)
+  const category = useSelector((state) => state.landing);
+  console.log("Selected category:", category);
   return (
     <div className="c-landing">
       <Toolbar template="landing" />
@@ -17,6 +17,6 @@ const Landing = () => {
       </div>
     </div>
   );
-}
+};
 
 export default Landing;
