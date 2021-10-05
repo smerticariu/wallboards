@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { CheckIcon } from "src/assets/static/icons/check";
+import { RedoIcon } from "src/assets/static/icons/redo";
+import { UndoIcon } from "src/assets/static/icons/undo";
 import * as actionTypes from "../../store/actionTypes";
 const Toolbar = (props) => {
   const [wbFilter, setWbFilter] = useState("");
@@ -23,17 +24,17 @@ const Toolbar = (props) => {
     const handleChangeTitle = (event) => {
       dispatch({
         type: actionTypes.HANDLE_NEW_WALLBOARD_TITLE,
-        payload: event.currentTarget.textContent,
+        payload: event.target.value,
       });
     };
     return (
       <div className="c-toolbar-left__wrapper">
-        <h1
+        <input
           onChange={handleChangeTitle}
-          className="c-toolbar-left__heading c-toolbar-left__heading--new-wallboard"
-        >
-          {newWallboardTitle}
-        </h1>
+          className="c-input c-input--new-walboard-title"
+          value={newWallboardTitle}
+        />
+
         <p className="c-toolbar-left__wb-no">
           Viewing as {userData.firstName} {userData.lastName}
         </p>
@@ -125,11 +126,11 @@ const Toolbar = (props) => {
     return (
       <div className="c-arrow-button c-arrow-button--m-left ">
         <button className="c-arrow-button__arrow">
-          <CheckIcon />
+          <UndoIcon className="i--undo" />
         </button>
         <hr className="c-arrow-button__separator" />
         <button className="c-arrow-button__arrow">
-          <CheckIcon />
+          <RedoIcon className="i--redo--disabled" />
         </button>
       </div>
     );
