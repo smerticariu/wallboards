@@ -1,9 +1,12 @@
 .c-new-wallboard {
-  padding: 0 15px;
-  margin-bottom: 24px;
+  height: 90vh;
+  display: flex;
+  flex-direction: column;
+  padding: 0 15px 15px 15px;
 }
 .c-panel {
   display: flex;
+  flex: 1 1 auto;
   align-items: center;
   justify-content: center;
   width: 100%;
