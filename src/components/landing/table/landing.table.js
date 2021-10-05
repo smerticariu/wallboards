@@ -13,7 +13,7 @@ const LandingTable = ({ userInfo }) => {
   const filter = useSelector((state) => state.landing.filterWallboards);
   console.log("[LandingTable] - selected category in table", category, filter);
 
-  useEffect(() => {
+  useEffect(async () => {
     // const getWb = async () => {
     //   const options = {
     //     method: 'get',
@@ -32,114 +32,17 @@ const LandingTable = ({ userInfo }) => {
     // }
 
     // getWb();
-    const allWbs = [
-      {
-        name: "Customer Support Wallboard",
-        folder: "RO Staff Data",
-        by: "Sergiu on RO",
-        createdBy: "Sergiu Merticariu",
-        createdOn: "2021/03/01",
-        natterboxUserId: "5601879",
-      },
-      {
-        name: "Second wallboard",
-        folder: "UK Staff Data",
-        by: "Natterbox on UK",
-        createdBy: "James Radford",
-        createdOn: "2021/01/01",
-        natterboxUserId: "1",
-      },
-      {
-        name: "Third Wallboard",
-        folder: "US Staff Data",
-        by: "Natterbox on US",
-        createdBy: "Stefan",
-        createdOn: "2021/05/19",
-        natterboxUserId: "2",
-      },
-      {
-        name: "Customer Support Wallboard",
-        folder: "UK Staff Data",
-        by: "Natterbox on UK",
-        createdBy: "James Radford",
-        createdOn: "2021/03/19",
-        natterboxUserId: "1",
-      },
-      {
-        name: "Customer Support Wallboard",
-        folder: "UK Staff Data",
-        by: "Natterbox on UK",
-        createdBy: "James Radford",
-        createdOn: "2021/03/19",
-        natterboxUserId: "1",
-      },
-      {
-        name: "Customer Support Wallboard",
-        folder: "UK Staff Data",
-        by: "Natterbox on UK",
-        createdBy: "James Radford",
-        createdOn: "2021/03/19",
-        natterboxUserId: "1",
-      },
-      {
-        name: "Customer Support Wallboard",
-        folder: "UK Staff Data",
-        by: "Natterbox on UK",
-        createdBy: "James Radford",
-        createdOn: "2021/03/19",
-        natterboxUserId: "1",
-      },
-      {
-        name: "Customer Support Wallboard",
-        folder: "UK Staff Data",
-        by: "Natterbox on UK",
-        createdBy: "James Radford",
-        createdOn: "2021/03/19",
-        natterboxUserId: "1",
-      },
-      {
-        name: "Customer Support Wallboard",
-        folder: "UK Staff Data",
-        by: "Natterbox on UK",
-        createdBy: "James Radford",
-        createdOn: "2021/03/19",
-        natterboxUserId: "1",
-      },
-      {
-        name: "Customer Support Wallboard",
-        folder: "UK Staff Data",
-        by: "Natterbox on UK",
-        createdBy: "James Radford",
-        createdOn: "2021/03/19",
-        natterboxUserId: "1",
-      },
-      {
-        name: "Customer Support Wallboard",
-        folder: "UK Staff Data",
-        by: "Natterbox on UK",
-        createdBy: "James Radford",
-        createdOn: "2021/03/19",
-        natterboxUserId: "1",
-      },
-      {
-        name: "Customer Support Wallboard",
-        folder: "UK Staff Data",
-        by: "Natterbox on UK",
-        createdBy: "James Radford",
-        createdOn: "2021/03/19",
-        natterboxUserId: "1",
-      },
-      {
-        name: "Customer Support Wallboard",
-        folder: "UK Staff Data",
-        by: "Natterbox on UK",
-        createdBy: "James Radford",
-        createdOn: "2021/03/19",
-        natterboxUserId: "1",
-      },
-    ];
 
-    setAllWbs([...allWbs]);
+    // setAllWbs([...allWbs]);
+
+    const options = {
+      method: 'get',
+      url: `http://localhost:3004/wallboards/`,
+    }
+
+    await axios(options).then(res => {
+      setAllWbs(res.data)
+    }) 
 
     const filterWbsByCategory = (category) => {
       switch (category) {
@@ -167,7 +70,7 @@ const LandingTable = ({ userInfo }) => {
     );
 
     setFilteredWbs(wallboards);
-  }, [category, filter]);
+  }, [category, filter, allWbs.length]);
 
   return (
     <div className="c-landing-table">
@@ -186,7 +89,9 @@ const LandingTable = ({ userInfo }) => {
               return (
                 <tr key={index}>
                   <td className="c-landing-table__wb-name">
-                    <p>{wb.name}</p>
+                    <p>
+                      <a target="_blank" href={`http://localhost:3000/wallboard/${wb.id}`}>{wb.name}</a>
+                    </p>
                     <span>{wb.by}</span>
                   </td>
                   <td className="c-landing-table__wb-folder">
