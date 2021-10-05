@@ -28,7 +28,7 @@ const WallboardNew = () => {
   };
 
   return (
-    <div className="c-new-wallboard">
+    <div className="c-wallboard--new">
       <Toolbar template="new-wallboard" />
       {handleAddComponentModal()}
       <WallboardComponents />
