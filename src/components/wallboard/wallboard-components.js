@@ -6,12 +6,6 @@ import { WALLBOARD_MODAL_NAMES } from "../modal/new-wallboard/modal.new-wallboar
 
 const WallboardComponents = () => {
   const dispatch = useDispatch();
-  useEffect(() => {
-    const el = document.querySelector(".c-panel");
-    if (el) {
-      // el.style.height = window.innerHeight - el.offsetTop - 24 + "px";
-    }
-  }, []);
 
   const handleNewComponentButton = () => {
     const onClickNewComponentModal = () => {

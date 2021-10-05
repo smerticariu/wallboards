@@ -1,0 +1,36 @@
+/* pretty radio */
+.c-radio {
+  &__label {
+    font-family: $public-sans-regular;
+    font-size: 14px;
+    color: $slate-gray;
+    cursor: pointer;
+  }
+  &__input {
+    display: none;
+  }
+  &__input + *::before {
+    content: "";
+    display: inline-block;
+    vertical-align: bottom;
+    width: 16px;
+    height: 16px;
+    margin-right: 0.3rem;
+    border-radius: 50%;
+    border-style: solid;
+    border-width: 1px;
+    border-color: $slate-gray;
+  }
+  &__input:checked + *::before {
+    background: radial-gradient(
+      $slate-gray 27%,
+      $slate-gray 55%,
+      transparent 0%,
+      transparent
+    );
+    border-color: $slate-gray;
+  }
+  &__input + * {
+    display: inline-block;
+  }
+}

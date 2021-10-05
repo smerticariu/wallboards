@@ -1,52 +1,130 @@
-export const MODAL_NEW_WALLBOARD_SECITONS = {
-  QUEUES: "QUEUES",
-  CALLS: "CALLS",
-  USERS: "USERS",
-};
-
-export const MODAL_NEW_WALLBOARD_DEFAULTS = [
+export const CALL_QUEUE_OPTIONS = [
+  { TEXT: "Urgent Support Queue", VALUE: "URGENT" },
+  { TEXT: "Not urgent but somewhat important queue", VALUE: "NOT_URGENT" },
+];
+export const SORT_BY_OPTIONS = [
   {
-    text: "Queues",
-    value: MODAL_NEW_WALLBOARD_SECITONS.QUEUES,
+    text: "Agent Name (Alphabetical)",
+    value: 0,
   },
   {
-    text: "Calls",
-    value: MODAL_NEW_WALLBOARD_SECITONS.CALLS,
+    text: "Availability state (Alphabetical)",
+    value: 1,
   },
   {
-    text: "Users",
-    value: MODAL_NEW_WALLBOARD_SECITONS.USERS,
+    text: "Presence state (Will sort in this order)",
+    value: 2,
+  },
+  {
+    text: "Inbound Call",
+    value: 3,
+  },
+  {
+    text: "Ringing",
+    value: 4,
+  },
+  {
+    text: "In Wrapup",
+    value: 5,
+  },
+  {
+    text: "Inbound Non-Queue Call",
+    value: 6,
+  },
+  {
+    text: "Outbound Call",
+    value: 7,
+  },
+  {
+    text: "Available",
+    value: 8,
+  },
+  {
+    text: "Logged Off",
+    value: 9,
+  },
+  {
+    text: "Time on current call (Most time on the phone first)",
+    value: 10,
+  },
+  {
+    text: "Time spent in current availability state (Most time in the state first)",
+    value: 11,
+  },
+  {
+    text: "Total time spent on the phone today (Most time first)",
+    value: 12,
+  },
+  {
+    text: "Ringing",
+    value: 13,
+  },
+];
+export const AVAILABILITY_STATES_OPTIONS = [
+  {
+    text: "I'm currently available for calls",
+    value: 0,
+  },
+  {
+    text: "I'm busy on calls",
+    value: 1,
+  },
+  {
+    text: "No calls today please",
+    value: 2,
+  },
+  {
+    text: "The section should look like this",
+    value: 3,
   },
 ];
 
-export const MODAL_ADD_COMPONENT_OPTIONS = [
+export const PRESENCE_STATES_OPTIONS = [
   {
-    NAME: "Agent List",
-    STATUS: "Natterbox Admin",
-    DATE: "19/03/2021 at 14:19",
-    SERVICE: "Customer Service Calls",
+    text: "Inbound Call",
+    value: 0,
   },
   {
-    NAME: "Queue List",
-    STATUS: "Natterbox Admin",
-    DATE: "19/03/2021 at 14:19",
-    SERVICE: "Customer Service Calls",
+    text: "Ringing",
+    value: 1,
   },
   {
-    NAME: "Queue Tracking",
-    STATUS: "Natterbox Admin",
-    DATE: "19/03/2021 at 14:19",
-    SERVICE: "Customer Service Calls",
+    text: "In Wrapup",
+    value: 2,
   },
   {
-    NAME: "Queue Status",
-    STATUS: "Natterbox Admin",
-    DATE: "19/03/2021 at 14:19",
-    SERVICE: "Customer Service Calls",
+    text: "Inbound Non-Queue Call",
+    value: 3,
+  },
+  {
+    text: "Outbound Call",
+    value: 4,
+  },
+  {
+    text: "Available",
+    value: 5,
+  },
+  {
+    text: "Logged Off",
+    value: 6,
+  },
+];
+export const INTERACTIVITY_OPTIONS = [
+  {
+    text: "Can change availability state",
+    value: 0,
+  },
+  {
+    text: "Can Listen Live to agents",
+    value: 1,
+  },
+  {
+    text: "Can Call Agents",
+    value: 2,
   },
 ];
 
-export const WALLBOARD_MODAL_NAMES = {
-  SELECT_COMPONENT: "SELECT_COMPONENT",
-  ADD_COMPONENT: "ADD_COMPONENT",
+export const MAIN_VIEWING_OPTIONS = {
+  CARD: "CARD",
+  TABLE: "TABLE",
 };

@@ -62,36 +62,38 @@ const ModalNewWallboard = ({ ...props }) => {
 
     return (
       <div className="c-modal--new-wallboard__list">
-        {MODAL_ADD_COMPONENT_OPTIONS.filter((option) =>
-          option.NAME.toLowerCase().includes(newWbFilter.toLowerCase())
-        ).map((option) => (
-          <div
-            key={option.NAME}
-            onClick={() => handleSelectedItem(option.NAME)}
-            className={`c-modal--new-wallboard__list-item ${
-              selectedListItem === option.NAME
-                ? "c-modal--new-wallboard__list-item--selected"
-                : ""
-            }`}
-          >
-            <div className="c-modal--new-wallboard__list-title">
-              {option.NAME}
+        {MODAL_ADD_COMPONENT_OPTIONS[activeSectionValue]
+          .filter((option) =>
+            option.NAME.toLowerCase().includes(newWbFilter.toLowerCase())
+          )
+          .map((option) => (
+            <div
+              key={option.NAME}
+              onClick={() => handleSelectedItem(option.NAME)}
+              className={`c-modal--new-wallboard__list-item ${
+                selectedListItem === option.NAME
+                  ? "c-modal--new-wallboard__list-item--selected"
+                  : ""
+              }`}
+            >
+              <div className="c-modal--new-wallboard__list-title">
+                {option.NAME}
+              </div>
+              <div className="c-modal--new-wallboard__list-subtitle">
+                <div className="c-modal--new-wallboard__list-text">
+                  {option.STATUS}
+                </div>
+                <div className="c-modal--new-wallboard__list-separator">|</div>
+                <div className="c-modal--new-wallboard__list-text">
+                  {option.DATE}
+                </div>
+                <div className="c-modal--new-wallboard__list-separator">|</div>
+                <div className="c-modal--new-wallboard__list-text">
+                  {option.SERVICE}
+                </div>
+              </div>
             </div>
-            <div className="c-modal--new-wallboard__list-subtitle">
-              <div className="c-modal--new-wallboard__list-text">
-                {option.STATUS}
-              </div>
-              <div className="c-modal--new-wallboard__list-separator">|</div>
-              <div className="c-modal--new-wallboard__list-text">
-                {option.DATE}
-              </div>
-              <div className="c-modal--new-wallboard__list-separator">|</div>
-              <div className="c-modal--new-wallboard__list-text">
-                {option.SERVICE}
-              </div>
-            </div>
-          </div>
-        ))}
+          ))}
       </div>
     );
   };
@@ -166,7 +168,7 @@ const ModalNewWallboard = ({ ...props }) => {
             <div className="c-modal--new-wallboard__form">
               {handleFilterInput()}
               {handleList()}
-              <div className="c-modal--new-wallboard__buttons">
+              <div className="c-modal__buttons">
                 {handleCancelButton()}
                 {handleSelectButton()}
               </div>

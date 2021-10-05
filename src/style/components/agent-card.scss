@@ -1,0 +1,100 @@
+.agent-c {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 230px;
+  background-color: $natterbox-lighter-red;
+  color: $white;
+  border-radius: 8px;
+  &__header {
+    margin-top: 10px;
+    padding: 0 10px;
+    display: flex;
+    width: 100%;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
+  &__user {
+    display: flex;
+    &-image {
+      width: 30px;
+      height: 30px;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+      border-radius: 50%;
+      margin-right: 4px;
+    }
+    &-name {
+      font-family: $public-sans-thin;
+      font-size: 18px;
+    }
+    &-ext {
+      font-family: $public-sans-thin;
+      font-size: 8px;
+    }
+  }
+  &__status-time {
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+  }
+  &__status {
+    background-color: $natterbox-dark-blue-grey;
+    width: 60%;
+    padding-left: 10px;
+    font-family: $public-sans-regular;
+    font-size: 9.5px;
+    line-height: 1.4;
+    font-weight: 500;
+    border-bottom-right-radius: 8px;
+    border-top-right-radius: 8px;
+  }
+  &__time {
+    background-color: rgba($white, 0.08);
+    width: fit-content;
+    padding: 0 10px;
+    font-family: $public-sans-regular;
+    font-size: 10px;
+    line-height: 1.4;
+    border-bottom-left-radius: 8px;
+    border-top-left-radius: 8px;
+  }
+  &__body {
+    padding: 0 10px;
+    margin-top: 15px;
+  }
+  &__call {
+    &-time-text {
+      font-family: $public-sans-regular;
+      font-size: 9px;
+      font-weight: 500;
+      color: $white;
+      margin-bottom: 4px;
+    }
+    &-time-container {
+      display: flex;
+      width: 100%;
+      height: 40px;
+      align-items: center;
+      justify-content: center;
+      border-radius: 5px;
+      background-color: rgba($white, 0.08);
+    }
+    &-time {
+      font-family: $public-sans-bold;
+      font-size: 24px;
+      line-height: 24px;
+      font-weight: 500;
+      color: $white;
+    }
+  }
+  &__footer {
+    font-family: $public-sans-regular;
+    font-size: 9px;
+    font-weight: 500;
+    color: $white;
+    text-align: center;
+    margin: 5px 0 10px 0;
+  }
+}
