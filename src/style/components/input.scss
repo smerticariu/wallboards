@@ -14,6 +14,19 @@
     outline: none;
   }
 
+  &--grey {
+    padding: 4px 8px;
+    border-radius: 5px;
+    border: solid 1px $pinkish-grey;
+    font-size: 16px;
+    color: $slate-gray;
+    font-family: $public-sans-regular;
+    width: 100%;
+    &:focus-visible {
+      border: solid 1px $pinkish-grey;
+    }
+  }
+
   &::placeholder {
     font-family: $public-sans-thin;
     color: $input-text-colour;

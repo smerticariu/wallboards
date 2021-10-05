@@ -1,17 +1,18 @@
 import React, { useRef, useState } from "react";
+import { useDispatch } from "react-redux";
+import {
+  handleModalSelectActiveElementAC,
+  handleWallboardActiveModalAC,
+} from "src/store/actions/wallboards.action";
 import useOnClickOutside from "../../../common/hooks/useOnClickOutside";
 import {
   MODAL_NEW_WALLBOARD_DEFAULTS,
   MODAL_NEW_WALLBOARD_SECITONS,
   MODAL_ADD_COMPONENT_OPTIONS,
+  WALLBOARD_MODAL_NAMES,
 } from "./modal.new-wallboard.defaults";
 
-const ModalNewWallboard = ({
-  isOpen,
-  onOpen = () => {},
-  onClose = () => {},
-  ...props
-}) => {
+const ModalNewWallboard = ({ ...props }) => {
   const modalRef = useRef(null);
   const [newWbFilter, setNewWbFilter] = useState("");
 
@@ -20,11 +21,12 @@ const ModalNewWallboard = ({
   );
 
   const [selectedListItem, setSelectedListItem] = useState();
-  useOnClickOutside(modalRef, () => onClose());
+  const dispatch = useDispatch();
 
-  React.useEffect(() => {
-    onOpen();
-  }, []);
+  const closeModal = () => {
+    dispatch(handleWallboardActiveModalAC(null));
+  };
+  useOnClickOutside(modalRef, () => closeModal());
 
   const handleLeftSidebar = () => {
     const handleClick = (e, category) => {
@@ -77,7 +79,7 @@ const ModalNewWallboard = ({
             </div>
             <div className="c-modal--new-wallboard__list-subtitle">
               <div className="c-modal--new-wallboard__list-text">
-                {option.SERVICE}
+                {option.STATUS}
               </div>
               <div className="c-modal--new-wallboard__list-separator">|</div>
               <div className="c-modal--new-wallboard__list-text">
@@ -85,7 +87,7 @@ const ModalNewWallboard = ({
               </div>
               <div className="c-modal--new-wallboard__list-separator">|</div>
               <div className="c-modal--new-wallboard__list-text">
-                {option.STATUS}
+                {option.SERVICE}
               </div>
             </div>
           </div>
@@ -112,7 +114,7 @@ const ModalNewWallboard = ({
 
   const handleCancelButton = () => {
     const onClickCancelButton = (e) => {
-      onClose();
+      closeModal();
     };
 
     return (
@@ -125,7 +127,14 @@ const ModalNewWallboard = ({
   };
 
   const handleSelectButton = () => {
-    const onClickSelectButton = (e) => {};
+    const onClickSelectButton = (e) => {
+      if (selectedListItem) {
+        dispatch(handleModalSelectActiveElementAC(selectedListItem));
+        dispatch(
+          handleWallboardActiveModalAC(WALLBOARD_MODAL_NAMES.ADD_COMPONENT)
+        );
+      }
+    };
 
     return (
       <>
@@ -142,11 +151,7 @@ const ModalNewWallboard = ({
   };
 
   return (
-    <div
-      className={`c-modal c-modal--new-wallboard ${
-        isOpen ? "c-modal--open" : ""
-      }`}
-    >
+    <div className={`c-modal c-modal--new-wallboard c-modal--open`}>
       <div
         ref={modalRef}
         className="c-modal__container c-modal__container--new-wallboard"

@@ -21,6 +21,9 @@
     &--new-wallboard {
       max-width: 1450px;
     }
+    &--add-component {
+      max-width: 800px;
+    }
   }
 
   &--open {
@@ -45,9 +48,13 @@
   }
 
   &__body {
+    &--add-component,
     &--new-wallboard {
       display: flex;
       width: 100%;
+    }
+    &--add-component {
+      padding: 20px;
     }
   }
 
@@ -155,14 +162,32 @@
       font-size: 10px;
       margin: 0 2px;
     }
-
-    &__buttons {
-      display: flex;
-      align-items: center;
-      justify-content: flex-end;
+  }
+  &__buttons {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: flex-end;
+  }
+  &--add-component {
+    &__left-side {
+      max-width: 350px;
+      min-width: 300px;
+    }
+    &__right-side {
+      width: 100%;
+    }
+    &__input-section {
+      margin-bottom: 15px;
+    }
+    &__input-label {
+      font-family: $public-sans-regular;
+      font-size: 16px;
+      font-weight: 900;
+      color: $input-text-colour;
+      margin-bottom: 5px;
     }
   }
-
   @media screen and (max-width: $md) {
     &__body {
       &--new-wallboard {

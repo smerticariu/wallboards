@@ -4,33 +4,23 @@ import WallboardComponents from "./wallboard-componets";
 import Toolbar from "../toolbar/toolbar";
 import ModalNewWallboard from "../modal/new-wallboard/modal.new-wallboard";
 import * as actionTypes from "../../store/actionTypes";
+import { WALLBOARD_MODAL_NAMES } from "../modal/new-wallboard/modal.new-wallboard.defaults";
+import ModalAddComponent from "../modal/add-component/modal.add-component";
 
 const WallboardNew = () => {
-  const isAddComponentModalShow = useSelector(
-    (state) => state.wallboards.isAddComponentModalShow
+  const activeModalName = useSelector(
+    (state) => state.wallboards.activeModalName
   );
   const dispatch = useDispatch();
-
-  const handleAddComponentModal = () => {
-    const onCloseModal = () => {
-      dispatch({
-        type: actionTypes.HANDLE_ADD_COMPONENT_MODAL_SHOW_STATUS,
-      });
-    };
-    return (
-      isAddComponentModalShow && (
-        <ModalNewWallboard
-          isOpen={isAddComponentModalShow}
-          onClose={onCloseModal}
-        />
-      )
-    );
-  };
 
   return (
     <div className="c-new-wallboard">
       <Toolbar template="new-wallboard" />
-      {handleAddComponentModal()}
+      {activeModalName === WALLBOARD_MODAL_NAMES.SELECT_COMPONENT && (
+        <ModalNewWallboard />
+      )}
+      {/* {activeModalName === WALLBOARD_MODAL_NAMES.ADD_COMPONENT && ( */}
+      {true && <ModalAddComponent />}
       <WallboardComponents />
     </div>
   );

@@ -1,8 +1,12 @@
+import { wallboardsActions } from "../actions/wallboards.action";
 import * as types from "../actionTypes";
 
 const initialState = {
   filterWallboards: [],
-  isAddComponentModalShow: false,
+  activeModalName: null,
+  modalSelectComponent: {
+    selectedElement: "",
+  },
   newWallboardData: {
     title: "My New Wallboard",
   },
@@ -15,10 +19,18 @@ export const wallboardsReducer = (state = initialState, action) => {
         ...state,
         filtredWallboards: action.payload,
       };
-    case types.HANDLE_ADD_COMPONENT_MODAL_SHOW_STATUS:
+    case wallboardsActions.HANDLE_WALLBOARD_ACTIVE_MODAL:
       return {
         ...state,
-        isAddComponentModalShow: !state.isAddComponentModalShow,
+        activeModalName: action.payload,
+      };
+    case wallboardsActions.HANDLE_MODAL_SELECT_COMPONENT_ACTIVE_ELEMENT:
+      return {
+        ...state,
+        modalSelectComponent: {
+          ...state.modalSelectComponent,
+          selectedElement: action.payload,
+        },
       };
     case types.HANDLE_NEW_WALLBOARD_TITLE:
       return {

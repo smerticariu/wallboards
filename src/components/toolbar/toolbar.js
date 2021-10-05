@@ -2,7 +2,9 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { CheckIcon } from "src/assets/static/icons/check";
+import { handleWallboardActiveModalAC } from "src/store/actions/wallboards.action";
 import * as actionTypes from "../../store/actionTypes";
+import { WALLBOARD_MODAL_NAMES } from "../modal/new-wallboard/modal.new-wallboard.defaults";
 const Toolbar = (props) => {
   const [wbFilter, setWbFilter] = useState("");
   useState(false);
@@ -100,9 +102,9 @@ const Toolbar = (props) => {
 
   const handleNewComponentButton = () => {
     const onClickNewComponentModal = () => {
-      dispatch({
-        type: actionTypes.HANDLE_ADD_COMPONENT_MODAL_SHOW_STATUS,
-      });
+      dispatch(
+        handleWallboardActiveModalAC(WALLBOARD_MODAL_NAMES.SELECT_COMPONENT)
+      );
     };
 
     return (
