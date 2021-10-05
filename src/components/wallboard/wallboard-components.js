@@ -4,12 +4,6 @@ import * as actionTypes from "../../store/actionTypes";
 
 const WallboardComponents = () => {
   const dispatch = useDispatch();
-  useEffect(() => {
-    const el = document.querySelector(".c-panel");
-    if (el) {
-      // el.style.height = window.innerHeight - el.offsetTop - 24 + "px";
-    }
-  }, []);
 
   const handleNewComponentButton = () => {
     const onClickNewComponentModal = () => {
