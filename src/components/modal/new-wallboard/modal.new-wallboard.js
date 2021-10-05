@@ -77,7 +77,7 @@ const ModalNewWallboard = ({
             </div>
             <div className="c-modal--new-wallboard__list-subtitle">
               <div className="c-modal--new-wallboard__list-text">
-                {option.SERVICE}
+                {option.STATUS}
               </div>
               <div className="c-modal--new-wallboard__list-separator">|</div>
               <div className="c-modal--new-wallboard__list-text">
@@ -85,7 +85,7 @@ const ModalNewWallboard = ({
               </div>
               <div className="c-modal--new-wallboard__list-separator">|</div>
               <div className="c-modal--new-wallboard__list-text">
-                {option.STATUS}
+                {option.SERVICE}
               </div>
             </div>
           </div>

@@ -4,9 +4,17 @@
   border: none;
   padding: 11px 29px;
   font-size: 14px;
-
+  width: 100%;
   &--landing-search {
     width: 560px;
+  }
+  &--new-walboard-title {
+    color: $turquoise-blue;
+    font-size: 20px;
+    font-family: $inter-regular;
+    padding: 0;
+    background-color: transparent;
+    border-radius: 0px;
   }
 
   &:focus-visible {
