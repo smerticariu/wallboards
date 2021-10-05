@@ -1,0 +1,11 @@
+.i {
+  &--redo,
+  &--undo {
+    fill: $grey;
+    cursor: pointer;
+    &--disabled {
+      fill: $dark-white;
+      cursor: default;
+    }
+  }
+}
