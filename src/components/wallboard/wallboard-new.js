@@ -14,7 +14,7 @@ const WallboardNew = () => {
   const dispatch = useDispatch();
 
   return (
-    <div className="c-new-wallboard">
+    <div className="c-wallboard--new">
       <Toolbar template="new-wallboard" />
       {activeModalName === WALLBOARD_MODAL_NAMES.SELECT_COMPONENT && (
         <ModalNewWallboard />

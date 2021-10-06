@@ -1,8 +1,17 @@
-.c-new-wallboard {
-  height: 90vh;
-  display: flex;
-  flex-direction: column;
-  padding: 0 15px 15px 15px;
+.c-wallboard {
+  &--read-only {
+    height: 90vh;
+    display: flex;
+    flex-direction: column;
+    padding: 0 15px 15px 15px;
+  }
+
+  &--new {
+    height: 90vh;
+    display: flex;
+    flex-direction: column;
+    padding: 0 15px 15px 15px;
+  }
 }
 .c-panel {
   display: flex;

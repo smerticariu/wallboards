@@ -52,15 +52,11 @@
     background-color: $light-grey;
     width: calc(100% - 265px);
     overflow: scroll;
-    height: 90asvh;
+    height: 90vh;
     border-top-right-radius: 12px;
 
     &__wb-name {
       width: 693px !important;
-
-      p {
-        margin-bottom: 10px;
-      }
     }
 
     &__edit-btn {
@@ -111,12 +107,15 @@
             background-color: transparent;
           }
 
-          p {
+          p,
+          a {
             margin: 0;
             font-family: $public-sans-bold;
             font-weight: 600;
             font-size: 16px;
             color: $grey;
+            display: block;
+            text-decoration: none;
           }
 
           span {

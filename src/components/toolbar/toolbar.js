@@ -50,7 +50,13 @@ const Toolbar = (props) => {
         return heading();
       case "new-wallboard":
         return newWallboardHeading();
-
+      case "wb-read-only":
+        return (
+          <h1
+            className="c-toolbar-left__heading c-toolbar-left__heading--new-wallboard">
+              {props.wbName}
+          </h1>
+        )
       default:
         return null;
     }
@@ -164,6 +170,14 @@ const Toolbar = (props) => {
             {handleRunButton()}
           </>
         );
+      case "wb-read-only":
+        return (
+          <button 
+            className="c-button c-button--m-left" 
+            onClick={() => props.logout()}>
+              Logout
+          </button>
+        )
     }
   };
 
