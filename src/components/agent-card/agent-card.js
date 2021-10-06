@@ -1,6 +1,5 @@
 import img from "src/assets/static/images/not_exist_people.png";
 import React from "react";
-import { RedoIcon } from "src/assets/static/icons/redo";
 const AgentCard = ({
   name,
   ext,

@@ -130,11 +130,13 @@ const ModalNewWallboard = ({ ...props }) => {
 
   const handleSelectButton = () => {
     const onClickSelectButton = (e) => {
-      if (selectedListItem) {
-        dispatch(handleModalSelectActiveElementAC(selectedListItem));
-        dispatch(
-          handleWallboardActiveModalAC(WALLBOARD_MODAL_NAMES.ADD_COMPONENT)
-        );
+      switch (selectedListItem) {
+        case "Agent List": {
+          dispatch(handleModalSelectActiveElementAC(selectedListItem));
+          return dispatch(
+            handleWallboardActiveModalAC(WALLBOARD_MODAL_NAMES.ADD_COMPONENT)
+          );
+        }
       }
     };
 

@@ -1,7 +1,6 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useDispatch } from "react-redux";
 import { handleWallboardActiveModalAC } from "src/store/actions/wallboards.action";
-import * as actionTypes from "../../store/actionTypes";
 import { WALLBOARD_MODAL_NAMES } from "../modal/new-wallboard/modal.new-wallboard.defaults";
 
 const WallboardComponents = () => {
