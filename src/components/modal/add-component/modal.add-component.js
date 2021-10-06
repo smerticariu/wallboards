@@ -126,7 +126,7 @@ const ModalAddComponent = ({ ...props }) => {
                 ...formData[formDataProp],
                 selectedItems: formData[formDataProp].selectedItems.map(
                   (option) =>
-                    option.value != name
+                    option.value.toString() !== name
                       ? option
                       : { ...option, isChecked: checked }
                 ),
@@ -437,77 +437,86 @@ const ModalAddComponent = ({ ...props }) => {
                   key={n}
                   agentName={
                     formData.columnsToViewOptions.selectedItems.find(
-                      (el) => el.value == ADD_COMPONENT_COLUMN_OPTIONS.agentName
+                      (el) =>
+                        el.value.toString() ===
+                        ADD_COMPONENT_COLUMN_OPTIONS.agentName
                     ).isChecked
                   }
                   agentExtNo={
                     formData.columnsToViewOptions.selectedItems.find(
                       (el) =>
-                        el.value == ADD_COMPONENT_COLUMN_OPTIONS.agentExtNo
+                        el.value.toString() ===
+                        ADD_COMPONENT_COLUMN_OPTIONS.agentExtNo
                     ).isChecked
                   }
                   currAvaiState={
                     formData.columnsToViewOptions.selectedItems.find(
                       (el) =>
-                        el.value == ADD_COMPONENT_COLUMN_OPTIONS.currAvaiState
+                        el.value.toString() ===
+                        ADD_COMPONENT_COLUMN_OPTIONS.currAvaiState
                     ).isChecked
                   }
                   currPresState={
                     formData.columnsToViewOptions.selectedItems.find(
                       (el) =>
-                        el.value == ADD_COMPONENT_COLUMN_OPTIONS.currPresState
+                        el.value.toString() ===
+                        ADD_COMPONENT_COLUMN_OPTIONS.currPresState
                     ).isChecked
                   }
                   noCallsOffered={
                     formData.columnsToViewOptions.selectedItems.find(
                       (el) =>
-                        el.value == ADD_COMPONENT_COLUMN_OPTIONS.noCallsOffered
+                        el.value.toString() ===
+                        ADD_COMPONENT_COLUMN_OPTIONS.noCallsOffered
                     ).isChecked
                   }
                   noCallsAnswered={
                     formData.columnsToViewOptions.selectedItems.find(
                       (el) =>
-                        el.value == ADD_COMPONENT_COLUMN_OPTIONS.noCallsAnswered
+                        el.value.toString() ===
+                        ADD_COMPONENT_COLUMN_OPTIONS.noCallsAnswered
                     ).isChecked
                   }
                   noCallsMissed={
                     formData.columnsToViewOptions.selectedItems.find(
                       (el) =>
-                        el.value == ADD_COMPONENT_COLUMN_OPTIONS.noCallsMissed
+                        el.value.toString() ===
+                        ADD_COMPONENT_COLUMN_OPTIONS.noCallsMissed
                     ).isChecked
                   }
                   timeInCurrentPresenceState={
                     formData.columnsToViewOptions.selectedItems.find(
                       (el) =>
-                        el.value ==
+                        el.value.toString() ===
                         ADD_COMPONENT_COLUMN_OPTIONS.timeInCurrentPresenceState
                     ).isChecked
                   }
                   timeInCurrentAvailabilityState={
                     formData.columnsToViewOptions.selectedItems.find(
                       (el) =>
-                        el.value ==
+                        el.value.toString() ===
                         ADD_COMPONENT_COLUMN_OPTIONS.timeInCurrentAvailabilityState
                     ).isChecked
                   }
                   timeInCurrentCall={
                     formData.columnsToViewOptions.selectedItems.find(
                       (el) =>
-                        el.value ==
+                        el.value.toString() ===
                         ADD_COMPONENT_COLUMN_OPTIONS.timeInCurrentCall
                     ).isChecked
                   }
                   timeInCurrentWrapup={
                     formData.columnsToViewOptions.selectedItems.find(
                       (el) =>
-                        el.value ==
+                        el.value.toString() ===
                         ADD_COMPONENT_COLUMN_OPTIONS.timeInCurrentWrapup
                     ).isChecked
                   }
                   listOfSkills={
                     formData.columnsToViewOptions.selectedItems.find(
                       (el) =>
-                        el.value == ADD_COMPONENT_COLUMN_OPTIONS.listOfSkills
+                        el.value.toString() ===
+                        ADD_COMPONENT_COLUMN_OPTIONS.listOfSkills
                     ).isChecked
                   }
                 />

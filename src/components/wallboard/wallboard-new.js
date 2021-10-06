@@ -1,5 +1,5 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import WallboardComponents from "./wallboard-components";
 import Toolbar from "../toolbar/toolbar";
 import ModalNewWallboard from "../modal/new-wallboard/modal.new-wallboard";

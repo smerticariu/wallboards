@@ -6,7 +6,6 @@ import axios from "axios";
 import Toolbar from "../toolbar/toolbar";
 
 const WallboardReadOnly = ({ userInfo }) => {
-  debugger;
   const [wb, setWb] = useState({});
   const { id } = useParams();
   const { logout } = useAuth0();

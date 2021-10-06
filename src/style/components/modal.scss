@@ -23,6 +23,7 @@
     }
     &--add-component {
       max-width: max-content;
+      min-width: 900px;
     }
   }
 
@@ -172,7 +173,8 @@
   }
   &--add-component {
     &__left-side {
-      width: 350px;
+      width: 40%;
+      max-width: 350px;
       max-height: 600px;
       overflow: auto;
       padding-right: 18px;
@@ -180,7 +182,7 @@
     &__right-side {
       display: flex;
       flex-direction: column;
-      width: 100%;
+      min-width: 60%;
       padding-left: 11px;
     }
     &__input-section {

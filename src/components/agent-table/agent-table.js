@@ -1,4 +1,3 @@
-import img from "src/assets/static/images/not_exist_people.png";
 import React from "react";
 import { ArrowDownIcon } from "src/assets/static/icons/arrow-down";
 const AgentTable = ({

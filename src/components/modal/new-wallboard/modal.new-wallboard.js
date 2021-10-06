@@ -137,6 +137,8 @@ const ModalNewWallboard = ({ ...props }) => {
             handleWallboardActiveModalAC(WALLBOARD_MODAL_NAMES.ADD_COMPONENT)
           );
         }
+        default:
+          return;
       }
     };
 
