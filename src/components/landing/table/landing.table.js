@@ -1,19 +1,21 @@
-import axios from "axios";
-
-import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import * as actionTypes from "../../../store/actionTypes";
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { setWallboardsByCategoryAC } from 'src/store/actions/wallboards.action';
+import { FetchStatus } from 'src/store/reducers/wallboards.reducer';
+import { fetchAllWallboardsThunk } from 'src/store/thunk/wallboards.thunk';
 
 const LandingTable = ({ userInfo }) => {
   const dispatch = useDispatch();
-  const [allWbs, setAllWbs] = useState([]);
+  const { fetchStatus, wallboards } = useSelector((state) => state.wallboards.allWallboards);
   const [filteredWbs, setFilteredWbs] = useState([]);
 
   const category = useSelector((state) => state.landing.category);
-  
-  const filter = useSelector((state) => state.landing.filterWallboards);
 
-  useEffect(async () => {
+  const filter = useSelector((state) => state.landing.filterWallboards);
+  useEffect(() => {
+    dispatch(fetchAllWallboardsThunk());
+  }, []);
+  useEffect(() => {
     // const getWb = async () => {
     //   const options = {
     //     method: 'get',
@@ -35,44 +37,30 @@ const LandingTable = ({ userInfo }) => {
 
     // setAllWbs([...allWbs]);
 
-    const options = {
-      method: 'get',
-      url: `http://localhost:3004/wallboards/`,
-    }
-
-    await axios(options).then(res => {
-      setAllWbs(res.data)
-    }) 
-
     const filterWbsByCategory = (category) => {
       switch (category) {
-        case "Most Recent":
-          const wbsByDate = allWbs
-            .sort((a, b) => new Date(b.createdOn) - new Date(a.createdOn))
-            .slice(0, 10);
+        case 'Most Recent':
+          const wbsByDate = wallboards.sort((a, b) => new Date(b.createdOn) - new Date(a.createdOn)).slice(0, 10);
           return wbsByDate;
-        case "Created By Me":
-          const wbsByUser = allWbs.filter(
-            (wb) => wb.natterboxUserId === userInfo.natterboxUserId
-          );
+        case 'Created By Me':
+          const wbsByUser = wallboards.filter((wb) => wb.natterboxUserId === userInfo.natterboxUserId);
           return wbsByUser;
         default:
-          return allWbs;
+          return wallboards;
       }
     };
 
     const filteredWbsByCategory = filterWbsByCategory(category);
 
-    const wallboards = filteredWbsByCategory.filter(
-      (wb) =>
-        wb.name.toLowerCase().includes(filter.toLowerCase()) ||
-        wb.createdBy.toLowerCase().includes(filter.toLowerCase())
+    const wallboardsByInput = filteredWbsByCategory.filter(
+      (wb) => wb.name.toLowerCase().includes(filter.toLowerCase()) || wb.createdBy.toLowerCase().includes(filter.toLowerCase())
     );
 
-    setFilteredWbs(wallboards);
-    dispatch({type: actionTypes.SET_WALLBOARDS_BY_CATEGORY, payload: wallboards});
-  }, [category, filter, allWbs.length]);
-
+    setFilteredWbs(wallboardsByInput);
+    dispatch(setWallboardsByCategoryAC(wallboardsByInput));
+    // eslint-disable-next-line
+  }, [category, filter, wallboards]);
+  if (fetchStatus !== FetchStatus.SUCCESS) return <div>Fetch all wallboards in progress</div>;
   return (
     <div className="c-landing-table">
       <table>
@@ -91,7 +79,9 @@ const LandingTable = ({ userInfo }) => {
                 <tr key={index}>
                   <td className="c-landing-table__wb-name">
                     <p>
-                      <a target="_blank" href={`http://localhost:3000/wallboard/${wb.id}`}>{wb.name}</a>
+                      <a target="_blank" href={`http://localhost:3000/wallboard/${wb.id}`}>
+                        {wb.name}
+                      </a>
                     </p>
                     <span>{wb.by}</span>
                   </td>

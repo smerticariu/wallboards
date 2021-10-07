@@ -6,11 +6,23 @@ import {
   MAIN_VIEWING_OPTIONS,
 } from 'src/components/modal/add-component/modal.add-component.defaults';
 import { wallboardsActions } from '../actions/wallboards.action';
-import * as types from '../actionTypes';
-
+export const FetchStatus = {
+  NULL: null,
+  IN_PROGRESS: 'IN_PROGRESS',
+  SUCCESS: 'SUCCESS',
+  FAIL: 'FAIL',
+};
 const initialState = {
   filterWallboards: [],
   activeModalName: null,
+  wallboardPage: {
+    wallboard: null,
+    fetchStatus: FetchStatus.NULL,
+  },
+  allWallboards: {
+    wallboards: [],
+    fetchStatus: FetchStatus.NULL,
+  },
   modalSelectComponent: {
     selectedElement: '',
   },
@@ -51,11 +63,6 @@ const initialState = {
 
 export const wallboardsReducer = (state = { ...initialState }, action) => {
   switch (action.type) {
-    case types.SET_FILTERED_WALLBOARDS:
-      return {
-        ...state,
-        filtredWallboards: action.payload,
-      };
     case wallboardsActions.HANDLE_WALLBOARD_ACTIVE_MODAL:
       return {
         ...state,
@@ -86,12 +93,65 @@ export const wallboardsReducer = (state = { ...initialState }, action) => {
         ...state,
         modalAddComponent: { ...initialState.modalAddComponent },
       };
-    case types.HANDLE_NEW_WALLBOARD_TITLE:
+    case wallboardsActions.HANDLE_NEW_WALLBOARD_TITLE:
       return {
         ...state,
         newWallboardData: {
           ...state.newWallboardData,
           title: action.payload,
+        },
+      };
+    case wallboardsActions.FETCH_WALLBOARD_BY_ID:
+      return {
+        ...state,
+        wallboardPage: {
+          ...state.wallboardPage,
+          fetchStatus: FetchStatus.IN_PROGRESS,
+        },
+      };
+    case wallboardsActions.FETCH_WALLBOARD_BY_ID_SUCCESS:
+      return {
+        ...state,
+        wallboardPage: {
+          ...state.wallboardPage,
+          wallboard: action.payload,
+          fetchStatus: FetchStatus.SUCCESS,
+        },
+      };
+    case wallboardsActions.FETCH_WALLBOARD_BY_ID_FAIL:
+      return {
+        ...state,
+        wallboardPage: {
+          ...state.wallboardPage,
+          wallboard: null,
+          fetchStatus: FetchStatus.FAIL,
+        },
+      };
+
+    case wallboardsActions.FETCH_ALL_WALLBOARDS:
+      return {
+        ...state,
+        allWallboards: {
+          ...state.allWallboards,
+          fetchStatus: FetchStatus.IN_PROGRESS,
+        },
+      };
+    case wallboardsActions.FETCH_ALL_WALLBOARDS_SUCCESS:
+      return {
+        ...state,
+        allWallboards: {
+          ...state.allWallboards,
+          wallboards: action.payload,
+          fetchStatus: FetchStatus.SUCCESS,
+        },
+      };
+    case wallboardsActions.FETCH_ALL_WALLBOARDS_FAIL:
+      return {
+        ...state,
+        allWallboards: {
+          ...state.allWallboards,
+          wallboards: null,
+          fetchStatus: FetchStatus.FAIL,
         },
       };
 

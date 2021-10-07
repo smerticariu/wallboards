@@ -1,30 +1,26 @@
-import React, { useState, useEffect } from "react";
-import { useAuth0 } from "@auth0/auth0-react";
-import { useParams } from "react-router-dom";
-import axios from "axios";
-
-import Toolbar from "../toolbar/toolbar";
+import React, { useEffect } from 'react';
+import { useAuth0 } from '@auth0/auth0-react';
+import { useParams } from 'react-router-dom';
+import Toolbar from '../toolbar/toolbar';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchWallboardByIdThunk } from 'src/store/thunk/wallboards.thunk';
+import { FetchStatus } from 'src/store/reducers/wallboards.reducer';
 
 const WallboardReadOnly = ({ userInfo }) => {
-  const [wb, setWb] = useState({});
   const { id } = useParams();
   const { logout } = useAuth0();
+  const dispatch = useDispatch();
+  const { wallboard, fetchStatus } = useSelector((state) => state.wallboards.wallboardPage);
+  useEffect(() => {
+    dispatch(fetchWallboardByIdThunk(id));
+  }, [id]);
 
-  useEffect(async () => {
-    const options = {
-      method: "get",
-      url: `http://localhost:3004/wallboards/${id}`,
-    };
-
-    await axios(options).then((res) => {
-      console.log(res.data);
-      setWb(res.data);
-      setWb((wb) => ({ ...wb }));
-    });
-  }, [wb.name]);
+  if (fetchStatus !== FetchStatus.SUCCESS) {
+    return <div>Single wallboard loading...</div>;
+  }
   return (
     <div className="c-wallboard--read-only">
-      <Toolbar template="wb-read-only" wbName={wb.name} logout={logout} />
+      <Toolbar template="wb-read-only" wbName={wallboard.name} logout={logout} />
     </div>
   );
 };
