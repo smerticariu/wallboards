@@ -76,7 +76,9 @@ function App() {
             logout
           </button>
           <div className="c-banner">
-            <div className="c-banner-logo"></div>
+            <a href="/">
+              <div className="c-banner-logo"></div>
+            </a>
             <div className="c-banner-brand"></div>
           </div>
 
