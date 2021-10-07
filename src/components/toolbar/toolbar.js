@@ -115,10 +115,6 @@ const Toolbar = (props) => {
       onChange: onChange,
     };
 
-    const updateFilterInput = (e) => {
-      dispatch(setFiltredWallboardsAC(e.target.value));
-    };
-
     return (
       <Autosuggest
         suggestions={wbSearchSuggestions}

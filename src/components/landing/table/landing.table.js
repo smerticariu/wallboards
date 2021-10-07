@@ -14,6 +14,7 @@ const LandingTable = ({ userInfo }) => {
   const filter = useSelector((state) => state.landing.filterWallboards);
   useEffect(() => {
     dispatch(fetchAllWallboardsThunk());
+    // eslint-disable-next-line
   }, []);
   useEffect(() => {
     // const getWb = async () => {
@@ -79,7 +80,7 @@ const LandingTable = ({ userInfo }) => {
                 <tr key={index}>
                   <td className="c-landing-table__wb-name">
                     <p>
-                      <a target="_blank" href={`http://localhost:3000/wallboard/${wb.id}`}>
+                      <a target="_blank" rel="noreferrer" href={`http://localhost:3000/wallboard/${wb.id}`}>
                         {wb.name}
                       </a>
                     </p>

@@ -13,6 +13,7 @@ const WallboardReadOnly = ({ userInfo }) => {
   const { wallboard, fetchStatus } = useSelector((state) => state.wallboards.wallboardPage);
   useEffect(() => {
     dispatch(fetchWallboardByIdThunk(id));
+    // eslint-disable-next-line
   }, [id]);
 
   if (fetchStatus !== FetchStatus.SUCCESS) {

@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useAuth0 } from '@auth0/auth0-react';
-import axios from 'axios';
 import config from 'src/config/auth';
 import Login from 'src/components/login/login';
 import Landing from 'src/components/landing/landing';
@@ -9,43 +8,31 @@ import jwtExtractor from 'src/common/utils/jwtExtractor';
 import WallboardNew from './components/wallboard/wallboard-new';
 import WallboardReadOnly from 'src/components/wallboard/wallboard.read-only';
 import { Route, Switch } from 'react-router';
-import { handleLogoutAC, setAccessTokenAC, setUserInfoAC, setUserTokenInfoAC } from './store/actions/login.action';
+import { handleLogoutAC, setAccessTokenAC, setUserTokenInfoAC } from './store/actions/login.action';
+import { fetchUserInfoThunk } from './store/thunk/login.thunk';
 
 function App() {
-  const [token, setToken] = useState('');
   const dispatch = useDispatch();
-  const data = useSelector((state) => state.login.userInfo);
+  const { userInfo, userTokenInfo } = useSelector((state) => state.login);
   const { isAuthenticated, getAccessTokenSilently, logout, isLoading } = useAuth0();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         await getAccessTokenSilently(config).then((res) => {
-          setToken(res);
           dispatch(setAccessTokenAC(res));
           dispatch(setUserTokenInfoAC(jwtExtractor(res)));
+          dispatch(fetchUserInfoThunk(res));
         });
-
-        const options = {
-          method: 'get',
-          url: 'https://sapien-proxy.redmatter-qa01.pub/v1/user/me',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: 'Bearer ' + token,
-          },
-        };
-
-        if (token.length > 0) {
-          const getData = await axios(options).then((res) => res.data);
-          dispatch(setUserInfoAC(getData.data));
-        }
       } catch (err) {
         console.log(err);
       }
     };
 
     fetchData();
-  }, [token.length > 0]);
+
+    // eslint-disable-next-line
+  }, []);
 
   const handleLogout = () => {
     logout();
@@ -55,11 +42,11 @@ function App() {
 
   return (
     <div className="App">
-      {!data && isAuthenticated && <p>Loading...</p>}
-      {data && (
+      {!userInfo && isAuthenticated && <p>Loading...</p>}
+      {userInfo && userTokenInfo && (
         <>
           <span>
-            Logged in as {data.firstName} {data.lastName}
+            Logged in as {userInfo.firstName} {userInfo.lastName}
           </span>
           <button
             onClick={() => {
@@ -77,13 +64,13 @@ function App() {
 
           <Switch>
             <Route exact path="/">
-              <Landing userInfo={jwtExtractor(token)} />
+              <Landing userInfo={userTokenInfo} />
             </Route>
             <Route exact path="/wallboard/new">
               <WallboardNew />
             </Route>
             <Route path="/wallboard/:id">
-              <WallboardReadOnly userInfo={jwtExtractor(token)} />
+              <WallboardReadOnly userInfo={userTokenInfo} />
             </Route>
           </Switch>
         </>
