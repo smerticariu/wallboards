@@ -14,7 +14,6 @@ const LandingSidebar = () => {
 
     e.target.classList.add('c-landing-sidebar-list__filter--selected');
     dispatch({ type: actionTypes.LANDING_SELECTED_WALLBOARD_CATEGORY, payload: category });
-    console.log('[SIDEBAR] - ', category )
   }
 
   useEffect(() => {

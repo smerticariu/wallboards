@@ -3,6 +3,7 @@ import * as types from "../actionTypes";
 const initialState = {
   category: "Most Recent",
   filterWallboards: "",
+  wallboardsByCategory: [],
 };
 
 export const landingReducer = (state = initialState, action) => {
@@ -16,6 +17,11 @@ export const landingReducer = (state = initialState, action) => {
       return {
         ...state,
         filterWallboards: action.payload,
+      };
+    case types.SET_WALLBOARDS_BY_CATEGORY:
+      return {
+        ...state,
+        wallboardsByCategory: action.payload,
       };
 
     default:

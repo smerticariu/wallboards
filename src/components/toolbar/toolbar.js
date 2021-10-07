@@ -1,17 +1,25 @@
 import React, { useState } from "react";
+import Autosuggest from 'react-autosuggest';
+import match from 'autosuggest-highlight/match';
+import parse from 'autosuggest-highlight/parse';
+
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { RedoIcon } from "src/assets/static/icons/redo";
 import { UndoIcon } from "src/assets/static/icons/undo";
 import * as actionTypes from "../../store/actionTypes";
 const Toolbar = (props) => {
-  const [wbFilter, setWbFilter] = useState("");
-  useState(false);
   const dispatch = useDispatch();
+  const [wbFilter, setWbFilter] = useState("");
+  const [wbSearchValue, setWbSearchValue] = useState("");
+  const [wbSearchSuggestions, setWbSearchSuggestions] = useState([]);
+  const wallboards = useSelector((state) => state.landing.wallboardsByCategory);
+  
   const userData = useSelector((state) => state.login.userInfo);
   const newWallboardTitle = useSelector(
     (state) => state.wallboards.newWallboardData.title
   );
+  
   const heading = () => {
     return (
       <div className="c-toolbar-left__wrapper">
@@ -61,6 +69,73 @@ const Toolbar = (props) => {
   };
 
   const handleFilterInput = () => {
+    console.log('wallboards', wallboards);
+    function escapeRegexCharacters(str) {
+      return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    }
+    
+    function getSuggestions(value) {
+      const escapedValue = value.length > 0 ? escapeRegexCharacters(value.trim()) : []
+    
+      if (escapedValue === "") {
+        return [];
+      }
+    
+      const regex = new RegExp("^" + escapedValue, "i");
+    
+      return wallboards.filter((wallboard) => regex.test(wallboard.name));
+    }
+    
+    function getSuggestionValue(suggestion) {
+      return suggestion.name;
+    }
+    
+    function renderSuggestion(suggestion, query) {
+      const matches = match(suggestion.name, query.query);
+      
+      const parts = parse(suggestion.name, matches);
+    
+      return (
+        <span>
+          {parts.map((part, index) => {
+            const className = part.highlight
+              ? "react-autosuggest__suggestion-match"
+              : null;
+    
+            return (
+              <span className={className} key={index}>
+                {part.text}
+              </span>
+            );
+          })}
+        </span>
+      );
+    }
+
+    const onChange = (event, { newValue, method }) => {
+      setWbSearchValue(newValue);
+      dispatch({
+        type: actionTypes.SET_FILTERED_WALLBOARDS,
+        payload: newValue
+      });
+    };
+  
+    const onSuggestionsFetchRequested = ({ value }) => {
+      
+      setWbSearchSuggestions(getSuggestions(value));
+    };
+  
+    const onSuggestionsClearRequested = () => {
+      setWbSearchSuggestions(getSuggestions([]));
+    };
+
+    const inputProps = {
+      placeholder: "Search Wallboards...",
+      value: wbSearchValue,
+      onChange: onChange
+    };
+
+
     const updateFilterInput = (e) => {
       setWbFilter(e.target.value);
       dispatch({
@@ -68,15 +143,23 @@ const Toolbar = (props) => {
         payload: e.target.value,
       });
     };
-
+    
     return (
-      <input
-        className="c-input c-input--landing-search"
-        value={wbFilter}
-        placeholder="Search dashboards…"
-        type="text"
-        onChange={(e) => updateFilterInput(e)}
+      <Autosuggest
+        suggestions={wbSearchSuggestions}
+        onSuggestionsFetchRequested={onSuggestionsFetchRequested}
+        onSuggestionsClearRequested={onSuggestionsClearRequested}
+        getSuggestionValue={getSuggestionValue}
+        renderSuggestion={renderSuggestion}
+        inputProps={inputProps}
       />
+      // <input
+      //   className="c-input c-input--landing-search"
+      //   value={wbFilter}
+      //   placeholder="Search dashboards…"
+      //   type="text"
+      //   onChange={(e) => updateFilterInput(e)}
+      // />
     );
   };
 

@@ -1,17 +1,17 @@
 import axios from "axios";
 
 import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import * as actionTypes from "../../../store/actionTypes";
 
 const LandingTable = ({ userInfo }) => {
+  const dispatch = useDispatch();
   const [allWbs, setAllWbs] = useState([]);
   const [filteredWbs, setFilteredWbs] = useState([]);
 
   const category = useSelector((state) => state.landing.category);
-
+  
   const filter = useSelector((state) => state.landing.filterWallboards);
-  console.log("[LandingTable] - selected category in table", category, filter);
 
   useEffect(async () => {
     // const getWb = async () => {
@@ -70,6 +70,7 @@ const LandingTable = ({ userInfo }) => {
     );
 
     setFilteredWbs(wallboards);
+    dispatch({type: actionTypes.SET_WALLBOARDS_BY_CATEGORY, payload: wallboards});
   }, [category, filter, allWbs.length]);
 
   return (
