@@ -1,5 +1,5 @@
-import React from "react";
-import { createArrayFromTo } from "src/common/utils/generateArray";
+import React from 'react';
+import { createArrayFromTo } from 'src/common/utils/generateArray';
 
 const GridPage = ({ ...props }) => {
   return (

@@ -1,77 +1,77 @@
 export const CALL_QUEUE_OPTIONS = [
-  { TEXT: "Urgent Support Queue", VALUE: "URGENT" },
-  { TEXT: "Not urgent but somewhat important queue", VALUE: "NOT_URGENT" },
+  { TEXT: 'Urgent Support Queue', VALUE: 'URGENT' },
+  { TEXT: 'Not urgent but somewhat important queue', VALUE: 'NOT_URGENT' },
 ];
 
 export const ADD_COMPONENT_COLUMN_OPTIONS = {
-  agentName: "agentName",
-  agentExtNo: "agentExtNo",
-  currAvaiState: "currAvaiState",
-  currPresState: "currPresState",
-  noCallsOffered: "noCallsOffered",
-  noCallsAnswered: "noCallsAnswered",
-  noCallsMissed: "noCallsMissed",
-  timeInCurrentPresenceState: "timeInCurrentPresenceState",
-  timeInCurrentAvailabilityState: "timeInCurrentAvailabilityState",
-  timeInCurrentCall: "timeInCurrentCall",
-  timeInCurrentWrapup: "timeInCurrentWrapup",
-  listOfSkills: "listOfSkills",
+  agentName: 'agentName',
+  agentExtNo: 'agentExtNo',
+  currAvaiState: 'currAvaiState',
+  currPresState: 'currPresState',
+  noCallsOffered: 'noCallsOffered',
+  noCallsAnswered: 'noCallsAnswered',
+  noCallsMissed: 'noCallsMissed',
+  timeInCurrentPresenceState: 'timeInCurrentPresenceState',
+  timeInCurrentAvailabilityState: 'timeInCurrentAvailabilityState',
+  timeInCurrentCall: 'timeInCurrentCall',
+  timeInCurrentWrapup: 'timeInCurrentWrapup',
+  listOfSkills: 'listOfSkills',
 };
 export const SORT_BY_OPTIONS = [
   {
-    text: "Agent Name (Alphabetical)",
+    text: 'Agent Name (Alphabetical)',
     value: 0,
   },
   {
-    text: "Availability state (Alphabetical)",
+    text: 'Availability state (Alphabetical)',
     value: 1,
   },
   {
-    text: "Presence state (Will sort in this order)",
+    text: 'Presence state (Will sort in this order)',
     value: 2,
   },
   {
-    text: "Inbound Call",
+    text: 'Inbound Call',
     value: 3,
   },
   {
-    text: "Ringing",
+    text: 'Ringing',
     value: 4,
   },
   {
-    text: "In Wrapup",
+    text: 'In Wrapup',
     value: 5,
   },
   {
-    text: "Inbound Non-Queue Call",
+    text: 'Inbound Non-Queue Call',
     value: 6,
   },
   {
-    text: "Outbound Call",
+    text: 'Outbound Call',
     value: 7,
   },
   {
-    text: "Available",
+    text: 'Available',
     value: 8,
   },
   {
-    text: "Logged Off",
+    text: 'Logged Off',
     value: 9,
   },
   {
-    text: "Time on current call (Most time on the phone first)",
+    text: 'Time on current call (Most time on the phone first)',
     value: 10,
   },
   {
-    text: "Time spent in current availability state (Most time in the state first)",
+    text: 'Time spent in current availability state (Most time in the state first)',
     value: 11,
   },
   {
-    text: "Total time spent on the phone today (Most time first)",
+    text: 'Total time spent on the phone today (Most time first)',
     value: 12,
   },
   {
-    text: "Ringing",
+    text: 'Ringing',
     value: 13,
   },
 ];
@@ -88,49 +88,49 @@ export const ADD_COMPONENT_STATE_OPTIONS = {
       isChecked: true,
     },
     {
-      text: "No calls today please",
+      text: 'No calls today please',
       value: 2,
       isChecked: true,
     },
     {
-      text: "The section should look like this",
+      text: 'The section should look like this',
       value: 3,
       isChecked: true,
     },
   ],
   presenceStates: [
     {
-      text: "Inbound Call",
+      text: 'Inbound Call',
       value: 0,
       isChecked: true,
     },
     {
-      text: "Ringing",
+      text: 'Ringing',
       value: 1,
       isChecked: true,
     },
     {
-      text: "In Wrapup",
+      text: 'In Wrapup',
       value: 2,
       isChecked: true,
     },
     {
-      text: "Inbound Non-Queue Call",
+      text: 'Inbound Non-Queue Call',
       value: 3,
       isChecked: true,
     },
     {
-      text: "Outbound Call",
+      text: 'Outbound Call',
       value: 4,
       isChecked: true,
     },
     {
-      text: "Available",
+      text: 'Available',
       value: 5,
       isChecked: true,
     },
     {
-      text: "Logged Off",
+      text: 'Logged Off',
       value: 6,
       isChecked: true,
     },
@@ -138,97 +138,85 @@ export const ADD_COMPONENT_STATE_OPTIONS = {
 
   interactivityOptions: [
     {
-      text: "Can change availability state",
+      text: 'Can change availability state',
       value: 0,
       isChecked: true,
     },
     {
-      text: "Can Listen Live to agents",
+      text: 'Can Listen Live to agents',
       value: 1,
       isChecked: true,
     },
     {
-      text: "Can Call Agents",
+      text: 'Can Call Agents',
       value: 2,
       isChecked: true,
     },
   ],
-
-  columnsToViewOptions: [
-    {
-      text: "Agent Name",
-      value: ADD_COMPONENT_COLUMN_OPTIONS.agentName,
-      isChecked: true,
-    },
-    {
-      text: "Agent Extension Number",
-      value: ADD_COMPONENT_COLUMN_OPTIONS.agentExtNo,
-      isChecked: false,
-    },
-    {
-      text: "Current Availability State",
-      value: ADD_COMPONENT_COLUMN_OPTIONS.currAvaiState,
-      isChecked: true,
-    },
-    {
-      text: "Current Presence State",
-      value: ADD_COMPONENT_COLUMN_OPTIONS.currPresState,
-      isChecked: true,
-    },
-    {
-      text: "Number of calls offered",
-      value: ADD_COMPONENT_COLUMN_OPTIONS.noCallsOffered,
-      isChecked: false,
-    },
-    {
-      text: "Number of calls answered",
-      value: ADD_COMPONENT_COLUMN_OPTIONS.noCallsAnswered,
-      isChecked: false,
-    },
-    {
-      text: "Number of calls missed",
-      value: ADD_COMPONENT_COLUMN_OPTIONS.noCallsMissed,
-      isChecked: false,
-    },
-    {
-      text: "Time spent in current presence state",
-      value: ADD_COMPONENT_COLUMN_OPTIONS.timeInCurrentPresenceState,
-      isChecked: false,
-    },
-    {
-      text: "Time spent in current availability state",
-      value: ADD_COMPONENT_COLUMN_OPTIONS.timeInCurrentAvailabilityState,
-      isChecked: false,
-    },
-    {
-      text: "Time spent on current call",
-      value: ADD_COMPONENT_COLUMN_OPTIONS.timeInCurrentCall,
-      isChecked: true,
-    },
-    {
-      text: "Time spent on current wrapup",
-      value: ADD_COMPONENT_COLUMN_OPTIONS.timeInCurrentWrapup,
-      isChecked: false,
-    },
-    {
-      text: "List of skills the agent possesses",
-      value: ADD_COMPONENT_COLUMN_OPTIONS.listOfSkills,
-      isChecked: false,
-    },
-  ],
   skillsToView: [...new Array(10)].map((skill, i) => ({
-    text: "Skill " + i,
+    text: 'Skill ' + i,
     value: i,
     isChecked: true,
   })),
 };
 
-export const MAIN_VIEWING_OPTIONS = {
-  CARD: "CARD",
-  TABLE: "TABLE",
+export const COLUMNS_TO_VIEW_OPTIONS = {
+  agentName: {
+    text: 'Agent Name',
+    isChecked: true,
+  },
+  agentExtNo: {
+    text: 'Agent Extension Number',
+    isChecked: false,
+  },
+  currAvaiState: {
+    text: 'Current Availability State',
+    isChecked: true,
+  },
+  currPresState: {
+    text: 'Current Presence State',
+    isChecked: true,
+  },
+  noCallsOffered: {
+    text: 'Number of calls offered',
+    isChecked: false,
+  },
+  noCallsAnswered: {
+    text: 'Number of calls answered',
+    isChecked: false,
+  },
+  noCallsMissed: {
+    text: 'Number of calls missed',
+    isChecked: false,
+  },
+  timeInCurrentPresenceState: {
+    text: 'Time spent in current presence state',
+    isChecked: false,
+  },
+  timeInCurrentAvailabilityState: {
+    text: 'Time spent in current availability state',
+    isChecked: false,
+  },
+  timeInCurrentCall: {
+    text: 'Time spent on current call',
+    isChecked: true,
+  },
+  timeInCurrentWrapup: {
+    text: 'Time spent on current wrapup',
+    isChecked: false,
+  },
+  listOfSkills: {
+    text: 'List of skills the agent possesses',
+    isChecked: false,
+  },
 };
 
-export const ADD_COMPONENT_COLUMNS_OPTIONS = {
-  ONE: "1 Column",
-  TWO: "2 Columns",
+export const MAIN_VIEWING_OPTIONS = {
+  CARD: 'CARD',
+  TABLE: 'TABLE',
+};
+
+export const ADD_COMPONENT_COLUMNS_NO_OPTIONS = {
+  ONE: '1 Column',
+  TWO: '2 Columns',
 };

@@ -27,6 +27,7 @@
     &-tr {
       display: flex;
       align-items: center;
+      margin-bottom: 1px;
       &__td {
         padding: 2px 0;
         font-family: $public-sans-regular;
@@ -40,6 +41,7 @@
         &--green {
           position: relative;
           padding-right: 10px;
+          margin-right: 1px;
         }
         &--red {
           background-color: $natterbox-red;

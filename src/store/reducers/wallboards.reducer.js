@@ -1,24 +1,25 @@
 import {
-  ADD_COMPONENT_COLUMNS_OPTIONS,
+  ADD_COMPONENT_COLUMNS_NO_OPTIONS,
   ADD_COMPONENT_STATE_OPTIONS,
   CALL_QUEUE_OPTIONS,
+  COLUMNS_TO_VIEW_OPTIONS,
   MAIN_VIEWING_OPTIONS,
-} from "src/components/modal/add-component/modal.add-component.defaults";
-import { wallboardsActions } from "../actions/wallboards.action";
-import * as types from "../actionTypes";
+} from 'src/components/modal/add-component/modal.add-component.defaults';
+import { wallboardsActions } from '../actions/wallboards.action';
+import * as types from '../actionTypes';
 
 const initialState = {
   filterWallboards: [],
   activeModalName: null,
   modalSelectComponent: {
-    selectedElement: "",
+    selectedElement: '',
   },
   modalAddComponent: {
-    title: "",
+    title: '',
     callQueue: CALL_QUEUE_OPTIONS[1].VALUE,
     mainViewing: MAIN_VIEWING_OPTIONS.CARD,
-    sortBy: "",
-    columns: ADD_COMPONENT_COLUMNS_OPTIONS.ONE,
+    sortBy: '',
+    columns: ADD_COMPONENT_COLUMNS_NO_OPTIONS.ONE,
     availabilityStates: {
       selectAll: true,
       selectNone: false,
@@ -38,11 +39,13 @@ const initialState = {
       selectedItems: ADD_COMPONENT_STATE_OPTIONS.interactivityOptions,
     },
     columnsToViewOptions: {
-      selectedItems: ADD_COMPONENT_STATE_OPTIONS.columnsToViewOptions,
+      selectedItems: {
+        ...COLUMNS_TO_VIEW_OPTIONS,
+      },
     },
   },
   newWallboardData: {
-    title: "My New Wallboard",
+    title: 'My New Wallboard',
   },
 };
 
