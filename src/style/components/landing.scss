@@ -129,17 +129,18 @@
   }
 }
 
-.c-landing ::-webkit-scrollbar {
+*::-webkit-scrollbar {
   -webkit-appearance: none;
+  height: 7px;
   width: 7px;
 }
 
-.c-landing ::-webkit-scrollbar-thumb {
+*::-webkit-scrollbar-thumb {
   border-radius: 4px;
   background-color: $input-text-colour;
   box-shadow: 0 0 1px rgba(255, 255, 255, 0.5);
   padding-left: 20px;
 }
-.c-landing ::-webkit-scrollbar-track {
+*::-webkit-scrollbar-track {
   background: $dark-grey;
 }

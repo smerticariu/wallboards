@@ -1,15 +1,16 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useDispatch } from "react-redux";
-import * as actionTypes from "../../store/actionTypes";
+import { handleWallboardActiveModalAC } from "src/store/actions/wallboards.action";
+import { WALLBOARD_MODAL_NAMES } from "../modal/new-wallboard/modal.new-wallboard.defaults";
 
 const WallboardComponents = () => {
   const dispatch = useDispatch();
 
   const handleNewComponentButton = () => {
     const onClickNewComponentModal = () => {
-      dispatch({
-        type: actionTypes.HANDLE_ADD_COMPONENT_MODAL_SHOW_STATUS,
-      });
+      dispatch(
+        handleWallboardActiveModalAC(WALLBOARD_MODAL_NAMES.SELECT_COMPONENT)
+      );
     };
 
     return (
