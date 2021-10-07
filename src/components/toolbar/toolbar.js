@@ -5,9 +5,11 @@ import parse from 'autosuggest-highlight/parse';
 
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { handleWallboardActiveModalAC } from "src/store/actions/wallboards.action";
 import { RedoIcon } from "src/assets/static/icons/redo";
 import { UndoIcon } from "src/assets/static/icons/undo";
 import * as actionTypes from "../../store/actionTypes";
+import { WALLBOARD_MODAL_NAMES } from "../modal/new-wallboard/modal.new-wallboard.defaults";
 const Toolbar = (props) => {
   const dispatch = useDispatch();
   const [wbFilter, setWbFilter] = useState("");
@@ -190,9 +192,9 @@ const Toolbar = (props) => {
 
   const handleNewComponentButton = () => {
     const onClickNewComponentModal = () => {
-      dispatch({
-        type: actionTypes.HANDLE_ADD_COMPONENT_MODAL_SHOW_STATUS,
-      });
+      dispatch(
+        handleWallboardActiveModalAC(WALLBOARD_MODAL_NAMES.SELECT_COMPONENT)
+      );
     };
 
     return (

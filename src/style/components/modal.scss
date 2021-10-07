@@ -21,6 +21,10 @@
     &--new-wallboard {
       max-width: 1450px;
     }
+    &--add-component {
+      max-width: max-content;
+      min-width: 900px;
+    }
   }
 
   &--open {
@@ -45,9 +49,13 @@
   }
 
   &__body {
+    &--add-component,
     &--new-wallboard {
       display: flex;
       width: 100%;
+    }
+    &--add-component {
+      padding: 20px;
     }
   }
 
@@ -155,14 +163,94 @@
       font-size: 10px;
       margin: 0 2px;
     }
-
-    &__buttons {
+  }
+  &__buttons {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: flex-end;
+    margin: auto 0 0 0;
+  }
+  &--add-component {
+    &__left-side {
+      width: 40%;
+      max-width: 350px;
+      max-height: 600px;
+      overflow: auto;
+      padding-right: 18px;
+    }
+    &__right-side {
       display: flex;
+      flex-direction: column;
+      min-width: 60%;
+      padding-left: 11px;
+    }
+    &__input-section {
+      margin-bottom: 15px;
+    }
+    &__input-label {
+      font-family: $public-sans-regular;
+      font-size: 16px;
+      font-weight: 900;
+      color: $input-text-colour;
+      margin-bottom: 5px;
+    }
+    &__sort-radio {
+      margin: 3px 0;
+    }
+    &__main-radio {
+      display: inline-block;
+      margin-left: 10px;
+      margin-bottom: 10px;
+    }
+    &__av-state-container {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      max-height: 70px;
+      overflow: auto;
+      padding: 3px 5px;
+      border: solid 1px $pinkish-grey;
+      margin-top: 5px;
+      &--columns {
+        max-height: 200px;
+      }
+    }
+    &__select-checkbox {
+      display: flex;
+    }
+    &__preview-container {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      border: dashed 1px $pinkish-grey;
+      height: 360px;
+      padding: 19px 17px;
+      margin-top: 20px;
+    }
+    &__preview-title {
+      font-family: $public-sans-regular;
+      font-size: 14px;
+      color: $slate-gray;
+      &--bold {
+        font-family: $public-sans-bold;
+      }
+    }
+    &__agent-card {
+      display: flex;
+      width: 100%;
+      height: 100%;
+      margin: 0 auto;
+      overflow: auto;
+      justify-content: center;
       align-items: center;
-      justify-content: flex-end;
+    }
+    &__agent-table {
+      display: flex;
+      overflow: auto;
+      max-width: 1000px;
     }
   }
-
   @media screen and (max-width: $md) {
     &__body {
       &--new-wallboard {

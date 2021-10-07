@@ -9,7 +9,7 @@ import * as actionTypes from "../src/store/actionTypes";
 import jwtExtractor from "src/common/utils/jwtExtractor";
 import WallboardNew from "./components/wallboard/wallboard-new";
 import WallboardReadOnly from "src/components/wallboard/wallboard.read-only";
-import { Route } from "react-router";
+import { Route, Switch } from "react-router";
 
 function App() {
   const [token, setToken] = useState("");
@@ -80,15 +80,17 @@ function App() {
             <div className="c-banner-brand"></div>
           </div>
 
-          <Route exact path="/">
-            <Landing userInfo={jwtExtractor(token)} />
-          </Route>
-          <Route path="/wallboard/new">
-            <WallboardNew />
-          </Route>
-          <Route path="/wallboard/:id">
-            <WallboardReadOnly userInfo={jwtExtractor(token)} />
-          </Route>
+          <Switch>
+            <Route exact path="/">
+              <Landing userInfo={jwtExtractor(token)} />
+            </Route>
+            <Route exact path="/wallboard/new">
+              <WallboardNew />
+            </Route>
+            <Route path="/wallboard/:id">
+              <WallboardReadOnly userInfo={jwtExtractor(token)} />
+            </Route>
+          </Switch>
         </>
       )}
 

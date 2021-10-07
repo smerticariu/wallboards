@@ -8,4 +8,16 @@
       cursor: default;
     }
   }
+  &--arrow {
+    &--down {
+      transform: rotate(180deg);
+      stroke: #000;
+      &--table {
+        position: absolute;
+        top: 50%;
+        right: 5px;
+        transform: rotate(180deg) translateY(50%);
+      }
+    }
+  }
 }
