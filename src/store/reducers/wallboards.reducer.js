@@ -123,7 +123,7 @@ export const wallboardsReducer = (state = { ...initialState }, action) => {
         ...state,
         wallboardPage: {
           ...state.wallboardPage,
-          wallboard: null,
+          wallboard: [],
           fetchStatus: FetchStatus.FAIL,
         },
       };
@@ -150,7 +150,7 @@ export const wallboardsReducer = (state = { ...initialState }, action) => {
         ...state,
         allWallboards: {
           ...state.allWallboards,
-          wallboards: null,
+          wallboards: [],
           fetchStatus: FetchStatus.FAIL,
         },
       };
