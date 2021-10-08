@@ -144,9 +144,9 @@ export const ADD_COMPONENT_STATE_OPTIONS = {
       isChecked: true,
     },
   ],
-  skillsToView: [...new Array(10)].map((skill, i) => ({
-    text: 'Skill ' + i,
-    value: i,
+  skillsToView: [...new Array(10)].map((skill, index) => ({
+    text: 'Skill ' + index,
+    value: index,
     isChecked: true,
   })),
 };

@@ -17,52 +17,50 @@ const AgentTable = ({
 }) => {
   return (
     <div className="agent-t">
-      <div className="agent-t__table">
-        <div className="agent-t__head">
-          {agentName && <div className="agent-t__head-td">Name</div>}
-          {currAvaiState && <div className="agent-t__head-td">Availability Status</div>}
-          {agentExtNo && <div className="agent-t__head-td">Phone Number</div>}
-          {currPresState && <div className="agent-t__head-td">Presence Status</div>}
-          {noCallsOffered && <div className="agent-t__head-td">Calls offered</div>}
-          {noCallsAnswered && <div className="agent-t__head-td">Calls answered</div>}
-          {noCallsMissed && <div className="agent-t__head-td">Calls missed</div>}
-          {timeInCurrentPresenceState && <div className="agent-t__head-td">Time in current</div>}
-          {timeInCurrentAvailabilityState && <div className="agent-t__head-td">Time availability</div>}
-          {timeInCurrentCall && <div className="agent-t__head-td">Time on cur. call</div>}
-          {timeInCurrentWrapup && <div className="agent-t__head-td">Time on cur. wr.</div>}
-          {listOfSkills && <div className="agent-t__head-td">Skills</div>}
-          {<div className="agent-t__head-td" />}
-        </div>
+      <div className="agent-t__header">
+        {agentName && <div className="agent-t__header-item">Name</div>}
+        {currAvaiState && <div className="agent-t__header-item">Availability Status</div>}
+        {agentExtNo && <div className="agent-t__header-item">Phone Number</div>}
+        {currPresState && <div className="agent-t__header-item">Presence Status</div>}
+        {noCallsOffered && <div className="agent-t__header-item">Calls offered</div>}
+        {noCallsAnswered && <div className="agent-t__header-item">Calls answered</div>}
+        {noCallsMissed && <div className="agent-t__header-item">Calls missed</div>}
+        {timeInCurrentPresenceState && <div className="agent-t__header-item">Time in current</div>}
+        {timeInCurrentAvailabilityState && <div className="agent-t__header-item">Time availability</div>}
+        {timeInCurrentCall && <div className="agent-t__header-item">Time on cur. call</div>}
+        {timeInCurrentWrapup && <div className="agent-t__header-item">Time on cur. wr.</div>}
+        {listOfSkills && <div className="agent-t__header-item">Skills</div>}
+        {<div className="agent-t__header-item" />}
+      </div>
 
-        <div className="agent-t__body">
-          {[0, 1].map((n) => (
-            <div key={n} className="agent-t__body-tr">
-              {agentName && <div className="agent-t__body-tr__td">Megan Carter</div>}
-              {currAvaiState && (
-                <div className={`agent-t__body-tr__td agent-t__body-tr__td${n ? '--red' : '--green'}`}>
-                  {n ? 'Busy on calls' : 'I’m available for calls'}
-                  <ArrowDownIcon className="i--arrow--down i--arrow--down--table" />
-                </div>
-              )}
-              {agentExtNo && <div className="agent-t__body-tr__td">0000</div>}
-              {currPresState && <div className="agent-t__body-tr__td">Inbound Call</div>}
-              {noCallsOffered && <div className="agent-t__body-tr__td">0</div>}
-              {noCallsAnswered && <div className="agent-t__body-tr__td">0</div>}
-              {noCallsMissed && <div className="agent-t__body-tr__td">0</div>}
-              {timeInCurrentPresenceState && <div className="agent-t__body-tr__td">- - : - - : - -</div>}
-              {timeInCurrentAvailabilityState && <div className="agent-t__body-tr__td">- - : - - : - -</div>}
-              {timeInCurrentCall && <div className="agent-t__body-tr__td">- - : - - : - -</div>}
-              {timeInCurrentWrapup && <div className="agent-t__body-tr__td">- - : - - : - -</div>}
-              {listOfSkills && <div className="agent-t__body-tr__td">skill</div>}
-              <div className="agent-t__body-tr__td agent-t__body-tr__td--circle">
-                <div className="agent-t__body-tr__td--circle-container">
-                  <div className="agent-t__body-tr__td--circle-center"></div>
-                </div>
-                Idle
+      <div className="agent-t__body">
+        {[0, 1].map((n) => (
+          <div key={n} className="agent-t__agent">
+            {agentName && <div className="agent-t__agent-info">Megan Carter</div>}
+            {currAvaiState && (
+              <div className={`agent-t__agent-info agent-t__agent-info${n ? '--red' : '--green'}`}>
+                {n ? 'Busy on calls' : 'I’m available for calls'}
+                <ArrowDownIcon className="i--arrow--down i--arrow--down--table" />
               </div>
+            )}
+            {agentExtNo && <div className="agent-t__agent-info">0000</div>}
+            {currPresState && <div className="agent-t__agent-info">Inbound Call</div>}
+            {noCallsOffered && <div className="agent-t__agent-info">0</div>}
+            {noCallsAnswered && <div className="agent-t__agent-info">0</div>}
+            {noCallsMissed && <div className="agent-t__agent-info">0</div>}
+            {timeInCurrentPresenceState && <div className="agent-t__agent-info">- - : - - : - -</div>}
+            {timeInCurrentAvailabilityState && <div className="agent-t__agent-info">- - : - - : - -</div>}
+            {timeInCurrentCall && <div className="agent-t__agent-info">- - : - - : - -</div>}
+            {timeInCurrentWrapup && <div className="agent-t__agent-info">- - : - - : - -</div>}
+            {listOfSkills && <div className="agent-t__agent-info">skill</div>}
+            <div className="agent-t__agent-info agent-t__agent-info--circle">
+              <div className="agent-t__agent-info--circle-container">
+                <div className="agent-t__agent-info--circle-center"></div>
+              </div>
+              Idle
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
       </div>
     </div>
   );
