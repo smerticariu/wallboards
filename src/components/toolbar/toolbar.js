@@ -1,27 +1,23 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import Autosuggest from 'react-autosuggest';
 import match from 'autosuggest-highlight/match';
 import parse from 'autosuggest-highlight/parse';
 
-import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
-import { handleWallboardActiveModalAC } from "src/store/actions/wallboards.action";
-import { RedoIcon } from "src/assets/static/icons/redo";
-import { UndoIcon } from "src/assets/static/icons/undo";
-import * as actionTypes from "../../store/actionTypes";
-import { WALLBOARD_MODAL_NAMES } from "../modal/new-wallboard/modal.new-wallboard.defaults";
+import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { handleNewWallboardTitleAC, handleWallboardActiveModalAC, setFiltredWallboardsAC } from 'src/store/actions/wallboards.action';
+import { RedoIcon } from 'src/assets/static/icons/redo';
+import { UndoIcon } from 'src/assets/static/icons/undo';
+import { WALLBOARD_MODAL_NAMES } from '../modal/new-wallboard/modal.new-wallboard.defaults';
 const Toolbar = (props) => {
   const dispatch = useDispatch();
-  const [wbFilter, setWbFilter] = useState("");
-  const [wbSearchValue, setWbSearchValue] = useState("");
+  const [wbSearchValue, setWbSearchValue] = useState('');
   const [wbSearchSuggestions, setWbSearchSuggestions] = useState([]);
   const wallboards = useSelector((state) => state.landing.wallboardsByCategory);
-  
+
   const userData = useSelector((state) => state.login.userInfo);
-  const newWallboardTitle = useSelector(
-    (state) => state.wallboards.newWallboardData.title
-  );
-  
+  const newWallboardTitle = useSelector((state) => state.wallboards.newWallboardData.title);
+
   const heading = () => {
     return (
       <div className="c-toolbar-left__wrapper">
@@ -32,18 +28,11 @@ const Toolbar = (props) => {
   };
   const newWallboardHeading = () => {
     const handleChangeTitle = (event) => {
-      dispatch({
-        type: actionTypes.HANDLE_NEW_WALLBOARD_TITLE,
-        payload: event.target.value,
-      });
+      dispatch(handleNewWallboardTitleAC(event.target.value));
     };
     return (
       <div className="c-toolbar-left__wrapper">
-        <input
-          onChange={handleChangeTitle}
-          className="c-input c-input--new-walboard-title"
-          value={newWallboardTitle}
-        />
+        <input onChange={handleChangeTitle} className="c-input c-input--new-walboard-title" value={newWallboardTitle} />
 
         <p className="c-toolbar-left__wb-no">
           Viewing as {userData.firstName} {userData.lastName}
@@ -54,17 +43,12 @@ const Toolbar = (props) => {
 
   const handleLeftToolbar = (template) => {
     switch (template) {
-      case "landing":
+      case 'landing':
         return heading();
-      case "new-wallboard":
+      case 'new-wallboard':
         return newWallboardHeading();
-      case "wb-read-only":
-        return (
-          <h1
-            className="c-toolbar-left__heading c-toolbar-left__heading--new-wallboard">
-              {props.wbName}
-          </h1>
-        )
+      case 'wb-read-only':
+        return <h1 className="c-toolbar-left__heading c-toolbar-left__heading--new-wallboard">{props.wbName}</h1>;
       default:
         return null;
     }
@@ -73,37 +57,35 @@ const Toolbar = (props) => {
   const handleFilterInput = () => {
     console.log('wallboards', wallboards);
     function escapeRegexCharacters(str) {
-      return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     }
-    
+
     function getSuggestions(value) {
-      const escapedValue = value.length > 0 ? escapeRegexCharacters(value.trim()) : []
-    
-      if (escapedValue === "") {
+      const escapedValue = value.length > 0 ? escapeRegexCharacters(value.trim()) : [];
+
+      if (escapedValue === '') {
         return [];
       }
-    
-      const regex = new RegExp("^" + escapedValue, "i");
-    
+
+      const regex = new RegExp('^' + escapedValue, 'i');
+
       return wallboards.filter((wallboard) => regex.test(wallboard.name));
     }
-    
+
     function getSuggestionValue(suggestion) {
       return suggestion.name;
     }
-    
+
     function renderSuggestion(suggestion, query) {
       const matches = match(suggestion.name, query.query);
-      
+
       const parts = parse(suggestion.name, matches);
-    
+
       return (
         <span>
           {parts.map((part, index) => {
-            const className = part.highlight
-              ? "react-autosuggest__suggestion-match"
-              : null;
-    
+            const className = part.highlight ? 'react-autosuggest__suggestion-match' : null;
+
             return (
               <span className={className} key={index}>
                 {part.text}
@@ -116,36 +98,23 @@ const Toolbar = (props) => {
 
     const onChange = (event, { newValue, method }) => {
       setWbSearchValue(newValue);
-      dispatch({
-        type: actionTypes.SET_FILTERED_WALLBOARDS,
-        payload: newValue
-      });
+      dispatch(setFiltredWallboardsAC(newValue));
     };
-  
+
     const onSuggestionsFetchRequested = ({ value }) => {
-      
       setWbSearchSuggestions(getSuggestions(value));
     };
-  
+
     const onSuggestionsClearRequested = () => {
       setWbSearchSuggestions(getSuggestions([]));
     };
 
     const inputProps = {
-      placeholder: "Search Wallboards...",
+      placeholder: 'Search Wallboards...',
       value: wbSearchValue,
-      onChange: onChange
+      onChange: onChange,
     };
 
-
-    const updateFilterInput = (e) => {
-      setWbFilter(e.target.value);
-      dispatch({
-        type: actionTypes.SET_FILTERED_WALLBOARDS,
-        payload: e.target.value,
-      });
-    };
-    
     return (
       <Autosuggest
         suggestions={wbSearchSuggestions}
@@ -174,17 +143,11 @@ const Toolbar = (props) => {
   };
   const handleNewWallboardGroupButton = () => {
     const onClickNewWallboardGroupButton = (e) => {
-      dispatch({
-        type: actionTypes.SET_FILTERED_WALLBOARDS,
-        payload: e.target.value,
-      });
+      dispatch(setFiltredWallboardsAC(e.target.value));
     };
 
     return (
-      <button
-        className="c-button c-button--m-left"
-        onClick={onClickNewWallboardGroupButton}
-      >
+      <button className="c-button c-button--m-left" onClick={onClickNewWallboardGroupButton}>
         + New Wallboard Group
       </button>
     );
@@ -192,16 +155,11 @@ const Toolbar = (props) => {
 
   const handleNewComponentButton = () => {
     const onClickNewComponentModal = () => {
-      dispatch(
-        handleWallboardActiveModalAC(WALLBOARD_MODAL_NAMES.SELECT_COMPONENT)
-      );
+      dispatch(handleWallboardActiveModalAC(WALLBOARD_MODAL_NAMES.SELECT_COMPONENT));
     };
 
     return (
-      <button
-        onClick={onClickNewComponentModal}
-        className="c-button c-button--blue"
-      >
+      <button onClick={onClickNewComponentModal} className="c-button c-button--blue">
         + Add Component
       </button>
     );
@@ -228,14 +186,12 @@ const Toolbar = (props) => {
     return <button className="c-button c-button--m-left">Close</button>;
   };
   const handleRunButton = () => {
-    return (
-      <button className="c-button c-button--blue c-button--m-left">Run</button>
-    );
+    return <button className="c-button c-button--blue c-button--m-left">Run</button>;
   };
 
   const handleRightToolbar = (template) => {
     switch (template) {
-      case "landing":
+      case 'landing':
         return (
           <>
             {handleFilterInput()}
@@ -243,7 +199,7 @@ const Toolbar = (props) => {
             {handleNewWallboardGroupButton()}
           </>
         );
-      case "new-wallboard":
+      case 'new-wallboard':
         return (
           <>
             {handleNewComponentButton()}
@@ -253,23 +209,21 @@ const Toolbar = (props) => {
             {handleRunButton()}
           </>
         );
-      case "wb-read-only":
+      case 'wb-read-only':
         return (
-          <button 
-            className="c-button c-button--m-left" 
-            onClick={() => props.logout()}>
-              Logout
+          <button className="c-button c-button--m-left" onClick={() => props.logout()}>
+            Logout
           </button>
-        )
+        );
+      default:
+        return;
     }
   };
 
   return (
     <div className="c-toolbar">
       <div className="c-toolbar-left">{handleLeftToolbar(props.template)}</div>
-      <div className="c-toolbar-right">
-        {handleRightToolbar(props.template)}
-      </div>
+      <div className="c-toolbar-right">{handleRightToolbar(props.template)}</div>
     </div>
   );
 };

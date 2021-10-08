@@ -1,14 +1,6 @@
-import img from "src/assets/static/images/not_exist_people.png";
-import React from "react";
-const AgentCard = ({
-  name,
-  ext,
-  status,
-  totalTime,
-  callTime,
-  callStatus,
-  ...props
-}) => {
+import img from 'src/assets/static/images/not_exist_people.png';
+import React from 'react';
+const AgentCard = ({ name, ext, status, totalTime, callTime, callStatus, ...props }) => {
   return (
     <div className="agent-c">
       <div className="agent-c__header">

@@ -1,24 +1,24 @@
-import * as types from "../actionTypes";
+import { wallboardsActions } from '../actions/wallboards.action';
 
 const initialState = {
-  category: "Most Recent",
-  filterWallboards: "",
+  category: 'Most Recent',
+  filterWallboards: '',
   wallboardsByCategory: [],
 };
 
 export const landingReducer = (state = initialState, action) => {
   switch (action.type) {
-    case types.LANDING_SELECTED_WALLBOARD_CATEGORY:
+    case wallboardsActions.LANDING_SELECTED_WALLBOARD_CATEGORY:
       return {
         ...state,
         category: action.payload,
       };
-    case types.SET_FILTERED_WALLBOARDS:
+    case wallboardsActions.SET_FILTERED_WALLBOARDS:
       return {
         ...state,
         filterWallboards: action.payload,
       };
-    case types.SET_WALLBOARDS_BY_CATEGORY:
+    case wallboardsActions.SET_WALLBOARDS_BY_CATEGORY:
       return {
         ...state,
         wallboardsByCategory: action.payload,

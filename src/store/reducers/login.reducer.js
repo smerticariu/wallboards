@@ -1,4 +1,4 @@
-import * as types from "../actionTypes";
+import { loginActions } from '../actions/login.action';
 
 const initialState = {
   token: null,
@@ -8,22 +8,22 @@ const initialState = {
 
 export const loginReducer = (state = initialState, action) => {
   switch (action.type) {
-    case types.SET_ACCESS_TOKEN:
+    case loginActions.SET_ACCESS_TOKEN:
       return {
         ...state,
         token: action.payload,
       };
-    case types.SET_USER_TOKEN_INFO:
+    case loginActions.SET_USER_TOKEN_INFO:
       return {
         ...state,
         userTokenInfo: action.payload,
       };
-    case types.SET_USER_INFO:
+    case loginActions.SET_USER_INFO:
       return {
         ...state,
         userInfo: action.payload,
       };
-    case types.HANDLE_LOGOUT:
+    case loginActions.HANDLE_LOGOUT:
       return {
         ...state,
         userInfo: null,

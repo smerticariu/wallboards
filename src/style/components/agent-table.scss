@@ -1,11 +1,8 @@
 .agent-t {
   padding-bottom: 10px;
-
-  &__table {
-    display: flex;
-    flex-direction: column;
-  }
-  &__head {
+  display: flex;
+  flex-direction: column;
+  &__header {
     display: flex;
     height: 13px;
     align-items: center;
@@ -16,63 +13,66 @@
     font-weight: 500;
     color: $natterbox-dark-blue-grey;
     text-transform: capitalize;
-    &-td {
+    &-item {
       min-width: 75px;
       margin: 0;
     }
   }
+
   &__body {
     display: flex;
     flex-direction: column;
-    &-tr {
-      display: flex;
-      align-items: center;
-      &__td {
-        padding: 2px 0;
-        font-family: $public-sans-regular;
-        font-size: 6px;
-        color: $natterbox-dark-blue-grey;
-        background-color: $pinkish-grey;
-        min-width: 75px;
-        margin: 0;
-        text-align: center;
-        &--red,
-        &--green {
-          position: relative;
-          padding-right: 10px;
-        }
-        &--red {
-          background-color: $natterbox-red;
-          color: $white;
-        }
-        &--green {
-          background-color: $natterbox-green;
-          color: $slate-gray;
-        }
+  }
+  &__agent {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1px;
+    &-info {
+      padding: 2px 0;
+      font-family: $public-sans-regular;
+      font-size: 6px;
+      color: $natterbox-dark-blue-grey;
+      background-color: $pinkish-grey;
+      min-width: 75px;
+      margin: 0;
+      text-align: center;
+      &--red,
+      &--green {
+        position: relative;
+        padding-right: 10px;
+        margin-right: 1px;
+      }
+      &--red {
+        background-color: $natterbox-red;
+        color: $white;
+      }
+      &--green {
+        background-color: $natterbox-green;
+        color: $slate-gray;
+      }
 
-        &--circle {
-          padding: 0;
-          width: 20px;
-          background-color: $white;
+      &--circle {
+        padding: 0;
+        width: 20px;
+        background-color: $white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        &-container {
           display: flex;
+          margin-right: 5px;
           justify-content: center;
           align-items: center;
-          &-container {
-            display: flex;
-            margin-right: 5px;
-            justify-content: center;
-            align-items: center;
-            width: 11px;
-            height: 11px;
-            border-radius: 50%;
-            background-color: rgba($natterbox-green, 0.58);
-          }
-          &-center {
-            width: 7px;
-            height: 7px;
-            border-radius: 50%;
-            background-color: $natterbox-green;
-          }
+          width: 11px;
+          height: 11px;
+          border-radius: 50%;
+          background-color: rgba($natterbox-green, 0.58);
+        }
+        &-center {
+          width: 7px;
+          height: 7px;
+          border-radius: 50%;
+          background-color: $natterbox-green;
         }
       }
     }
