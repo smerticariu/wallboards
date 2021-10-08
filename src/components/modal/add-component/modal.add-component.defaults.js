@@ -27,7 +27,7 @@ export const SORT_BY_OPTIONS = [
     value: 1,
   },
   {
-    text: "Presence state (Will sort in this order)",
+    text: "Presence state",
     value: 2,
   },
   {
@@ -69,11 +69,7 @@ export const SORT_BY_OPTIONS = [
   {
     text: "Total time spent on the phone today (Most time first)",
     value: 12,
-  },
-  {
-    text: "Ringing",
-    value: 13,
-  },
+  }
 ];
 export const ADD_COMPONENT_STATE_OPTIONS = {
   availabilityStates: [
@@ -91,12 +87,7 @@ export const ADD_COMPONENT_STATE_OPTIONS = {
       text: "No calls today please",
       value: 2,
       isChecked: true,
-    },
-    {
-      text: "The section should look like this",
-      value: 3,
-      isChecked: true,
-    },
+    }
   ],
   presenceStates: [
     {

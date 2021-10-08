@@ -35,14 +35,17 @@ const LandingTable = ({ userInfo }) => {
 
     // setAllWbs([...allWbs]);
 
-    const options = {
-      method: 'get',
-      url: `http://localhost:3004/wallboards/`,
+    if(!allWbs.length) {
+      const options = {
+        method: 'get',
+        url: `http://localhost:3004/wallboards/`,
+      }
+  
+      await axios(options).then(res => {
+        setAllWbs(res.data)
+      }) 
     }
-
-    await axios(options).then(res => {
-      setAllWbs(res.data)
-    }) 
+    
 
     const filterWbsByCategory = (category) => {
       switch (category) {
