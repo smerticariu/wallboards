@@ -7,11 +7,13 @@ const useResize = (ref, handler) => {
 
     function checkResize(mutations) {
       const el = mutations[0].target;
-      const w = el.clientWidth;
-      const h = el.clientHeight;
+      const w = el.offsetWidth;
+      const h = el.offsetHeight;
       const isChange = mutations
         .map((m) => `${m.oldValue}`)
-        .some((prev) => prev.indexOf(`width: ${w}px`) === -1 || prev.indexOf(`height: ${h}px`) === -1);
+        .some((prev) => {
+          return prev.indexOf(`width: ${w}px`) === -1 || prev.indexOf(`height: ${h}px`) === -1;
+        });
 
       if (!isChange) {
         return;
@@ -19,9 +21,10 @@ const useResize = (ref, handler) => {
       const event = new CustomEvent('resize', { detail: { width: w, height: h } });
       el.dispatchEvent(event);
     }
+
     const observer = new MutationObserver(checkResize);
     observer.observe(element, { attributes: true, attributeOldValue: true, attributeFilter: ['style'] });
-  }, [ref, handler]);
+  }, [ref]);
 };
 
 export default useResize;
