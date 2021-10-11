@@ -6,13 +6,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchWallboardByIdThunk } from 'src/store/thunk/wallboards.thunk';
 import { FetchStatus } from 'src/store/reducers/wallboards.reducer';
 
-const WallboardReadOnly = ({ userInfo }) => {
+const WallboardReadOnly = () => {
   const { id } = useParams();
   const { logout } = useAuth0();
   const dispatch = useDispatch();
   const { wallboard, fetchStatus } = useSelector((state) => state.wallboards.wallboardPage);
+  const { userInfo, token } = useSelector((state) => state.login);
   useEffect(() => {
-    dispatch(fetchWallboardByIdThunk(id));
+    dispatch(fetchWallboardByIdThunk(id, userInfo.organisationId, token));
     // eslint-disable-next-line
   }, [id]);
 
