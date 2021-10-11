@@ -16,9 +16,12 @@ export const FetchStatus = {
 const initialState = {
   filterWallboards: [],
   activeModalName: null,
-  wallboardPage: {
-    wallboard: null,
+  activeWallboard: {
+    wallboard: {
+      name: 'My New Wallboard',
+    },
     fetchStatus: FetchStatus.NULL,
+    saveStatus: FetchStatus.NULL,
   },
   allWallboards: {
     wallboards: [],
@@ -57,9 +60,6 @@ const initialState = {
       },
     },
   },
-  newWallboardData: {
-    title: 'My New Wallboard',
-  },
 };
 
 export const wallboardsReducer = (state = { ...initialState }, action) => {
@@ -97,24 +97,27 @@ export const wallboardsReducer = (state = { ...initialState }, action) => {
     case wallboardsActions.HANDLE_NEW_WALLBOARD_TITLE:
       return {
         ...state,
-        newWallboardData: {
-          ...state.newWallboardData,
-          title: action.payload,
+        activeWallboard: {
+          ...state.activeWallboard,
+          wallboard: {
+            ...state.activeWallboard.wallboard,
+            name: action.payload,
+          },
         },
       };
     case wallboardsActions.FETCH_WALLBOARD_BY_ID:
       return {
         ...state,
-        wallboardPage: {
-          ...state.wallboardPage,
+        activeWallboard: {
+          ...state.activeWallboard,
           fetchStatus: FetchStatus.IN_PROGRESS,
         },
       };
     case wallboardsActions.FETCH_WALLBOARD_BY_ID_SUCCESS:
       return {
         ...state,
-        wallboardPage: {
-          ...state.wallboardPage,
+        activeWallboard: {
+          ...state.activeWallboard,
           wallboard: action.payload,
           fetchStatus: FetchStatus.SUCCESS,
         },
@@ -122,8 +125,8 @@ export const wallboardsReducer = (state = { ...initialState }, action) => {
     case wallboardsActions.FETCH_WALLBOARD_BY_ID_FAIL:
       return {
         ...state,
-        wallboardPage: {
-          ...state.wallboardPage,
+        activeWallboard: {
+          ...state.activeWallboard,
           wallboard: [],
           fetchStatus: FetchStatus.FAIL,
         },
@@ -153,6 +156,40 @@ export const wallboardsReducer = (state = { ...initialState }, action) => {
           ...state.allWallboards,
           wallboards: [],
           fetchStatus: FetchStatus.FAIL,
+        },
+      };
+
+    case wallboardsActions.SAVE_WALLBOARD:
+      return {
+        ...state,
+        activeWallboard: {
+          ...state.activeWallboard,
+          saveStatus: FetchStatus.IN_PROGRESS,
+        },
+      };
+    case wallboardsActions.SAVE_WALLBOARD_SUCCESS:
+      return {
+        ...state,
+        activeWallboard: {
+          ...state.activeWallboard,
+          wallboard: action.payload,
+          saveStatus: FetchStatus.SUCCESS,
+        },
+      };
+    case wallboardsActions.SAVE_WALLBOARD_FAIL:
+      return {
+        ...state,
+        activeWallboard: {
+          ...state.activeWallboard,
+          saveStatus: FetchStatus.FAIL,
+        },
+      };
+    case wallboardsActions.SAVE_WALLBOARD_RESET_STATUS:
+      return {
+        ...state,
+        activeWallboard: {
+          ...state.activeWallboard,
+          saveStatus: FetchStatus.NULL,
         },
       };
 
