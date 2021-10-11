@@ -4,7 +4,7 @@ import GridAgentList from './grid.agent-list';
 import { SortableItem, SortableList } from '../sortable/sortable';
 const GridPage = ({ ...props }) => {
   const [gridCells, setGridCells] = useState(480);
-  const [list, slist] = useState([<GridAgentList k={'1'} />, <GridAgentList k={'2'} />, <GridAgentList k={''} />]);
+  const [list, slist] = useState([<GridAgentList index={'1'} />, <GridAgentList index={'2'} />, <GridAgentList index={'3'} />]);
 
   useEffect(() => {
     const onScroll = () => {
@@ -36,7 +36,7 @@ const GridPage = ({ ...props }) => {
         ))}
         <SortableList axis="xy" className="c-grid__components" useDragHandle onSortEnd={onSortEnd}>
           {list.map((e, index) => (
-            <SortableItem key={e.props.k} index={index}>
+            <SortableItem key={e.props.index} index={index}>
               {e}
             </SortableItem>
           ))}
