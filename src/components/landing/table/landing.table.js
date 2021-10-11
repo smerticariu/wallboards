@@ -8,37 +8,16 @@ const LandingTable = ({ userInfo }) => {
   const dispatch = useDispatch();
   const { fetchStatus, wallboards } = useSelector((state) => state.wallboards.allWallboards);
   const [filteredWbs, setFilteredWbs] = useState([]);
-
+  const { token } = useSelector((state) => state.login);
   const category = useSelector((state) => state.landing.category);
 
   const filter = useSelector((state) => state.landing.filterWallboards);
   useEffect(() => {
-    dispatch(fetchAllWallboardsThunk());
+    dispatch(fetchAllWallboardsThunk(userInfo.natterboxOrgId, token));
     // eslint-disable-next-line
   }, []);
   useEffect(() => {
-    // const getWb = async () => {
-    //   const options = {
-    //     method: 'get',
-    //     url: `https://sapien-proxy.redmatter-qa01.pub/v1/organisation/${userInfo.natterboxOrgId}/blob`,
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //       Authorization: 'Bearer ' + token,
-    //       'Access-Control-Allow-Origin': '*',
-    //       Accept: '*/*'
-    //     }
-    //   }
-
-    //   const wb = await axios(options).then(res => {console.log('ssss', res)});
-    //   setWbs(wb);
-    //   console.log(wb)
-    // }
-
-    // getWb();
-
-    // setAllWbs([...allWbs]);
-
-    const filterWbsByCategory = (category) => {
+   const filterWbsByCategory = (category) => {
       switch (category) {
         case 'Most Recent':
           const wbsByDate = wallboards.sort((a, b) => new Date(b.createdOn) - new Date(a.createdOn)).slice(0, 10);
@@ -54,8 +33,12 @@ const LandingTable = ({ userInfo }) => {
     const filteredWbsByCategory = filterWbsByCategory(category);
 
     const wallboardsByInput = filteredWbsByCategory.filter(
-      (wb) => wb.name.toLowerCase().includes(filter.toLowerCase()) || wb.createdBy.toLowerCase().includes(filter.toLowerCase())
+      (wb) => wb.key.toLowerCase().includes(filter.toLowerCase()) || wb.key.toLowerCase().includes(filter.toLowerCase())
     );
+
+    // const wallboardsByInput = filteredWbsByCategory.filter(
+    //   (wb) => wb.name.toLowerCase().includes(filter.toLowerCase()) || wb.createdBy.toLowerCase().includes(filter.toLowerCase())
+    // );
 
     setFilteredWbs(wallboardsByInput);
     dispatch(setWallboardsByCategoryAC(wallboardsByInput));
@@ -80,8 +63,8 @@ const LandingTable = ({ userInfo }) => {
                 <tr key={index}>
                   <td className="c-landing-table__wb-name">
                     <p>
-                      <a target="_blank" rel="noreferrer" href={`http://localhost:3000/wallboard/${wb.id}`}>
-                        {wb.name}
+                      <a target="_blank" rel="noreferrer" href={`http://localhost:3000/wallboard/${wb.key}`}>
+                        {wb.key}
                       </a>
                     </p>
                     <span>{wb.by}</span>

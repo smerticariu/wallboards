@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { handleNewWallboardTitleAC, handleWallboardActiveModalAC, setFiltredWallboardsAC } from 'src/store/actions/wallboards.action';
@@ -11,8 +11,9 @@ const Toolbar = (props) => {
   const dispatch = useDispatch();
   const [wbSearchValue, setWbSearchValue] = useState('');
   const wallboards = useSelector((state) => state.landing.wallboardsByCategory);
+  const { newWallboardData } = useSelector((state) => state.wallboards);
 
-  const userData = useSelector((state) => state.login.userInfo);
+  const { userInfo, token } = useSelector((state) => state.login);
   const newWallboardTitle = useSelector((state) => state.wallboards.newWallboardData.title);
 
   const heading = () => {
@@ -32,7 +33,7 @@ const Toolbar = (props) => {
         <input onChange={handleChangeTitle} className="c-input c-input--new-walboard-title" value={newWallboardTitle} />
 
         <p className="c-toolbar-left__wb-no">
-          Viewing as {userData.firstName} {userData.lastName}
+          Viewing as {userInfo.firstName} {userInfo.lastName}
         </p>
       </div>
     );
@@ -118,7 +119,40 @@ const Toolbar = (props) => {
   };
 
   const handleSaveButton = () => {
-    return <button className="c-button c-button--m-left">Save</button>;
+    const handleClick = async () => {
+      const currentDate = new Date().getTime();
+      const wbId = `${userInfo.organisationId}-${userInfo.id}-d-${currentDate}`;
+      const data = {
+        id: wbId,
+        name: newWallboardData.title,
+        createdBy: `${userInfo.firstName} ${userInfo.lastName}`,
+        createdOn: currentDate,
+        description: 'Not implemented yet',
+      };
+      const options = {
+        method: 'put',
+        url: `https://wallboards-store.redmatter-qa01.pub/organisation/${userInfo.organisationId}/key/${wbId}`,
+        data,
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + token,
+          'Access-Control-Allow-Origin': '*',
+          Accept: 'application/json',
+        },
+      };
+
+      await axios(options).then(console.log('success'));
+    };
+    return (
+      <button
+        onClick={() => {
+          handleClick();
+        }}
+        className="c-button c-button--m-left"
+      >
+        Save
+      </button>
+    );
   };
   const handleCloseButton = () => {
     return <button className="c-button c-button--m-left">Close</button>;

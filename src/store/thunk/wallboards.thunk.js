@@ -8,14 +8,20 @@ import {
   fetchWallboardByIdSuccessAC,
 } from '../actions/wallboards.action';
 
-export const fetchWallboardByIdThunk = (wallboardId) => async (dispatch, getState) => {
+export const fetchWallboardByIdThunk = (wallboardId, orgId, token) => async (dispatch, getState) => {
   try {
     dispatch(fetchWallboardByIdAC());
 
     const options = {
       method: 'get',
-      url: `http://localhost:3004/wallboards/${wallboardId}`,
-    };
+      url: `https://wallboards-store.redmatter-qa01.pub/organisation/${orgId}/key/${wallboardId}`,
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + token,
+        'Access-Control-Allow-Origin': '*',
+        Accept: 'application/json'
+      }
+    }
 
     const response = await axios(options);
 
@@ -26,14 +32,20 @@ export const fetchWallboardByIdThunk = (wallboardId) => async (dispatch, getStat
   }
 };
 
-export const fetchAllWallboardsThunk = () => async (dispatch, getState) => {
+export const fetchAllWallboardsThunk = (orgId, token) => async (dispatch, getState) => {
   try {
     dispatch(fetchAllWallboardsAC());
 
     const options = {
       method: 'get',
-      url: `http://localhost:3004/wallboards/`,
-    };
+      url: `https://wallboards-store.redmatter-qa01.pub/organisation/${orgId}`,
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + token,
+        'Access-Control-Allow-Origin': '*',
+        Accept: 'application/json'
+      }
+    }
 
     const response = await axios(options);
 

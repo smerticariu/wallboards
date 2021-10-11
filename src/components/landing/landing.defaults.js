@@ -12,7 +12,7 @@ export const LANDING_DEFAULTS = [
   {
     NAME: 'Wallboard Groups',
     ELEMENTS: [
-      'All Wallboards Groups',
+      'All Wallboard Groups',
       'Created By Me',
       'Shared With Me',
     ]
