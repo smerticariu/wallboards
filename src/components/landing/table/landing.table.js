@@ -2,22 +2,23 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setWallboardsByCategoryAC } from 'src/store/actions/wallboards.action';
 import { FetchStatus } from 'src/store/reducers/wallboards.reducer';
-import { fetchAllWallboardsThunk } from 'src/store/thunk/wallboards.thunk';
+import { fetchAllWallboardsThunk, deleteWallboardThunk } from 'src/store/thunk/wallboards.thunk';
 
-const LandingTable = ({ userInfo }) => {
+const LandingTable = () => {
   const dispatch = useDispatch();
   const { fetchStatus, wallboards } = useSelector((state) => state.wallboards.allWallboards);
   const [filteredWbs, setFilteredWbs] = useState([]);
-  const { token } = useSelector((state) => state.login);
+  const { userInfo, token } = useSelector((state) => state.login);
   const category = useSelector((state) => state.landing.category);
-
+console.log(userInfo)
   const filter = useSelector((state) => state.landing.filterWallboards);
   useEffect(() => {
-    dispatch(fetchAllWallboardsThunk(userInfo.natterboxOrgId, token));
+    dispatch(fetchAllWallboardsThunk({orgId: userInfo.organisationId, token}));
     // eslint-disable-next-line
   }, []);
+  
   useEffect(() => {
-   const filterWbsByCategory = (category) => {
+    const filterWbsByCategory = (category) => {
       switch (category) {
         case 'Most Recent':
           const wbsByDate = wallboards.sort((a, b) => new Date(b.createdOn) - new Date(a.createdOn)).slice(0, 10);
@@ -44,6 +45,10 @@ const LandingTable = ({ userInfo }) => {
     dispatch(setWallboardsByCategoryAC(wallboardsByInput));
     // eslint-disable-next-line
   }, [category, filter, wallboards]);
+
+  const handleDelete = id => {
+    dispatch(deleteWallboardThunk({wbId:id, orgId: userInfo.organisationId, token}))
+  }
   if (fetchStatus !== FetchStatus.SUCCESS) return <div>Fetch all wallboards in progress</div>;
   return (
     <div className="c-landing-table">
@@ -81,7 +86,7 @@ const LandingTable = ({ userInfo }) => {
                   <td className="c-landing-table__wb-actions">
                     <a harget="_blank" href={`http://localhost:3000/wallboard/${wb.key}/edit`} className="c-landing-table__edit-btn"></a>
                     <button className="c-landing-table__copy-btn"></button>
-                    <button className="c-landing-table__delete-btn"></button>
+                    <button onClick={() => {handleDelete(wb.key)}} className="c-landing-table__delete-btn"></button>
                   </td>
                 </tr>
               );
