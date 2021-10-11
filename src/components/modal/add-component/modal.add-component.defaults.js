@@ -31,34 +31,6 @@ export const SORT_BY_OPTIONS = [
     value: 2,
   },
   {
-    text: 'Inbound Call',
-    value: 3,
-  },
-  {
-    text: 'Ringing',
-    value: 4,
-  },
-  {
-    text: 'In Wrapup',
-    value: 5,
-  },
-  {
-    text: 'Inbound Non-Queue Call',
-    value: 6,
-  },
-  {
-    text: 'Outbound Call',
-    value: 7,
-  },
-  {
-    text: 'Available',
-    value: 8,
-  },
-  {
-    text: 'Logged Off',
-    value: 9,
-  },
-  {
     text: 'Time on current call (Most time on the phone first)',
     value: 10,
   },

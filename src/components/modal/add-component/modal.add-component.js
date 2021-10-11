@@ -1,8 +1,9 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { createArrayFromTo } from 'src/common/utils/generateArray';
 import AgentCard from 'src/components/agent-card/agent-card';
 import AgentTable from 'src/components/agent-table/agent-table';
+import CustomAutosuggest from 'src/components/autosuggest/autosuggest';
 import CheckBox from 'src/components/checkbox/checkbox';
 import Radio from 'src/components/radio/radio';
 import {
@@ -22,11 +23,12 @@ import {
 
 const ModalAddComponent = ({ ...props }) => {
   const modalRef = useRef(null);
-
+  const [searchInputValues, setSearchInputValues] = useState({
+    skill: '',
+  });
   const dispatch = useDispatch();
   const formData = useSelector((state) => state.wallboards.modalAddComponent);
   const isCardFormat = MAIN_VIEWING_OPTIONS.CARD === formData.mainViewing;
-
   const closeModal = () => {
     dispatch(handleWallboardActiveModalAC(null));
     dispatch(resetModalAddComponentFormDataAC());
@@ -147,6 +149,64 @@ const ModalAddComponent = ({ ...props }) => {
       }
     };
 
+    const onChangeSearchInput = (value, name) => {
+      setSearchInputValues({
+        ...searchInputValues,
+        [name]: value,
+      });
+    };
+    const handleSkillsToView = () => {
+      const allTitlesForAutocomplete = formData.skillsToView.selectedItems.map(({ text }) => text);
+
+      return (
+        <div className="c-modal--add-component__input-section">
+          <div className="c-modal--add-component__input-label">Select Skills to view</div>
+
+          <div className="c-modal--add-component__select-checkbox">
+            <CheckBox
+              label="Select all"
+              checked={formData.skillsToView.selectAll}
+              name={'selectAll'}
+              onChange={(event) => handleCheckBoxList(event, 'skillsToView')}
+            />
+            <CheckBox
+              label="Select none"
+              className="c-checkbox--m-left"
+              checked={formData.skillsToView.selectNone}
+              name={'selectNone'}
+              onChange={(event) => handleCheckBoxList(event, 'skillsToView')}
+            />
+          </div>
+
+          {!(formData.skillsToView.selectAll || formData.skillsToView.selectNone) && (
+            <>
+              <CustomAutosuggest
+                name="skill"
+                onChange={onChangeSearchInput}
+                value={searchInputValues.skill}
+                allTitles={allTitlesForAutocomplete}
+                isSmallSize
+                placeholder="Search by Skill name"
+              />
+              <div className="c-modal--add-component__av-state-container">
+                {formData.skillsToView.selectedItems
+                  .filter((option) => option.text.toLowerCase().includes(searchInputValues.skill.toLowerCase()))
+                  .map((option) => (
+                    <CheckBox
+                      key={option.value}
+                      label={option.text}
+                      name={option.value}
+                      checked={option.isChecked}
+                      onChange={(event) => handleCheckBoxList(event, 'skillsToView')}
+                    />
+                  ))}
+              </div>
+            </>
+          )}
+        </div>
+      );
+    };
+
     return (
       <div className="c-modal--add-component__left-side">
         <div className="c-modal--add-component__input-section">
@@ -171,9 +231,9 @@ const ModalAddComponent = ({ ...props }) => {
         </div>
 
         <div className="c-modal--add-component__input-section">
-          <div className="c-modal--add-component__input-label">Main Viewing</div>
+          <div className="c-modal--add-component__input-label">View</div>
           <Radio
-            label="Card/Tile View"
+            label="Card View"
             name={MAIN_VIEWING_OPTIONS.CARD}
             checked={isCardFormat}
             onChange={(e) => handleRadioButton(e, 'mainViewing')}
@@ -225,55 +285,20 @@ const ModalAddComponent = ({ ...props }) => {
               </div>
             </div>
 
-            <div className="c-modal--add-component__input-section">
-              <div className="c-modal--add-component__input-label">Select Skills to view</div>
-
-              <div className="c-modal--add-component__select-checkbox">
-                <CheckBox
-                  label="Select all"
-                  checked={formData.skillsToView.selectAll}
-                  name={'selectAll'}
-                  onChange={(event) => handleCheckBoxList(event, 'skillsToView')}
-                />
-                <CheckBox
-                  label="Select none"
-                  className="c-checkbox--m-left"
-                  checked={formData.skillsToView.selectNone}
-                  name={'selectNone'}
-                  onChange={(event) => handleCheckBoxList(event, 'skillsToView')}
-                />
-              </div>
-
-              {!(formData.skillsToView.selectAll || formData.skillsToView.selectNone) && (
-                <div className="c-modal--add-component__av-state-container">
-                  {formData.skillsToView.selectedItems.map((option) => (
-                    <CheckBox
-                      key={option.value}
-                      label={option.text}
-                      name={option.value}
-                      checked={option.isChecked}
-                      onChange={(event) => handleCheckBoxList(event, 'skillsToView')}
-                    />
-                  ))}
-                </div>
-              )}
-            </div>
+            {handleSkillsToView()}
           </>
         )}
 
         <div className="c-modal--add-component__input-section">
           <div className="c-modal--add-component__input-label">Sort by</div>
 
-          {SORT_BY_OPTIONS.map((option) => (
-            <div key={option.value} className="c-modal--add-component__sort-radio">
-              <Radio
-                label={option.text}
-                checked={+formData.sortBy === option.value}
-                name={option.value}
-                onChange={(e) => handleRadioButton(e, 'sortBy')}
-              />
-            </div>
-          ))}
+          <select name="sortBy" className="c-select" onChange={handleInputAndSelect} value={formData.sortBy}>
+            {SORT_BY_OPTIONS.map((option) => (
+              <option key={option.value} value={option.text}>
+                {option.text}
+              </option>
+            ))}
+          </select>
         </div>
 
         <div className="c-modal--add-component__input-section">
@@ -364,7 +389,7 @@ const ModalAddComponent = ({ ...props }) => {
 
     return (
       <div className="c-modal--add-component__right-side">
-        <div className="c-modal--add-component__input-label">Preview</div>
+        <div className="c-modal--add-component__input-label c-modal--add-component__input-label--grey">Preview</div>
 
         <div className="c-modal--add-component__preview-container">
           <div className="c-modal--add-component__preview-title">

@@ -7,6 +7,9 @@
   flex: 0 1 auto;
   &-right {
     display: flex;
+    &__search-input {
+      width: 560px;
+    }
   }
   &-left {
     &__heading {

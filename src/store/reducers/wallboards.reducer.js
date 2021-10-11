@@ -4,6 +4,7 @@ import {
   CALL_QUEUE_OPTIONS,
   COLUMNS_TO_VIEW_OPTIONS,
   MAIN_VIEWING_OPTIONS,
+  SORT_BY_OPTIONS,
 } from 'src/components/modal/add-component/modal.add-component.defaults';
 import { wallboardsActions } from '../actions/wallboards.action';
 export const FetchStatus = {
@@ -30,7 +31,7 @@ const initialState = {
     title: '',
     callQueue: CALL_QUEUE_OPTIONS[1].VALUE,
     mainViewing: MAIN_VIEWING_OPTIONS.CARD,
-    sortBy: '',
+    sortBy: SORT_BY_OPTIONS[0].text,
     columns: ADD_COMPONENT_COLUMNS_NO_OPTIONS.ONE,
     availabilityStates: {
       selectAll: true,
