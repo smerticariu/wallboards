@@ -71,7 +71,8 @@
       background-image: url("../../assets/static/images/delete_icon.svg");
     }
 
-    button {
+    button,
+    .c-landing-table__edit-btn {
       cursor: pointer;
       border: none;
       outline: none;

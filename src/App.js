@@ -5,7 +5,7 @@ import config from 'src/config/auth';
 import Login from 'src/components/login/login';
 import Landing from 'src/components/landing/landing';
 import jwtExtractor from 'src/common/utils/jwtExtractor';
-import WallboardNew from './components/wallboard/wallboard-new';
+import WallboardEdit from './components/wallboard/wallboard-edit';
 import WallboardReadOnly from 'src/components/wallboard/wallboard.read-only';
 import { Route, Switch } from 'react-router';
 import { handleLogoutAC, setAccessTokenAC, setUserTokenInfoAC } from './store/actions/login.action';
@@ -66,8 +66,8 @@ function App() {
             <Route exact path="/">
               <Landing userInfo={userTokenInfo} />
             </Route>
-            <Route exact path="/wallboard/new">
-              <WallboardNew />
+            <Route exact path="/wallboard/:id/edit">
+              <WallboardEdit />
             </Route>
             <Route path="/wallboard/:id">
               <WallboardReadOnly userInfo={userTokenInfo} />

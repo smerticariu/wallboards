@@ -7,7 +7,7 @@ import { WALLBOARD_MODAL_NAMES } from "../modal/new-wallboard/modal.new-wallboar
 import ModalAddComponent from "../modal/add-component/modal.add-component";
 import GridPage from "../grid/grid";
 
-const WallboardNew = () => {
+const WallboardEdit = () => {
   const activeModalName = useSelector(
     (state) => state.wallboards.activeModalName
   );
@@ -27,4 +27,4 @@ const WallboardNew = () => {
   );
 };
 
-export default WallboardNew;
+export default WallboardEdit;

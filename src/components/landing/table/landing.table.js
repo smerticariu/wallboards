@@ -36,7 +36,7 @@ const LandingTable = ({ userInfo }) => {
       (wb) => wb.key.toLowerCase().includes(filter.toLowerCase()) || wb.key.toLowerCase().includes(filter.toLowerCase())
     );
 
-    // const wallboardsByInput = filteredWbsByCategory.filter(
+    // const wallboardsByInput = filteredWbsByCategory.filter( // TEMPORARY
     //   (wb) => wb.name.toLowerCase().includes(filter.toLowerCase()) || wb.createdBy.toLowerCase().includes(filter.toLowerCase())
     // );
 
@@ -79,7 +79,7 @@ const LandingTable = ({ userInfo }) => {
                     <p>{wb.createdOn}</p>
                   </td>
                   <td className="c-landing-table__wb-actions">
-                    <button className="c-landing-table__edit-btn"></button>
+                    <a harget="_blank" href={`http://localhost:3000/wallboard/${wb.key}/edit`} className="c-landing-table__edit-btn"></a>
                     <button className="c-landing-table__copy-btn"></button>
                     <button className="c-landing-table__delete-btn"></button>
                   </td>
