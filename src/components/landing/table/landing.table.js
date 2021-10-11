@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { setWallboardsByCategoryAC } from 'src/store/actions/wallboards.action';
 import { FetchStatus } from 'src/store/reducers/wallboards.reducer';
 import { fetchAllWallboardsThunk } from 'src/store/thunk/wallboards.thunk';
@@ -79,7 +80,7 @@ const LandingTable = ({ userInfo }) => {
                     <p>{wb.createdOn}</p>
                   </td>
                   <td className="c-landing-table__wb-actions">
-                    <a harget="_blank" href={`http://localhost:3000/wallboard/${wb.key}/edit`} className="c-landing-table__edit-btn"></a>
+                    <Link target="_blank" to={`/wallboard/${wb.key}/edit`} className="c-landing-table__edit-btn" />
                     <button className="c-landing-table__copy-btn"></button>
                     <button className="c-landing-table__delete-btn"></button>
                   </td>

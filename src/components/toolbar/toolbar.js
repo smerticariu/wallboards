@@ -20,6 +20,7 @@ const Toolbar = (props) => {
   const { userInfo } = useSelector((state) => state.login);
   const newWallboardSaveStatus = useSelector((state) => state.wallboards.activeWallboard.saveStatus);
   const activeWallboard = useSelector((state) => state.wallboards.activeWallboard.wallboard);
+  const activeWallboardInitialValues = useSelector((state) => state.wallboards.activeWallboard.wallboardInitialValues);
   const [isNewWallboardClicked, setIsNewWallboardClicked] = useState(false);
   const history = useHistory();
   useEffect(() => {
@@ -28,6 +29,7 @@ const Toolbar = (props) => {
       dispatch(saveWallboardResetStatusAC());
       history.push(`/wallboard/${activeWallboard.id}/edit`);
     }
+    // eslint-disable-next-line
   }, [newWallboardSaveStatus]);
   const heading = () => {
     return (
@@ -152,7 +154,21 @@ const Toolbar = (props) => {
     );
   };
   const handleCloseButton = () => {
-    return <button className="c-button c-button--m-left">Close</button>;
+    const onClickCloseButton = () => {
+      const isChanges = Object.keys(activeWallboardInitialValues).some((key) => {
+        if (activeWallboardInitialValues[key] !== activeWallboard[key]) {
+          return true;
+        }
+        return false;
+      });
+      if (isChanges) return dispatch(handleWallboardActiveModalAC(WALLBOARD_MODAL_NAMES.SAVE_WALLBOARD));
+      return history.push('/');
+    };
+    return (
+      <button onClick={onClickCloseButton} className="c-button c-button--m-left">
+        Close
+      </button>
+    );
   };
   const handleRunButton = () => {
     return <button className="c-button c-button--blue c-button--m-left">Run</button>;

@@ -20,6 +20,8 @@ export const wallboardsActions = {
   SAVE_WALLBOARD_SUCCESS: 'SAVE_WALLBOARD_SUCCESS',
   SAVE_WALLBOARD_FAIL: 'SAVE_WALLBOARD_FAIL',
   SAVE_WALLBOARD_RESET_STATUS: 'SAVE_WALLBOARD_RESET_STATUS',
+
+  ADD_WALLBOARD_COMPONENT: 'ADD_WALLBOARD_COMPONENT',
 };
 
 export const handleWallboardActiveModalAC = (modalName) => ({
@@ -96,4 +98,8 @@ export const saveWallboardFailAC = (errorMEssage) => ({
 });
 export const saveWallboardResetStatusAC = (errorMEssage) => ({
   type: wallboardsActions.SAVE_WALLBOARD_RESET_STATUS,
+});
+
+export const addWallboardComponentAC = () => ({
+  type: wallboardsActions.ADD_WALLBOARD_COMPONENT,
 });

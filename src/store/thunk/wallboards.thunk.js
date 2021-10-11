@@ -30,7 +30,7 @@ export const fetchWallboardByIdThunk = (wallboardId) => async (dispatch, getStat
 
     const response = await axios(options);
 
-    dispatch(fetchWallboardByIdSuccessAC(response.data));
+    dispatch(fetchWallboardByIdSuccessAC({ components: [], ...response.data }));
   } catch (error) {
     dispatch(fetchWallboardByIdFailAC());
     console.log(error);
@@ -75,6 +75,19 @@ export const saveWallboardThunk = () => async (dispatch, getState) => {
       createdBy: `${userInfo.firstName} ${userInfo.lastName}`,
       createdOn: currentDate,
       description: 'Not implemented yet',
+      components: activeWallboard.components.map((component) => ({
+        name: component.title,
+        queue: component.callQueue,
+        view: component.mainViewing,
+        sortBy: component.sortBy,
+        availabilityStates: component.availabilityStates.selectedItems.filter((option) => option.isChecked).map((option) => option.text),
+        presenceStates: component.presenceStates.selectedItems.filter((option) => option.isChecked).map((option) => option.text),
+        interactivity: component.interactivityOptions.selectedItems.filter((option) => option.isChecked).map((option) => option.text),
+        columnsToView: Object.keys(component.columnsToViewOptions.selectedItems)
+          .filter((key) => component.columnsToViewOptions.selectedItems[key].isChecked)
+          .map((key) => component.columnsToViewOptions.selectedItems[key].text),
+        skills: component.skillsToView.selectedItems.filter((option) => option.isChecked).map((option) => option.text),
+      })),
     };
     const options = {
       method: 'put',

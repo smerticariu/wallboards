@@ -17,6 +17,9 @@ const initialState = {
   filterWallboards: [],
   activeModalName: null,
   activeWallboard: {
+    wallboardInitialValues: {
+      name: 'My New Wallboard',
+    },
     wallboard: {
       name: 'My New Wallboard',
     },
@@ -119,6 +122,7 @@ export const wallboardsReducer = (state = { ...initialState }, action) => {
         activeWallboard: {
           ...state.activeWallboard,
           wallboard: action.payload,
+          wallboardInitialValues: action.payload,
           fetchStatus: FetchStatus.SUCCESS,
         },
       };
@@ -173,6 +177,7 @@ export const wallboardsReducer = (state = { ...initialState }, action) => {
         activeWallboard: {
           ...state.activeWallboard,
           wallboard: action.payload,
+          wallboardInitialValues: action.payload,
           saveStatus: FetchStatus.SUCCESS,
         },
       };
@@ -190,6 +195,23 @@ export const wallboardsReducer = (state = { ...initialState }, action) => {
         activeWallboard: {
           ...state.activeWallboard,
           saveStatus: FetchStatus.NULL,
+        },
+      };
+
+    case wallboardsActions.ADD_WALLBOARD_COMPONENT:
+      return {
+        ...state,
+        activeWallboard: {
+          ...state.activeWallboard,
+          wallboard: {
+            ...state.activeWallboard.wallboard,
+            components: [
+              ...state.activeWallboard.wallboard.components,
+              {
+                ...state.modalAddComponent,
+              },
+            ],
+          },
         },
       };
 

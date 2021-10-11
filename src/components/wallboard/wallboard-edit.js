@@ -9,6 +9,7 @@ import GridPage from '../grid/grid';
 import { fetchWallboardByIdThunk } from 'src/store/thunk/wallboards.thunk';
 import { useParams } from 'react-router';
 import { FetchStatus } from 'src/store/reducers/wallboards.reducer';
+import ModalSaveWallboard from '../modal/save-wallboard/modal.save-wallboard';
 
 const WallboardEdit = () => {
   const activeModalName = useSelector((state) => state.wallboards.activeModalName);
@@ -29,6 +30,7 @@ const WallboardEdit = () => {
       <Toolbar template="new-wallboard" />
       {activeModalName === WALLBOARD_MODAL_NAMES.SELECT_COMPONENT && <ModalNewWallboard />}
       {activeModalName === WALLBOARD_MODAL_NAMES.ADD_COMPONENT && <ModalAddComponent />}
+      {activeModalName === WALLBOARD_MODAL_NAMES.SAVE_WALLBOARD && <ModalSaveWallboard />}
 
       {/* {activeModalName ? <GridPage /> : <WallboardComponents />} */}
       {true ? <GridPage /> : <WallboardComponents />}

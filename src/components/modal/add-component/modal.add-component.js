@@ -7,6 +7,7 @@ import CustomAutosuggest from 'src/components/autosuggest/autosuggest';
 import CheckBox from 'src/components/checkbox/checkbox';
 import Radio from 'src/components/radio/radio';
 import {
+  addWallboardComponentAC,
   handleModalAddComponentFormDataAC,
   handleModalSelectActiveElementAC,
   handleWallboardActiveModalAC,
@@ -52,14 +53,14 @@ const ModalAddComponent = ({ ...props }) => {
 
   const handleAddButton = () => {
     const onClickAddButton = (e) => {
-      dispatch(handleModalSelectActiveElementAC());
       dispatch(handleWallboardActiveModalAC(null));
+      dispatch(addWallboardComponentAC());
     };
 
     return (
       <>
         <button className={`c-button c-button--m-left c-button--green`} onClick={onClickAddButton}>
-          Select
+          Add
         </button>
       </>
     );
