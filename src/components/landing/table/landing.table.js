@@ -17,7 +17,7 @@ const LandingTable = ({ userInfo }) => {
     // eslint-disable-next-line
   }, []);
   useEffect(() => {
-   const filterWbsByCategory = (category) => {
+    const filterWbsByCategory = (category) => {
       switch (category) {
         case 'Most Recent':
           const wbsByDate = wallboards.sort((a, b) => new Date(b.createdOn) - new Date(a.createdOn)).slice(0, 10);

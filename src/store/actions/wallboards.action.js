@@ -15,6 +15,11 @@ export const wallboardsActions = {
   FETCH_ALL_WALLBOARDS: 'FETCH_ALL_WALLBOARDS',
   FETCH_ALL_WALLBOARDS_SUCCESS: 'FETCH_ALL_WALLBOARDS_SUCCESS',
   FETCH_ALL_WALLBOARDS_FAIL: 'FETCH_ALL_WALLBOARDS_FAIL',
+
+  SAVE_WALLBOARD: 'SAVE_WALLBOARD',
+  SAVE_WALLBOARD_SUCCESS: 'SAVE_WALLBOARD_SUCCESS',
+  SAVE_WALLBOARD_FAIL: 'SAVE_WALLBOARD_FAIL',
+  SAVE_WALLBOARD_RESET_STATUS: 'SAVE_WALLBOARD_RESET_STATUS',
 };
 
 export const handleWallboardActiveModalAC = (modalName) => ({
@@ -76,4 +81,19 @@ export const fetchAllWallboardsSuccessAC = (wallboards) => ({
 export const fetchAllWallboardsFailAC = (errorMEssage) => ({
   type: wallboardsActions.FETCH_ALL_WALLBOARDS_FAIL,
   payload: errorMEssage,
+});
+
+export const saveWallboardAC = () => ({
+  type: wallboardsActions.SAVE_WALLBOARD,
+});
+export const saveWallboardSuccessAC = (wallboard) => ({
+  type: wallboardsActions.SAVE_WALLBOARD_SUCCESS,
+  payload: wallboard,
+});
+export const saveWallboardFailAC = (errorMEssage) => ({
+  type: wallboardsActions.SAVE_WALLBOARD_FAIL,
+  payload: errorMEssage,
+});
+export const saveWallboardResetStatusAC = (errorMEssage) => ({
+  type: wallboardsActions.SAVE_WALLBOARD_RESET_STATUS,
 });
