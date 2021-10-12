@@ -16,6 +16,7 @@ const WallboardEdit = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
   const { fetchStatus } = useSelector((state) => state.wallboards.activeWallboard);
+  const activeWallboard = useSelector((state) => state.wallboards.activeWallboard.wallboard);
 
   useEffect(() => {
     dispatch(fetchWallboardByIdThunk(id));
@@ -32,8 +33,13 @@ const WallboardEdit = () => {
       {activeModalName === WALLBOARD_MODAL_NAMES.ADD_COMPONENT && <ModalAddComponent />}
       {activeModalName === WALLBOARD_MODAL_NAMES.SAVE_WALLBOARD && <ModalSaveWallboard />}
 
-      {/* {activeModalName ? <GridPage /> : <WallboardComponents />} */}
-      {true ? <GridPage /> : <WallboardComponents />}
+      {activeModalName === WALLBOARD_MODAL_NAMES.SELECT_COMPONENT ||
+      activeModalName === WALLBOARD_MODAL_NAMES.ADD_COMPONENT ||
+      activeWallboard.widgets?.length ? (
+        <GridPage />
+      ) : (
+        <WallboardComponents />
+      )}
     </div>
   );
 };

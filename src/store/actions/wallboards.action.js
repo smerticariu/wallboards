@@ -22,6 +22,8 @@ export const wallboardsActions = {
   SAVE_WALLBOARD_RESET_STATUS: 'SAVE_WALLBOARD_RESET_STATUS',
 
   ADD_WALLBOARD_COMPONENT: 'ADD_WALLBOARD_COMPONENT',
+
+  CHANGE_WALLBOARD_COMPONENTS_ORDER: 'CHANGE_WALLBOARD_COMPONENTS_ORDER',
 };
 
 export const handleWallboardActiveModalAC = (modalName) => ({
@@ -100,6 +102,12 @@ export const saveWallboardResetStatusAC = (errorMEssage) => ({
   type: wallboardsActions.SAVE_WALLBOARD_RESET_STATUS,
 });
 
-export const addWallboardComponentAC = () => ({
+export const addWallboardComponentAC = (userInfo) => ({
   type: wallboardsActions.ADD_WALLBOARD_COMPONENT,
+  payload: userInfo,
+});
+
+export const changeWallboardComponentsOrderAC = (components) => ({
+  type: wallboardsActions.CHANGE_WALLBOARD_COMPONENTS_ORDER,
+  payload: components,
 });

@@ -9,13 +9,13 @@ import Radio from 'src/components/radio/radio';
 import {
   addWallboardComponentAC,
   handleModalAddComponentFormDataAC,
-  handleModalSelectActiveElementAC,
   handleWallboardActiveModalAC,
   resetModalAddComponentFormDataAC,
 } from 'src/store/actions/wallboards.action';
 import useOnClickOutside from '../../../common/hooks/useOnClickOutside';
 import {
   ADD_COMPONENT_COLUMNS_NO_OPTIONS,
+  ADD_COMPONENT_COLUMN_OPTIONS,
   ADD_COMPONENT_STATE_OPTIONS,
   CALL_QUEUE_OPTIONS,
   MAIN_VIEWING_OPTIONS,
@@ -30,6 +30,7 @@ const ModalAddComponent = ({ ...props }) => {
   const dispatch = useDispatch();
   const formData = useSelector((state) => state.wallboards.modalAddComponent);
   const isCardFormat = MAIN_VIEWING_OPTIONS.CARD === formData.mainViewing;
+  const { userInfo } = useSelector((state) => state.login);
   const closeModal = () => {
     dispatch(handleWallboardActiveModalAC(null));
     dispatch(resetModalAddComponentFormDataAC());
@@ -53,8 +54,8 @@ const ModalAddComponent = ({ ...props }) => {
 
   const handleAddButton = () => {
     const onClickAddButton = (e) => {
-      dispatch(handleWallboardActiveModalAC(null));
-      dispatch(addWallboardComponentAC());
+      dispatch(addWallboardComponentAC(userInfo));
+      closeModal();
     };
 
     return (
@@ -87,25 +88,6 @@ const ModalAddComponent = ({ ...props }) => {
       );
     };
 
-    const handleTableColumnsCheckbox = (event) => {
-      const { name, checked } = event.target;
-      return dispatch(
-        handleModalAddComponentFormDataAC({
-          ...formData,
-          columnsToViewOptions: {
-            ...formData.columnsToViewOptions,
-            selectedItems: {
-              ...formData.columnsToViewOptions.selectedItems,
-              [name]: {
-                ...formData.columnsToViewOptions.selectedItems[name],
-                isChecked: checked,
-              },
-            },
-          },
-        })
-      );
-    };
-
     const handleCheckBoxList = (event, formDataProp) => {
       const { name, checked } = event.target;
       switch (name) {
@@ -117,7 +99,7 @@ const ModalAddComponent = ({ ...props }) => {
                 ...formData[formDataProp],
                 selectAll: checked,
                 selectNone: false,
-                selectedItems: [...ADD_COMPONENT_STATE_OPTIONS[formDataProp]],
+                selectedItems: [...ADD_COMPONENT_STATE_OPTIONS[formDataProp].map((option) => option.value)],
               },
             })
           );
@@ -130,7 +112,7 @@ const ModalAddComponent = ({ ...props }) => {
                 ...formData[formDataProp],
                 selectNone: checked,
                 selectAll: false,
-                selectedItems: ADD_COMPONENT_STATE_OPTIONS[formDataProp].map((option) => ({ ...option, isChecked: false })),
+                selectedItems: [],
               },
             })
           );
@@ -140,14 +122,18 @@ const ModalAddComponent = ({ ...props }) => {
               ...formData,
               [formDataProp]: {
                 ...formData[formDataProp],
-                selectedItems: formData[formDataProp].selectedItems.map((option) =>
-                  option.value.toString() !== name ? option : { ...option, isChecked: checked }
-                ),
+                selectedItems: checked
+                  ? [...formData[formDataProp].selectedItems, name]
+                  : formData[formDataProp].selectedItems.filter((value) => value !== name),
               },
             })
           );
         }
       }
+    };
+
+    const checkIsCheckboxChecked = (optionArr, optionName) => {
+      return optionArr.includes(optionName);
     };
 
     const onChangeSearchInput = (value, name) => {
@@ -190,14 +176,14 @@ const ModalAddComponent = ({ ...props }) => {
                 placeholder="Search by Skill name"
               />
               <div className="c-modal--add-component__av-state-container">
-                {formData.skillsToView.selectedItems
+                {ADD_COMPONENT_STATE_OPTIONS.skillsToView
                   .filter((option) => option.text.toLowerCase().includes(searchInputValues.skill.toLowerCase()))
                   .map((option) => (
                     <CheckBox
                       key={option.value}
                       label={option.text}
                       name={option.value}
-                      checked={option.isChecked}
+                      checked={checkIsCheckboxChecked(formData.skillsToView.selectedItems, option.value)}
                       onChange={(event) => handleCheckBoxList(event, 'skillsToView')}
                     />
                   ))}
@@ -274,13 +260,13 @@ const ModalAddComponent = ({ ...props }) => {
               <div className="c-modal--add-component__input-label">Select columns to view</div>
 
               <div className="c-modal--add-component__av-state-container c-modal--add-component__av-state-container--columns">
-                {Object.keys(formData.columnsToViewOptions.selectedItems).map((optionKey) => (
+                {ADD_COMPONENT_STATE_OPTIONS.columnsToViewOptions.map((option) => (
                   <CheckBox
-                    key={optionKey}
-                    label={formData.columnsToViewOptions.selectedItems[optionKey].text}
-                    name={optionKey}
-                    checked={formData.columnsToViewOptions.selectedItems[optionKey].isChecked}
-                    onChange={handleTableColumnsCheckbox}
+                    key={option.value}
+                    label={option.text}
+                    name={option.value}
+                    checked={checkIsCheckboxChecked(formData.columnsToViewOptions.selectedItems, option.value)}
+                    onChange={(event) => handleCheckBoxList(event, 'columnsToViewOptions')}
                   />
                 ))}
               </div>
@@ -295,7 +281,7 @@ const ModalAddComponent = ({ ...props }) => {
 
           <select name="sortBy" className="c-select" onChange={handleInputAndSelect} value={formData.sortBy}>
             {SORT_BY_OPTIONS.map((option) => (
-              <option key={option.value} value={option.text}>
+              <option key={option.value} value={option.value}>
                 {option.text}
               </option>
             ))}
@@ -323,12 +309,12 @@ const ModalAddComponent = ({ ...props }) => {
 
           {!(formData.availabilityStates.selectAll || formData.availabilityStates.selectNone) && (
             <div className="c-modal--add-component__av-state-container">
-              {formData.availabilityStates.selectedItems.map((option) => (
+              {ADD_COMPONENT_STATE_OPTIONS.availabilityStates.map((option) => (
                 <CheckBox
                   key={option.value}
                   label={option.text}
                   name={option.value}
-                  checked={option.isChecked}
+                  checked={checkIsCheckboxChecked(formData.availabilityStates.selectedItems, option.value)}
                   onChange={(event) => handleCheckBoxList(event, 'availabilityStates')}
                 />
               ))}
@@ -356,12 +342,12 @@ const ModalAddComponent = ({ ...props }) => {
           </div>
           {!(formData.presenceStates.selectAll || formData.presenceStates.selectNone) && (
             <div className="c-modal--add-component__av-state-container">
-              {formData.presenceStates.selectedItems.map((option) => (
+              {ADD_COMPONENT_STATE_OPTIONS.presenceStates.map((option) => (
                 <CheckBox
                   key={option.value}
                   label={option.text}
                   name={option.value}
-                  checked={option.isChecked}
+                  checked={checkIsCheckboxChecked(formData.presenceStates.selectedItems, option.value)}
                   onChange={(event) => handleCheckBoxList(event, 'presenceStates')}
                 />
               ))}
@@ -371,12 +357,12 @@ const ModalAddComponent = ({ ...props }) => {
 
         <div className="c-modal--add-component__input-section">
           <div className="c-modal--add-component__input-label">Interactivity options</div>
-          {formData.interactivityOptions.selectedItems.map((option) => (
+          {ADD_COMPONENT_STATE_OPTIONS.interactivityOptions.map((option) => (
             <CheckBox
               key={option.value}
               label={option.text}
               name={option.value}
-              checked={option.isChecked}
+              checked={checkIsCheckboxChecked(formData.interactivityOptions.selectedItems, option.value)}
               onChange={(event) => handleCheckBoxList(event, 'interactivityOptions')}
             />
           ))}
@@ -412,18 +398,24 @@ const ModalAddComponent = ({ ...props }) => {
               {createArrayFromTo(0, ADD_COMPONENT_COLUMNS_NO_OPTIONS.ONE === formData.columns ? 0 : 1).map((n) => (
                 <AgentTable
                   key={n}
-                  agentName={formData.columnsToViewOptions.selectedItems.agentName.isChecked}
-                  agentExtNo={formData.columnsToViewOptions.selectedItems.agentExtNo.isChecked}
-                  currAvaiState={formData.columnsToViewOptions.selectedItems.currAvaiState.isChecked}
-                  currPresState={formData.columnsToViewOptions.selectedItems.currPresState.isChecked}
-                  noCallsOffered={formData.columnsToViewOptions.selectedItems.noCallsOffered.isChecked}
-                  noCallsAnswered={formData.columnsToViewOptions.selectedItems.noCallsAnswered.isChecked}
-                  noCallsMissed={formData.columnsToViewOptions.selectedItems.noCallsMissed.isChecked}
-                  timeInCurrentPresenceState={formData.columnsToViewOptions.selectedItems.timeInCurrentPresenceState.isChecked}
-                  timeInCurrentAvailabilityState={formData.columnsToViewOptions.selectedItems.timeInCurrentAvailabilityState.isChecked}
-                  timeInCurrentCall={formData.columnsToViewOptions.selectedItems.timeInCurrentCall.isChecked}
-                  timeInCurrentWrapup={formData.columnsToViewOptions.selectedItems.timeInCurrentWrapup.isChecked}
-                  listOfSkills={formData.columnsToViewOptions.selectedItems.listOfSkills.isChecked}
+                  agentName={formData.columnsToViewOptions.selectedItems.includes(ADD_COMPONENT_COLUMN_OPTIONS.AGENT_NAME)}
+                  agentExtNo={formData.columnsToViewOptions.selectedItems.includes(ADD_COMPONENT_COLUMN_OPTIONS.AGENT_EXTENSION)}
+                  currAvaiState={formData.columnsToViewOptions.selectedItems.includes(ADD_COMPONENT_COLUMN_OPTIONS.CURRENT_AVAILABILITY)}
+                  currPresState={formData.columnsToViewOptions.selectedItems.includes(ADD_COMPONENT_COLUMN_OPTIONS.CURRENT_PRESENCE)}
+                  noCallsOffered={formData.columnsToViewOptions.selectedItems.includes(ADD_COMPONENT_COLUMN_OPTIONS.NO_CALLS_OFFERED)}
+                  noCallsAnswered={formData.columnsToViewOptions.selectedItems.includes(ADD_COMPONENT_COLUMN_OPTIONS.NO_CALLS_ANSWERED)}
+                  noCallsMissed={formData.columnsToViewOptions.selectedItems.includes(ADD_COMPONENT_COLUMN_OPTIONS.NO_CALLS_MISSED)}
+                  timeInCurrentPresenceState={formData.columnsToViewOptions.selectedItems.includes(
+                    ADD_COMPONENT_COLUMN_OPTIONS.TIME_CURRENT_PRESENCE
+                  )}
+                  timeInCurrentAvailabilityState={formData.columnsToViewOptions.selectedItems.includes(
+                    ADD_COMPONENT_COLUMN_OPTIONS.TIME_CURRENT_AVAILABILITY
+                  )}
+                  timeInCurrentCall={formData.columnsToViewOptions.selectedItems.includes(ADD_COMPONENT_COLUMN_OPTIONS.TIME_CURRENT_CALL)}
+                  timeInCurrentWrapup={formData.columnsToViewOptions.selectedItems.includes(
+                    ADD_COMPONENT_COLUMN_OPTIONS.TIME_CURRENT_WRAPUP
+                  )}
+                  listOfSkills={formData.columnsToViewOptions.selectedItems.includes(ADD_COMPONENT_COLUMN_OPTIONS.SKILLS_AGENT_POSSESSES)}
                 />
               ))}
             </div>

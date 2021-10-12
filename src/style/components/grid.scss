@@ -47,6 +47,8 @@
     font-family: $public-sans-regular;
     font-size: 14px;
     color: $slate-gray;
+    user-select: none;
+    cursor: pointer;
     &--bold {
       font-family: $public-sans-bold;
     }
