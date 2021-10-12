@@ -19,7 +19,7 @@ const WallboardEdit = () => {
   const activeWallboard = useSelector((state) => state.wallboards.activeWallboard.wallboard);
 
   useEffect(() => {
-    dispatch(fetchWallboardByIdThunk(id));
+    dispatch(fetchWallboardByIdThunk({ wbId: id}));
     // eslint-disable-next-line
   }, [id]);
 
