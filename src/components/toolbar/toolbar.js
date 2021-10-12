@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import {
   handleNewWallboardTitleAC,
   handleWallboardActiveModalAC,
@@ -155,7 +156,7 @@ const Toolbar = (props) => {
     return <button className="c-button c-button--m-left">Close</button>;
   };
   const handleRunButton = () => {
-    return <button className="c-button c-button--blue c-button--m-left">Run</button>;
+    return <Link target="_blank" to={`/wallboard/${activeWallboard.id}`} className="c-button c-button--blue c-button--m-left">Run</Link>;
   };
 
   const handleRightToolbar = (template) => {
