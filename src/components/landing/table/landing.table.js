@@ -11,7 +11,6 @@ const LandingTable = () => {
   const [filteredWbs, setFilteredWbs] = useState([]);
   const { userInfo, token } = useSelector((state) => state.login);
   const category = useSelector((state) => state.landing.category);
-  console.log(userInfo);
   const filter = useSelector((state) => state.landing.filterWallboards);
   useEffect(() => {
     dispatch(fetchAllWallboardsThunk());
