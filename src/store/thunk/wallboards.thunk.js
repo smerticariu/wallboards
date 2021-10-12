@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { generateWallboardId } from 'src/common/utils/generateId';
+import { generateWallboardComponentId, generateWallboardId } from 'src/common/utils/generateId';
 import {
   fetchAllWallboardsAC,
   fetchAllWallboardsFailAC,
@@ -29,7 +29,7 @@ export const fetchWallboardByIdThunk = ({wbId}) => async (dispatch, getState) =>
 
     const response = await axios(options);
 
-    dispatch(fetchWallboardByIdSuccessAC(response.data));
+    dispatch(fetchWallboardByIdSuccessAC({ widgets: [], ...response.data }));
   } catch (error) {
     dispatch(fetchWallboardByIdFailAC());
     console.log(error);
@@ -74,6 +74,7 @@ export const saveWallboardThunk = () => async (dispatch, getState) => {
       createdBy: `${userInfo.firstName} ${userInfo.lastName}`,
       createdOn: currentDate,
       description: 'Not implemented yet',
+      widgets: activeWallboard.widgets,
     };
     const options = {
       method: 'put',

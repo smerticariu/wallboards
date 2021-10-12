@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { setWallboardsByCategoryAC } from 'src/store/actions/wallboards.action';
 import { FetchStatus } from 'src/store/reducers/wallboards.reducer';
 import { fetchAllWallboardsThunk, deleteWallboardThunk, copyWallboardThunk } from 'src/store/thunk/wallboards.thunk';
@@ -10,13 +11,12 @@ const LandingTable = () => {
   const [filteredWbs, setFilteredWbs] = useState([]);
   const { userInfo, token } = useSelector((state) => state.login);
   const category = useSelector((state) => state.landing.category);
-console.log(userInfo)
   const filter = useSelector((state) => state.landing.filterWallboards);
   useEffect(() => {
     dispatch(fetchAllWallboardsThunk());
     // eslint-disable-next-line
   }, []);
-  
+
   useEffect(() => {
     const filterWbsByCategory = (category) => {
       switch (category) {
@@ -46,13 +46,13 @@ console.log(userInfo)
     // eslint-disable-next-line
   }, [category, filter, wallboards]);
 
-  const handleDelete = id => {
-    dispatch(deleteWallboardThunk({wbId:id}));
-  }
+  const handleDelete = (id) => {
+    dispatch(deleteWallboardThunk({ wbId: id }));
+  };
 
-  const handleCopy = wb => {
-    dispatch(copyWallboardThunk({wb}))
-  }
+  const handleCopy = (wb) => {
+    dispatch(copyWallboardThunk({ wb }));
+  };
 
   if (fetchStatus !== FetchStatus.SUCCESS) return <div>Fetch all wallboards in progress</div>;
   return (
@@ -89,9 +89,19 @@ console.log(userInfo)
                     <p>{wb.createdOn}</p>
                   </td>
                   <td className="c-landing-table__wb-actions">
-                    <a harget="_blank" href={`http://localhost:3000/wallboard/${wb.key}/edit`} className="c-landing-table__edit-btn"></a>
-                    <button onClick={() => {handleCopy(wb)}} className="c-landing-table__copy-btn"></button>
-                    <button onClick={() => {handleDelete(wb.key)}} className="c-landing-table__delete-btn"></button>
+                    <Link target="_blank" to={`/wallboard/${wb.key}/edit`} className="c-landing-table__edit-btn" />
+                    <button
+                      onClick={() => {
+                        handleCopy(wb);
+                      }}
+                      className="c-landing-table__copy-btn"
+                    ></button>
+                    <button
+                      onClick={() => {
+                        handleDelete(wb.key);
+                      }}
+                      className="c-landing-table__delete-btn"
+                    ></button>
                   </td>
                 </tr>
               );

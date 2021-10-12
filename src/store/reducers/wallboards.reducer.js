@@ -1,8 +1,8 @@
+import { generateWallboardComponentId } from 'src/common/utils/generateId';
 import {
   ADD_COMPONENT_COLUMNS_NO_OPTIONS,
   ADD_COMPONENT_STATE_OPTIONS,
   CALL_QUEUE_OPTIONS,
-  COLUMNS_TO_VIEW_OPTIONS,
   MAIN_VIEWING_OPTIONS,
   SORT_BY_OPTIONS,
 } from 'src/components/modal/add-component/modal.add-component.defaults';
@@ -17,6 +17,9 @@ const initialState = {
   filterWallboards: [],
   activeModalName: null,
   activeWallboard: {
+    wallboardInitialValues: {
+      name: 'My New Wallboard',
+    },
     wallboard: {
       name: 'My New Wallboard',
     },
@@ -39,25 +42,38 @@ const initialState = {
     availabilityStates: {
       selectAll: true,
       selectNone: false,
-      selectedItems: ADD_COMPONENT_STATE_OPTIONS.availabilityStates,
+      selectedItems: ADD_COMPONENT_STATE_OPTIONS.availabilityStates.reduce(
+        (strArr, el) => (el.isInitialChecked ? [...strArr, el.value] : strArr),
+        []
+      ),
     },
     presenceStates: {
       selectAll: true,
       selectNone: false,
-      selectedItems: ADD_COMPONENT_STATE_OPTIONS.presenceStates,
+      selectedItems: ADD_COMPONENT_STATE_OPTIONS.presenceStates.reduce(
+        (strArr, el) => (el.isInitialChecked ? [...strArr, el.value] : strArr),
+        []
+      ),
     },
     skillsToView: {
       selectAll: true,
       selectNone: false,
-      selectedItems: ADD_COMPONENT_STATE_OPTIONS.skillsToView,
+      selectedItems: ADD_COMPONENT_STATE_OPTIONS.skillsToView.reduce(
+        (strArr, el) => (el.isInitialChecked ? [...strArr, el.value] : strArr),
+        []
+      ),
     },
     interactivityOptions: {
-      selectedItems: ADD_COMPONENT_STATE_OPTIONS.interactivityOptions,
+      selectedItems: ADD_COMPONENT_STATE_OPTIONS.interactivityOptions.reduce(
+        (strArr, el) => (el.isInitialChecked ? [...strArr, el.value] : strArr),
+        []
+      ),
     },
     columnsToViewOptions: {
-      selectedItems: {
-        ...COLUMNS_TO_VIEW_OPTIONS,
-      },
+      selectedItems: ADD_COMPONENT_STATE_OPTIONS.columnsToViewOptions.reduce(
+        (strArr, el) => (el.isInitialChecked ? [...strArr, el.value] : strArr),
+        []
+      ),
     },
   },
 };
@@ -119,6 +135,7 @@ export const wallboardsReducer = (state = { ...initialState }, action) => {
         activeWallboard: {
           ...state.activeWallboard,
           wallboard: action.payload,
+          wallboardInitialValues: action.payload,
           fetchStatus: FetchStatus.SUCCESS,
         },
       };
@@ -173,6 +190,7 @@ export const wallboardsReducer = (state = { ...initialState }, action) => {
         activeWallboard: {
           ...state.activeWallboard,
           wallboard: action.payload,
+          wallboardInitialValues: action.payload,
           saveStatus: FetchStatus.SUCCESS,
         },
       };
@@ -193,6 +211,47 @@ export const wallboardsReducer = (state = { ...initialState }, action) => {
         },
       };
 
+    case wallboardsActions.CHANGE_WALLBOARD_COMPONENTS_ORDER:
+      return {
+        ...state,
+        activeWallboard: {
+          ...state.activeWallboard,
+          wallboard: {
+            ...state.activeWallboard.wallboard,
+            widgets: [...action.payload],
+          },
+        },
+      };
+
+    case wallboardsActions.ADD_WALLBOARD_COMPONENT: {
+      const { widgets } = state.activeWallboard.wallboard;
+
+      return {
+        ...state,
+        activeWallboard: {
+          ...state.activeWallboard,
+          wallboard: {
+            ...state.activeWallboard.wallboard,
+            widgets: [
+              ...widgets,
+              {
+                id: generateWallboardComponentId(action.payload.organisationId, action.payload),
+                name: state.modalAddComponent.title,
+                queue: state.modalAddComponent.callQueue,
+                view: state.modalAddComponent.mainViewing,
+                sortBy: state.modalAddComponent.sortBy,
+                availabilityStates: state.modalAddComponent.availabilityStates.selectedItems,
+                presenceStates: state.modalAddComponent.presenceStates.selectedItems,
+                interactivity: state.modalAddComponent.interactivityOptions.selectedItems,
+                columnsToView: state.modalAddComponent.columnsToViewOptions.selectedItems,
+                skills: state.modalAddComponent.skillsToView.selectedItems,
+                columns: state.modalAddComponent.columns,
+              },
+            ],
+          },
+        },
+      };
+    }
     default:
       return state;
   }
