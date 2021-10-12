@@ -37,7 +37,7 @@ const GridPage = ({ ...props }) => {
         {activeWallboard.widgets.map((widget, index) => (
           <React.Fragment key={widget.id}>
             <SortableItem index={index}>
-              <GridAgentList index={index} />
+              <GridAgentList widget={widget} index={index} />
             </SortableItem>
           </React.Fragment>
         ))}

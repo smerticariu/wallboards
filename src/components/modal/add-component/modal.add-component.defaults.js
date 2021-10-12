@@ -1,3 +1,5 @@
+import { createArrayFromTo } from 'src/common/utils/generateArray';
+
 export const CALL_QUEUE_OPTIONS = [
   { TEXT: 'Urgent Support Queue', VALUE: 'URGENT' },
   { TEXT: 'Not urgent but somewhat important queue', VALUE: 'NOT_URGENT' },
@@ -46,23 +48,29 @@ export const ADD_COMPONENT_COLUMN_OPTIONS = {
 };
 
 export const ADD_COMPONENT_STATE_OPTIONS = {
-  availabilityStates: [
-    {
-      text: "I'm currently available for calls",
-      value: 'CURRENTLY_AVAILABLE',
-      isInitialChecked: true,
-    },
-    {
-      text: "I'm busy on calls",
-      value: 'BUSY_ON_CALLS',
-      isInitialChecked: true,
-    },
-    {
-      text: 'No calls today please',
-      value: 'NO_CALLS_TODAY',
-      isInitialChecked: true,
-    },
-  ],
+  //in the future it may be needed
+  // availabilityStates: [
+  //   {
+  //     text: "I'm currently available for calls",
+  //     value: 'CURRENTLY_AVAILABLE',
+  //     isInitialChecked: true,
+  //   },
+  //   {
+  //     text: "I'm busy on calls",
+  //     value: 'BUSY_ON_CALLS',
+  //     isInitialChecked: true,
+  //   },
+  //   {
+  //     text: 'No calls today please',
+  //     value: 'NO_CALLS_TODAY',
+  //     isInitialChecked: true,
+  //   },
+  // ],
+  availabilityStates: createArrayFromTo(0, 20).map((el) => ({
+    text: `Profile Name ${el - (el % 2)} - State ${el % 4}`,
+    value: `P_${el}_S_${el}`,
+    isInitialChecked: true,
+  })),
   presenceStates: [
     {
       text: 'Inbound Call',
@@ -180,7 +188,7 @@ export const ADD_COMPONENT_STATE_OPTIONS = {
       isInitialChecked: false,
     },
   ],
-  skillsToView: [...new Array(10)].map((skill, index) => ({
+  skillsToView: [...new Array(100)].map((skill, index) => ({
     text: 'Skill ' + index,
     value: `SKILL_${index}`,
     isInitialChecked: true,

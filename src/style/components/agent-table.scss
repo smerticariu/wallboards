@@ -4,18 +4,31 @@
   flex-direction: column;
   &__header {
     display: flex;
-    height: 13px;
+    height: 32px;
     align-items: center;
     text-align: center;
-    justify-content: center;
     font-family: $public-sans-regular;
-    font-size: 8px;
+    font-size: 14px;
     font-weight: 500;
-    color: $natterbox-dark-blue-grey;
+    color: $white;
     text-transform: capitalize;
+    margin-bottom: 15px;
+    &--preview {
+      height: 16px;
+      font-size: 7px;
+      margin-bottom: 7px;
+    }
     &-item {
-      min-width: 75px;
+      background-color: $turquoise-blue;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 170px;
+      height: 100%;
       margin: 0;
+      &--preview {
+        min-width: 80px;
+      }
     }
   }
 
@@ -26,16 +39,28 @@
   &__agent {
     display: flex;
     align-items: center;
-    margin-bottom: 1px;
+    margin-bottom: 7px;
+    &--preview {
+      margin-bottom: 3px;
+    }
     &-info {
-      padding: 2px 0;
+      padding: 12px 5px;
       font-family: $public-sans-regular;
-      font-size: 6px;
+      font-size: 16px;
       color: $natterbox-dark-blue-grey;
       background-color: $pinkish-grey;
-      min-width: 75px;
+      width: 170px;
+
       margin: 0;
       text-align: center;
+      &--preview {
+        width: 80px;
+        padding: 6px 3px;
+        font-size: 8px;
+
+        white-space: nowrap;
+        overflow: hidden;
+      }
       &--red,
       &--green {
         position: relative;
@@ -53,24 +78,34 @@
 
       &--circle {
         padding: 0;
-        width: 20px;
         background-color: $white;
         display: flex;
         justify-content: center;
         align-items: center;
+        &--preview {
+          width: 80px;
+        }
         &-container {
           display: flex;
           margin-right: 5px;
           justify-content: center;
           align-items: center;
-          width: 11px;
-          height: 11px;
+          width: 30px;
+          height: 30px;
+          &--preview {
+            width: 15px;
+            height: 15px;
+          }
           border-radius: 50%;
           background-color: rgba($natterbox-green, 0.58);
         }
         &-center {
-          width: 7px;
-          height: 7px;
+          width: 20px;
+          height: 20px;
+          &--preview {
+            width: 10px;
+            height: 10px;
+          }
           border-radius: 50%;
           background-color: $natterbox-green;
         }
