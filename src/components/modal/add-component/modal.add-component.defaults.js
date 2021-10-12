@@ -96,7 +96,7 @@ export const ADD_COMPONENT_STATE_OPTIONS = {
     },
     {
       text: 'Logged Off',
-      value: 'LOGGES_OFF',
+      value: 'LOGGED_OFF',
       isInitialChecked: true,
     },
   ],
