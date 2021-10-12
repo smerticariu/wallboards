@@ -5,8 +5,60 @@
   row-gap: 4px;
   column-gap: 4px;
   grid-template-columns: repeat(12, calc((100% / 12) - 4px));
+  position: relative;
   &__cell {
     height: 25px;
     background-color: $dark-white;
+  }
+  &__components {
+    position: absolute;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    top: 0;
+    left: 0;
+    margin: -10px;
+  }
+}
+
+.a-list {
+  border: solid 1px $pinkish-grey;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  min-width: min-content;
+  max-width: 100%;
+  overflow: auto;
+  height: max-content;
+  resize: both;
+  background-color: $white;
+  margin: 10px;
+
+  &__header {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    background-color: $dark-grey;
+    padding: 8px;
+  }
+  &__title {
+    display: flex;
+    font-family: $public-sans-regular;
+    font-size: 14px;
+    color: $slate-gray;
+    &--bold {
+      font-family: $public-sans-bold;
+    }
+  }
+  &__icons {
+    display: flex;
+    align-items: center;
+  }
+  &__body {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    padding: 15px;
   }
 }

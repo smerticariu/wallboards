@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setWallboardsByCategoryAC } from 'src/store/actions/wallboards.action';
 import { FetchStatus } from 'src/store/reducers/wallboards.reducer';
-import { fetchAllWallboardsThunk, deleteWallboardThunk } from 'src/store/thunk/wallboards.thunk';
+import { fetchAllWallboardsThunk, deleteWallboardThunk, copyWallboardThunk } from 'src/store/thunk/wallboards.thunk';
 
 const LandingTable = () => {
   const dispatch = useDispatch();
@@ -13,7 +13,7 @@ const LandingTable = () => {
 console.log(userInfo)
   const filter = useSelector((state) => state.landing.filterWallboards);
   useEffect(() => {
-    dispatch(fetchAllWallboardsThunk({orgId: userInfo.organisationId, token}));
+    dispatch(fetchAllWallboardsThunk());
     // eslint-disable-next-line
   }, []);
   
@@ -47,8 +47,13 @@ console.log(userInfo)
   }, [category, filter, wallboards]);
 
   const handleDelete = id => {
-    dispatch(deleteWallboardThunk({wbId:id, orgId: userInfo.organisationId, token}))
+    dispatch(deleteWallboardThunk({wbId:id}));
   }
+
+  const handleCopy = wb => {
+    dispatch(copyWallboardThunk({wb}))
+  }
+
   if (fetchStatus !== FetchStatus.SUCCESS) return <div>Fetch all wallboards in progress</div>;
   return (
     <div className="c-landing-table">
@@ -85,7 +90,7 @@ console.log(userInfo)
                   </td>
                   <td className="c-landing-table__wb-actions">
                     <a harget="_blank" href={`http://localhost:3000/wallboard/${wb.key}/edit`} className="c-landing-table__edit-btn"></a>
-                    <button className="c-landing-table__copy-btn"></button>
+                    <button onClick={() => {handleCopy(wb)}} className="c-landing-table__copy-btn"></button>
                     <button onClick={() => {handleDelete(wb.key)}} className="c-landing-table__delete-btn"></button>
                   </td>
                 </tr>

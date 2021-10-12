@@ -10,7 +10,7 @@ const WallboardReadOnly = () => {
   const { id } = useParams();
   const { logout } = useAuth0();
   const dispatch = useDispatch();
-  const { wallboard, fetchStatus } = useSelector((state) => state.wallboards.wallboardPage);
+  const { wallboard, fetchStatus } = useSelector((state) => state.wallboards.activeWallboard);
   const { userInfo, token } = useSelector((state) => state.login);
   useEffect(() => {
     dispatch(fetchWallboardByIdThunk({wbId: id, orgId:userInfo.organisationId, token}));

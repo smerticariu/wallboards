@@ -1,24 +1,34 @@
-import React, { useState } from 'react';
-import Autosuggest from 'react-autosuggest';
-import match from 'autosuggest-highlight/match';
-import parse from 'autosuggest-highlight/parse';
-import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { handleNewWallboardTitleAC, handleWallboardActiveModalAC, setFiltredWallboardsAC } from 'src/store/actions/wallboards.action';
+import {
+  handleNewWallboardTitleAC,
+  handleWallboardActiveModalAC,
+  saveWallboardResetStatusAC,
+  setFiltredWallboardsAC,
+} from 'src/store/actions/wallboards.action';
 import { RedoIcon } from 'src/assets/static/icons/redo';
 import { UndoIcon } from 'src/assets/static/icons/undo';
 import { WALLBOARD_MODAL_NAMES } from '../modal/new-wallboard/modal.new-wallboard.defaults';
+import CustomAutosuggest from '../autosuggest/autosuggest';
+import { saveWallboardThunk } from 'src/store/thunk/wallboards.thunk';
+import { FetchStatus } from 'src/store/reducers/wallboards.reducer';
+import { useHistory } from 'react-router';
 const Toolbar = (props) => {
   const dispatch = useDispatch();
   const [wbSearchValue, setWbSearchValue] = useState('');
-  const [wbSearchSuggestions, setWbSearchSuggestions] = useState([]);
   const wallboards = useSelector((state) => state.landing.wallboardsByCategory);
-  const { newWallboardData } = useSelector((state) => state.wallboards);
-
-  const { userInfo, token } = useSelector((state) => state.login);
-  const newWallboardTitle = useSelector((state) => state.wallboards.newWallboardData.title);
-
+  const { userInfo } = useSelector((state) => state.login);
+  const newWallboardSaveStatus = useSelector((state) => state.wallboards.activeWallboard.saveStatus);
+  const activeWallboard = useSelector((state) => state.wallboards.activeWallboard.wallboard);
+  const [isNewWallboardClicked, setIsNewWallboardClicked] = useState(false);
+  const history = useHistory();
+  useEffect(() => {
+    if (newWallboardSaveStatus === FetchStatus.SUCCESS && isNewWallboardClicked) {
+      setIsNewWallboardClicked(false);
+      dispatch(saveWallboardResetStatusAC());
+      history.push(`/wallboard/${activeWallboard.id}/edit`);
+    }
+  }, [newWallboardSaveStatus]);
   const heading = () => {
     return (
       <div className="c-toolbar-left__wrapper">
@@ -33,7 +43,7 @@ const Toolbar = (props) => {
     };
     return (
       <div className="c-toolbar-left__wrapper">
-        <input onChange={handleChangeTitle} className="c-input c-input--new-walboard-title" value={newWallboardTitle} />
+        <input onChange={handleChangeTitle} className="c-input c-input--new-walboard-title" value={activeWallboard.name} />
 
         <p className="c-toolbar-left__wb-no">
           Viewing as {userInfo.firstName} {userInfo.lastName}
@@ -56,90 +66,35 @@ const Toolbar = (props) => {
   };
 
   const handleFilterInput = () => {
-    console.log('wallboards', wallboards);
-    function escapeRegexCharacters(str) {
-      return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    }
-
-    function getSuggestions(value) {
-      const escapedValue = value.length > 0 ? escapeRegexCharacters(value.trim()) : [];
-
-      if (escapedValue === '') {
-        return [];
-      }
-
-      const regex = new RegExp('^' + escapedValue, 'i');
-
-      return wallboards.filter((wallboard) => regex.test(wallboard.name));
-    }
-
-    function getSuggestionValue(suggestion) {
-      return suggestion.name;
-    }
-
-    function renderSuggestion(suggestion, query) {
-      const matches = match(suggestion.name, query.query);
-
-      const parts = parse(suggestion.name, matches);
-
-      return (
-        <span>
-          {parts.map((part, index) => {
-            const className = part.highlight ? 'react-autosuggest__suggestion-match' : null;
-
-            return (
-              <span className={className} key={index}>
-                {part.text}
-              </span>
-            );
-          })}
-        </span>
-      );
-    }
-
-    const onChange = (event, { newValue, method }) => {
-      setWbSearchValue(newValue);
-      dispatch(setFiltredWallboardsAC(newValue));
+    const onChangeSearchInput = (value, name) => {
+      setWbSearchValue(value);
+      dispatch(setFiltredWallboardsAC(value));
     };
 
-    const onSuggestionsFetchRequested = ({ value }) => {
-      setWbSearchSuggestions(getSuggestions(value));
-    };
-
-    const onSuggestionsClearRequested = () => {
-      setWbSearchSuggestions(getSuggestions([]));
-    };
-
-    const inputProps = {
-      placeholder: 'Search Wallboards...',
-      value: wbSearchValue,
-      onChange: onChange,
-    };
+    const allTitlesForAutocomplete = wallboards.map(({ name }) => name);
 
     return (
-      <Autosuggest
-        suggestions={wbSearchSuggestions}
-        onSuggestionsFetchRequested={onSuggestionsFetchRequested}
-        onSuggestionsClearRequested={onSuggestionsClearRequested}
-        getSuggestionValue={getSuggestionValue}
-        renderSuggestion={renderSuggestion}
-        inputProps={inputProps}
-      />
-      // <input
-      //   className="c-input c-input--landing-search"
-      //   value={wbFilter}
-      //   placeholder="Search dashboards…"
-      //   type="text"
-      //   onChange={(e) => updateFilterInput(e)}
-      // />
+      <div className="c-toolbar-right__search-input">
+        <CustomAutosuggest
+          name="skill"
+          placeholder="Search Wallboards..."
+          onChange={onChangeSearchInput}
+          value={wbSearchValue}
+          allTitles={allTitlesForAutocomplete}
+        />
+      </div>
     );
   };
 
   const handleNewWallboardButton = () => {
+    const onClick = () => {
+      setIsNewWallboardClicked(true);
+      dispatch(saveWallboardThunk());
+    };
     return (
-      <Link to="/wallboard/new">
-        <button className="c-button c-button--m-left">+ New Wallboard</button>
-      </Link>
+      <button onClick={onClick} className="c-button c-button--m-left">
+        + New Wallboard
+      </button>
     );
   };
   const handleNewWallboardGroupButton = () => {
@@ -181,32 +136,20 @@ const Toolbar = (props) => {
   };
 
   const handleSaveButton = () => {
-    const handleClick = async () => {
-      const currentDate = new Date().getTime();
-      const wbId = `${userInfo.organisationId}-${userInfo.id}-d-${currentDate}`;
-      const data = {
-        id: wbId,
-        name: newWallboardData.title,
-        createdBy: `${userInfo.firstName} ${userInfo.lastName}`,
-        createdOn: currentDate,
-        description: 'Not implemented yet'
-      }
-      const options = {
-        method: 'put',
-        url: `https://wallboards-store.redmatter-qa01.pub/organisation/${userInfo.organisationId}/key/${wbId}`,
-        data,
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: 'Bearer ' + token,
-          'Access-Control-Allow-Origin': '*',
-          Accept: 'application/json'
-        }
-      }
-      
-      await axios(options).then(console.log('success'))
-
-    }
-    return <button onClick={() => {handleClick()}} className="c-button c-button--m-left">Save</button>;
+    const handleClick = () => {
+      setIsNewWallboardClicked(true);
+      dispatch(saveWallboardThunk());
+    };
+    return (
+      <button
+        onClick={() => {
+          handleClick();
+        }}
+        className="c-button c-button--m-left"
+      >
+        Save
+      </button>
+    );
   };
   const handleCloseButton = () => {
     return <button className="c-button c-button--m-left">Close</button>;
