@@ -20,8 +20,9 @@ const ResizeComponent = ({ children, onResize = () => {}, width = '', height = '
     onResize({ width: eWidth, height: eHeight });
   };
   useEffect(() => {
-    if (agentListRef.current) {
-      agentListRef.current.style.height = height;
+    if (agentListRef.current && agentListBodyRef.current) {
+      agentListRef.current.style.height =
+        agentListBodyRef.current.offsetHeight > +height.split('px')[0] ? agentListBodyRef.current.offsetHeight : height;
       agentListRef.current.style.width = width;
     }
     // eslint-disable-next-line

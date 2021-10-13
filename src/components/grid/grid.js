@@ -3,12 +3,15 @@ import { createArrayFromTo } from 'src/common/utils/generateArray';
 import GridAgentList from './grid.agent-list';
 import { SortableItem, SortableList } from '../sortable/sortable';
 import { useDispatch, useSelector } from 'react-redux';
-import { changeWallboardComponentsOrderAC } from 'src/store/actions/wallboards.action';
+import { changeWallboardComponentsOrderAC, resetWallboardEditPageDataAC } from 'src/store/actions/wallboards.action';
 const GridPage = ({ ...props }) => {
   const [gridCells, setGridCells] = useState(480);
   const activeWallboard = useSelector((state) => state.wallboards.activeWallboard.wallboard);
   const dispatch = useDispatch();
-
+  useEffect(() => {
+    return () => dispatch(resetWallboardEditPageDataAC());
+    // eslint-disable-next-line
+  }, []);
   useEffect(() => {
     const onScroll = () => {
       if (window.innerHeight + window.pageYOffset >= document.body.offsetHeight) {

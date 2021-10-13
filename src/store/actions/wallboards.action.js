@@ -28,6 +28,8 @@ export const wallboardsActions = {
   SET_WIDGET_SIZE: 'SET_WIDGET_SIZE',
 
   SET_WIDGET_FOR_EDIT: 'SET_WIDGET_FOR_EDIT',
+
+  RESET_WALLBOARD_EDIT_PAGE_DATA: 'RESET_WALLBOARD_EDIT_PAGE_DATA',
 };
 
 export const handleWallboardActiveModalAC = (modalName) => ({
@@ -124,4 +126,8 @@ export const setWidgetSizeAC = (size, widgetId) => ({
 export const setWidgetComponentForEditAC = (widgetId) => ({
   type: wallboardsActions.SET_WIDGET_FOR_EDIT,
   payload: widgetId,
+});
+
+export const resetWallboardEditPageDataAC = () => ({
+  type: wallboardsActions.RESET_WALLBOARD_EDIT_PAGE_DATA,
 });

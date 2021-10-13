@@ -301,6 +301,15 @@ export const wallboardsReducer = (state = { ...initialState }, action) => {
         },
       };
     }
+
+    case wallboardsActions.RESET_WALLBOARD_EDIT_PAGE_DATA: {
+      return {
+        ...state,
+        activeWallboard: {
+          ...initialState.activeWallboard,
+        },
+      };
+    }
     default:
       return state;
   }
