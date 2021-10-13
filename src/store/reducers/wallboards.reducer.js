@@ -1,4 +1,4 @@
-import { generateWallboardComponentId } from 'src/common/utils/generateId';
+import { generateWallboardWidgetId } from 'src/common/utils/generateId';
 import {
   ADD_COMPONENT_COLUMNS_NO_OPTIONS,
   ADD_COMPONENT_STATE_OPTIONS,
@@ -254,7 +254,7 @@ export const wallboardsReducer = (state = { ...initialState }, action) => {
                         id: state.modalAddComponent.id,
                       }
                 )
-              : [...widgets, { ...newWidget, id: generateWallboardComponentId(action.payload.organisationId, action.payload) }],
+              : [...widgets, { ...newWidget, id: generateWallboardWidgetId(action.payload.organisationId, action.payload) }],
           },
         },
       };

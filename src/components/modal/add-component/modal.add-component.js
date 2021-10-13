@@ -182,7 +182,7 @@ const ModalAddComponent = ({ ...props }) => {
                       key={option.value}
                       label={option.text}
                       name={option.value}
-                      className="c-checkbox--m-t-b"
+                      className="c-checkbox--margin-top-bottom"
                       checked={checkIsCheckboxChecked(formData.skillsToView.selectedItems, option.value)}
                       onChange={(event) => handleCheckBoxList(event, 'skillsToView')}
                     />
@@ -235,7 +235,7 @@ const ModalAddComponent = ({ ...props }) => {
                       key={option.value}
                       label={option.text}
                       name={option.value}
-                      className="c-checkbox--m-t-b"
+                      className="c-checkbox--margin-top-bottom"
                       checked={checkIsCheckboxChecked(formData.availabilityStates.selectedItems, option.value)}
                       onChange={(event) => handleCheckBoxList(event, 'availabilityStates')}
                     />
@@ -316,7 +316,7 @@ const ModalAddComponent = ({ ...props }) => {
                   key={option.value}
                   label={option.text}
                   name={option.value}
-                  className="c-checkbox--m-t-b"
+                  className="c-checkbox--margin-top-bottom"
                   checked={checkIsCheckboxChecked(formData.columnsToViewOptions.selectedItems, option.value)}
                   onChange={(event) => handleCheckBoxList(event, 'columnsToViewOptions')}
                 />
@@ -364,7 +364,7 @@ const ModalAddComponent = ({ ...props }) => {
                   key={option.value}
                   label={option.text}
                   name={option.value}
-                  className="c-checkbox--m-t-b"
+                  className="c-checkbox--margin-top-bottom"
                   checked={checkIsCheckboxChecked(formData.presenceStates.selectedItems, option.value)}
                   onChange={(event) => handleCheckBoxList(event, 'presenceStates')}
                 />
@@ -380,7 +380,7 @@ const ModalAddComponent = ({ ...props }) => {
               key={option.value}
               label={option.text}
               name={option.value}
-              className="c-checkbox--m-t-b"
+              className="c-checkbox--margin-top-bottom"
               checked={checkIsCheckboxChecked(formData.interactivityOptions.selectedItems, option.value)}
               onChange={(event) => handleCheckBoxList(event, 'interactivityOptions')}
             />
