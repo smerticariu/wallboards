@@ -52,6 +52,13 @@ const LandingTable = () => {
     dispatch(copyWallboardThunk({ wb }));
   };
 
+  const handleConvertDate = date => {
+    let dateToConvert = new Date(date);
+    dateToConvert.setDate(dateToConvert.getDate());
+    const dateString = ('0' + dateToConvert.getDate()).slice(-2) + '/' + ('0' + (dateToConvert.getMonth()+1)).slice(-2) + '/' + dateToConvert.getFullYear();
+    return dateString;
+  }
+
   if (fetchStatus !== FetchStatus.SUCCESS) return <div>Fetch all wallboards in progress</div>;
   return (
     <div className="c-landing-table">
@@ -84,7 +91,7 @@ const LandingTable = () => {
                     <p>{wb.createdBy}</p>
                   </td>
                   <td className="c-landing-table__wb-created-on">
-                    <p>{wb.createdOn}</p>
+                    <p>{handleConvertDate(wb.createdOn)}</p>
                   </td>
                   <td className="c-landing-table__wb-actions">
                     <Link target="_blank" to={`/wallboard/${wb.id}/edit`} className="c-landing-table__edit-btn" />
