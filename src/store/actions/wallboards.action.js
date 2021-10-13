@@ -80,7 +80,7 @@ export const fetchAllWallboardsAC = () => ({
 });
 export const fetchAllWallboardsSuccessAC = (wallboards) => ({
   type: wallboardsActions.FETCH_ALL_WALLBOARDS_SUCCESS,
-  payload: wallboards.data,
+  payload: wallboards,
 });
 export const fetchAllWallboardsFailAC = (errorMEssage) => ({
   type: wallboardsActions.FETCH_ALL_WALLBOARDS_FAIL,

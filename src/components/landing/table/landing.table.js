@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { setWallboardsByCategoryAC } from 'src/store/actions/wallboards.action';
 import { FetchStatus } from 'src/store/reducers/wallboards.reducer';
-import { fetchAllWallboardsThunk, deleteWallboardThunk, copyWallboardThunk } from 'src/store/thunk/wallboards.thunk';
+import { fetchAllWallboardsThunk, deleteWallboardThunk, copyWallboardThunk,syncWallboardsWithConfig } from 'src/store/thunk/wallboards.thunk';
 
 const LandingTable = () => {
   const dispatch = useDispatch();
@@ -13,9 +13,10 @@ const LandingTable = () => {
   const category = useSelector((state) => state.landing.category);
   const filter = useSelector((state) => state.landing.filterWallboards);
   useEffect(() => {
+    dispatch(syncWallboardsWithConfig());
     dispatch(fetchAllWallboardsThunk());
     // eslint-disable-next-line
-  }, []);
+  }, [wallboards.length]);
 
   useEffect(() => {
     const filterWbsByCategory = (category) => {
@@ -34,17 +35,14 @@ const LandingTable = () => {
     const filteredWbsByCategory = filterWbsByCategory(category);
 
     const wallboardsByInput = filteredWbsByCategory.filter(
-      (wb) => wb.key.toLowerCase().includes(filter.toLowerCase()) || wb.key.toLowerCase().includes(filter.toLowerCase())
+      (wb) => {if(wb?.name?.toLowerCase().includes(filter.toLowerCase()) || wb?.createdBy?.toLowerCase().includes(filter.toLowerCase())) return wb}
     );
-
-    // const wallboardsByInput = filteredWbsByCategory.filter( // TEMPORARY
-    //   (wb) => wb.name.toLowerCase().includes(filter.toLowerCase()) || wb.createdBy.toLowerCase().includes(filter.toLowerCase())
-    // );
+    
 
     setFilteredWbs(wallboardsByInput);
     dispatch(setWallboardsByCategoryAC(wallboardsByInput));
     // eslint-disable-next-line
-  }, [category, filter, wallboards]);
+  }, [category, filter, wallboards.length]);
 
   const handleDelete = (id) => {
     dispatch(deleteWallboardThunk({ wbId: id }));
@@ -73,11 +71,11 @@ const LandingTable = () => {
                 <tr key={index}>
                   <td className="c-landing-table__wb-name">
                     <p>
-                      <a target="_blank" rel="noreferrer" href={`http://localhost:3000/wallboard/${wb.key}`}>
-                        {wb.key}
+                      <a target="_blank" rel="noreferrer" href={`http://localhost:3000/wallboard/${wb.id}`}>
+                        {wb.name}
                       </a>
                     </p>
-                    <span>{wb.by}</span>
+                    <span>{wb.description}</span>
                   </td>
                   <td className="c-landing-table__wb-folder">
                     <p>{wb.folder}</p>
@@ -89,7 +87,7 @@ const LandingTable = () => {
                     <p>{wb.createdOn}</p>
                   </td>
                   <td className="c-landing-table__wb-actions">
-                    <Link target="_blank" to={`/wallboard/${wb.key}/edit`} className="c-landing-table__edit-btn" />
+                    <Link target="_blank" to={`/wallboard/${wb.id}/edit`} className="c-landing-table__edit-btn" />
                     <button
                       onClick={() => {
                         handleCopy(wb);
@@ -98,7 +96,7 @@ const LandingTable = () => {
                     ></button>
                     <button
                       onClick={() => {
-                        handleDelete(wb.key);
+                        handleDelete(wb.id);
                       }}
                       className="c-landing-table__delete-btn"
                     ></button>
