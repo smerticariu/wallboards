@@ -138,6 +138,20 @@ const Toolbar = (props) => {
     );
   };
 
+  const checkIfExistWallboardChanges = () => {
+    return Object.keys(activeWallboardInitialValues).some((key) => {
+      if (key === 'widgets') {
+        return activeWallboard.widgets.some((_, index) => {
+          return JSON.stringify(activeWallboard.widgets[index]) !== JSON.stringify(activeWallboardInitialValues.widgets[index]);
+        });
+      }
+      if (activeWallboardInitialValues[key] !== activeWallboard[key]) {
+        return true;
+      }
+      return false;
+    });
+  };
+
   const handleSaveButton = () => {
     const handleClick = () => {
       setIsNewWallboardClicked(true);
@@ -156,13 +170,7 @@ const Toolbar = (props) => {
   };
   const handleCloseButton = () => {
     const onClickCloseButton = () => {
-      const isChanges = Object.keys(activeWallboardInitialValues).some((key) => {
-        if (activeWallboardInitialValues[key] !== activeWallboard[key]) {
-          return true;
-        }
-        return false;
-      });
-      if (isChanges) return dispatch(handleWallboardActiveModalAC(WALLBOARD_MODAL_NAMES.SAVE_WALLBOARD));
+      if (checkIfExistWallboardChanges()) return dispatch(handleWallboardActiveModalAC(WALLBOARD_MODAL_NAMES.SAVE_WALLBOARD));
       return history.push('/');
     };
     return (
@@ -172,7 +180,11 @@ const Toolbar = (props) => {
     );
   };
   const handleRunButton = () => {
-    return <Link target="_blank" to={`/wallboard/${activeWallboard.id}`} className="c-button c-button--blue c-button--m-left">Run</Link>;
+    return (
+      <Link target="_blank" to={`/wallboard/${activeWallboard.id}`} className="c-button c-button--blue c-button--m-left">
+        Run
+      </Link>
+    );
   };
 
   const handleRightToolbar = (template) => {

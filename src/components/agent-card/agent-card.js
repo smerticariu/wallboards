@@ -1,8 +1,9 @@
 import img from 'src/assets/static/images/not_exist_people.png';
 import React from 'react';
-const AgentCard = ({ name, ext, status, totalTime, callTime, callStatus, ...props }) => {
+import { PRESENCE_STATE_KEYS_COLOR } from '../modal/add-component/modal.add-component.defaults';
+const AgentCard = ({ name, ext, status, totalTime, callTime, callStatus, callStatusKey, ...props }) => {
   return (
-    <div className="agent-c">
+    <div className={`agent-c agent-c--${PRESENCE_STATE_KEYS_COLOR.CARD_BACKGROUND[callStatusKey]}`}>
       <div className="agent-c__header">
         <div className="agent-c__user">
           <div
@@ -19,8 +20,12 @@ const AgentCard = ({ name, ext, status, totalTime, callTime, callStatus, ...prop
         <div className="agent-c__setiings-icon">x</div>
       </div>
       <div className="agent-c__status-time">
-        <div className="agent-c__status">{status}</div>
-        <div className="agent-c__time">{totalTime}</div>
+        <div
+          className={`agent-c__status agent-c__status--${PRESENCE_STATE_KEYS_COLOR.CARD_AVAILABILITY_STATUS_BACKGROUND[callStatusKey]} agent-c__status--${PRESENCE_STATE_KEYS_COLOR.CARD_AVAILABILITY_STATUS[callStatusKey]}`}
+        >
+          {status}
+        </div>
+        <div className={`agent-c__time agent-c__time--${PRESENCE_STATE_KEYS_COLOR.CARD_TOTAL_TIME[callStatusKey]}`}>{totalTime}</div>
       </div>
       <div className="agent-c__body">
         <div className="agent-c__call-time-text">Call time</div>

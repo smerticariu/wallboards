@@ -10,15 +10,14 @@ const CustomAutosuggest = ({ allTitles, value, name, placeholder = '', isSmallSi
   }
 
   function getSuggestions(value) {
-    const escapedValue = value.length > 0 ? escapeRegexCharacters(value.trim()) : [];
+    const escapedValue = value?.value?.length ? escapeRegexCharacters(value.value.trim()) : [];
 
-    if (escapedValue === '') {
+    if (!escapedValue.length) {
       return [];
     }
-
-    const regex = new RegExp('^' + escapedValue, 'i');
-
-    return allTitles.filter((title) => regex.test(title));
+    return allTitles.filter((title) => {
+      return title.toLowerCase().includes(escapedValue.toLowerCase());
+    });
   }
 
   function getSuggestionValue(suggestion) {
@@ -27,7 +26,6 @@ const CustomAutosuggest = ({ allTitles, value, name, placeholder = '', isSmallSi
 
   function renderSuggestion(suggestion, query) {
     const matches = match(suggestion, query.query);
-
     const parts = parse(suggestion, matches);
 
     return (
@@ -53,8 +51,8 @@ const CustomAutosuggest = ({ allTitles, value, name, placeholder = '', isSmallSi
     setSearchSuggestions(getSuggestions(value));
   };
 
-  const onSuggestionsClearRequested = () => {
-    setSearchSuggestions(getSuggestions([]));
+  const onSuggestionsClearRequested = (value) => {
+    setSearchSuggestions(getSuggestions(value));
   };
 
   const inputProps = {

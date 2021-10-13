@@ -2,8 +2,35 @@
   display: flex;
   flex-direction: column;
   width: 230px;
-  background-color: $natterbox-lighter-red;
-  color: $white;
+  color: $natterbox-dark-blue-grey;
+  -webkit-font-smoothing: antialiased;
+  &--sun-yellow {
+    background-color: $sun-yellow;
+    font-weight: 600;
+  }
+  &--lighter-red {
+    background-color: $natterbox-lighter-red;
+    color: $white;
+  }
+  &--orange {
+    background-color: $natterbox-orange;
+    color: $white;
+  }
+  &--magenta {
+    background-color: $natterbox-magenta;
+    color: $white;
+  }
+  &--aqua {
+    background-color: $natterbox-aqua;
+    font-weight: 600;
+  }
+  &--sick-green {
+    background-color: $sick-green;
+    font-weight: 600;
+  }
+  &--grey {
+    background-color: $pinkish-grey-two;
+  }
   border-radius: 8px;
   height: max-content;
   margin: 7px;
@@ -18,7 +45,7 @@
   &__user {
     display: flex;
     &-image {
-      width: 30px;
+      min-width: 30px;
       height: 30px;
       background-position: center;
       background-repeat: no-repeat;
@@ -41,7 +68,6 @@
     justify-content: space-between;
   }
   &__status {
-    background-color: $natterbox-dark-blue-grey;
     width: 60%;
     padding-left: 10px;
     font-family: $public-sans-regular;
@@ -50,16 +76,41 @@
     font-weight: 500;
     border-bottom-right-radius: 8px;
     border-top-right-radius: 8px;
+    color: $natterbox-dark-blue-grey;
+    &--lighter-red {
+      background-color: $natterbox-lighter-red;
+    }
+    &--dark-blue {
+      background-color: $natterbox-dark-blue-grey;
+    }
+    &--red {
+      background-color: $natterbox-red;
+    }
+    &--green {
+      background-color: $natterbox-green;
+      font-weight: 600;
+    }
+    &--grey {
+      background-color: $pinkish-grey;
+      font-weight: 600;
+    }
+    &--white {
+      color: $white;
+    }
   }
   &__time {
     background-color: rgba($white, 0.08);
     width: fit-content;
     padding: 0 10px;
-    font-family: $public-sans-regular;
+    font-family: $public-sans-thin;
     font-size: 10px;
     line-height: 1.4;
     border-bottom-left-radius: 8px;
     border-top-left-radius: 8px;
+    color: $natterbox-dark-blue-grey;
+    &--white {
+      color: $white;
+    }
   }
   &__body {
     padding: 0 10px;
@@ -70,7 +121,6 @@
       font-family: $public-sans-regular;
       font-size: 9px;
       font-weight: 500;
-      color: $white;
       margin-bottom: 4px;
     }
     &-time-container {
@@ -87,14 +137,12 @@
       font-size: 24px;
       line-height: 24px;
       font-weight: 500;
-      color: $white;
     }
   }
   &__footer {
     font-family: $public-sans-regular;
-    font-size: 9px;
+    font-size: 14px;
     font-weight: 500;
-    color: $white;
     text-align: center;
     margin: 5px 0 10px 0;
   }

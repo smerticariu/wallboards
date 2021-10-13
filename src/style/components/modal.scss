@@ -48,6 +48,9 @@
     font-family: $inter-regular;
     font-size: 18px;
     color: $slate-gray;
+    &--bold {
+      font-family: $inter-bold;
+    }
   }
 
   &__body {
@@ -209,9 +212,6 @@
       font-weight: 900;
       color: $turquoise-blue;
       margin-bottom: 5px;
-      &--grey {
-        color: $input-text-colour;
-      }
     }
     &__sort-radio {
       margin: 3px 0;
@@ -225,14 +225,11 @@
       display: flex;
       flex-direction: column;
       width: 100%;
-      max-height: 120px;
+      max-height: 150px;
       overflow: auto;
       padding: 3px 5px;
       border: solid 1px $pinkish-grey;
       margin-top: 5px;
-      &--columns {
-        max-height: 200px;
-      }
     }
     &__select-checkbox {
       display: flex;
@@ -250,6 +247,7 @@
       font-family: $public-sans-regular;
       font-size: 14px;
       color: $slate-gray;
+      margin-bottom: 10px;
       &--bold {
         font-family: $public-sans-bold;
       }
@@ -267,6 +265,9 @@
       display: flex;
       overflow: auto;
       max-width: 1000px;
+      .agent-t:nth-child(2) {
+        margin-left: 15px;
+      }
     }
   }
   &__footer {

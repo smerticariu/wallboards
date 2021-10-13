@@ -8,12 +8,14 @@
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-
   font-family: $public-sans-regular;
   font-size: 14px;
   color: $slate-gray;
   &--m-left {
     margin-left: 15px;
+  }
+  &--margin-top-bottom {
+    margin: 1px 0;
   }
   input {
     position: absolute;
@@ -43,7 +45,7 @@
   }
 
   &__checkmark:after {
-    content: "";
+    content: '';
     position: absolute;
     display: none;
   }

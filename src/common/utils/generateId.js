@@ -3,7 +3,7 @@ export const generateWallboardId = (userOrgId, userId) => {
   return `${userOrgId}-${userId}-d-${currentDate}`;
 };
 
-export const generateWallboardComponentId = (userOrgId, userId) => {
+export const generateWallboardWidgetId = (userOrgId, userId) => {
   const currentDate = new Date().getTime();
   return `${userOrgId}-c-${userId}-d-${currentDate}`;
 };
