@@ -1,13 +1,50 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { handleWallboardActiveModalAC, setWidgetComponentForEditAC, setWidgetSizeAC } from 'src/store/actions/wallboards.action';
 import AgentCard from '../agent-card/agent-card';
 import AgentTable from '../agent-table/agent-table';
 import { MAIN_VIEWING_OPTIONS } from '../modal/add-component/modal.add-component.defaults';
+import { WALLBOARD_MODAL_NAMES } from '../modal/new-wallboard/modal.new-wallboard.defaults';
 import { SortableDragHandle } from '../sortable/sortable';
 import ResizeComponent from './grid.resize-component';
 
 const GridAgentList = ({ widget, ...props }) => {
+  const [cardSize, setCardSize] = useState({ width: widget?.size?.width, height: widget?.size?.height });
+  const dispatch = useDispatch();
+  useEffect(() => {
+    if (!cardSize.width && !cardSize.height) return;
+
+    const timeout = setTimeout(() => {
+      dispatch(setWidgetSizeAC(cardSize, widget.id));
+    }, 500);
+    return () => clearTimeout(timeout);
+    // eslint-disable-next-line
+  }, [cardSize]);
+  const onCardResize = (size) => {
+    setCardSize(size);
+  };
+
+  const handleEditIcon = () => {
+    const onEditClick = () => {
+      dispatch(setWidgetComponentForEditAC(widget.id));
+      dispatch(handleWallboardActiveModalAC(WALLBOARD_MODAL_NAMES.ADD_COMPONENT));
+    };
+    return (
+      <div onClick={onEditClick} className="a-list__edit-icon">
+        Edit
+      </div>
+    );
+  };
+  const handleDeleteIcon = () => {
+    const onDeleteClick = () => {};
+    return (
+      <div onClick={onDeleteClick} className="a-list__delete-icon">
+        X
+      </div>
+    );
+  };
   return (
-    <ResizeComponent className="a-list">
+    <ResizeComponent onResize={onCardResize} width={widget?.size?.width} height={widget?.size?.height} className="a-list">
       <div className="a-list__header">
         <SortableDragHandle>
           <div className="a-list__title">
@@ -16,53 +53,71 @@ const GridAgentList = ({ widget, ...props }) => {
           </div>
         </SortableDragHandle>
         <div className="a-list__icons">
-          <div className="a-list__edit-icon">E</div>
-          <div className="a-list__delete-icon">D</div>
+          {handleEditIcon()}
+          {handleDeleteIcon()}
         </div>
       </div>
-      <div className="a-list__body">
+      <div className={`a-list__body ${widget.view === MAIN_VIEWING_OPTIONS.TABLE ? 'a-list__body--table' : ''}`}>
         {widget.view === MAIN_VIEWING_OPTIONS.CARD ? (
-          <>
+          widget.presenceStates.selectedItems.map((presenceState) => (
             <AgentCard
+              key={presenceState}
               callStatus="Inbound Call"
+              callStatusKey={presenceState}
               callTime="--:--:--"
               ext="0000"
               name="Staff Member Name"
               status="User online status"
               totalTime="00:00:00"
             />
-            <AgentCard
-              callStatus="Inbound Call"
-              callTime="--:--:--"
-              ext="0000"
-              name="Staff Member Name"
-              status="User online status"
-              totalTime="00:00:00"
-            />
-            <AgentCard
-              callStatus="Inbound Call"
-              callTime="--:--:--"
-              ext="0000"
-              name="Staff Member Name"
-              status="User online status"
-              totalTime="00:00:00"
-            />
-          </>
+          ))
         ) : (
           <>
             <AgentTable
-              agentName={'Test Value'}
-              agentExtNo={'Test Value'}
-              currAvaiState={'Test Value'}
-              // currPresState={'Test Value'}
-              // noCallsOffered={'Test Value'}
-              // noCallsAnswered={'Test Value'}
-              // noCallsMissed={'Test Value'}
-              // timeInCurrentPresenceState={'Test Value'}
-              // timeInCurrentAvailabilityState={'Test Value'}
-              timeInCurrentCall={'Test Value'}
-              timeInCurrentWrapup={'Test Value'}
-              listOfSkills={'Test Value'}
+              agents={[
+                {
+                  agentName: 'Megan Carter',
+                  agentExtNo: '0000',
+                  currAvaiState: 'Busy on calls',
+                  currPresState: 'Inbound Call',
+                  noCallsOffered: '0',
+                  // noCallsAnswered: '0',
+                  // noCallsMissed: '0',
+                  // timeInCurrentPresenceState: '- - : - - : - -',
+                  // timeInCurrentAvailabilityState: '- - : - - : - -',
+                  // timeInCurrentCall: '- - : - - : - -',
+                  timeInCurrentWrapup: '- - : - - : - -',
+                  // listOfSkills: 'Skill',
+                },
+                {
+                  agentName: 'Megan Carter',
+                  agentExtNo: '0000',
+                  currAvaiState: 'Busy on calls',
+                  currPresState: 'Inbound Call',
+                  noCallsOffered: '0',
+                  // noCallsAnswered: '0',
+                  // noCallsMissed: '0',
+                  // timeInCurrentPresenceState: '- - : - - : - -',
+                  // timeInCurrentAvailabilityState: '- - : - - : - -',
+                  // timeInCurrentCall: '- - : - - : - -',
+                  timeInCurrentWrapup: '- - : - - : - -',
+                  // listOfSkills: 'Skill',
+                },
+                {
+                  agentName: 'Megan Carter',
+                  agentExtNo: '0000',
+                  currAvaiState: 'Busy on calls',
+                  currPresState: 'Inbound Call',
+                  noCallsOffered: '0',
+                  // noCallsAnswered: '0',
+                  // noCallsMissed: '0',
+                  // timeInCurrentPresenceState: '- - : - - : - -',
+                  // timeInCurrentAvailabilityState: '- - : - - : - -',
+                  // timeInCurrentCall: '- - : - - : - -',
+                  timeInCurrentWrapup: '- - : - - : - -',
+                  // listOfSkills: 'Skill',
+                },
+              ]}
             />
           </>
         )}

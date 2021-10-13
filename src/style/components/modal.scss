@@ -48,6 +48,9 @@
     font-family: $inter-regular;
     font-size: 18px;
     color: $slate-gray;
+    &--bold {
+      font-family: $inter-bold;
+    }
   }
 
   &__body {
@@ -244,6 +247,7 @@
       font-family: $public-sans-regular;
       font-size: 14px;
       color: $slate-gray;
+      margin-bottom: 10px;
       &--bold {
         font-family: $public-sans-bold;
       }
@@ -261,6 +265,9 @@
       display: flex;
       overflow: auto;
       max-width: 1000px;
+      .agent-t:nth-child(2) {
+        margin-left: 15px;
+      }
     }
   }
   &__footer {

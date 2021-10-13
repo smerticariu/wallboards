@@ -19,6 +19,7 @@ import {
   ADD_COMPONENT_STATE_OPTIONS,
   CALL_QUEUE_OPTIONS,
   MAIN_VIEWING_OPTIONS,
+  PRESENCE_STATE_KEYS,
   SORT_BY_OPTIONS,
 } from './modal.add-component.defaults';
 
@@ -59,7 +60,7 @@ const ModalAddComponent = ({ ...props }) => {
 
     return (
       <button className={`c-button c-button--m-left c-button--green`} onClick={onClickAddButton}>
-        Add
+        {formData.isEditMode ? 'Edit' : 'Add'}
       </button>
     );
   };
@@ -404,6 +405,7 @@ const ModalAddComponent = ({ ...props }) => {
             <div className="c-modal--add-component__agent-card">
               <AgentCard
                 callStatus="Inbound Call"
+                callStatusKey={PRESENCE_STATE_KEYS.AGENT_STATUS_INBOUND_CALL_OTHER}
                 callTime="--:--:--"
                 ext="0000"
                 name="Staff Member Name"
@@ -413,9 +415,9 @@ const ModalAddComponent = ({ ...props }) => {
             </div>
           ) : (
             <div className="c-modal--add-component__agent-table">
-              {createArrayFromTo(0, ADD_COMPONENT_COLUMNS_NO_OPTIONS.ONE === formData.columns ? 0 : 1).map((n) => (
+              {createArrayFromTo(0, ADD_COMPONENT_COLUMNS_NO_OPTIONS.ONE === formData.columns ? 0 : 1).map((index) => (
                 <AgentTablePreview
-                  key={n}
+                  key={index}
                   agentName={formData.columnsToViewOptions.selectedItems.includes(ADD_COMPONENT_COLUMN_OPTIONS.AGENT_NAME)}
                   agentExtNo={formData.columnsToViewOptions.selectedItems.includes(ADD_COMPONENT_COLUMN_OPTIONS.AGENT_EXTENSION)}
                   currAvaiState={formData.columnsToViewOptions.selectedItems.includes(ADD_COMPONENT_COLUMN_OPTIONS.CURRENT_AVAILABILITY)}
@@ -452,7 +454,7 @@ const ModalAddComponent = ({ ...props }) => {
       <div ref={modalRef} className="c-modal__container c-modal__container--add-component ">
         <div className="c-modal__content">
           <div className="c-modal__header">
-            <div className="c-modal__title">Add Component</div>
+            <div className="c-modal__title">{formData.isEditMode ? 'Edit' : 'Add'} Component</div>
           </div>
 
           <div className="c-modal__body--add-component">

@@ -24,6 +24,10 @@ export const wallboardsActions = {
   ADD_WALLBOARD_COMPONENT: 'ADD_WALLBOARD_COMPONENT',
 
   CHANGE_WALLBOARD_COMPONENTS_ORDER: 'CHANGE_WALLBOARD_COMPONENTS_ORDER',
+
+  SET_WIDGET_SIZE: 'SET_WIDGET_SIZE',
+
+  SET_WIDGET_FOR_EDIT: 'SET_WIDGET_FOR_EDIT',
 };
 
 export const handleWallboardActiveModalAC = (modalName) => ({
@@ -110,4 +114,14 @@ export const addWallboardComponentAC = (userInfo) => ({
 export const changeWallboardComponentsOrderAC = (components) => ({
   type: wallboardsActions.CHANGE_WALLBOARD_COMPONENTS_ORDER,
   payload: components,
+});
+
+export const setWidgetSizeAC = (size, widgetId) => ({
+  type: wallboardsActions.SET_WIDGET_SIZE,
+  payload: { size, widgetId },
+});
+
+export const setWidgetComponentForEditAC = (widgetId) => ({
+  type: wallboardsActions.SET_WIDGET_FOR_EDIT,
+  payload: widgetId,
 });

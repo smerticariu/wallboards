@@ -34,6 +34,8 @@ const initialState = {
     selectedElement: '',
   },
   modalAddComponent: {
+    isEditMode: false,
+    id: null,
     title: '',
     callQueue: CALL_QUEUE_OPTIONS[1].VALUE,
     mainViewing: MAIN_VIEWING_OPTIONS.CARD,
@@ -225,30 +227,77 @@ export const wallboardsReducer = (state = { ...initialState }, action) => {
 
     case wallboardsActions.ADD_WALLBOARD_COMPONENT: {
       const { widgets } = state.activeWallboard.wallboard;
-
+      const newWidget = {
+        name: state.modalAddComponent.title,
+        queue: state.modalAddComponent.callQueue,
+        view: state.modalAddComponent.mainViewing,
+        sortBy: state.modalAddComponent.sortBy,
+        availabilityStates: state.modalAddComponent.availabilityStates,
+        presenceStates: state.modalAddComponent.presenceStates,
+        interactivity: state.modalAddComponent.interactivityOptions,
+        columnsToView: state.modalAddComponent.columnsToViewOptions,
+        skills: state.modalAddComponent.skillsToView,
+        columns: state.modalAddComponent.columns,
+      };
       return {
         ...state,
         activeWallboard: {
           ...state.activeWallboard,
           wallboard: {
             ...state.activeWallboard.wallboard,
-            widgets: [
-              ...widgets,
-              {
-                id: generateWallboardComponentId(action.payload.organisationId, action.payload),
-                name: state.modalAddComponent.title,
-                queue: state.modalAddComponent.callQueue,
-                view: state.modalAddComponent.mainViewing,
-                sortBy: state.modalAddComponent.sortBy,
-                availabilityStates: state.modalAddComponent.availabilityStates.selectedItems,
-                presenceStates: state.modalAddComponent.presenceStates.selectedItems,
-                interactivity: state.modalAddComponent.interactivityOptions.selectedItems,
-                columnsToView: state.modalAddComponent.columnsToViewOptions.selectedItems,
-                skills: state.modalAddComponent.skillsToView.selectedItems,
-                columns: state.modalAddComponent.columns,
-              },
-            ],
+            widgets: state.modalAddComponent.isEditMode
+              ? widgets.map((widget) =>
+                  widget.id !== state.modalAddComponent.id
+                    ? widget
+                    : {
+                        ...newWidget,
+                        id: state.modalAddComponent.id,
+                      }
+                )
+              : [...widgets, { ...newWidget, id: generateWallboardComponentId(action.payload.organisationId, action.payload) }],
           },
+        },
+      };
+    }
+
+    case wallboardsActions.SET_WIDGET_SIZE: {
+      const { widgets } = state.activeWallboard.wallboard;
+      return {
+        ...state,
+        activeWallboard: {
+          ...state.activeWallboard,
+          wallboard: {
+            ...state.activeWallboard.wallboard,
+            widgets: widgets.map((widget) =>
+              widget.id === action.payload.widgetId
+                ? {
+                    ...widget,
+                    size: action.payload.size,
+                  }
+                : widget
+            ),
+          },
+        },
+      };
+    }
+
+    case wallboardsActions.SET_WIDGET_FOR_EDIT: {
+      const widgetForEdit = state.activeWallboard.wallboard.widgets.find((widget) => widget.id === action.payload);
+      return {
+        ...state,
+        modalAddComponent: {
+          title: widgetForEdit.name,
+          callQueue: widgetForEdit.queue,
+          mainViewing: widgetForEdit.view,
+          sortBy: widgetForEdit.sortBy,
+          columns: widgetForEdit.columns,
+          availabilityStates: widgetForEdit.availabilityStates,
+          presenceStates: widgetForEdit.presenceStates,
+          skillsToView: widgetForEdit.skills,
+          interactivityOptions: widgetForEdit.interactivity,
+          columnsToViewOptions: widgetForEdit.columnsToView,
+          isEditMode: true,
+          id: widgetForEdit.id,
         },
       };
     }

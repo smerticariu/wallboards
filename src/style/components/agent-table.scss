@@ -13,19 +13,19 @@
     color: $white;
     text-transform: capitalize;
     margin-bottom: 15px;
+    background-color: $turquoise-blue;
     &--preview {
       height: 16px;
       font-size: 7px;
-      margin-bottom: 7px;
+      margin-bottom: 4px;
     }
     &-item {
-      background-color: $turquoise-blue;
       display: flex;
       align-items: center;
       justify-content: center;
       min-width: 170px;
       height: 100%;
-      margin: 0;
+      margin: 0 1px 0 0;
       &--preview {
         min-width: 80px;
       }
@@ -41,7 +41,7 @@
     align-items: center;
     margin-bottom: 7px;
     &--preview {
-      margin-bottom: 3px;
+      margin-bottom: 0px;
     }
     &-info {
       padding: 12px 5px;
@@ -50,22 +50,21 @@
       color: $natterbox-dark-blue-grey;
       background-color: $pinkish-grey;
       width: 170px;
-
-      margin: 0;
+      margin: 0 1px 0 0;
       text-align: center;
       &--preview {
         width: 80px;
-        padding: 6px 3px;
+        padding: 3px 2px;
         font-size: 8px;
 
         white-space: nowrap;
         overflow: hidden;
       }
+      &--black,
       &--red,
       &--green {
         position: relative;
         padding-right: 10px;
-        margin-right: 1px;
       }
       &--red {
         background-color: $natterbox-red;
@@ -74,6 +73,10 @@
       &--green {
         background-color: $natterbox-green;
         color: $slate-gray;
+      }
+      &--black {
+        background-color: $natterbox-dark-blue-grey;
+        color: $white;
       }
 
       &--circle {
@@ -97,7 +100,15 @@
             height: 15px;
           }
           border-radius: 50%;
-          background-color: rgba($natterbox-green, 0.58);
+          &--green {
+            background-color: rgba($natterbox-green, 0.58);
+          }
+          &--red {
+            background-color: rgba($natterbox-lighter-red, 0.58);
+          }
+          &--orange {
+            background-color: rgba($natterbox-orange, 0.58);
+          }
         }
         &-center {
           width: 20px;
@@ -107,7 +118,15 @@
             height: 10px;
           }
           border-radius: 50%;
-          background-color: $natterbox-green;
+          &--green {
+            background-color: $natterbox-green;
+          }
+          &--red {
+            background-color: $natterbox-lighter-red;
+          }
+          &--orange {
+            background-color: $natterbox-orange;
+          }
         }
       }
     }

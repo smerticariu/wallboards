@@ -1,5 +1,6 @@
 import React from 'react';
 import { ArrowDownIcon } from 'src/assets/static/icons/arrow-down';
+import { previewAvailabilityStatusColors, previewStatusColors } from './agent-table.defaults';
 const AgentTablePreview = ({
   agentName,
   agentExtNo,
@@ -34,13 +35,17 @@ const AgentTablePreview = ({
       </div>
 
       <div className="agent-t__body">
-        {[0, 1].map((n) => (
-          <div key={n} className="agent-t__agent agent-t__agent--preview">
+        {[0, 1, 2].map((index) => (
+          <div key={index} className="agent-t__agent agent-t__agent--preview">
             {agentName && <div className="agent-t__agent-info agent-t__agent-info--preview">Megan Carter</div>}
             {currAvaiState && (
-              <div className={`agent-t__agent-info agent-t__agent-info--preview agent-t__agent-info${n ? '--red' : '--green'}`}>
-                {n ? 'Busy on calls' : 'I’m available'}
-                <ArrowDownIcon className="i--arrow--down i--arrow--down--table" />
+              <div
+                className={`agent-t__agent-info agent-t__agent-info--preview agent-t__agent-info--${previewAvailabilityStatusColors[index]}`}
+              >
+                {index === 0 && 'I’m available'}
+                {index === 1 && 'I’m currently busy'}
+                {index === 2 && 'On calls'}
+                <ArrowDownIcon className="i--arrow--down i--arrow--down--table i--arrow--down--small" />
               </div>
             )}
             {agentExtNo && <div className="agent-t__agent-info agent-t__agent-info--preview">0000</div>}
@@ -54,8 +59,12 @@ const AgentTablePreview = ({
             {timeInCurrentWrapup && <div className="agent-t__agent-info agent-t__agent-info--preview">- - : - - : - -</div>}
             {listOfSkills && <div className="agent-t__agent-info agent-t__agent-info--preview">skill</div>}
             <div className="agent-t__agent-info agent-t__agent-info--circle agent-t__agent-info--circle--preview">
-              <div className="agent-t__agent-info--circle-container agent-t__agent-info--circle-container--preview">
-                <div className="agent-t__agent-info--circle-center agent-t__agent-info--circle-center--preview"></div>
+              <div
+                className={`agent-t__agent-info--circle-container agent-t__agent-info--circle-container--${previewStatusColors[index]} agent-t__agent-info--circle-container--preview`}
+              >
+                <div
+                  className={`agent-t__agent-info--circle-center agent-t__agent-info--circle-center--${previewStatusColors[index]} agent-t__agent-info--circle-center--preview`}
+                ></div>
               </div>
               Idle
             </div>

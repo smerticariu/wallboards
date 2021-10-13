@@ -66,7 +66,10 @@ const ModalSaveWallboard = ({ ...props }) => {
       <div ref={modalRef} className="c-modal__container c-modal__container--save-changes ">
         <div className="c-modal__content">
           <div className="c-modal__header">
-            <div className="c-modal__title">Save Wallboard</div>
+            <div className="c-modal__title">
+              Save
+              <span className="c-modal__title c-modal__title--bold"> Wallboard</span>
+            </div>
           </div>
           <div className="c-modal__body c-modal__body--save-changes">
             <div className="c-modal__body--save-changes__phrase">

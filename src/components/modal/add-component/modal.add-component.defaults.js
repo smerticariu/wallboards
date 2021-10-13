@@ -46,6 +46,54 @@ export const ADD_COMPONENT_COLUMN_OPTIONS = {
   TIME_CURRENT_WRAPUP: 'TIME_CURRENT_WRAPUP',
   SKILLS_AGENT_POSSESSES: 'SKILLS_AGENT_POSSESSES',
 };
+export const PRESENCE_STATE_KEYS = {
+  AGENT_STATUS_INBOUND_CALL_QUEUE: 'onQCall',
+  AGENT_STATUS_INBOUND_CALL_OTHER: 'inboundCall',
+  AGENT_STATUS_OUTBOUND: 'outboundCall',
+  AGENT_STATUS_RINGING: 'ringing',
+  AGENT_STATUS_IN_WRAP_UP: 'inWrapUp',
+  AGENT_STATUS_IDLE: 'idle',
+  AGENT_STATUS_LOGGED_OFF: 'loggedOff',
+};
+
+export const PRESENCE_STATE_KEYS_COLOR = {
+  CARD_BACKGROUND: {
+    [PRESENCE_STATE_KEYS.AGENT_STATUS_IDLE]: 'sick-green',
+    [PRESENCE_STATE_KEYS.AGENT_STATUS_IN_WRAP_UP]: 'aqua',
+    [PRESENCE_STATE_KEYS.AGENT_STATUS_INBOUND_CALL_OTHER]: 'lighter-red',
+    [PRESENCE_STATE_KEYS.AGENT_STATUS_RINGING]: 'magenta',
+    [PRESENCE_STATE_KEYS.AGENT_STATUS_INBOUND_CALL_QUEUE]: 'sun-yellow',
+    [PRESENCE_STATE_KEYS.AGENT_STATUS_OUTBOUND]: 'orange',
+    [PRESENCE_STATE_KEYS.AGENT_STATUS_LOGGED_OFF]: 'grey',
+  },
+  CARD_AVAILABILITY_STATUS_BACKGROUND: {
+    [PRESENCE_STATE_KEYS.AGENT_STATUS_IDLE]: 'green',
+    [PRESENCE_STATE_KEYS.AGENT_STATUS_IN_WRAP_UP]: 'green',
+    [PRESENCE_STATE_KEYS.AGENT_STATUS_INBOUND_CALL_OTHER]: 'dark-blue',
+    [PRESENCE_STATE_KEYS.AGENT_STATUS_RINGING]: 'lighter-red',
+    [PRESENCE_STATE_KEYS.AGENT_STATUS_INBOUND_CALL_QUEUE]: 'lighter-red',
+    [PRESENCE_STATE_KEYS.AGENT_STATUS_OUTBOUND]: 'red',
+    [PRESENCE_STATE_KEYS.AGENT_STATUS_LOGGED_OFF]: 'grey',
+  },
+  CARD_AVAILABILITY_STATUS: {
+    [PRESENCE_STATE_KEYS.AGENT_STATUS_IDLE]: 'black',
+    [PRESENCE_STATE_KEYS.AGENT_STATUS_IN_WRAP_UP]: 'black',
+    [PRESENCE_STATE_KEYS.AGENT_STATUS_INBOUND_CALL_OTHER]: 'white',
+    [PRESENCE_STATE_KEYS.AGENT_STATUS_RINGING]: 'white',
+    [PRESENCE_STATE_KEYS.AGENT_STATUS_INBOUND_CALL_QUEUE]: 'white',
+    [PRESENCE_STATE_KEYS.AGENT_STATUS_OUTBOUND]: 'white',
+    [PRESENCE_STATE_KEYS.AGENT_STATUS_LOGGED_OFF]: 'black',
+  },
+  CARD_TOTAL_TIME: {
+    [PRESENCE_STATE_KEYS.AGENT_STATUS_IDLE]: 'black',
+    [PRESENCE_STATE_KEYS.AGENT_STATUS_IN_WRAP_UP]: 'black',
+    [PRESENCE_STATE_KEYS.AGENT_STATUS_INBOUND_CALL_OTHER]: 'white',
+    [PRESENCE_STATE_KEYS.AGENT_STATUS_RINGING]: 'white',
+    [PRESENCE_STATE_KEYS.AGENT_STATUS_INBOUND_CALL_QUEUE]: 'black',
+    [PRESENCE_STATE_KEYS.AGENT_STATUS_OUTBOUND]: 'white',
+    [PRESENCE_STATE_KEYS.AGENT_STATUS_LOGGED_OFF]: 'black',
+  },
+};
 
 export const ADD_COMPONENT_STATE_OPTIONS = {
   //in the future it may be needed
@@ -74,37 +122,37 @@ export const ADD_COMPONENT_STATE_OPTIONS = {
   presenceStates: [
     {
       text: 'Inbound Call',
-      value: 'INBOUND_CALL',
+      value: PRESENCE_STATE_KEYS.AGENT_STATUS_INBOUND_CALL_OTHER,
       isInitialChecked: true,
     },
     {
       text: 'Ringing',
-      value: 'RINGING',
+      value: PRESENCE_STATE_KEYS.AGENT_STATUS_RINGING,
       isInitialChecked: true,
     },
     {
       text: 'In Wrapup',
-      value: 'IN_WRAPUP',
+      value: PRESENCE_STATE_KEYS.AGENT_STATUS_IN_WRAP_UP,
       isInitialChecked: true,
     },
     {
       text: 'Inbound Non-Queue Call',
-      value: 'INBOUND_NON_QUEUE',
+      value: PRESENCE_STATE_KEYS.AGENT_STATUS_INBOUND_CALL_QUEUE,
       isInitialChecked: true,
     },
     {
       text: 'Outbound Call',
-      value: 'OUTBOUND_CALL',
+      value: PRESENCE_STATE_KEYS.AGENT_STATUS_OUTBOUND,
       isInitialChecked: true,
     },
     {
       text: 'Available',
-      value: 'AVAILABLE',
+      value: PRESENCE_STATE_KEYS.AGENT_STATUS_IDLE,
       isInitialChecked: true,
     },
     {
       text: 'Logged Off',
-      value: 'LOGGED_OFF',
+      value: PRESENCE_STATE_KEYS.AGENT_STATUS_LOGGED_OFF,
       isInitialChecked: true,
     },
   ],
