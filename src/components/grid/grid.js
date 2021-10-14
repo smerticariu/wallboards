@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { createArrayFromTo } from 'src/common/utils/generateArray';
+import { createArrayFromTo } from '../../common/utils/generateArray';
 import GridAgentList from './grid.agent-list';
 import { SortableItem, SortableList } from '../sortable/sortable';
 import { useDispatch, useSelector } from 'react-redux';

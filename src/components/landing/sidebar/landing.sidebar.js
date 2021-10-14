@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { handleSelectedWallboardCategoryAC } from 'src/store/actions/wallboards.action';
+import { handleSelectedWallboardCategoryAC } from '../../../store/actions/wallboards.action';
 import { LANDING_DEFAULTS } from '../landing.defaults';
 
 const LandingSidebar = () => {

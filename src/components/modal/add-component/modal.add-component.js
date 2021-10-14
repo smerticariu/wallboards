@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { createArrayFromTo } from 'src/common/utils/generateArray';
+import { createArrayFromTo } from '../../../common/utils/generateArray';
 import AgentCard from 'src/components/agent-card/agent-card';
 import AgentTablePreview from 'src/components/agent-table/agent-table.preview';
 import CustomAutosuggest from 'src/components/autosuggest/autosuggest';

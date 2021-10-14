@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { generateWallboardId } from 'src/common/utils/generateId';
+import { generateWallboardId } from '../../common/utils/generateId';
 import {
   fetchAllWallboardsAC,
   fetchAllWallboardsFailAC,

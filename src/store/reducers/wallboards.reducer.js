@@ -1,11 +1,11 @@
-import { generateWallboardWidgetId } from 'src/common/utils/generateId';
+import { generateWallboardWidgetId } from '../../common/utils/generateId';
 import {
   ADD_COMPONENT_COLUMNS_NO_OPTIONS,
   ADD_COMPONENT_STATE_OPTIONS,
   CALL_QUEUE_OPTIONS,
   MAIN_VIEWING_OPTIONS,
   SORT_BY_OPTIONS,
-} from 'src/components/modal/add-component/modal.add-component.defaults';
+} from '../../components/modal/add-component/modal.add-component.defaults';
 import { wallboardsActions } from '../actions/wallboards.action';
 export const FetchStatus = {
   NULL: null,

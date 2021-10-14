@@ -4,13 +4,13 @@ import LandingSidebar from './sidebar/landing.sidebar';
 import LandingTable from './table/landing.table';
 import Toolbar from '../toolbar/toolbar';
 
-const Landing = ({ userInfo }) => {
+const Landing = () => {
   return (
     <div className="c-landing">
       <Toolbar template="landing" />
       <div className="c-landing__content">
         <LandingSidebar />
-        <LandingTable userInfo={userInfo} />
+        <LandingTable />
       </div>
     </div>
   );
