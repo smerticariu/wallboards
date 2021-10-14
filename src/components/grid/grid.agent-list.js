@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { CloseIcon } from 'src/assets/static/icons/close';
+import { EditIcon } from 'src/assets/static/icons/edit';
 import { handleWallboardActiveModalAC, setWidgetComponentForEditAC, setWidgetSizeAC } from 'src/store/actions/wallboards.action';
 import AgentCard from '../agent-card/agent-card';
 import AgentTable from '../agent-table/agent-table';
@@ -31,7 +33,7 @@ const GridAgentList = ({ widget, ...props }) => {
     };
     return (
       <div onClick={onEditClick} className="a-list__edit-icon">
-        Edit
+        <EditIcon className="i--edit i--edit--margin-right" />
       </div>
     );
   };
@@ -39,7 +41,7 @@ const GridAgentList = ({ widget, ...props }) => {
     const onDeleteClick = () => {};
     return (
       <div onClick={onDeleteClick} className="a-list__delete-icon">
-        X
+        <CloseIcon className="i--close i--close--small" />
       </div>
     );
   };

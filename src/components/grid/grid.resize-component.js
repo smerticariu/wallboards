@@ -10,9 +10,9 @@ const ResizeComponent = ({ children, onResize = () => {}, width = '', height = '
     const eHeight = event.detail.height + 'px';
     const headerandBodyHeight = agentListBodyRef.current.offsetHeight;
     if (headerandBodyHeight > event.detail.height) {
-      agentListRef.current.style.height = headerandBodyHeight + 5 + 'px';
+      agentListRef.current.style.height = headerandBodyHeight + 10 + 'px';
       agentListRef.current.style.width = eWidth;
-      onResize({ width: width, height: headerandBodyHeight + 5 + 'px' });
+      onResize({ width: width, height: headerandBodyHeight + 10 + 'px' });
       return;
     }
     agentListRef.current.style.width = eWidth;

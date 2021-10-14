@@ -7,6 +7,7 @@
   flex: 0 1 auto;
   &-right {
     display: flex;
+    align-items: center;
     &__search-input {
       width: 560px;
     }
