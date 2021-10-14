@@ -215,9 +215,12 @@ const Toolbar = (props) => {
         );
       case 'wb-read-only':
         return (
-          <button className="c-button c-button--m-left" onClick={() => props.logout()}>
-            Logout
-          </button>
+          <>
+            <button className="c-button c-button--m-left" onClick={() => props.logout()}>
+              Logout
+            </button>
+            {handleSettingsIcon()}
+          </>
         );
       default:
         return;
