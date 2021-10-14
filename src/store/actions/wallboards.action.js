@@ -30,6 +30,8 @@ export const wallboardsActions = {
   SET_WIDGET_FOR_EDIT: 'SET_WIDGET_FOR_EDIT',
 
   RESET_WALLBOARD_EDIT_PAGE_DATA: 'RESET_WALLBOARD_EDIT_PAGE_DATA',
+
+  SET_WALLBOARD_ID_FOR_DELETE: 'SET_WALLBOARD_ID_FOR_DELETE',
 };
 
 export const handleWallboardActiveModalAC = (modalName) => ({
@@ -69,8 +71,9 @@ export const setWallboardsByCategoryAC = (wallboards) => ({
   payload: wallboards,
 });
 
-export const fetchWallboardByIdAC = () => ({
+export const fetchWallboardByIdAC = (message) => ({
   type: wallboardsActions.FETCH_WALLBOARD_BY_ID,
+  payload: message,
 });
 export const fetchWallboardByIdSuccessAC = (wallboard) => ({
   type: wallboardsActions.FETCH_WALLBOARD_BY_ID_SUCCESS,
@@ -130,4 +133,9 @@ export const setWidgetComponentForEditAC = (widgetId) => ({
 
 export const resetWallboardEditPageDataAC = () => ({
   type: wallboardsActions.RESET_WALLBOARD_EDIT_PAGE_DATA,
+});
+
+export const setWallboardIdForDeleteAC = (id) => ({
+  type: wallboardsActions.SET_WALLBOARD_ID_FOR_DELETE,
+  payload: id,
 });

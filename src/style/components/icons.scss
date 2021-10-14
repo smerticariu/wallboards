@@ -28,4 +28,30 @@
       }
     }
   }
+  &--checkmark {
+    fill: $turquoise-blue;
+    cursor: pointer;
+    &--notification {
+      box-sizing: content-box;
+      padding: 5px;
+      border-radius: 50%;
+      background-color: $white;
+      cursor: default;
+    }
+  }
+  &--close {
+    fill: $white;
+    cursor: pointer;
+    &--error {
+      fill: $natterbox-lighter-red;
+      box-sizing: content-box;
+      padding: 5px;
+      border-radius: 50%;
+      background-color: $white;
+      cursor: default;
+    }
+    &--black {
+      fill: $natterbox-dark-blue-grey;
+    }
+  }
 }

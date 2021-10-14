@@ -16,7 +16,7 @@ export const fetchWallboardByIdThunk =
   ({ wbId }) =>
   async (dispatch, getState) => {
     try {
-      dispatch(fetchWallboardByIdAC());
+      dispatch(fetchWallboardByIdAC('Single wallboard loading...'));
       const { userInfo, token } = getState().login;
       const options = {
         method: 'get',
@@ -33,8 +33,8 @@ export const fetchWallboardByIdThunk =
 
       dispatch(fetchWallboardByIdSuccessAC({ widgets: [], ...response.data }));
     } catch (error) {
-      dispatch(fetchWallboardByIdFailAC());
-      console.log(error);
+      dispatch(fetchWallboardByIdFailAC(error.response.data.error.message));
+      console.log(error.response.data);
     }
   };
 

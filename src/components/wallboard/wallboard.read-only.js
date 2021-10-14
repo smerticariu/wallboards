@@ -10,15 +10,15 @@ const WallboardReadOnly = () => {
   const { id } = useParams();
   const { logout } = useAuth0();
   const dispatch = useDispatch();
-  const { wallboard, fetchStatus } = useSelector((state) => state.wallboards.activeWallboard);
+  const { wallboard, fetchStatus, fetchMessage } = useSelector((state) => state.wallboards.activeWallboard);
   const { userInfo, token } = useSelector((state) => state.login);
   useEffect(() => {
-    dispatch(fetchWallboardByIdThunk({wbId: id, orgId:userInfo.organisationId, token}));
+    dispatch(fetchWallboardByIdThunk({ wbId: id, orgId: userInfo.organisationId, token }));
     // eslint-disable-next-line
   }, [id]);
 
   if (fetchStatus !== FetchStatus.SUCCESS) {
-    return <div>Single wallboard loading...</div>;
+    return <div>{fetchMessage}</div>;
   }
   return (
     <div className="c-wallboard--read-only">

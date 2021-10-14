@@ -6,6 +6,7 @@ import {
   MAIN_VIEWING_OPTIONS,
   SORT_BY_OPTIONS,
 } from 'src/components/modal/add-component/modal.add-component.defaults';
+import { WALLBOARD_MODAL_NAMES } from 'src/components/modal/new-wallboard/modal.new-wallboard.defaults';
 import { wallboardsActions } from '../actions/wallboards.action';
 export const FetchStatus = {
   NULL: null,
@@ -14,6 +15,7 @@ export const FetchStatus = {
   FAIL: 'FAIL',
 };
 const initialState = {
+  wallboardIdForDelete: null,
   filterWallboards: [],
   activeModalName: null,
   activeWallboard: {
@@ -24,6 +26,7 @@ const initialState = {
       name: 'My New Wallboard',
     },
     fetchStatus: FetchStatus.NULL,
+    fetchMessage: '',
     saveStatus: FetchStatus.NULL,
   },
   allWallboards: {
@@ -129,6 +132,7 @@ export const wallboardsReducer = (state = { ...initialState }, action) => {
         activeWallboard: {
           ...state.activeWallboard,
           fetchStatus: FetchStatus.IN_PROGRESS,
+          fetchMessage: action.payload,
         },
       };
     case wallboardsActions.FETCH_WALLBOARD_BY_ID_SUCCESS:
@@ -148,6 +152,7 @@ export const wallboardsReducer = (state = { ...initialState }, action) => {
           ...state.activeWallboard,
           wallboard: [],
           fetchStatus: FetchStatus.FAIL,
+          fetchMessage: action.payload,
         },
       };
 
@@ -308,6 +313,14 @@ export const wallboardsReducer = (state = { ...initialState }, action) => {
         activeWallboard: {
           ...initialState.activeWallboard,
         },
+      };
+    }
+
+    case wallboardsActions.SET_WALLBOARD_ID_FOR_DELETE: {
+      return {
+        ...state,
+        wallboardIdForDelete: action.payload,
+        activeModalName: WALLBOARD_MODAL_NAMES.DELETE_WALLBOARD,
       };
     }
     default:
