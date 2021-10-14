@@ -51,7 +51,7 @@ const ModalDeleteWallboard = ({ ...props }) => {
             <div className="c-modal__title c-modal__title--bold">Delete Wallboard</div>
           </div>
           <div className="c-modal__body c-modal__body--save-changes">
-            <div className="c-modal__body--save-changes__phrase">Are you sure you want to delete this dashboard?</div>
+            <div className="c-modal__body--save-changes__phrase">Are you sure you want to delete this wallboard?</div>
           </div>
           <div className="c-modal__footer">
             <div className="c-modal__footer-left-side" />
