@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { WALLBOARD_MODAL_NAMES } from 'src/components/modal/new-wallboard/modal.new-wallboard.defaults';
-import { handleWallboardActiveModalAC, setWallboardIdForDeleteAC, setWallboardsByCategoryAC } from 'src/store/actions/wallboards.action';
+import { setWallboardIdForDeleteAC, setWallboardsByCategoryAC } from 'src/store/actions/wallboards.action';
 import { FetchStatus } from 'src/store/reducers/wallboards.reducer';
 import { fetchAllWallboardsThunk, copyWallboardThunk, syncWallboardsWithConfig } from 'src/store/thunk/wallboards.thunk';
 

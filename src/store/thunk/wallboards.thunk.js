@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { generateWallboardId } from 'src/common/utils/generateId';
+import { handleIsNotificationShowAC } from '../actions/notification.action';
 import {
   fetchAllWallboardsAC,
   fetchAllWallboardsFailAC,
@@ -117,8 +118,10 @@ export const deleteWallboardThunk =
 
       await axios(options);
       dispatch(fetchAllWallboardsThunk());
+      dispatch(handleIsNotificationShowAC(true, false, 'Dashboard was deleted'));
     } catch (error) {
       dispatch(fetchAllWallboardsFailAC());
+      dispatch(handleIsNotificationShowAC(true, true, 'The dashboard has not been deleted'));
       console.log(error);
     }
   };
@@ -210,9 +213,6 @@ export const syncWallboardsWithConfig = () => async (dispatch, getState) => {
         await axios(options);
       }
     });
-
-    // dispatch(saveWallboardSuccessAC(data));
-    // dispatch(fetchAllWallboardsThunk());
   } catch (error) {
     dispatch(saveWallboardFailAC());
     console.log(error);

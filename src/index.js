@@ -15,7 +15,7 @@ ReactDOM.render(
         clientId="40leAQozuSfAQGf52Lf4JBeY6QIXBvmc"
         redirectUri="http://localhost:3000/"
         audience="https://sapien-proxy.redmatter-qa01.pub/"
-        scope="enduser:basic openid"
+        scope="wallboard:admin"
         responseType="id_token"
         cacheLocation="localstorage"
       >
