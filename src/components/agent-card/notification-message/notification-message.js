@@ -22,6 +22,7 @@ const NotificationMessage = () => {
       }, notificationTime);
     }
     return () => clearTimeout(timeout);
+    // eslint-disable-next-line
   }, [isNotificationShow]);
   return (
     <div

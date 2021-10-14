@@ -65,10 +65,10 @@ export const fetchAllWallboardsThunk = () => async (dispatch, getState) => {
 };
 
 export const saveWallboardThunk = () => async (dispatch, getState) => {
+  const activeWallboard = getState().wallboards.activeWallboard.wallboard;
+  const { userInfo, token } = getState().login;
   try {
     dispatch(saveWallboardAC());
-    const { userInfo, token } = getState().login;
-    const activeWallboard = getState().wallboards.activeWallboard.wallboard;
     const currentDate = new Date().getTime();
     const wbId = activeWallboard.id ?? generateWallboardId(userInfo.organisationId, userInfo.id);
 
@@ -94,8 +94,14 @@ export const saveWallboardThunk = () => async (dispatch, getState) => {
     await axios(options);
 
     dispatch(saveWallboardSuccessAC(data));
+    if (activeWallboard.id !== undefined) {
+      dispatch(handleIsNotificationShowAC(true, false, 'Wallboard was saved successfully'));
+    }
   } catch (error) {
     dispatch(saveWallboardFailAC());
+    if (activeWallboard.id !== undefined) {
+      dispatch(handleIsNotificationShowAC(true, true, 'An error occurred'));
+    }
     console.log(error);
   }
 };
