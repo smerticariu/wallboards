@@ -1,5 +1,5 @@
 .c-login {
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   grid-template-columns: 1fr 1fr;
   
@@ -147,6 +147,27 @@
         background-size: contain;
         background-repeat: no-repeat;
       }
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .c-login {
+    &-left {
+      padding: 20px 0 20px 0;
+    }
+    
+    &-info {
+      margin-top: 170px;
+
+      &__cards {
+        margin-bottom: 0;
+      }
+    }
+
+    &-brand__logo {
+      width: 250px;
+      background-repeat: no-repeat;
     }
   }
 }
