@@ -124,10 +124,10 @@ export const deleteWallboardThunk =
 
       await axios(options);
       dispatch(fetchAllWallboardsThunk());
-      dispatch(handleIsNotificationShowAC(true, false, 'Dashboard was deleted'));
+      dispatch(handleIsNotificationShowAC(true, false, 'Wallboard was deleted'));
     } catch (error) {
       dispatch(fetchAllWallboardsFailAC());
-      dispatch(handleIsNotificationShowAC(true, true, 'The dashboard has not been deleted'));
+      dispatch(handleIsNotificationShowAC(true, true, 'The Wallboard has not been deleted'));
       console.log(error);
     }
   };
