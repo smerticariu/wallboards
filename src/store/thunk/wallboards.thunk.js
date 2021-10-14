@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { generateWallboardComponentId, generateWallboardId } from 'src/common/utils/generateId';
+import { generateWallboardId } from 'src/common/utils/generateId';
 import {
   fetchAllWallboardsAC,
   fetchAllWallboardsFailAC,
@@ -193,7 +193,7 @@ export const syncWallboardsWithConfig = () => async (dispatch, getState) => {
       
       await axios(options).then(res => configWbs.push(res.data));
       
-      if(allwbs.data.data.length == index+1) {
+      if(allwbs.data.data.length === index + 1) {
         const options = {
           method: 'put',
           url: `https://wallboards-store.redmatter-qa01.pub/organisation/${userInfo.organisationId}/key/config.json`, // add each wb to config

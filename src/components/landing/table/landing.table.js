@@ -9,7 +9,7 @@ const LandingTable = () => {
   const dispatch = useDispatch();
   const { fetchStatus, wallboards } = useSelector((state) => state.wallboards.allWallboards);
   const [filteredWbs, setFilteredWbs] = useState([]);
-  const { userInfo, token } = useSelector((state) => state.login);
+  const { userInfo } = useSelector((state) => state.login);
   const category = useSelector((state) => state.landing.category);
   const filter = useSelector((state) => state.landing.filterWallboards);
   useEffect(() => {

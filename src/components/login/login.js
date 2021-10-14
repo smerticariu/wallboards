@@ -35,7 +35,7 @@ const Login = () => {
             When you click the sign in button below a new Salesforce window will be presented. Enter your user login credentials to sign in Wallboards.
           </p>
         </div>
-        <button className="c-login-start__btn" onClick={() => loginWithRedirect()}>Login</button>
+        <button className="c-login-start__btn" onClick={() => loginWithRedirect()}>Sign In</button>
       </div>
     </div>
   )
