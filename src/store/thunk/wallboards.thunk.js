@@ -210,9 +210,6 @@ export const syncWallboardsWithConfig = () => async (dispatch, getState) => {
         await axios(options);
       }
     });
-
-    // dispatch(saveWallboardSuccessAC(data));
-    // dispatch(fetchAllWallboardsThunk());
   } catch (error) {
     dispatch(saveWallboardFailAC());
     console.log(error);
