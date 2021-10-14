@@ -24,6 +24,7 @@ const useResize = (ref, handler) => {
 
     const observer = new MutationObserver(checkResize);
     observer.observe(element, { attributes: true, attributeOldValue: true, attributeFilter: ['style'] });
+    // eslint-disable-next-line
   }, [ref]);
 };
 

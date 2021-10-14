@@ -1,6 +1,6 @@
 import React from 'react';
 
-const CheckBox = ({ label, className, ...props }) => {
+const CheckBox = ({ label, className = '', ...props }) => {
   return (
     <label className={`c-checkbox ${className}`}>
       {label}

@@ -12,29 +12,31 @@ import {
   saveWallboardSuccessAC,
 } from '../actions/wallboards.action';
 
-export const fetchWallboardByIdThunk = ({wbId}) => async (dispatch, getState) => {
-  try {
-    dispatch(fetchWallboardByIdAC());
-    const { userInfo, token } = getState().login;
-    const options = {
-      method: 'get',
-      url: `https://wallboards-store.redmatter-qa01.pub/organisation/${userInfo.organisationId}/key/${wbId}`,
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + token,
-        'Access-Control-Allow-Origin': '*',
-        Accept: 'application/json',
-      },
-    };
+export const fetchWallboardByIdThunk =
+  ({ wbId }) =>
+  async (dispatch, getState) => {
+    try {
+      dispatch(fetchWallboardByIdAC());
+      const { userInfo, token } = getState().login;
+      const options = {
+        method: 'get',
+        url: `https://wallboards-store.redmatter-qa01.pub/organisation/${userInfo.organisationId}/key/${wbId}`,
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + token,
+          'Access-Control-Allow-Origin': '*',
+          Accept: 'application/json',
+        },
+      };
 
-    const response = await axios(options);
+      const response = await axios(options);
 
-    dispatch(fetchWallboardByIdSuccessAC({ widgets: [], ...response.data }));
-  } catch (error) {
-    dispatch(fetchWallboardByIdFailAC());
-    console.log(error);
-  }
-};
+      dispatch(fetchWallboardByIdSuccessAC({ widgets: [], ...response.data }));
+    } catch (error) {
+      dispatch(fetchWallboardByIdFailAC());
+      console.log(error);
+    }
+  };
 
 export const fetchAllWallboardsThunk = () => async (dispatch, getState) => {
   try {
@@ -97,74 +99,74 @@ export const saveWallboardThunk = () => async (dispatch, getState) => {
   }
 };
 
-export const deleteWallboardThunk = ({wbId}) => async (dispatch, getState) => {
-  try {
-    const { userInfo, token } = getState().login;
-    const options = {
-      method: 'delete',
-      url: `https://wallboards-store.redmatter-qa01.pub/organisation/${userInfo.organisationId}/key/${wbId}`,
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + token,
-        'Access-Control-Allow-Origin': '*',
-        Accept: 'application/json'
-      }
+export const deleteWallboardThunk =
+  ({ wbId }) =>
+  async (dispatch, getState) => {
+    try {
+      const { userInfo, token } = getState().login;
+      const options = {
+        method: 'delete',
+        url: `https://wallboards-store.redmatter-qa01.pub/organisation/${userInfo.organisationId}/key/${wbId}`,
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + token,
+          'Access-Control-Allow-Origin': '*',
+          Accept: 'application/json',
+        },
+      };
+
+      await axios(options);
+      dispatch(fetchAllWallboardsThunk());
+    } catch (error) {
+      dispatch(fetchAllWallboardsFailAC());
+      console.log(error);
     }
+  };
 
-    await axios(options);
-    dispatch(fetchAllWallboardsThunk());
-    
-  } catch (error) {
-    dispatch(fetchAllWallboardsFailAC());
-    console.log(error);
-  }
-};
+export const copyWallboardThunk =
+  ({ wb }) =>
+  async (dispatch, getState) => {
+    try {
+      const { userInfo, token } = getState().login;
+      await dispatch(fetchWallboardByIdThunk({ wbId: wb.id }));
+      let activeWallboard = getState().wallboards.activeWallboard.wallboard;
 
-export const copyWallboardThunk = ({wb}) => async (dispatch, getState) => {
-  
-  try {
-    const { userInfo, token } = getState().login;
-    await dispatch(fetchWallboardByIdThunk({wbId: wb.id}))
-    let activeWallboard = getState().wallboards.activeWallboard.wallboard;
+      const currentDate = new Date().getTime();
+      const wbId = generateWallboardId(userInfo.organisationId, userInfo.id);
+      activeWallboard.id = wbId;
+      activeWallboard.name = `${activeWallboard.name} Copy`;
+      activeWallboard.createdOn = currentDate;
 
-    const currentDate = new Date().getTime();
-    const wbId = generateWallboardId(userInfo.organisationId, userInfo.id);
-    activeWallboard.id = wbId;
-    activeWallboard.name = `${activeWallboard.name} Copy`;
-    activeWallboard.createdOn = currentDate;
+      const data = {
+        ...activeWallboard,
+      };
 
-    const data = {  
-      ...activeWallboard
-    };
+      const options = {
+        method: 'put',
+        url: `https://wallboards-store.redmatter-qa01.pub/organisation/${userInfo.organisationId}/key/${wbId}`,
+        data,
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + token,
+          'Access-Control-Allow-Origin': '*',
+          Accept: 'application/json',
+        },
+      };
 
-    const options = {
-      method: 'put',
-      url: `https://wallboards-store.redmatter-qa01.pub/organisation/${userInfo.organisationId}/key/${wbId}`,
-      data,
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + token,
-        'Access-Control-Allow-Origin': '*',
-        Accept: 'application/json',
-      },
-    };
+      await axios(options);
 
-    await axios(options);
-
-    dispatch(saveWallboardSuccessAC(data));
-    dispatch(fetchAllWallboardsThunk());
-  } catch (error) {
-    dispatch(saveWallboardFailAC());
-    console.log(error);
-  }
-};
-
+      dispatch(saveWallboardSuccessAC(data));
+      dispatch(fetchAllWallboardsThunk());
+    } catch (error) {
+      dispatch(saveWallboardFailAC());
+      console.log(error);
+    }
+  };
 
 export const syncWallboardsWithConfig = () => async (dispatch, getState) => {
-  
   try {
     const { userInfo, token } = getState().login;
-    
+
     const options = {
       method: 'get',
       url: `https://wallboards-store.redmatter-qa01.pub/organisation/${userInfo.organisationId}`, //fetch all wbs
@@ -190,10 +192,10 @@ export const syncWallboardsWithConfig = () => async (dispatch, getState) => {
           Accept: 'application/json',
         },
       };
-      
-      await axios(options).then(res => configWbs.push(res.data));
-      
-      if(allwbs.data.data.length === index + 1) {
+
+      await axios(options).then((res) => configWbs.push(res.data));
+
+      if (allwbs.data.data.length == index + 1) {
         const options = {
           method: 'put',
           url: `https://wallboards-store.redmatter-qa01.pub/organisation/${userInfo.organisationId}/key/config.json`, // add each wb to config
@@ -205,13 +207,9 @@ export const syncWallboardsWithConfig = () => async (dispatch, getState) => {
             Accept: 'application/json',
           },
         };
-        await axios(options)
+        await axios(options);
       }
-      
-    })
-
-    
-    
+    });
 
     // dispatch(saveWallboardSuccessAC(data));
     // dispatch(fetchAllWallboardsThunk());
