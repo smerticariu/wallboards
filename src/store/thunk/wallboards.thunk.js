@@ -1,5 +1,6 @@
 import axios from 'axios';
-import { generateWallboardId } from '../../common/utils/generateId';
+import { generateWallboardId } from 'src/common/utils/generateId';
+import { handleIsNotificationShowAC } from '../actions/notification.action';
 import {
   fetchAllWallboardsAC,
   fetchAllWallboardsFailAC,
@@ -16,7 +17,7 @@ export const fetchWallboardByIdThunk =
   ({ wbId }) =>
   async (dispatch, getState) => {
     try {
-      dispatch(fetchWallboardByIdAC());
+      dispatch(fetchWallboardByIdAC('Single wallboard loading...'));
       const { userInfo, token } = getState().login;
       const options = {
         method: 'get',
@@ -33,8 +34,8 @@ export const fetchWallboardByIdThunk =
 
       dispatch(fetchWallboardByIdSuccessAC({ widgets: [], ...response.data }));
     } catch (error) {
-      dispatch(fetchWallboardByIdFailAC());
-      console.log(error);
+      dispatch(fetchWallboardByIdFailAC(error.response.data.error.message));
+      console.log(error.response.data);
     }
   };
 
@@ -64,10 +65,10 @@ export const fetchAllWallboardsThunk = () => async (dispatch, getState) => {
 };
 
 export const saveWallboardThunk = () => async (dispatch, getState) => {
+  const activeWallboard = getState().wallboards.activeWallboard.wallboard;
+  const { userInfo, token } = getState().login;
   try {
     dispatch(saveWallboardAC());
-    const { userInfo, token } = getState().login;
-    const activeWallboard = getState().wallboards.activeWallboard.wallboard;
     const currentDate = new Date().getTime();
     const wbId = activeWallboard.id ?? generateWallboardId(userInfo.organisationId, userInfo.id);
 
@@ -93,8 +94,14 @@ export const saveWallboardThunk = () => async (dispatch, getState) => {
     await axios(options);
 
     dispatch(saveWallboardSuccessAC(data));
+    if (activeWallboard.id !== undefined) {
+      dispatch(handleIsNotificationShowAC(true, false, 'Wallboard was saved successfully'));
+    }
   } catch (error) {
     dispatch(saveWallboardFailAC());
+    if (activeWallboard.id !== undefined) {
+      dispatch(handleIsNotificationShowAC(true, true, 'An error occurred'));
+    }
     console.log(error);
   }
 };
@@ -117,8 +124,10 @@ export const deleteWallboardThunk =
 
       await axios(options);
       dispatch(fetchAllWallboardsThunk());
+      dispatch(handleIsNotificationShowAC(true, false, 'Wallboard was deleted'));
     } catch (error) {
       dispatch(fetchAllWallboardsFailAC());
+      dispatch(handleIsNotificationShowAC(true, true, 'The Wallboard has not been deleted'));
       console.log(error);
     }
   };

@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { CloseIcon } from 'src/assets/static/icons/close';
+import { EditIcon } from 'src/assets/static/icons/edit';
 import { handleWallboardActiveModalAC, setWidgetComponentForEditAC, setWidgetSizeAC } from 'src/store/actions/wallboards.action';
 import AgentCard from '../agent-card/agent-card';
 import AgentTable from '../agent-table/agent-table';
@@ -30,34 +32,34 @@ const GridAgentList = ({ widget, ...props }) => {
       dispatch(handleWallboardActiveModalAC(WALLBOARD_MODAL_NAMES.ADD_COMPONENT));
     };
     return (
-      <div onClick={onEditClick} className="a-list__edit-icon">
-        Edit
+      <div onClick={onEditClick} className="agent-list__edit-icon">
+        <EditIcon className="i--edit i--edit--margin-right" />
       </div>
     );
   };
   const handleDeleteIcon = () => {
     const onDeleteClick = () => {};
     return (
-      <div onClick={onDeleteClick} className="a-list__delete-icon">
-        X
+      <div onClick={onDeleteClick} className="agent-list__delete-icon">
+        <CloseIcon className="i--close i--close--small" />
       </div>
     );
   };
   return (
-    <ResizeComponent onResize={onCardResize} width={widget?.size?.width} height={widget?.size?.height} className="a-list">
-      <div className="a-list__header">
+    <ResizeComponent onResize={onCardResize} width={widget?.size?.width} height={widget?.size?.height} className="agent-list">
+      <div className="agent-list__header">
         <SortableDragHandle>
-          <div className="a-list__title">
-            <div className="a-list__title--bold">Agent List:</div>
+          <div className="agent-list__title">
+            <div className="agent-list__title--bold">Agent List:</div>
             Not urgent but somewhat important queue
           </div>
         </SortableDragHandle>
-        <div className="a-list__icons">
+        <div className="agent-list__icons">
           {handleEditIcon()}
           {handleDeleteIcon()}
         </div>
       </div>
-      <div className={`a-list__body ${widget.view === MAIN_VIEWING_OPTIONS.TABLE ? 'a-list__body--table' : ''}`}>
+      <div className={`agent-list__body ${widget.view === MAIN_VIEWING_OPTIONS.TABLE ? 'agent-list__body--table' : ''}`}>
         {widget.view === MAIN_VIEWING_OPTIONS.CARD ? (
           widget.presenceStates.selectedItems.map((presenceState) => (
             <AgentCard

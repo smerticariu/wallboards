@@ -14,6 +14,7 @@ import CustomAutosuggest from '../autosuggest/autosuggest';
 import { saveWallboardThunk } from '../../store/thunk/wallboards.thunk';
 import { FetchStatus } from '../../store/reducers/wallboards.reducer';
 import { useHistory } from 'react-router';
+import { SettingsIcon } from 'src/assets/static/icons/settings';
 const Toolbar = (props) => {
   const dispatch = useDispatch();
   const [wbSearchValue, setWbSearchValue] = useState('');
@@ -187,6 +188,10 @@ const Toolbar = (props) => {
     );
   };
 
+  const handleSettingsIcon = () => {
+    return <SettingsIcon className="i--settings i--settings--toolbar" />;
+  };
+
   const handleRightToolbar = (template) => {
     switch (template) {
       case 'landing':
@@ -205,13 +210,17 @@ const Toolbar = (props) => {
             {handleSaveButton()}
             {handleCloseButton()}
             {handleRunButton()}
+            {handleSettingsIcon()}
           </>
         );
       case 'wb-read-only':
         return (
-          <button className="c-button c-button--m-left" onClick={() => props.logout()}>
-            Logout
-          </button>
+          <>
+            <button className="c-button c-button--m-left" onClick={() => props.logout()}>
+              Logout
+            </button>
+            {handleSettingsIcon()}
+          </>
         );
       default:
         return;

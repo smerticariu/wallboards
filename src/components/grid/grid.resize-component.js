@@ -10,9 +10,9 @@ const ResizeComponent = ({ children, onResize = () => {}, width = '', height = '
     const eHeight = event.detail.height + 'px';
     const headerandBodyHeight = agentListBodyRef.current.offsetHeight;
     if (headerandBodyHeight > event.detail.height) {
-      agentListRef.current.style.height = headerandBodyHeight + 5 + 'px';
+      agentListRef.current.style.height = headerandBodyHeight + 10 + 'px';
       agentListRef.current.style.width = eWidth;
-      onResize({ width: width, height: headerandBodyHeight + 5 + 'px' });
+      onResize({ width: width, height: headerandBodyHeight + 10 + 'px' });
       return;
     }
     agentListRef.current.style.width = eWidth;
@@ -20,8 +20,9 @@ const ResizeComponent = ({ children, onResize = () => {}, width = '', height = '
     onResize({ width: eWidth, height: eHeight });
   };
   useEffect(() => {
-    if (agentListRef.current) {
-      agentListRef.current.style.height = height;
+    if (agentListRef.current && agentListBodyRef.current) {
+      agentListRef.current.style.height =
+        agentListBodyRef.current.offsetHeight > +height.split('px')[0] ? agentListBodyRef.current.offsetHeight : height;
       agentListRef.current.style.width = width;
     }
     // eslint-disable-next-line

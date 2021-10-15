@@ -21,12 +21,12 @@
   }
 }
 
-.a-list {
+.agent-list {
   border: solid 1px $pinkish-grey;
   border-radius: 12px;
   display: flex;
   flex-direction: column;
-  min-width: min-content;
+  min-width: 280px;
   max-width: 100%;
   overflow: auto;
   height: max-content;
@@ -40,7 +40,7 @@
     align-items: center;
     justify-content: space-between;
     background-color: $dark-grey;
-    padding: 8px;
+    padding: 8px 10px;
   }
   &__title {
     display: flex;

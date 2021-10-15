@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { setWallboardsByCategoryAC } from '../../../store/actions/wallboards.action';
+import { setWallboardIdForDeleteAC, setWallboardsByCategoryAC } from 'src/store/actions/wallboards.action';
 import { FetchStatus } from '../../..//store/reducers/wallboards.reducer';
-import { fetchAllWallboardsThunk, deleteWallboardThunk, copyWallboardThunk,syncWallboardsWithConfig } from '../../../store/thunk/wallboards.thunk';
+import { fetchAllWallboardsThunk, copyWallboardThunk, syncWallboardsWithConfig } from '../../../store/thunk/wallboards.thunk';
 
 const LandingTable = () => {
   const dispatch = useDispatch();
@@ -34,10 +34,9 @@ const LandingTable = () => {
 
     const filteredWbsByCategory = filterWbsByCategory(category);
 
-    const wallboardsByInput = filteredWbsByCategory.filter(
-      (wb) => {if(wb?.name?.toLowerCase().includes(filter.toLowerCase()) || wb?.createdBy?.toLowerCase().includes(filter.toLowerCase())) return wb}
-    );
-    
+    const wallboardsByInput = filteredWbsByCategory.filter((wb) => {
+      if (wb?.name?.toLowerCase().includes(filter.toLowerCase()) || wb?.createdBy?.toLowerCase().includes(filter.toLowerCase())) return wb;
+    });
 
     setFilteredWbs(wallboardsByInput);
     dispatch(setWallboardsByCategoryAC(wallboardsByInput));
@@ -45,19 +44,24 @@ const LandingTable = () => {
   }, [category, filter, wallboards.length]);
 
   const handleDelete = (id) => {
-    dispatch(deleteWallboardThunk({ wbId: id }));
+    dispatch(setWallboardIdForDeleteAC(id));
   };
 
   const handleCopy = (wb) => {
     dispatch(copyWallboardThunk({ wb }));
   };
 
-  const handleConvertDate = date => {
+  const handleConvertDate = (date) => {
     let dateToConvert = new Date(date);
     dateToConvert.setDate(dateToConvert.getDate());
-    const dateString = ('0' + dateToConvert.getDate()).slice(-2) + '/' + ('0' + (dateToConvert.getMonth()+1)).slice(-2) + '/' + dateToConvert.getFullYear();
+    const dateString =
+      ('0' + dateToConvert.getDate()).slice(-2) +
+      '/' +
+      ('0' + (dateToConvert.getMonth() + 1)).slice(-2) +
+      '/' +
+      dateToConvert.getFullYear();
     return dateString;
-  }
+  };
 
   if (fetchStatus !== FetchStatus.SUCCESS) return <div>Fetch all wallboards in progress</div>;
   return (
