@@ -170,8 +170,10 @@
       background-repeat: no-repeat;
     }
 
-    &-salesforce__text {
-      margin: 0;
+    &-salesforce__logo {
+      width: 60px;
+      background-size: contain;
+      background-repeat: no-repeat;
     }
   }
 }
