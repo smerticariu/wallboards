@@ -169,11 +169,13 @@ const Toolbar = (props) => {
       </button>
     );
   };
+
+  const onClickCloseButton = () => {
+    if (checkIfExistWallboardChanges()) return dispatch(handleWallboardActiveModalAC(WALLBOARD_MODAL_NAMES.SAVE_WALLBOARD));
+    return history.push('/');
+  };
+
   const handleCloseButton = () => {
-    const onClickCloseButton = () => {
-      if (checkIfExistWallboardChanges()) return dispatch(handleWallboardActiveModalAC(WALLBOARD_MODAL_NAMES.SAVE_WALLBOARD));
-      return history.push('/');
-    };
     return (
       <button onClick={onClickCloseButton} className="c-button c-button--m-left">
         Close
@@ -227,11 +229,28 @@ const Toolbar = (props) => {
     }
   };
 
+  const handleBanner = () => {
+    const onLogoClick = () => {
+      if (props.template === 'new-wallboard') {
+        return onClickCloseButton();
+      }
+      return history.push('/');
+    };
+    return (
+      <div className="c-banner">
+        <div onClick={onLogoClick} className="c-banner-logo"></div>
+        <div className="c-banner-brand"></div>
+      </div>
+    );
+  };
   return (
-    <div className="c-toolbar">
-      <div className="c-toolbar-left">{handleLeftToolbar(props.template)}</div>
-      <div className="c-toolbar-right">{handleRightToolbar(props.template)}</div>
-    </div>
+    <>
+      {handleBanner()}
+      <div className="c-toolbar">
+        <div className="c-toolbar-left">{handleLeftToolbar(props.template)}</div>
+        <div className="c-toolbar-right">{handleRightToolbar(props.template)}</div>
+      </div>
+    </>
   );
 };
 

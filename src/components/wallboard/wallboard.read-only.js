@@ -48,11 +48,13 @@ const WallboardReadOnly = () => {
     <div className="c-wallboard--read-only">
       <Toolbar template="wb-read-only" wbName={wallboard.name} logout={logout} />
 
-      <div className="c-wallboard--read-only__title">
-        <div className="c-wallboard--read-only__title c-wallboard--read-only__title--bold">Agent List: </div>
-        Support overflow queue for team 2
+      <div className="c-wallboard--read-only__component">
+        <div className="c-wallboard--read-only__title">
+          <div className="c-wallboard--read-only__title c-wallboard--read-only__title--bold">Agent List: </div>
+          Support overflow queue for team 2
+        </div>
+        <div className="c-wallboard--read-only__cards">{handleCards()}</div>
       </div>
-      <div className="c-wallboard--read-only__cards">{handleCards()}</div>
     </div>
   );
 };

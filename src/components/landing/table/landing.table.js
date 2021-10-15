@@ -66,57 +66,61 @@ const LandingTable = () => {
   if (fetchStatus !== FetchStatus.SUCCESS) return <div>Fetch all wallboards in progress</div>;
   return (
     <div className="c-landing-table">
-      <table>
-        <thead>
-          <tr>
-            <td>Wallboard Name & Description</td>
-            <td>Folder</td>
-            <td>Created By</td>
-            <td>Created On</td>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredWbs.length > 0 &&
-            filteredWbs.map((wb, index) => {
-              return (
-                <tr key={index}>
-                  <td className="c-landing-table__wb-name">
-                    <p>
-                      <a target="_blank" rel="noreferrer" href={`http://localhost:3000/wallboard/${wb.id}`}>
-                        {wb.name}
-                      </a>
-                    </p>
-                    <span>{wb.description}</span>
-                  </td>
-                  <td className="c-landing-table__wb-folder">
-                    <p>{wb.folder}</p>
-                  </td>
-                  <td className="c-landing-table__wb-created-by">
-                    <p>{wb.createdBy}</p>
-                  </td>
-                  <td className="c-landing-table__wb-created-on">
-                    <p>{handleConvertDate(wb.createdOn)}</p>
-                  </td>
-                  <td className="c-landing-table__wb-actions">
-                    <Link target="_blank" to={`/wallboard/${wb.id}/edit`} className="c-landing-table__edit-btn" />
-                    <button
-                      onClick={() => {
-                        handleCopy(wb);
-                      }}
-                      className="c-landing-table__copy-btn"
-                    ></button>
-                    <button
-                      onClick={() => {
-                        handleDelete(wb.id);
-                      }}
-                      className="c-landing-table__delete-btn"
-                    ></button>
-                  </td>
-                </tr>
-              );
-            })}
-        </tbody>
-      </table>
+      {filteredWbs.length ? (
+        <table>
+          <thead>
+            <tr>
+              <td>Wallboard Name & Description</td>
+              <td>Folder</td>
+              <td>Created By</td>
+              <td>Created On</td>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredWbs.length > 0 &&
+              filteredWbs.map((wb, index) => {
+                return (
+                  <tr key={index}>
+                    <td className="c-landing-table__wb-name">
+                      <p>
+                        <a target="_blank" rel="noreferrer" href={`http://localhost:3000/wallboard/${wb.id}`}>
+                          {wb.name}
+                        </a>
+                      </p>
+                      <span>{wb.description}</span>
+                    </td>
+                    <td className="c-landing-table__wb-folder">
+                      <p>{wb.folder}</p>
+                    </td>
+                    <td className="c-landing-table__wb-created-by">
+                      <p>{wb.createdBy}</p>
+                    </td>
+                    <td className="c-landing-table__wb-created-on">
+                      <p>{handleConvertDate(wb.createdOn)}</p>
+                    </td>
+                    <td className="c-landing-table__wb-actions">
+                      <Link target="_blank" to={`/wallboard/${wb.id}/edit`} className="c-landing-table__edit-btn" />
+                      <button
+                        onClick={() => {
+                          handleCopy(wb);
+                        }}
+                        className="c-landing-table__copy-btn"
+                      ></button>
+                      <button
+                        onClick={() => {
+                          handleDelete(wb.id);
+                        }}
+                        className="c-landing-table__delete-btn"
+                      ></button>
+                    </td>
+                  </tr>
+                );
+              })}
+          </tbody>
+        </table>
+      ) : (
+        <div className="c-landing-table__empty-message">Wallboards are not found</div>
+      )}
     </div>
   );
 };

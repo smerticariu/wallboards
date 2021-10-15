@@ -62,13 +62,6 @@ function App() {
           >
             logout
           </button>
-          <div className="c-banner">
-            <a href="/">
-              <div className="c-banner-logo"></div>
-            </a>
-            <div className="c-banner-brand"></div>
-          </div>
-
           <Switch>
             <Route exact path="/">
               <Landing />

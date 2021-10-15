@@ -18,7 +18,7 @@ const GridAgentList = ({ widget, ...props }) => {
 
     const timeout = setTimeout(() => {
       dispatch(setWidgetSizeAC(cardSize, widget.id));
-    }, 500);
+    }, 100);
     return () => clearTimeout(timeout);
     // eslint-disable-next-line
   }, [cardSize]);

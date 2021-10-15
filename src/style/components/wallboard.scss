@@ -3,14 +3,32 @@
     height: 90vh;
     display: flex;
     flex-direction: column;
-    padding: 0 15px 15px 15px;
+    padding-bottom: 15px;
+    &__component {
+      width: calc(100% - 30px);
+      margin: 0 auto;
+    }
+    &__cards {
+      display: flex;
+      flex-wrap: wrap;
+    }
+    &__title {
+      margin-bottom: 20px;
+      display: flex;
+      font-family: $public-sans-regular;
+      font-size: 14px;
+      color: $slate-gray;
+      &--bold {
+        margin-right: 3px;
+        font-family: $public-sans-bold;
+      }
+    }
   }
 
   &--new {
     min-height: 90vh;
     display: flex;
     flex-direction: column;
-    padding: 0 15px 15px 15px;
   }
 }
 .c-panel {
@@ -18,7 +36,8 @@
   flex: 1 1 auto;
   align-items: center;
   justify-content: center;
-  width: 100%;
+  width: calc(100% - 30px);
+  margin: 0 auto;
   border-radius: 12px;
   background-color: $light-grey;
   &__info {
