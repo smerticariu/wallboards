@@ -6,13 +6,13 @@ import {
   handleWallboardActiveModalAC,
   saveWallboardResetStatusAC,
   setFiltredWallboardsAC,
-} from 'src/store/actions/wallboards.action';
-import { RedoIcon } from 'src/assets/static/icons/redo';
-import { UndoIcon } from 'src/assets/static/icons/undo';
+} from '../../store/actions/wallboards.action';
+import { RedoIcon } from '../../assets/static/icons/redo';
+import { UndoIcon } from '../../assets/static/icons/undo';
 import { WALLBOARD_MODAL_NAMES } from '../modal/new-wallboard/modal.new-wallboard.defaults';
 import CustomAutosuggest from '../autosuggest/autosuggest';
-import { saveWallboardThunk } from 'src/store/thunk/wallboards.thunk';
-import { FetchStatus } from 'src/store/reducers/wallboards.reducer';
+import { saveWallboardThunk } from '../../store/thunk/wallboards.thunk';
+import { FetchStatus } from '../../store/reducers/wallboards.reducer';
 import { useHistory } from 'react-router';
 import { SettingsIcon } from 'src/assets/static/icons/settings';
 const Toolbar = (props) => {

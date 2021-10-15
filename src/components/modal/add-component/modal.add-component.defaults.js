@@ -1,4 +1,4 @@
-import { createArrayFromTo } from 'src/common/utils/generateArray';
+import { createArrayFromTo } from '../../../common/utils/generateArray';
 
 export const CALL_QUEUE_OPTIONS = [
   { TEXT: 'Urgent Support Queue', VALUE: 'URGENT' },

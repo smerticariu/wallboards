@@ -71,7 +71,7 @@ function App() {
 
           <Switch>
             <Route exact path="/">
-              <Landing userInfo={userTokenInfo} />
+              <Landing />
             </Route>
             <Route exact path="/wallboard/:id/edit">
               <WallboardEdit />

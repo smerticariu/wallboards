@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { setWallboardIdForDeleteAC, setWallboardsByCategoryAC } from 'src/store/actions/wallboards.action';
-import { FetchStatus } from 'src/store/reducers/wallboards.reducer';
-import { fetchAllWallboardsThunk, copyWallboardThunk, syncWallboardsWithConfig } from 'src/store/thunk/wallboards.thunk';
+import { FetchStatus } from '../../..//store/reducers/wallboards.reducer';
+import { fetchAllWallboardsThunk, copyWallboardThunk, syncWallboardsWithConfig } from '../../../store/thunk/wallboards.thunk';
 
 const LandingTable = () => {
   const dispatch = useDispatch();

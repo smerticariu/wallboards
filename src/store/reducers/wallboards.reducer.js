@@ -1,4 +1,4 @@
-import { generateWallboardWidgetId } from 'src/common/utils/generateId';
+import { generateWallboardWidgetId } from '../../common/utils/generateId';
 import {
   ADD_COMPONENT_COLUMNS_NO_OPTIONS,
   ADD_COMPONENT_STATE_OPTIONS,

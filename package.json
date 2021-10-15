@@ -13,9 +13,9 @@
     "http-server": "^13.0.2",
     "js-base64": "^3.7.2",
     "json-server": "^0.16.3",
-    "react": "^17.0.2",
+    "react": "^16.12.0",
     "react-autosuggest": "^10.1.0",
-    "react-dom": "^17.0.2",
+    "react-dom": "^16.12.0",
     "react-redux": "^7.2.5",
     "react-router-dom": "^5.3.0",
     "react-scripts": "4.0.3",
@@ -29,7 +29,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "jest --verbose ./tests",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -53,8 +53,15 @@
   "devDependencies": {
     "@babel/core": "^7.15.5",
     "@babel/plugin-proposal-class-properties": "^7.14.5",
+    "@babel/plugin-syntax-jsx": "^7.14.5",
     "@babel/preset-env": "^7.15.6",
     "@babel/preset-react": "^7.14.5",
-    "node-sass": "4.14.1"
+    "babel-jest": "^26.6.0",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.6",
+    "enzyme-matchers": "^7.1.2",
+    "jest": "26.6.0",
+    "node-sass": "4.14.1",
+    "redux-mock-store": "^1.5.4"
   }
 }
