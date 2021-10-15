@@ -1,43 +1,35 @@
-import React, { useEffect, useRef } from 'react';
-import useResize from 'src/common/hooks/useResize';
-import useWindowSize from 'src/common/hooks/useWindowSize';
+import { Resizable } from 're-resizable';
+import React, { useRef, useState } from 'react';
 
-const ResizeComponent = ({ children, onResize = () => {}, width = '', height = '', ...props }) => {
-  const agentListRef = useRef();
-  const agentListBodyRef = useRef();
-
-  const onResizeComponent = (event) => {
-    const eWidth = event.detail.width + 'px';
-    const eHeight = event.detail.height + 'px';
-    const headerandBodyHeight = agentListBodyRef.current.offsetHeight;
-    if (headerandBodyHeight > event.detail.height) {
-      agentListRef.current.style.height = headerandBodyHeight + 10 + 'px';
-      agentListRef.current.style.width = eWidth;
-      onResize({ width: width, height: headerandBodyHeight + 10 + 'px' });
-      return;
+const ResizeComponent = ({ children, onResize = () => {}, ...props }) => {
+  const [minWidth, setMinWidth] = useState('280px');
+  const [minHeight, setMinHeight] = useState('');
+  const [width, setWidth] = React.useState();
+  const [height, setHeight] = React.useState();
+  const contentRef = useRef();
+  const onCardResizeLocal = (e, direction, ref, d) => {
+    if (contentRef.current.offsetHeight !== minHeight) {
+      setMinHeight(contentRef.current.offsetHeight);
     }
-    agentListRef.current.style.width = eWidth;
-    agentListRef.current.style.height = eHeight;
-    onResize({ width: eWidth, height: eHeight });
   };
-  const windowSize = useWindowSize();
-  useEffect(() => {
-    if (agentListRef.current && agentListBodyRef.current) {
-      agentListRef.current.style.height =
-        agentListBodyRef.current.offsetHeight > +height.split('px')[0] && height.split('px')[0]
-          ? agentListBodyRef.current.offsetHeight
-          : height;
-      console.log(agentListBodyRef.current.offsetHeight, +height.split('px')[0]);
-      agentListRef.current.style.width = width;
-    }
-    // eslint-disable-next-line
-  }, [agentListRef, windowSize.width]);
 
-  useResize(agentListRef, onResizeComponent);
   return (
-    <div ref={agentListRef} {...props}>
-      <div ref={agentListBodyRef}>{children}</div>
-    </div>
+    <Resizable
+      onResizeStop={(e, direction, ref, d) => {
+        setWidth(width + d.width);
+        setHeight(height + d.height);
+      }}
+      style={{ margin: '10px' }}
+      size={{ width: width, height: height }}
+      onResize={onCardResizeLocal}
+      minHeight={minHeight}
+      minWidth={minWidth}
+      maxWidth={'100%'}
+    >
+      <div {...props}>
+        <div ref={contentRef}>{children}</div>
+      </div>
+    </Resizable>
   );
 };
 export default ResizeComponent;

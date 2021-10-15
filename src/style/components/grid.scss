@@ -28,14 +28,10 @@
   border-radius: 12px;
   display: flex;
   flex-direction: column;
-  min-width: 280px;
-  max-width: 100%;
-  overflow: auto;
-  height: max-content;
-  resize: both;
   background-color: $white;
-  margin: 10px;
-
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
   &__header {
     display: flex;
     width: 100%;
