@@ -52,7 +52,7 @@ const AgentTable = ({ agents, ...props }) => {
                   className={`agent-t__agent-info--circle-center agent-t__agent-info--circle-container--${previewStatusColors[index]} agent-t__agent-info--circle-center`}
                 />
               </div>
-              Idle
+              Available
             </div>
           </div>
         ))}

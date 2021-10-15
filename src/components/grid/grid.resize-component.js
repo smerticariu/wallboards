@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import useResize from 'src/common/hooks/useResize';
+import useWindowSize from 'src/common/hooks/useWindowSize';
 
 const ResizeComponent = ({ children, onResize = () => {}, width = '', height = '', ...props }) => {
   const agentListRef = useRef();
@@ -19,14 +20,19 @@ const ResizeComponent = ({ children, onResize = () => {}, width = '', height = '
     agentListRef.current.style.height = eHeight;
     onResize({ width: eWidth, height: eHeight });
   };
+  const windowSize = useWindowSize();
   useEffect(() => {
     if (agentListRef.current && agentListBodyRef.current) {
       agentListRef.current.style.height =
-        agentListBodyRef.current.offsetHeight > +height.split('px')[0] ? agentListBodyRef.current.offsetHeight : height;
+        agentListBodyRef.current.offsetHeight > +height.split('px')[0] && height.split('px')[0]
+          ? agentListBodyRef.current.offsetHeight
+          : height;
+      console.log(agentListBodyRef.current.offsetHeight, +height.split('px')[0]);
       agentListRef.current.style.width = width;
     }
     // eslint-disable-next-line
-  }, [agentListRef]);
+  }, [agentListRef, windowSize.width]);
+
   useResize(agentListRef, onResizeComponent);
   return (
     <div ref={agentListRef} {...props}>

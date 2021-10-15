@@ -1,9 +1,11 @@
 .c-landing {
   height: 100vh;
-  padding: 0 15px 15px 15px;
 
   &__content {
     display: flex;
+    width: calc(100% - 30px);
+    margin: 0 auto;
+    padding-bottom: 15px;
   }
 
   &-sidebar {
@@ -60,15 +62,23 @@
     }
 
     &__edit-btn {
-      background-image: url("../../assets/static/images/edit_icon.svg");
+      background-image: url('../../assets/static/images/edit_icon.svg');
     }
 
     &__copy-btn {
-      background-image: url("../../assets/static/images/copy_icon.svg");
+      background-image: url('../../assets/static/images/copy_icon.svg');
     }
 
     &__delete-btn {
-      background-image: url("../../assets/static/images/delete_icon.svg");
+      background-image: url('../../assets/static/images/delete_icon.svg');
+    }
+    &__empty-message {
+      margin-top: 15px;
+      font-family: $public-sans-bold;
+      font-weight: 500;
+      font-size: 16px;
+      text-align: center;
+      color: $input-text-colour;
     }
 
     button,

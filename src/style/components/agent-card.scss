@@ -6,7 +6,6 @@
   -webkit-font-smoothing: antialiased;
   &--sun-yellow {
     background-color: $sun-yellow;
-    font-weight: 600;
   }
   &--lighter-red {
     background-color: $natterbox-lighter-red;
@@ -22,11 +21,9 @@
   }
   &--aqua {
     background-color: $natterbox-aqua;
-    font-weight: 600;
   }
   &--sick-green {
     background-color: $sick-green;
-    font-weight: 600;
   }
   &--grey {
     background-color: $pinkish-grey-two;
@@ -88,11 +85,9 @@
     }
     &--green {
       background-color: $natterbox-green;
-      font-weight: 600;
     }
     &--grey {
       background-color: $pinkish-grey;
-      font-weight: 600;
     }
     &--white {
       color: $white;

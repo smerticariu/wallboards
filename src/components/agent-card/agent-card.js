@@ -33,7 +33,7 @@ const AgentCard = ({ name, ext, status, totalTime, callTime, callStatus, callSta
         <div className="agent-c__call-time-container">
           <div className="agent-c__call-time">{callTime}</div>
         </div>
-        <div className="agent-c__footer">{callStatus}</div>
+        <div className="agent-c__footer">{PRESENCE_STATE_KEYS_COLOR.CARD_PRESENCE_STATE_TEXT[callStatusKey]}</div>
       </div>
     </div>
   );

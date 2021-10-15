@@ -1,10 +1,11 @@
 .c-toolbar {
-  width: 100%;
+  width: calc(100% - 30px);
   height: 80px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex: 0 1 auto;
+  margin: 0 auto;
   &-right {
     display: flex;
     align-items: center;
