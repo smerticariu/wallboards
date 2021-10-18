@@ -65,7 +65,7 @@ export const fetchAllWallboardsThunk = () => async (dispatch, getState) => {
 };
 
 export const saveWallboardThunk = () => async (dispatch, getState) => {
-  const activeWallboard = getState().wallboards.activeWallboard.wallboard;
+  const activeWallboard = getState().wallboards.present.activeWallboard.wallboard;
   const { userInfo, token } = getState().login;
   try {
     dispatch(saveWallboardAC());
@@ -138,7 +138,7 @@ export const copyWallboardThunk =
     try {
       const { userInfo, token } = getState().login;
       await dispatch(fetchWallboardByIdThunk({ wbId: wb.id }));
-      let activeWallboard = getState().wallboards.activeWallboard.wallboard;
+      let activeWallboard = getState().wallboards.present.activeWallboard.wallboard;
 
       const currentDate = new Date().getTime();
       const wbId = generateWallboardId(userInfo.organisationId, userInfo.id);

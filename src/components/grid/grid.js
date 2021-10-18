@@ -7,19 +7,17 @@ import { changeWallboardComponentsOrderAC } from 'src/store/actions/wallboards.a
 import { CELLS_NUMBER_ADD, CELLS_NUMBER_REMOVE, CELLS_ON_ROW, CELL_HEIGHT, INITIAL_CELLS_NUMBER } from './grid.defaults';
 const GridPage = ({ ...props }) => {
   const [gridCells, setGridCells] = useState(INITIAL_CELLS_NUMBER);
-  const activeWallboard = useSelector((state) => state.wallboards.activeWallboard.wallboard);
+  const activeWallboard = useSelector((state) => state.wallboards.present.activeWallboard.wallboard);
   const dispatch = useDispatch();
   const sortableListRef = useRef();
   const gridRef = useRef();
 
   useEffect(() => {
-    console.log(gridRef);
     if (sortableListRef.current?.scrollContainer?.offsetHeight && gridRef.current?.offsetHeight) {
       if (gridRef.current?.offsetHeight - 200 < sortableListRef.current?.scrollContainer?.offsetHeight)
         setGridCells((cells) => cells + CELLS_NUMBER_ADD);
       if (
-        gridRef.current?.offsetHeight >
-          sortableListRef.current?.scrollContainer?.offsetHeight + CELL_HEIGHT * (CELLS_NUMBER_ADD / CELLS_ON_ROW) &&
+        gridRef.current?.offsetHeight > sortableListRef.current?.scrollContainer?.offsetHeight + CELL_HEIGHT * (480 / CELLS_ON_ROW) &&
         gridCells - CELLS_NUMBER_REMOVE > INITIAL_CELLS_NUMBER
       ) {
         setGridCells((cells) => cells - CELLS_NUMBER_REMOVE);

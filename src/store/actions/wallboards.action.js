@@ -1,8 +1,4 @@
 export const wallboardsActions = {
-  HANDLE_WALLBOARD_ACTIVE_MODAL: 'HANDLE_WALLBOARD_ACTIVE_MODAL',
-  HANDLE_ADD_MODAL_COMPONENT_FORM_DATA: 'HANDLE_ADD_MODAL_COMPONENT_FORM_DATA',
-  RESET_ADD_MODAL_COMPONENT_FORM_DATA: 'RESET_ADD_MODAL_COMPONENT_FORM_DATA',
-  HANDLE_MODAL_SELECT_COMPONENT_ACTIVE_ELEMENT: 'HANDLE_MODAL_SELECT_COMPONENT_ACTIVE_ELEMENT',
   HANDLE_NEW_WALLBOARD_TITLE: 'HANDLE_NEW_WALLBOARD_TITLE',
   LANDING_SELECTED_WALLBOARD_CATEGORY: 'LANDING_SELECTED_WALLBOARD_CATEGORY',
   SET_FILTERED_WALLBOARDS: 'SET_FILTERED_WALLBOARDS',
@@ -27,33 +23,17 @@ export const wallboardsActions = {
 
   SET_WIDGET_SIZE: 'SET_WIDGET_SIZE',
 
-  SET_WIDGET_FOR_EDIT: 'SET_WIDGET_FOR_EDIT',
-
   RESET_WALLBOARD_EDIT_PAGE_DATA: 'RESET_WALLBOARD_EDIT_PAGE_DATA',
 
   SET_WALLBOARD_ID_FOR_DELETE: 'SET_WALLBOARD_ID_FOR_DELETE',
-};
 
-export const handleWallboardActiveModalAC = (modalName) => ({
-  type: wallboardsActions.HANDLE_WALLBOARD_ACTIVE_MODAL,
-  payload: modalName,
-});
+  WALLBOARD_UNDO: 'WALLBOARD_UNDO',
+  WALLBOARD_REDO: 'WALLBOARD_REDO',
+};
 
 export const handleNewWallboardTitleAC = (title) => ({
   type: wallboardsActions.HANDLE_NEW_WALLBOARD_TITLE,
   payload: title,
-});
-
-export const handleModalSelectActiveElementAC = (elementName) => ({
-  type: wallboardsActions.HANDLE_MODAL_SELECT_COMPONENT_ACTIVE_ELEMENT,
-  payload: elementName,
-});
-export const handleModalAddComponentFormDataAC = (formData) => ({
-  type: wallboardsActions.HANDLE_ADD_MODAL_COMPONENT_FORM_DATA,
-  payload: formData,
-});
-export const resetModalAddComponentFormDataAC = (formData) => ({
-  type: wallboardsActions.RESET_ADD_MODAL_COMPONENT_FORM_DATA,
 });
 
 export const handleSelectedWallboardCategoryAC = (category) => ({
@@ -111,9 +91,9 @@ export const saveWallboardResetStatusAC = (errorMEssage) => ({
   type: wallboardsActions.SAVE_WALLBOARD_RESET_STATUS,
 });
 
-export const addWallboardComponentAC = (userInfo) => ({
+export const addWallboardComponentAC = (userInfo, modalAddComponent) => ({
   type: wallboardsActions.ADD_WALLBOARD_COMPONENT,
-  payload: userInfo,
+  payload: { user: userInfo, modalAddComponent },
 });
 
 export const changeWallboardComponentsOrderAC = (components) => ({
@@ -126,11 +106,6 @@ export const setWidgetSizeAC = (size, widgetId) => ({
   payload: { size, widgetId },
 });
 
-export const setWidgetComponentForEditAC = (widgetId) => ({
-  type: wallboardsActions.SET_WIDGET_FOR_EDIT,
-  payload: widgetId,
-});
-
 export const resetWallboardEditPageDataAC = () => ({
   type: wallboardsActions.RESET_WALLBOARD_EDIT_PAGE_DATA,
 });
@@ -138,4 +113,11 @@ export const resetWallboardEditPageDataAC = () => ({
 export const setWallboardIdForDeleteAC = (id) => ({
   type: wallboardsActions.SET_WALLBOARD_ID_FOR_DELETE,
   payload: id,
+});
+
+export const wallboardUndoAC = (id) => ({
+  type: wallboardsActions.WALLBOARD_UNDO,
+});
+export const wallboardRedoAC = (id) => ({
+  type: wallboardsActions.WALLBOARD_REDO,
 });

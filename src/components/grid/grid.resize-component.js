@@ -1,28 +1,29 @@
 import { Resizable } from 're-resizable';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
-const ResizeComponent = ({ children, onResize = () => {}, ...props }) => {
-  const [minWidth, setMinWidth] = useState('280px');
-  const [minHeight, setMinHeight] = useState('');
-  const [width, setWidth] = React.useState();
-  const [height, setHeight] = React.useState();
+const ResizeComponent = ({ width = '', height = '', minWidth = '280px', children, onResize = () => {}, ...props }) => {
+  const [minHeightLocal, setMinHeightLocal] = useState('');
+  const [cardSize, setCardSize] = useState({ width: width, height: height });
   const contentRef = useRef();
+  useEffect(() => {
+    setCardSize({ width, height });
+  }, [width, height]);
   const onCardResizeLocal = (e, direction, ref, d) => {
-    if (contentRef.current.offsetHeight !== minHeight) {
-      setMinHeight(contentRef.current.offsetHeight);
+    if (contentRef.current.offsetHeight !== minHeightLocal) {
+      setMinHeightLocal(contentRef.current.offsetHeight);
     }
+    setCardSize({ width: ref.offsetWidth + 'px', height: ref.offsetHeight + 'px' });
   };
 
   return (
     <Resizable
       onResizeStop={(e, direction, ref, d) => {
-        setWidth(width + d.width);
-        setHeight(height + d.height);
+        onResize({ width: ref.offsetWidth + 'px', height: ref.offsetHeight + 'px' });
       }}
       style={{ margin: '10px' }}
-      size={{ width: width, height: height }}
+      size={{ width: cardSize.width, height: cardSize.height }}
       onResize={onCardResizeLocal}
-      minHeight={minHeight}
+      minHeight={minHeightLocal}
       minWidth={minWidth}
       maxWidth={'100%'}
     >
