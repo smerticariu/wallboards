@@ -55,13 +55,14 @@
   &__container {
     &--small {
       .react-autosuggest__input {
-        font-size: 10px;
-        padding: 3px 8px;
-        margin: 5px 0;
+        font-size: 12px;
+        padding: 3px 15px;
+        margin: 15px 0 5px 0;
+        height: 30px;
       }
       .react-autosuggest__suggestions-container {
         &--open {
-          top: 25px;
+          top: 50px;
           font-size: 13px;
         }
       }

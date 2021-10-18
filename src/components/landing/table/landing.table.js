@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { WALLBOARD_MODAL_NAMES } from 'src/components/modal/new-wallboard/modal.new-wallboard.defaults';
+import { handleWallboardActiveModalAC } from 'src/store/actions/modal.action';
 import { setWallboardIdForDeleteAC, setWallboardsByCategoryAC } from 'src/store/actions/wallboards.action';
 import { FetchStatus } from '../../..//store/reducers/wallboards.reducer';
 import { fetchAllWallboardsThunk, copyWallboardThunk, syncWallboardsWithConfig } from '../../../store/thunk/wallboards.thunk';
 
 const LandingTable = () => {
   const dispatch = useDispatch();
-  const { fetchStatus, wallboards } = useSelector((state) => state.wallboards.allWallboards);
+  const { fetchStatus, wallboards } = useSelector((state) => state.wallboards.present.allWallboards);
   const [filteredWbs, setFilteredWbs] = useState([]);
   const { userInfo } = useSelector((state) => state.login);
   const category = useSelector((state) => state.landing.category);
@@ -45,6 +47,7 @@ const LandingTable = () => {
 
   const handleDelete = (id) => {
     dispatch(setWallboardIdForDeleteAC(id));
+    dispatch(handleWallboardActiveModalAC(WALLBOARD_MODAL_NAMES.DELETE_WALLBOARD));
   };
 
   const handleCopy = (wb) => {
@@ -63,10 +66,11 @@ const LandingTable = () => {
     return dateString;
   };
 
-  if (fetchStatus !== FetchStatus.SUCCESS) return <div>Fetch all wallboards in progress</div>;
   return (
     <div className="c-landing-table">
-      {filteredWbs.length ? (
+      {fetchStatus !== FetchStatus.SUCCESS ? (
+        <div className="fetch-message">Fetching wallboards in progress</div>
+      ) : filteredWbs.length ? (
         <table>
           <thead>
             <tr>

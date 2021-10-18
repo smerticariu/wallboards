@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useDispatch } from 'react-redux';
 import { CloseIcon } from 'src/assets/static/icons/close';
 import { EditIcon } from 'src/assets/static/icons/edit';
-import { handleWallboardActiveModalAC, setWidgetComponentForEditAC, setWidgetSizeAC } from 'src/store/actions/wallboards.action';
+import { handleWallboardActiveModalAC, setWidgetComponentForEditAC } from 'src/store/actions/modal.action';
+import { setWidgetSizeAC } from 'src/store/actions/wallboards.action';
 import AgentCard from '../agent-card/agent-card';
 import AgentTable from '../agent-table/agent-table';
 import { MAIN_VIEWING_OPTIONS } from '../modal/add-component/modal.add-component.defaults';
@@ -11,24 +12,15 @@ import { SortableDragHandle } from '../sortable/sortable';
 import ResizeComponent from './grid.resize-component';
 
 const GridAgentList = ({ widget, ...props }) => {
-  const [cardSize, setCardSize] = useState({ width: widget?.size?.width, height: widget?.size?.height });
   const dispatch = useDispatch();
-  useEffect(() => {
-    if (!cardSize.width && !cardSize.height) return;
 
-    const timeout = setTimeout(() => {
-      dispatch(setWidgetSizeAC(cardSize, widget.id));
-    }, 100);
-    return () => clearTimeout(timeout);
-    // eslint-disable-next-line
-  }, [cardSize]);
   const onCardResize = (size) => {
-    setCardSize(size);
+    dispatch(setWidgetSizeAC(size, widget.id));
   };
 
   const handleEditIcon = () => {
     const onEditClick = () => {
-      dispatch(setWidgetComponentForEditAC(widget.id));
+      dispatch(setWidgetComponentForEditAC(widget));
       dispatch(handleWallboardActiveModalAC(WALLBOARD_MODAL_NAMES.ADD_COMPONENT));
     };
     return (
@@ -50,7 +42,7 @@ const GridAgentList = ({ widget, ...props }) => {
       <div className="agent-list__header">
         <SortableDragHandle>
           <div className="agent-list__title">
-            <div className="agent-list__title--bold">Agent List:</div>
+            <div className="agent-list__title--bold">{widget.name}:</div>
             Not urgent but somewhat important queue
           </div>
         </SortableDragHandle>

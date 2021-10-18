@@ -6,12 +6,7 @@ import AgentTablePreview from 'src/components/agent-table/agent-table.preview';
 import CustomAutosuggest from 'src/components/autosuggest/autosuggest';
 import CheckBox from 'src/components/checkbox/checkbox';
 import Radio from 'src/components/radio/radio';
-import {
-  addWallboardComponentAC,
-  handleModalAddComponentFormDataAC,
-  handleWallboardActiveModalAC,
-  resetModalAddComponentFormDataAC,
-} from 'src/store/actions/wallboards.action';
+import { addWallboardComponentAC } from 'src/store/actions/wallboards.action';
 import useOnClickOutside from '../../../common/hooks/useOnClickOutside';
 import {
   ADD_COMPONENT_COLUMNS_NO_OPTIONS,
@@ -22,6 +17,11 @@ import {
   PRESENCE_STATE_KEYS,
   SORT_BY_OPTIONS,
 } from './modal.add-component.defaults';
+import {
+  handleModalAddComponentFormDataAC,
+  handleWallboardActiveModalAC,
+  resetModalAddComponentFormDataAC,
+} from 'src/store/actions/modal.action';
 
 const ModalAddComponent = ({ ...props }) => {
   const modalRef = useRef(null);
@@ -30,7 +30,7 @@ const ModalAddComponent = ({ ...props }) => {
     availabilityStates: '',
   });
   const dispatch = useDispatch();
-  const formData = useSelector((state) => state.wallboards.modalAddComponent);
+  const formData = useSelector((state) => state.modal.modalAddComponent);
   const isCardFormat = MAIN_VIEWING_OPTIONS.CARD === formData.mainViewing;
   const { userInfo } = useSelector((state) => state.login);
   const closeModal = () => {
@@ -54,7 +54,7 @@ const ModalAddComponent = ({ ...props }) => {
 
   const handleAddButton = () => {
     const onClickAddButton = (e) => {
-      dispatch(addWallboardComponentAC(userInfo));
+      dispatch(addWallboardComponentAC(userInfo, formData));
       closeModal();
     };
 
@@ -399,7 +399,7 @@ const ModalAddComponent = ({ ...props }) => {
 
         <div className="c-modal--add-component__preview-container">
           <div className="c-modal--add-component__preview-title">
-            <span className="c-modal--add-component__preview-title--bold">Agent List:</span> {agentListText}
+            <span className="c-modal--add-component__preview-title--bold">{formData.title}:</span> {agentListText}
           </div>
           {isCardFormat ? (
             <div className="c-modal--add-component__agent-card">

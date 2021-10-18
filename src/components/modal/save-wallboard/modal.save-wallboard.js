@@ -1,8 +1,8 @@
 import React, { useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
+import { handleWallboardActiveModalAC } from 'src/store/actions/modal.action';
 
-import { handleWallboardActiveModalAC } from 'src/store/actions/wallboards.action';
 import { saveWallboardThunk } from 'src/store/thunk/wallboards.thunk';
 import useOnClickOutside from '../../../common/hooks/useOnClickOutside';
 
@@ -68,13 +68,13 @@ const ModalSaveWallboard = ({ ...props }) => {
           <div className="c-modal__header">
             <div className="c-modal__title">
               Save
-              <span className="c-modal__title c-modal__title--bold"> Wallboard</span>
+              <span className="c-modal__title"> Wallboard</span>
             </div>
           </div>
           <div className="c-modal__body c-modal__body--save-changes">
             <div className="c-modal__body--save-changes__phrase">
               There are unsaved changes in your
-              <span className="c-modal__body--save-changes__phrase c-modal__body--save-changes__phrase--bold"> Wallboard. </span>
+              <span className="c-modal__body--save-changes__phrase"> Wallboard. </span>
               If you close the wallboard, these changes are lost.
             </div>
             <div className="c-modal__body--save-changes__phrase">To preserve your changes, click Save {`&`} Close</div>

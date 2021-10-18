@@ -10,11 +10,11 @@ import { FetchStatus } from 'src/store/reducers/wallboards.reducer';
 import { resetWallboardEditPageDataAC } from 'src/store/actions/wallboards.action';
 
 const WallboardEdit = () => {
-  const activeModalName = useSelector((state) => state.wallboards.activeModalName);
+  const activeModalName = useSelector((state) => state.modal.activeModalName);
   const dispatch = useDispatch();
   const { id } = useParams();
-  const { fetchStatus, fetchMessage } = useSelector((state) => state.wallboards.activeWallboard);
-  const activeWallboard = useSelector((state) => state.wallboards.activeWallboard.wallboard);
+  const { fetchStatus, fetchMessage } = useSelector((state) => state.wallboards.present.activeWallboard);
+  const activeWallboard = useSelector((state) => state.wallboards.present.activeWallboard.wallboard);
 
   useEffect(() => {
     return () => dispatch(resetWallboardEditPageDataAC());
