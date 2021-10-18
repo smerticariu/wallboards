@@ -52,3 +52,10 @@ body {
     background-size: contain;
   }
 }
+
+.fetch-message {
+  color: $natterbox-dark-blue-grey;
+  font-family: $public-sans-regular;
+  text-align: center;
+  margin-top: 20px;
+}

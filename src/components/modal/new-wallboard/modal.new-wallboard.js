@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { handleModalSelectActiveElementAC, handleWallboardActiveModalAC } from 'src/store/actions/wallboards.action';
+import { handleModalSelectActiveElementAC, handleWallboardActiveModalAC } from 'src/store/actions/modal.action';
 import useOnClickOutside from '../../../common/hooks/useOnClickOutside';
 import {
   MODAL_NEW_WALLBOARD_DEFAULTS,

@@ -3,9 +3,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import {
   handleNewWallboardTitleAC,
-  handleWallboardActiveModalAC,
   saveWallboardResetStatusAC,
   setFiltredWallboardsAC,
+  wallboardRedoAC,
+  wallboardUndoAC,
 } from '../../store/actions/wallboards.action';
 import { RedoIcon } from '../../assets/static/icons/redo';
 import { UndoIcon } from '../../assets/static/icons/undo';
@@ -15,14 +16,16 @@ import { saveWallboardThunk } from '../../store/thunk/wallboards.thunk';
 import { FetchStatus } from '../../store/reducers/wallboards.reducer';
 import { useHistory } from 'react-router';
 import { SettingsIcon } from 'src/assets/static/icons/settings';
+import { handleWallboardActiveModalAC } from 'src/store/actions/modal.action';
 const Toolbar = (props) => {
   const dispatch = useDispatch();
   const [wbSearchValue, setWbSearchValue] = useState('');
   const wallboards = useSelector((state) => state.landing.wallboardsByCategory);
   const { userInfo } = useSelector((state) => state.login);
-  const newWallboardSaveStatus = useSelector((state) => state.wallboards.activeWallboard.saveStatus);
-  const activeWallboard = useSelector((state) => state.wallboards.activeWallboard.wallboard);
-  const activeWallboardInitialValues = useSelector((state) => state.wallboards.activeWallboard.wallboardInitialValues);
+  const newWallboardSaveStatus = useSelector((state) => state.wallboards.present.activeWallboard.saveStatus);
+  const activeWallboard = useSelector((state) => state.wallboards.present.activeWallboard.wallboard);
+  const activeWallboardInitialValues = useSelector((state) => state.wallboards.present.activeWallboard.wallboardInitialValues);
+  const wallboardStates = useSelector((state) => state.wallboards);
   const [isNewWallboardClicked, setIsNewWallboardClicked] = useState(false);
   const history = useHistory();
 
@@ -76,8 +79,9 @@ const Toolbar = (props) => {
       dispatch(setFiltredWallboardsAC(value));
     };
 
-    const allTitlesForAutocomplete = wallboards.map(({ name }) => name);
-
+    let allTitlesForAutocomplete = wallboards.map(({ name }) => name);
+    allTitlesForAutocomplete = [...allTitlesForAutocomplete, ...wallboards.map(({ createdBy }) => createdBy)];
+    allTitlesForAutocomplete = [...new Set(allTitlesForAutocomplete)];
     return (
       <div className="c-toolbar-right__search-input">
         <CustomAutosuggest
@@ -127,14 +131,28 @@ const Toolbar = (props) => {
   };
 
   const handleBackToButton = () => {
+    const isUndoDisabled = wallboardStates.past[wallboardStates.past.length - 1]?.activeWallboard?.fetchStatus !== FetchStatus.SUCCESS;
+    const isRedoDisabled = !wallboardStates.future.length;
     return (
       <div className="c-arrow-button c-arrow-button--m-left ">
-        <button className="c-arrow-button__arrow">
-          <UndoIcon className="i--undo" />
+        <button
+          onClick={() => {
+            dispatch(wallboardUndoAC());
+          }}
+          disabled={isUndoDisabled}
+          className="c-arrow-button__arrow"
+        >
+          <UndoIcon className={`i--undo${isUndoDisabled ? '--disabled' : ''}`} />
         </button>
         <hr className="c-arrow-button__separator" />
-        <button className="c-arrow-button__arrow">
-          <RedoIcon className="i--redo--disabled" />
+        <button
+          onClick={() => {
+            dispatch(wallboardRedoAC());
+          }}
+          disabled={isRedoDisabled}
+          className="c-arrow-button__arrow"
+        >
+          <RedoIcon className={`i--redo${isRedoDisabled ? '--disabled' : ''}`} />
         </button>
       </div>
     );

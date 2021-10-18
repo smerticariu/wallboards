@@ -1,23 +1,18 @@
-import React from "react";
-import { useDispatch } from "react-redux";
-import { handleWallboardActiveModalAC } from "src/store/actions/wallboards.action";
-import { WALLBOARD_MODAL_NAMES } from "../modal/new-wallboard/modal.new-wallboard.defaults";
+import React from 'react';
+import { useDispatch } from 'react-redux';
+import { handleWallboardActiveModalAC } from 'src/store/actions/modal.action';
+import { WALLBOARD_MODAL_NAMES } from '../modal/new-wallboard/modal.new-wallboard.defaults';
 
 const WallboardComponents = () => {
   const dispatch = useDispatch();
 
   const handleNewComponentButton = () => {
     const onClickNewComponentModal = () => {
-      dispatch(
-        handleWallboardActiveModalAC(WALLBOARD_MODAL_NAMES.SELECT_COMPONENT)
-      );
+      dispatch(handleWallboardActiveModalAC(WALLBOARD_MODAL_NAMES.SELECT_COMPONENT));
     };
 
     return (
-      <button
-        onClick={onClickNewComponentModal}
-        className="c-button c-button--m-auto "
-      >
+      <button onClick={onClickNewComponentModal} className="c-button c-button--m-auto ">
         Add Component
       </button>
     );

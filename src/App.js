@@ -21,7 +21,7 @@ function App() {
   const dispatch = useDispatch();
   const { userInfo, userTokenInfo } = useSelector((state) => state.login);
   const { isAuthenticated, getAccessTokenSilently, logout, isLoading } = useAuth0();
-  const activeModalName = useSelector((state) => state.wallboards.activeModalName);
+  const activeModalName = useSelector((state) => state.modal.activeModalName);
 
   useEffect(() => {
     const fetchData = async () => {

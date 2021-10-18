@@ -1,43 +1,36 @@
-import React, { useEffect, useRef } from 'react';
-import useResize from 'src/common/hooks/useResize';
-import useWindowSize from 'src/common/hooks/useWindowSize';
+import { Resizable } from 're-resizable';
+import React, { useEffect, useRef, useState } from 'react';
 
-const ResizeComponent = ({ children, onResize = () => {}, width = '', height = '', ...props }) => {
-  const agentListRef = useRef();
-  const agentListBodyRef = useRef();
-
-  const onResizeComponent = (event) => {
-    const eWidth = event.detail.width + 'px';
-    const eHeight = event.detail.height + 'px';
-    const headerandBodyHeight = agentListBodyRef.current.offsetHeight;
-    if (headerandBodyHeight > event.detail.height) {
-      agentListRef.current.style.height = headerandBodyHeight + 10 + 'px';
-      agentListRef.current.style.width = eWidth;
-      onResize({ width: width, height: headerandBodyHeight + 10 + 'px' });
-      return;
-    }
-    agentListRef.current.style.width = eWidth;
-    agentListRef.current.style.height = eHeight;
-    onResize({ width: eWidth, height: eHeight });
-  };
-  const windowSize = useWindowSize();
+const ResizeComponent = ({ width = '', height = '', minWidth = '280px', children, onResize = () => {}, ...props }) => {
+  const [minHeightLocal, setMinHeightLocal] = useState('');
+  const [cardSize, setCardSize] = useState({ width: width, height: height });
+  const contentRef = useRef();
   useEffect(() => {
-    if (agentListRef.current && agentListBodyRef.current) {
-      agentListRef.current.style.height =
-        agentListBodyRef.current.offsetHeight > +height.split('px')[0] && height.split('px')[0]
-          ? agentListBodyRef.current.offsetHeight
-          : height;
-      console.log(agentListBodyRef.current.offsetHeight, +height.split('px')[0]);
-      agentListRef.current.style.width = width;
+    setCardSize({ width, height });
+  }, [width, height]);
+  const onCardResizeLocal = (e, direction, ref, d) => {
+    if (contentRef.current.offsetHeight !== minHeightLocal) {
+      setMinHeightLocal(contentRef.current.offsetHeight);
     }
-    // eslint-disable-next-line
-  }, [agentListRef, windowSize.width]);
+    setCardSize({ width: ref.offsetWidth + 'px', height: ref.offsetHeight + 'px' });
+  };
 
-  useResize(agentListRef, onResizeComponent);
   return (
-    <div ref={agentListRef} {...props}>
-      <div ref={agentListBodyRef}>{children}</div>
-    </div>
+    <Resizable
+      onResizeStop={(e, direction, ref, d) => {
+        onResize({ width: ref.offsetWidth + 'px', height: ref.offsetHeight + 'px' });
+      }}
+      style={{ margin: '10px' }}
+      size={{ width: cardSize.width, height: cardSize.height }}
+      onResize={onCardResizeLocal}
+      minHeight={minHeightLocal}
+      minWidth={minWidth}
+      maxWidth={'100%'}
+    >
+      <div {...props}>
+        <div ref={contentRef}>{children}</div>
+      </div>
+    </Resizable>
   );
 };
 export default ResizeComponent;

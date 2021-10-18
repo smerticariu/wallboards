@@ -1,12 +1,5 @@
 import { generateWallboardWidgetId } from '../../common/utils/generateId';
-import {
-  ADD_COMPONENT_COLUMNS_NO_OPTIONS,
-  ADD_COMPONENT_STATE_OPTIONS,
-  CALL_QUEUE_OPTIONS,
-  MAIN_VIEWING_OPTIONS,
-  SORT_BY_OPTIONS,
-} from 'src/components/modal/add-component/modal.add-component.defaults';
-import { WALLBOARD_MODAL_NAMES } from 'src/components/modal/new-wallboard/modal.new-wallboard.defaults';
+
 import { wallboardsActions } from '../actions/wallboards.action';
 export const FetchStatus = {
   NULL: null,
@@ -17,7 +10,6 @@ export const FetchStatus = {
 const initialState = {
   wallboardIdForDelete: null,
   filterWallboards: [],
-  activeModalName: null,
   activeWallboard: {
     wallboardInitialValues: {
       name: 'My New Wallboard',
@@ -33,99 +25,10 @@ const initialState = {
     wallboards: [],
     fetchStatus: FetchStatus.NULL,
   },
-  modalSelectComponent: {
-    selectedElement: '',
-  },
-  modalAddComponent: {
-    isEditMode: false,
-    id: null,
-    title: '',
-    callQueue: CALL_QUEUE_OPTIONS[1].VALUE,
-    mainViewing: MAIN_VIEWING_OPTIONS.CARD,
-    sortBy: SORT_BY_OPTIONS[0].text,
-    columns: ADD_COMPONENT_COLUMNS_NO_OPTIONS.ONE,
-    availabilityStates: {
-      selectAll: true,
-      selectNone: false,
-      selectedItems: ADD_COMPONENT_STATE_OPTIONS.availabilityStates.reduce(
-        (strArr, el) => (el.isInitialChecked ? [...strArr, el.value] : strArr),
-        []
-      ),
-    },
-    presenceStates: {
-      selectAll: true,
-      selectNone: false,
-      selectedItems: ADD_COMPONENT_STATE_OPTIONS.presenceStates.reduce(
-        (strArr, el) => (el.isInitialChecked ? [...strArr, el.value] : strArr),
-        []
-      ),
-    },
-    skillsToView: {
-      selectAll: true,
-      selectNone: false,
-      selectedItems: ADD_COMPONENT_STATE_OPTIONS.skillsToView.reduce(
-        (strArr, el) => (el.isInitialChecked ? [...strArr, el.value] : strArr),
-        []
-      ),
-    },
-    interactivityOptions: {
-      selectedItems: ADD_COMPONENT_STATE_OPTIONS.interactivityOptions.reduce(
-        (strArr, el) => (el.isInitialChecked ? [...strArr, el.value] : strArr),
-        []
-      ),
-    },
-    columnsToViewOptions: {
-      selectedItems: ADD_COMPONENT_STATE_OPTIONS.columnsToViewOptions.reduce(
-        (strArr, el) => (el.isInitialChecked ? [...strArr, el.value] : strArr),
-        []
-      ),
-    },
-  },
 };
 
 export const wallboardsReducer = (state = { ...initialState }, action) => {
   switch (action.type) {
-    case wallboardsActions.HANDLE_WALLBOARD_ACTIVE_MODAL:
-      return {
-        ...state,
-        activeModalName: action.payload,
-      };
-    case wallboardsActions.HANDLE_MODAL_SELECT_COMPONENT_ACTIVE_ELEMENT:
-      return {
-        ...state,
-        modalSelectComponent: {
-          ...state.modalSelectComponent,
-          selectedElement: action.payload,
-        },
-        modalAddComponent: {
-          ...state.modalAddComponent,
-          title: action.payload,
-        },
-      };
-    case wallboardsActions.HANDLE_ADD_MODAL_COMPONENT_FORM_DATA:
-      return {
-        ...state,
-        modalAddComponent: {
-          ...state.modalAddComponent,
-          ...action.payload,
-        },
-      };
-    case wallboardsActions.RESET_ADD_MODAL_COMPONENT_FORM_DATA:
-      return {
-        ...state,
-        modalAddComponent: { ...initialState.modalAddComponent },
-      };
-    case wallboardsActions.HANDLE_NEW_WALLBOARD_TITLE:
-      return {
-        ...state,
-        activeWallboard: {
-          ...state.activeWallboard,
-          wallboard: {
-            ...state.activeWallboard.wallboard,
-            name: action.payload,
-          },
-        },
-      };
     case wallboardsActions.FETCH_WALLBOARD_BY_ID:
       return {
         ...state,
@@ -232,17 +135,22 @@ export const wallboardsReducer = (state = { ...initialState }, action) => {
 
     case wallboardsActions.ADD_WALLBOARD_COMPONENT: {
       const { widgets } = state.activeWallboard.wallboard;
+      const modalAddComponent = action.payload.modalAddComponent;
       const newWidget = {
-        name: state.modalAddComponent.title,
-        queue: state.modalAddComponent.callQueue,
-        view: state.modalAddComponent.mainViewing,
-        sortBy: state.modalAddComponent.sortBy,
-        availabilityStates: state.modalAddComponent.availabilityStates,
-        presenceStates: state.modalAddComponent.presenceStates,
-        interactivity: state.modalAddComponent.interactivityOptions,
-        columnsToView: state.modalAddComponent.columnsToViewOptions,
-        skills: state.modalAddComponent.skillsToView,
-        columns: state.modalAddComponent.columns,
+        name: modalAddComponent.title,
+        queue: modalAddComponent.callQueue,
+        view: modalAddComponent.mainViewing,
+        sortBy: modalAddComponent.sortBy,
+        availabilityStates: modalAddComponent.availabilityStates,
+        presenceStates: modalAddComponent.presenceStates,
+        interactivity: modalAddComponent.interactivityOptions,
+        columnsToView: modalAddComponent.columnsToViewOptions,
+        skills: modalAddComponent.skillsToView,
+        columns: modalAddComponent.columns,
+        size: {
+          width: 'auto',
+          height: 'fit-content',
+        },
       };
       return {
         ...state,
@@ -250,16 +158,16 @@ export const wallboardsReducer = (state = { ...initialState }, action) => {
           ...state.activeWallboard,
           wallboard: {
             ...state.activeWallboard.wallboard,
-            widgets: state.modalAddComponent.isEditMode
+            widgets: modalAddComponent.isEditMode
               ? widgets.map((widget) =>
-                  widget.id !== state.modalAddComponent.id
+                  widget.id !== modalAddComponent.id
                     ? widget
                     : {
                         ...newWidget,
-                        id: state.modalAddComponent.id,
+                        id: modalAddComponent.id,
                       }
                 )
-              : [...widgets, { ...newWidget, id: generateWallboardWidgetId(action.payload.organisationId, action.payload) }],
+              : [...widgets, { ...newWidget, id: generateWallboardWidgetId(action.payload.user.organisationId, action.payload.user) }],
           },
         },
       };
@@ -285,27 +193,17 @@ export const wallboardsReducer = (state = { ...initialState }, action) => {
         },
       };
     }
-
-    case wallboardsActions.SET_WIDGET_FOR_EDIT: {
-      const widgetForEdit = state.activeWallboard.wallboard.widgets.find((widget) => widget.id === action.payload);
+    case wallboardsActions.HANDLE_NEW_WALLBOARD_TITLE:
       return {
         ...state,
-        modalAddComponent: {
-          title: widgetForEdit.name,
-          callQueue: widgetForEdit.queue,
-          mainViewing: widgetForEdit.view,
-          sortBy: widgetForEdit.sortBy,
-          columns: widgetForEdit.columns,
-          availabilityStates: widgetForEdit.availabilityStates,
-          presenceStates: widgetForEdit.presenceStates,
-          skillsToView: widgetForEdit.skills,
-          interactivityOptions: widgetForEdit.interactivity,
-          columnsToViewOptions: widgetForEdit.columnsToView,
-          isEditMode: true,
-          id: widgetForEdit.id,
+        activeWallboard: {
+          ...state.activeWallboard,
+          wallboard: {
+            ...state.activeWallboard.wallboard,
+            name: action.payload,
+          },
         },
       };
-    }
 
     case wallboardsActions.RESET_WALLBOARD_EDIT_PAGE_DATA: {
       return {
@@ -320,7 +218,6 @@ export const wallboardsReducer = (state = { ...initialState }, action) => {
       return {
         ...state,
         wallboardIdForDelete: action.payload,
-        activeModalName: WALLBOARD_MODAL_NAMES.DELETE_WALLBOARD,
       };
     }
     default:
