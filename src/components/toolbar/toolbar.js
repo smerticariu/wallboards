@@ -28,6 +28,7 @@ const Toolbar = (props) => {
   const wallboardStates = useSelector((state) => state.wallboards);
   const [isNewWallboardClicked, setIsNewWallboardClicked] = useState(false);
   const history = useHistory();
+
   useEffect(() => {
     if (newWallboardSaveStatus === FetchStatus.SUCCESS && isNewWallboardClicked) {
       setIsNewWallboardClicked(false);
@@ -40,7 +41,7 @@ const Toolbar = (props) => {
     return (
       <div className="c-toolbar-left__wrapper">
         <h1 className="c-toolbar-left__heading">Recent Wallboards</h1>
-        <p className="c-toolbar-left__wb-no">10 Wallboards Items</p>
+        <p className="c-toolbar-left__wb-no">{wallboards.length} Wallboards Items</p>
       </div>
     );
   };
@@ -97,7 +98,7 @@ const Toolbar = (props) => {
   const handleNewWallboardButton = () => {
     const onClick = () => {
       setIsNewWallboardClicked(true);
-      dispatch(saveWallboardThunk());
+      // dispatch(saveWallboardThunk());
     };
     return (
       <button onClick={onClick} className="c-button c-button--m-left">
