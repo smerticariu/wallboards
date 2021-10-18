@@ -27,6 +27,8 @@ export const wallboardsActions = {
 
   SET_WALLBOARD_ID_FOR_DELETE: 'SET_WALLBOARD_ID_FOR_DELETE',
 
+  DELETE_WALLBOARD_COMPONENT_BY_ID: 'DELETE_WALLBOARD_COMPONENT_BY_ID',
+
   WALLBOARD_UNDO: 'WALLBOARD_UNDO',
   WALLBOARD_REDO: 'WALLBOARD_REDO',
 };
@@ -112,6 +114,11 @@ export const resetWallboardEditPageDataAC = () => ({
 
 export const setWallboardIdForDeleteAC = (id) => ({
   type: wallboardsActions.SET_WALLBOARD_ID_FOR_DELETE,
+  payload: id,
+});
+
+export const deleteWallboardComponentByIdAC = (id) => ({
+  type: wallboardsActions.DELETE_WALLBOARD_COMPONENT_BY_ID,
   payload: id,
 });
 

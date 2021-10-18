@@ -172,6 +172,20 @@ export const wallboardsReducer = (state = { ...initialState }, action) => {
         },
       };
     }
+    case wallboardsActions.DELETE_WALLBOARD_COMPONENT_BY_ID: {
+      const { widgets } = state.activeWallboard.wallboard;
+
+      return {
+        ...state,
+        activeWallboard: {
+          ...state.activeWallboard,
+          wallboard: {
+            ...state.activeWallboard.wallboard,
+            widgets: widgets.filter((widget) => widget.id !== action.payload),
+          },
+        },
+      };
+    }
 
     case wallboardsActions.SET_WIDGET_SIZE: {
       const { widgets } = state.activeWallboard.wallboard;

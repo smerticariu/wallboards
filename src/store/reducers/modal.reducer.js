@@ -11,7 +11,7 @@ const initialState = {
   modalSelectComponent: {
     selectedElement: '',
   },
-
+  wallboardComponentForDelete: null,
   modalAddComponent: {
     isEditMode: false,
     id: null,
@@ -90,6 +90,11 @@ export const modalReducer = (state = initialState, action) => {
       return {
         ...state,
         modalAddComponent: { ...initialState.modalAddComponent },
+      };
+    case modalActions.SET_WALLBOARD_COMPONENT_FOR_DELETE:
+      return {
+        ...state,
+        wallboardComponentForDelete: action.payload,
       };
 
     case modalActions.SET_WIDGET_FOR_EDIT: {

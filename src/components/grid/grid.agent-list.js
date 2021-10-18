@@ -2,7 +2,11 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { CloseIcon } from 'src/assets/static/icons/close';
 import { EditIcon } from 'src/assets/static/icons/edit';
-import { handleWallboardActiveModalAC, setWidgetComponentForEditAC } from 'src/store/actions/modal.action';
+import {
+  handleWallboardActiveModalAC,
+  setWallboardComponentForDeleteAC,
+  setWidgetComponentForEditAC,
+} from 'src/store/actions/modal.action';
 import { setWidgetSizeAC } from 'src/store/actions/wallboards.action';
 import AgentCard from '../agent-card/agent-card';
 import AgentTable from '../agent-table/agent-table';
@@ -30,7 +34,10 @@ const GridAgentList = ({ widget, ...props }) => {
     );
   };
   const handleDeleteIcon = () => {
-    const onDeleteClick = () => {};
+    const onDeleteClick = () => {
+      dispatch(setWallboardComponentForDeleteAC(widget));
+      dispatch(handleWallboardActiveModalAC(WALLBOARD_MODAL_NAMES.DELETE_WALLBOARD_COMPONENT));
+    };
     return (
       <div onClick={onDeleteClick} className="agent-list__delete-icon">
         <CloseIcon className="i--close i--close--small" />
