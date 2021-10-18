@@ -78,8 +78,9 @@ const Toolbar = (props) => {
       dispatch(setFiltredWallboardsAC(value));
     };
 
-    const allTitlesForAutocomplete = wallboards.map(({ name }) => name);
-
+    let allTitlesForAutocomplete = wallboards.map(({ name }) => name);
+    allTitlesForAutocomplete = [...allTitlesForAutocomplete, ...wallboards.map(({ createdBy }) => createdBy)];
+    allTitlesForAutocomplete = [...new Set(allTitlesForAutocomplete)];
     return (
       <div className="c-toolbar-right__search-input">
         <CustomAutosuggest

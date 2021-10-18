@@ -2,14 +2,12 @@ import { wallboardsActions } from '../actions/wallboards.action';
 import { FetchStatus } from './wallboards.reducer';
 
 export const wallboardsUndoable = (reducer) => {
-  // Call the reducer with empty action to populate the initial state
   const initialState = {
     past: [],
     present: reducer(undefined, {}),
     future: [],
   };
 
-  // Return a reducer that handles undo and redo
   return function (state = initialState, action) {
     const { past, present, future } = state;
 
