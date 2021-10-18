@@ -15,7 +15,7 @@ const LandingTable = () => {
   const category = useSelector((state) => state.landing.category);
   const filter = useSelector((state) => state.landing.filterWallboards);
   useEffect(() => {
-    dispatch(syncWallboardsWithConfig());
+    // dispatch(syncWallboardsWithConfig()); // do not delete yet
     dispatch(fetchAllWallboardsThunk());
     // eslint-disable-next-line
   }, [wallboards.length]);
@@ -75,7 +75,6 @@ const LandingTable = () => {
           <thead>
             <tr>
               <td>Wallboard Name & Description</td>
-              <td>Folder</td>
               <td>Created By</td>
               <td>Created On</td>
             </tr>
@@ -92,9 +91,6 @@ const LandingTable = () => {
                         </a>
                       </p>
                       <span>{wb.description}</span>
-                    </td>
-                    <td className="c-landing-table__wb-folder">
-                      <p>{wb.folder}</p>
                     </td>
                     <td className="c-landing-table__wb-created-by">
                       <p>{wb.createdBy}</p>
@@ -123,7 +119,7 @@ const LandingTable = () => {
           </tbody>
         </table>
       ) : (
-        <div className="c-landing-table__empty-message">Wallboards are not found</div>
+        <div className="c-landing-table__empty-message">No results</div>
       )}
     </div>
   );
