@@ -19,9 +19,7 @@ export const wallboardsActions = {
 
   ADD_WALLBOARD_COMPONENT: 'ADD_WALLBOARD_COMPONENT',
 
-  CHANGE_WALLBOARD_COMPONENTS_ORDER: 'CHANGE_WALLBOARD_COMPONENTS_ORDER',
-
-  SET_WIDGET_SIZE: 'SET_WIDGET_SIZE',
+  WALLBOARD_GRID_LAYOUT_CHANGE: 'WALLBOARD_GRID_LAYOUT_CHANGE',
 
   RESET_WALLBOARD_EDIT_PAGE_DATA: 'RESET_WALLBOARD_EDIT_PAGE_DATA',
 
@@ -98,14 +96,9 @@ export const addWallboardComponentAC = (userInfo, modalAddComponent) => ({
   payload: { user: userInfo, modalAddComponent },
 });
 
-export const changeWallboardComponentsOrderAC = (components) => ({
-  type: wallboardsActions.CHANGE_WALLBOARD_COMPONENTS_ORDER,
-  payload: components,
-});
-
-export const setWidgetSizeAC = (size, widgetId) => ({
-  type: wallboardsActions.SET_WIDGET_SIZE,
-  payload: { size, widgetId },
+export const handleWallboardGridLayoutChangeAC = (gridLayout) => ({
+  type: wallboardsActions.WALLBOARD_GRID_LAYOUT_CHANGE,
+  payload: gridLayout,
 });
 
 export const resetWallboardEditPageDataAC = () => ({

@@ -34,8 +34,8 @@ export const fetchWallboardByIdThunk =
 
       dispatch(fetchWallboardByIdSuccessAC({ widgets: [], ...response.data }));
     } catch (error) {
-      dispatch(fetchWallboardByIdFailAC(error.response.data.error.message));
-      console.log(error.response.data);
+      dispatch(fetchWallboardByIdFailAC(error?.response?.data?.error?.message));
+      console.log(error?.response?.data);
     }
   };
 
@@ -206,15 +206,15 @@ export const syncWallboardsWithConfig = () => async (dispatch, getState) => {
       };
 
       await axios(options).then((res) => {
-        if(!res.data.name) return;
+        if (!res.data.name) return;
 
         configWbs.push({
           id: res.data.id,
           name: res.data.name,
           createdBy: res.data.createdBy,
           createdOn: res.data.createdOn,
-          description: res.data.description
-        })
+          description: res.data.description,
+        });
       });
 
       if (allwbs.data.data.length == index + 1) {
@@ -238,11 +238,10 @@ export const syncWallboardsWithConfig = () => async (dispatch, getState) => {
   }
 };
 
-
 export const updateConfig = (wallboard, method) => async (dispatch, getState) => {
   try {
     const { userInfo, token } = getState().login;
-    
+
     let options = {
       method: 'get',
       url: `https://wallboards-store.redmatter-qa01.pub/organisation/${userInfo.organisationId}/key/config.json`, // add each wb to config
@@ -255,31 +254,29 @@ export const updateConfig = (wallboard, method) => async (dispatch, getState) =>
     };
     const result = await axios(options);
     let allWallboards = result.data;
-    const currentWallboard = allWallboards.find(el => el.id === wallboard.id);
+    const currentWallboard = allWallboards.find((el) => el.id === wallboard.id);
     const currentWallboardIndex = allWallboards.indexOf(currentWallboard);
 
-    
-
-    switch(method) {
+    switch (method) {
       case 'save':
-        if(currentWallboardIndex !== -1) {
+        if (currentWallboardIndex !== -1) {
           allWallboards[currentWallboardIndex] = {
             id: wallboard.id,
             name: wallboard.name,
             createdBy: wallboard.createdBy,
             createdOn: wallboard.createdOn,
-            description: wallboard.description
+            description: wallboard.description,
           };
         } else {
           allWallboards.push(wallboard);
         }
-      break;
+        break;
 
       case 'delete':
-        const wbToDelete = allWallboards.find(wb => wb.id === wallboard);
+        const wbToDelete = allWallboards.find((wb) => wb.id === wallboard);
         const wbToDeleteIndex = allWallboards.indexOf(wbToDelete);
         delete allWallboards[wbToDeleteIndex];
-        allWallboards = allWallboards.filter(wb => wb != null); //clear empty elements
+        allWallboards = allWallboards.filter((wb) => wb != null); //clear empty elements
         break;
 
       default:
@@ -288,7 +285,7 @@ export const updateConfig = (wallboard, method) => async (dispatch, getState) =>
 
     options.method = 'put'; //update config file
     options.data = allWallboards;
-    await axios(options); 
+    await axios(options);
     dispatch(fetchAllWallboardsThunk());
   } catch (error) {
     dispatch(saveWallboardFailAC());

@@ -7,20 +7,13 @@ import {
   setWallboardComponentForDeleteAC,
   setWidgetComponentForEditAC,
 } from 'src/store/actions/modal.action';
-import { setWidgetSizeAC } from 'src/store/actions/wallboards.action';
 import AgentCard from '../agent-card/agent-card';
 import AgentTable from '../agent-table/agent-table';
 import { MAIN_VIEWING_OPTIONS } from '../modal/add-component/modal.add-component.defaults';
 import { WALLBOARD_MODAL_NAMES } from '../modal/new-wallboard/modal.new-wallboard.defaults';
-import { SortableDragHandle } from '../sortable/sortable';
-import ResizeComponent from './grid.resize-component';
 
 const GridAgentList = ({ widget, ...props }) => {
   const dispatch = useDispatch();
-
-  const onCardResize = (size) => {
-    dispatch(setWidgetSizeAC(size, widget.id));
-  };
 
   const handleEditIcon = () => {
     const onEditClick = () => {
@@ -33,6 +26,7 @@ const GridAgentList = ({ widget, ...props }) => {
       </div>
     );
   };
+
   const handleDeleteIcon = () => {
     const onDeleteClick = () => {
       dispatch(setWallboardComponentForDeleteAC(widget));
@@ -44,15 +38,14 @@ const GridAgentList = ({ widget, ...props }) => {
       </div>
     );
   };
+
   return (
-    <ResizeComponent onResize={onCardResize} width={widget?.size?.width} height={widget?.size?.height} className="agent-list">
+    <div className="agent-list">
       <div className="agent-list__header">
-        <SortableDragHandle>
-          <div className="agent-list__title">
-            <div className="agent-list__title--bold">{widget.name}:</div>
-            Not urgent but somewhat important queue
-          </div>
-        </SortableDragHandle>
+        <div className="agent-list__title">
+          <div className="agent-list__title--bold">{widget.name}:</div>
+          Not urgent but somewhat important queue
+        </div>
         <div className="agent-list__icons">
           {handleEditIcon()}
           {handleDeleteIcon()}
@@ -123,7 +116,7 @@ const GridAgentList = ({ widget, ...props }) => {
           </>
         )}
       </div>
-    </ResizeComponent>
+    </div>
   );
 };
 export default GridAgentList;

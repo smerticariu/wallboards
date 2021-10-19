@@ -121,18 +121,6 @@ export const wallboardsReducer = (state = { ...initialState }, action) => {
         },
       };
 
-    case wallboardsActions.CHANGE_WALLBOARD_COMPONENTS_ORDER:
-      return {
-        ...state,
-        activeWallboard: {
-          ...state.activeWallboard,
-          wallboard: {
-            ...state.activeWallboard.wallboard,
-            widgets: [...action.payload],
-          },
-        },
-      };
-
     case wallboardsActions.ADD_WALLBOARD_COMPONENT: {
       const { widgets } = state.activeWallboard.wallboard;
       const modalAddComponent = action.payload.modalAddComponent;
@@ -148,8 +136,10 @@ export const wallboardsReducer = (state = { ...initialState }, action) => {
         skills: modalAddComponent.skillsToView,
         columns: modalAddComponent.columns,
         size: {
-          width: 'auto',
-          height: 'fit-content',
+          h: 50,
+          w: 192,
+          x: Infinity,
+          y: Infinity,
         },
       };
       return {
@@ -187,7 +177,7 @@ export const wallboardsReducer = (state = { ...initialState }, action) => {
       };
     }
 
-    case wallboardsActions.SET_WIDGET_SIZE: {
+    case wallboardsActions.WALLBOARD_GRID_LAYOUT_CHANGE: {
       const { widgets } = state.activeWallboard.wallboard;
       return {
         ...state,
@@ -195,14 +185,14 @@ export const wallboardsReducer = (state = { ...initialState }, action) => {
           ...state.activeWallboard,
           wallboard: {
             ...state.activeWallboard.wallboard,
-            widgets: widgets.map((widget) =>
-              widget.id === action.payload.widgetId
-                ? {
-                    ...widget,
-                    size: action.payload.size,
-                  }
-                : widget
-            ),
+            widgets: widgets.map((widget) => {
+              const layoutData = action.payload.find((layout) => layout.i === widget.id);
+              const { h, w, x, y } = layoutData;
+              return {
+                ...widget,
+                size: { h, w, x, y },
+              };
+            }),
           },
         },
       };

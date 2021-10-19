@@ -7,7 +7,7 @@ import useOnClickOutside from '../../../common/hooks/useOnClickOutside';
 const ModalDeleteWallboard = ({ ...props }) => {
   const modalRef = useRef(null);
   const dispatch = useDispatch();
-  const { wallboardIdForDelete } = useSelector((state) => state.wallboards);
+  const { wallboardIdForDelete } = useSelector((state) => state.wallboards.present);
   const closeModal = () => {
     dispatch(handleWallboardActiveModalAC(null));
   };
