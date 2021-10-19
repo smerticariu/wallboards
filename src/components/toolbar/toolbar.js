@@ -202,8 +202,9 @@ const Toolbar = (props) => {
     );
   };
   const handleRunButton = () => {
+    const wallboardIsEmpty = activeWallboard.widgets.length === 0;
     return (
-      <Link target="_blank" to={`/wallboard/${activeWallboard.id}`} className="c-button c-button--blue c-button--m-left">
+      <Link target="_blank" to={`/wallboard/${activeWallboard.id}`} className={`c-button c-button--blue c-button--m-left ${wallboardIsEmpty && 'c-button--disabled'}`}>
         Run
       </Link>
     );
