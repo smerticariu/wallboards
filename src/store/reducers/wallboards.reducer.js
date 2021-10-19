@@ -9,7 +9,7 @@ export const FetchStatus = {
 };
 const initialState = {
   wallboardIdForDelete: null,
-  filterWallboards: [],
+  searchedWallboards: [],
   activeWallboard: {
     wallboardInitialValues: {
       name: 'My New Wallboard',

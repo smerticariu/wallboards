@@ -1,8 +1,8 @@
 import { wallboardsActions } from '../actions/wallboards.action';
 
 const initialState = {
-  category: 'Most Recent',
-  filterWallboards: '',
+  category: 'Wallboards',
+  searchedWallboards: '',
   wallboardsByCategory: [],
 };
 
@@ -16,7 +16,7 @@ export const landingReducer = (state = initialState, action) => {
     case wallboardsActions.SET_FILTERED_WALLBOARDS:
       return {
         ...state,
-        filterWallboards: action.payload,
+        searchedWallboards: action.payload,
       };
     case wallboardsActions.SET_WALLBOARDS_BY_CATEGORY:
       return {
