@@ -31,7 +31,6 @@ export const fetchWallboardByIdThunk =
       };
 
       const response = await axios(options);
-
       dispatch(fetchWallboardByIdSuccessAC({ widgets: [], ...response.data }));
     } catch (error) {
       dispatch(fetchWallboardByIdFailAC(error?.response?.data?.error?.message));

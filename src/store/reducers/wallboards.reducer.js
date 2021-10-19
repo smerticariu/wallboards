@@ -123,6 +123,7 @@ export const wallboardsReducer = (state = { ...initialState }, action) => {
 
     case wallboardsActions.ADD_WALLBOARD_COMPONENT: {
       const { widgets } = state.activeWallboard.wallboard;
+      debugger;
       const modalAddComponent = action.payload.modalAddComponent;
       const newWidget = {
         name: modalAddComponent.title,
@@ -135,12 +136,15 @@ export const wallboardsReducer = (state = { ...initialState }, action) => {
         columnsToView: modalAddComponent.columnsToViewOptions,
         skills: modalAddComponent.skillsToView,
         columns: modalAddComponent.columns,
-        size: {
-          h: 50,
-          w: 192,
-          x: Infinity,
-          y: Infinity,
-        },
+        size: modalAddComponent.isEditMode
+          ? modalAddComponent.size
+          sa adaug asta cu size la editmode
+          : {
+              h: 50,
+              w: 192,
+              x: 0,
+              y: widgets.reduce((newH, widget) => (widget.size.y >= newH ? widget.size.y + 1 : newH), 0),
+            },
       };
       return {
         ...state,
@@ -157,7 +161,7 @@ export const wallboardsReducer = (state = { ...initialState }, action) => {
                         id: modalAddComponent.id,
                       }
                 )
-              : [...widgets, { ...newWidget, id: generateWallboardWidgetId(action.payload.user.organisationId, action.payload.user) }],
+              : [...widgets, { ...newWidget, id: generateWallboardWidgetId(action.payload.user.organisationId, action.payload.user.id) }],
           },
         },
       };

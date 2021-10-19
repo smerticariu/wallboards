@@ -1,57 +1,69 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import RGL, { WidthProvider } from 'react-grid-layout';
 import { useDispatch } from 'react-redux';
 import { handleWallboardGridLayoutChangeAC } from 'src/store/actions/wallboards.action';
 import GridAgentList from './grid.agent-list';
+
 const ReactGridLayout = WidthProvider(RGL);
 
 const GridResizeComponents = ({ widgets = [], ...props }) => {
-  const defaultProps = {
-    className: 'layout',
-    rowHeight: 1,
-    cols: 192,
-  };
   const dispatch = useDispatch();
 
   const onLayoutChange = (layout) => {
-    const isChanges = layout.some((layoutElement) => {
+    // check for changes
+    let isLayoutChanged = layout.some((layoutElement) => {
       const widget = widgets.find((widget) => widget.id === layoutElement.i);
-      if (
-        (widget.size.x !== layoutElement.x && widget.size.x !== Infinity) ||
-        (widget.size.y !== layoutElement.y && widget.size.y !== Infinity) ||
-        widget.size.w !== layoutElement.w ||
-        widget.size.h !== layoutElement.h
-      ) {
-        return true;
-      }
-      return false;
+      return widget.size.x !== layoutElement.x || widget.size.w !== layoutElement.w || widget.size.h !== layoutElement.h;
     });
-    if (isChanges) dispatch(handleWallboardGridLayoutChangeAC(layout));
+
+    // check if there has been a change on the y axis
+    const widgetsWithChangedY = layout.filter((layoutElement) => {
+      const widget = widgets.find((widget) => widget.id === layoutElement.i);
+      return widget.size.y !== layoutElement.y;
+    });
+
+    if (widgetsWithChangedY.length > 1) {
+      isLayoutChanged = true;
+    }
+
+    if (isLayoutChanged) {
+      dispatch(handleWallboardGridLayoutChangeAC(layout));
+    }
   };
-  const layout = () =>
-    widgets.map((widget, index) => {
+
+  const handleLayout = () =>
+    widgets.map((widget) => {
       return {
-        x: widget.size.x, // numarul pozitiei pe axa x
-        y: widget.size.y, //numarul pozitiei pe y
-        w: widget.size.w,
-        h: widget.size.h, // inaltimea
-        minW: 50,
-        minH: 20,
-        i: widget.id,
+        x: widget.size.x, // position on the x-axis
+        y: widget.size.y, // position on the y-axis
+        w: widget.size.w, // width (grid units)
+        h: widget.size.h, // height (grid units)
+        minW: 50, // min width (grid units)
+        minH: 20, // min height (grid units)
+        i: widget.id, // custom key
         resizeHandles: ['s', 'w', 'e', 'n', 'sw', 'nw', 'se', 'ne'],
       };
     });
-  const layoutElements = () =>
-    widgets.map((widget, index) => {
+
+  const handleLayoutElements = () =>
+    widgets.map((widget) => {
       return (
         <div key={widget.id}>
           <GridAgentList widget={widget} />
         </div>
       );
     });
+
   return (
-    <ReactGridLayout draggableHandle=".agent-list__header" layout={layout()} onLayoutChange={onLayoutChange} {...defaultProps}>
-      {layoutElements()}
+    <ReactGridLayout
+      cols={192}
+      rowHeight={1}
+      className={'layout'}
+      draggableHandle=".agent-list__header"
+      layout={handleLayout()}
+      onLayoutChange={onLayoutChange}
+    >
+      {handleLayoutElements()}
     </ReactGridLayout>
   );
 };

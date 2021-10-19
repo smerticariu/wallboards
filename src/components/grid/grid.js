@@ -19,7 +19,7 @@ const GridPage = ({ ...props }) => {
         setGridCells((cells) => cells - CELLS_NUMBER_REMOVE);
       }
     }
-  }, [sortableListRef.current?.offsetHeight, gridRef.current?.offsetHeight, gridCells, activeWallboard]);
+  }, [sortableListRef.current?.offsetHeight, gridRef.current?.offsetHeight, gridCells, activeWallboard.widgets]);
 
   const handleGridComponents = () => {
     return (

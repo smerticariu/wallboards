@@ -175,8 +175,7 @@ const Toolbar = (props) => {
 
   const handleSaveButton = () => {
     const handleClick = () => {
-      setIsNewWallboardClicked(true);
-      dispatch(saveWallboardThunk());
+      dispatch(handleWallboardActiveModalAC(WALLBOARD_MODAL_NAMES.CONFIRM_SAVE_WALLBOARD));
     };
     return (
       <button
