@@ -65,7 +65,7 @@ export const fetchAllWallboardsThunk = () => async (dispatch, getState) => {
 };
 
 export const saveWallboardThunk = () => async (dispatch, getState) => {
-  const activeWallboard = getState().wallboards.present.activeWallboard.wallboard;
+  const activeWallboard = getState().wallboards.activeWallboard.wallboard;
   const { userInfo, token } = getState().login;
   try {
     dispatch(saveWallboardAC());
@@ -108,7 +108,7 @@ export const saveWallboardThunk = () => async (dispatch, getState) => {
 };
 
 export const deleteWallboardThunk =
-  ({ wbId }) =>
+  (wbId) =>
   async (dispatch, getState) => {
     try {
       const { userInfo, token } = getState().login;
@@ -122,7 +122,6 @@ export const deleteWallboardThunk =
           Accept: 'application/json',
         },
       };
-
       await axios(options);
       dispatch(fetchAllWallboardsThunk());
       dispatch(updateConfig(wbId, 'delete'));
@@ -140,7 +139,7 @@ export const copyWallboardThunk =
     try {
       const { userInfo, token } = getState().login;
       await dispatch(fetchWallboardByIdThunk({ wbId: wb.id }));
-      let activeWallboard = getState().wallboards.present.activeWallboard.wallboard;
+      let activeWallboard = getState().wallboards.activeWallboard.wallboard;
 
       const currentDate = new Date().getTime();
       const wbId = generateWallboardId(userInfo.organisationId, userInfo.id);
@@ -210,6 +209,7 @@ export const syncWallboardsWithConfig = () => async (dispatch, getState) => {
 
         configWbs.push({
           id: res.data.id,
+          key: res.data.key,
           name: res.data.name,
           createdBy: res.data.createdBy,
           createdOn: res.data.createdOn,
