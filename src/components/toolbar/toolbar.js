@@ -98,7 +98,7 @@ const Toolbar = (props) => {
   const handleNewWallboardButton = () => {
     const onClick = () => {
       setIsNewWallboardClicked(true);
-      // dispatch(saveWallboardThunk());
+      dispatch(saveWallboardThunk());
     };
     return (
       <button onClick={onClick} className="c-button c-button--m-left">

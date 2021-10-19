@@ -30,7 +30,7 @@ const ModalDeleteWallboard = ({ ...props }) => {
 
   const handleDeleteButton = () => {
     const onClickDeleteButton = () => {
-      dispatch(deleteWallboardThunk({ wbId: wallboardIdForDelete }));
+      dispatch(deleteWallboardThunk(wallboardIdForDelete));
       closeModal();
     };
 

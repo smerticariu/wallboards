@@ -107,32 +107,29 @@ export const saveWallboardThunk = () => async (dispatch, getState) => {
   }
 };
 
-export const deleteWallboardThunk =
-  ({ wbId }) =>
-  async (dispatch, getState) => {
-    try {
-      const { userInfo, token } = getState().login;
-      const options = {
-        method: 'delete',
-        url: `https://wallboards-store.redmatter-qa01.pub/organisation/${userInfo.organisationId}/key/${wbId}`,
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: 'Bearer ' + token,
-          'Access-Control-Allow-Origin': '*',
-          Accept: 'application/json',
-        },
-      };
-
-      await axios(options);
-      dispatch(fetchAllWallboardsThunk());
-      dispatch(updateConfig(wbId, 'delete'));
-      dispatch(handleIsNotificationShowAC(true, false, 'Wallboard was deleted'));
-    } catch (error) {
-      dispatch(fetchAllWallboardsFailAC());
-      dispatch(handleIsNotificationShowAC(true, true, 'The Wallboard has not been deleted'));
-      console.log(error);
-    }
-  };
+export const deleteWallboardThunk = (wbId) => async (dispatch, getState) => {
+  try {
+    const { userInfo, token } = getState().login;
+    const options = {
+      method: 'delete',
+      url: `https://wallboards-store.redmatter-qa01.pub/organisation/${userInfo.organisationId}/key/${wbId}`,
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + token,
+        'Access-Control-Allow-Origin': '*',
+        Accept: 'application/json',
+      },
+    };
+    await axios(options);
+    dispatch(fetchAllWallboardsThunk());
+    dispatch(updateConfig(wbId, 'delete'));
+    dispatch(handleIsNotificationShowAC(true, false, 'Wallboard was deleted'));
+  } catch (error) {
+    dispatch(fetchAllWallboardsFailAC());
+    dispatch(handleIsNotificationShowAC(true, true, 'The Wallboard has not been deleted'));
+    console.log(error);
+  }
+};
 
 export const copyWallboardThunk =
   ({ wb }) =>
@@ -210,6 +207,7 @@ export const syncWallboardsWithConfig = () => async (dispatch, getState) => {
 
         configWbs.push({
           id: res.data.id,
+          key: res.data.key,
           name: res.data.name,
           createdBy: res.data.createdBy,
           createdOn: res.data.createdOn,
