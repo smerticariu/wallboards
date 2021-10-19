@@ -126,17 +126,17 @@ const LandingTable = () => {
             <tr>
               <td>
                 <span 
-                  className="c-landing-table__filter-btn"
+                  className="c-landing-table__filter"
                   onClick={() => handleSortWallboards('name')}>Wallboard Name & Description</span>
               </td>
               <td>
                 <span 
-                  className="c-landing-table__filter-btn"
+                  className="c-landing-table__filter"
                   onClick={() => handleSortWallboards('author')}>Created By</span>
               </td>
               <td>
                 <span 
-                  className="c-landing-table__filter-btn"
+                  className="c-landing-table__filter"
                   onClick={() => handleSortWallboards('date')}>Created On</span>
               </td>
             </tr>

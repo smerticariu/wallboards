@@ -61,6 +61,10 @@
       width: 693px !important;
     }
 
+    &__filter {
+      cursor: pointer;
+    }
+
     &__edit-btn {
       background-image: url('../../assets/static/images/edit_icon.svg');
     }
