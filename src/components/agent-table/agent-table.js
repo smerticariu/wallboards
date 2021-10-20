@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowDownIcon } from 'src/assets/static/icons/arrow-down';
+import { ArrowDownIcon } from '../../assets/static/icons/arrow-down';
 import { PRESENCE_STATE_KEYS_COLOR } from '../modal/add-component/modal.add-component.defaults';
 const AgentTable = ({ agents, ...props }) => {
   return (
@@ -22,7 +22,7 @@ const AgentTable = ({ agents, ...props }) => {
 
       <div className="agent-t__body">
         {agents.map((agent, index) => (
-          <div key={index} className="agent-t__agent agent-t__agent">
+          <div key={index} className="agent-t__agent">
             {agent.agentName && <div className="agent-t__agent-info">Megan Carter</div>}
             {agent.currAvaiState && (
               <div
