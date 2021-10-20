@@ -11,20 +11,70 @@ const LandingTable = () => {
   const dispatch = useDispatch();
   const { fetchStatus, wallboards } = useSelector((state) => state.wallboards.present.allWallboards);
   const [filteredWbs, setFilteredWbs] = useState([]);
+
+  const [filterByNameAlphabet, setFilterByNameAlphabet] = useState('');
+  const [filterByAuthorAlphabet, setFilterByAuthorAlphabet] = useState('');
+  const [filterByDate, setFilterByDate] = useState('descendent');
+
   const { userInfo } = useSelector((state) => state.login);
-  const category = useSelector((state) => state.landing.category);
-  const filter = useSelector((state) => state.landing.filterWallboards);
+  const { category, searchedWallboards } = useSelector((state) => state.landing);
+ 
   useEffect(() => {
     // dispatch(syncWallboardsWithConfig()); // do not delete yet
     dispatch(fetchAllWallboardsThunk());
     // eslint-disable-next-line
-  }, [wallboards.length]);
+  }, []);
+
+  const handleSortWallboards = filterName => {
+    switch(filterName) {
+      case 'name':
+        if(!filterByNameAlphabet.length || filterByNameAlphabet === 'descendent') {
+          setFilterByNameAlphabet('ascendent');
+          const wallboardsByName = filteredWbs.sort((a,b) => a.name.localeCompare(b.name))
+          setFilteredWbs(wallboardsByName);
+        } else if (filterByNameAlphabet === 'ascendent') {
+          setFilterByNameAlphabet('descendent');
+          const wallboardsByName = filteredWbs.sort((a,b) => a.name.localeCompare(b.name)).reverse();
+          setFilteredWbs(wallboardsByName);
+        }
+        break;
+
+      case 'author':
+        if(!filterByAuthorAlphabet.length || filterByAuthorAlphabet === 'descendent') {
+          setFilterByAuthorAlphabet('ascendent');
+          const wallboardsByAuthor = filteredWbs.sort((a,b) => a.createdBy.localeCompare(b.createdBy));
+          setFilteredWbs(wallboardsByAuthor);
+        } else if (filterByAuthorAlphabet === 'ascendent') {
+          setFilterByAuthorAlphabet('descendent');
+          const wallboardsByAuthor = filteredWbs.sort((a,b) => a.createdBy.localeCompare(b.createdBy)).reverse();
+          setFilteredWbs(wallboardsByAuthor);
+        }
+        console.log(filteredWbs, filterName)
+        break;
+
+      case 'date':
+        if(filterByDate === 'descendent') {
+          setFilterByDate('ascendent');
+          const wallboardsByDate = filteredWbs.sort((a,b) => a.createdOn.toString().localeCompare(b.createdOn.toString()));
+          setFilteredWbs(wallboardsByDate);
+        } else {
+          setFilterByDate('descendent');
+          const wallboardsByDate = filteredWbs.sort((a,b) => a.createdOn.toString().localeCompare(b.createdOn.toString())).reverse();
+          setFilteredWbs(wallboardsByDate);
+        }
+        break;
+
+      default:
+        return;
+    }
+  }
+
 
   useEffect(() => {
     const filterWbsByCategory = (category) => {
       switch (category) {
-        case 'Most Recent':
-          const wbsByDate = wallboards.sort((a, b) => new Date(b.createdOn) - new Date(a.createdOn)).slice(0, 10);
+        case 'Wallboards':
+          const wbsByDate = wallboards.sort((a,b) => a.createdOn.toString().localeCompare(b.createdOn.toString())).reverse();
           return wbsByDate;
         case 'Created By Me':
           const wbsByUser = wallboards.filter((wb) => wb.natterboxUserId === userInfo.natterboxUserId);
@@ -37,13 +87,13 @@ const LandingTable = () => {
     const filteredWbsByCategory = filterWbsByCategory(category);
 
     const wallboardsByInput = filteredWbsByCategory.filter((wb) => {
-      if (wb?.name?.toLowerCase().includes(filter.toLowerCase()) || wb?.createdBy?.toLowerCase().includes(filter.toLowerCase())) return wb;
+      if (wb?.name?.toLowerCase().includes(searchedWallboards.toLowerCase()) || wb?.createdBy?.toLowerCase().includes(searchedWallboards.toLowerCase())) return wb;
     });
 
     setFilteredWbs(wallboardsByInput);
     dispatch(setWallboardsByCategoryAC(wallboardsByInput));
     // eslint-disable-next-line
-  }, [category, filter, wallboards.length]);
+  }, [category, searchedWallboards, wallboards.length]);
 
   const handleDelete = (id) => {
     dispatch(setWallboardIdForDeleteAC(id));
@@ -74,9 +124,21 @@ const LandingTable = () => {
         <table>
           <thead>
             <tr>
-              <td>Wallboard Name & Description</td>
-              <td>Created By</td>
-              <td>Created On</td>
+              <td>
+                <span 
+                  className="c-landing-table__filter"
+                  onClick={() => handleSortWallboards('name')}>Wallboard Name & Description</span>
+              </td>
+              <td>
+                <span 
+                  className="c-landing-table__filter"
+                  onClick={() => handleSortWallboards('author')}>Created By</span>
+              </td>
+              <td>
+                <span 
+                  className="c-landing-table__filter"
+                  onClick={() => handleSortWallboards('date')}>Created On</span>
+              </td>
             </tr>
           </thead>
           <tbody>

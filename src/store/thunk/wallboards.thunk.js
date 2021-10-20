@@ -125,7 +125,6 @@ export const deleteWallboardThunk = (wbId) => async (dispatch, getState) => {
       },
     };
     await axios(options);
-    dispatch(fetchAllWallboardsThunk());
     dispatch(updateConfig(wbId, 'delete'));
     dispatch(handleIsNotificationShowAC(true, false, 'Wallboard was deleted'));
   } catch (error) {
@@ -169,7 +168,6 @@ export const copyWallboardThunk =
 
       dispatch(saveWallboardSuccessAC(data));
       dispatch(updateConfig(data, 'save'));
-      dispatch(fetchAllWallboardsThunk());
     } catch (error) {
       dispatch(saveWallboardFailAC());
       console.log(error);

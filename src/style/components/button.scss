@@ -23,6 +23,7 @@
     background-color: $pinkish-grey;
     color: $white;
     cursor: default;
+    pointer-events: none;
   }
   &--m-auto {
     margin: 0 auto;
