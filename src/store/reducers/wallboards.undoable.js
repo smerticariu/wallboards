@@ -15,6 +15,8 @@ export const wallboardsUndoable = (reducer) => {
       case wallboardsActions.WALLBOARD_UNDO: {
         const previous = past[past.length - 1];
         const newPast = past.slice(0, past.length - 1);
+
+        // if past. length === 0 return the actual state
         if (!past.length || previous.activeWallboard?.fetchStatus !== FetchStatus.SUCCESS) return state;
         return {
           past: newPast,
@@ -54,6 +56,7 @@ export const wallboardsUndoable = (reducer) => {
         };
       }
 
+      // these changes we do not want to add to the past
       case wallboardsActions.FETCH_ALL_WALLBOARDS:
       case wallboardsActions.FETCH_ALL_WALLBOARDS_FAIL:
       case wallboardsActions.FETCH_ALL_WALLBOARDS_SUCCESS: {

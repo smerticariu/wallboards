@@ -6,7 +6,7 @@ import GridAgentList from './grid.agent-list';
 
 const ReactGridLayout = WidthProvider(RGL);
 
-const GridResizeComponents = ({ widgets = [], ...props }) => {
+const GridResizeContainer = ({ widgets = [], ...props }) => {
   const dispatch = useDispatch();
 
   const onLayoutChange = (layout) => {
@@ -38,20 +38,11 @@ const GridResizeComponents = ({ widgets = [], ...props }) => {
         y: widget.size.y, // position on the y-axis
         w: widget.size.w, // width (grid units)
         h: widget.size.h, // height (grid units)
-        minW: 50, // min width (grid units)
+        minW: 5, // min width (grid units)
         minH: 20, // min height (grid units)
         i: widget.id, // custom key
-        resizeHandles: ['s', 'w', 'e', 'n', 'sw', 'nw', 'se', 'ne'],
+        resizeHandles: ['s', 'e', 'se'], // south , east, south-east
       };
-    });
-
-  const handleLayoutElements = () =>
-    widgets.map((widget) => {
-      return (
-        <div key={widget.id}>
-          <GridAgentList widget={widget} />
-        </div>
-      );
     });
 
   return (
@@ -63,9 +54,15 @@ const GridResizeComponents = ({ widgets = [], ...props }) => {
       layout={handleLayout()}
       onLayoutChange={onLayoutChange}
     >
-      {handleLayoutElements()}
+      {widgets.map((widget) => {
+        return (
+          <div key={widget.id}>
+            <GridAgentList widget={widget} />
+          </div>
+        );
+      })}
     </ReactGridLayout>
   );
 };
 
-export default GridResizeComponents;
+export default GridResizeContainer;

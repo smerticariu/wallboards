@@ -39,4 +39,9 @@
     font-family: $public-sans-thin;
     color: $input-text-colour;
   }
+  &__error-message {
+    color: $natterbox-red;
+    font-family: $public-sans-regular;
+    font-size: 12px;
+  }
 }

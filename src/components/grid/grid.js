@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { createArrayFromTo } from '../../common/utils/generateArray';
 import { useSelector } from 'react-redux';
 import { CELLS_NUMBER_ADD, CELLS_NUMBER_REMOVE, CELLS_ON_ROW, CELL_HEIGHT, INITIAL_CELLS_NUMBER } from './grid.defaults';
-import GridResizeComponents from './grid.resize-component';
+import GridResizeContainer from './grid.resize-container';
 const GridPage = ({ ...props }) => {
   const [gridCells, setGridCells] = useState(INITIAL_CELLS_NUMBER);
   const activeWallboard = useSelector((state) => state.wallboards.present.activeWallboard.wallboard);
@@ -24,7 +24,7 @@ const GridPage = ({ ...props }) => {
   const handleGridComponents = () => {
     return (
       <div className="c-grid__components" ref={sortableListRef}>
-        <GridResizeComponents widgets={activeWallboard.widgets} />
+        <GridResizeContainer widgets={activeWallboard.widgets} />
       </div>
     );
   };

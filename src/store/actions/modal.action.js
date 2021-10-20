@@ -6,6 +6,8 @@ export const modalActions = {
   HANDLE_MODAL_SELECT_COMPONENT_ACTIVE_ELEMENT: 'HANDLE_MODAL_SELECT_COMPONENT_ACTIVE_ELEMENT',
   SET_WIDGET_FOR_EDIT: 'SET_WIDGET_FOR_EDIT',
   SET_WALLBOARD_COMPONENT_FOR_DELETE: 'SET_WALLBOARD_COMPONENT_FOR_DELETE',
+
+  HANDLE_WARNING_MESSAGE: 'HANDLE_WARNING_MESSAGE',
 };
 export const handleWallboardActiveModalAC = (modalName) => ({
   type: modalActions.HANDLE_WALLBOARD_ACTIVE_MODAL,
@@ -30,4 +32,9 @@ export const setWidgetComponentForEditAC = (widget) => ({
 export const setWallboardComponentForDeleteAC = (component) => ({
   type: modalActions.SET_WALLBOARD_COMPONENT_FOR_DELETE,
   payload: component,
+});
+
+export const handleWarningMessageAC = (message) => ({
+  type: modalActions.HANDLE_WARNING_MESSAGE,
+  payload: message,
 });
