@@ -9,8 +9,7 @@
       margin: 0 auto;
     }
     &__cards {
-      display: flex;
-      flex-wrap: wrap;
+      width: 100%;
     }
     &__title {
       margin-bottom: 20px;
@@ -53,24 +52,6 @@
       font-weight: 600;
       color: $slate-gray;
       margin-bottom: 40px;
-    }
-  }
-}
-
-.c-wallboard--read-only {
-  &__cards {
-    display: flex;
-    flex-wrap: wrap;
-  }
-  &__title {
-    margin-bottom: 20px;
-    display: flex;
-    font-family: $public-sans-regular;
-    font-size: 14px;
-    color: $slate-gray;
-    &--bold {
-      margin-right: 3px;
-      font-family: $public-sans-bold;
     }
   }
 }

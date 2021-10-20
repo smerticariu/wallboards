@@ -12,7 +12,7 @@ import AgentTable from '../agent-table/agent-table';
 import { ADD_COMPONENT_COLUMN_OPTIONS, MAIN_VIEWING_OPTIONS } from '../modal/add-component/modal.add-component.defaults';
 import { WALLBOARD_MODAL_NAMES } from '../modal/new-wallboard/modal.new-wallboard.defaults';
 
-const GridAgentList = ({ widget, ...props }) => {
+const GridAgentList = ({ isEditMode, widget, ...props }) => {
   const dispatch = useDispatch();
 
   const handleEditIcon = () => {
@@ -47,8 +47,12 @@ const GridAgentList = ({ widget, ...props }) => {
           Not urgent but somewhat important queue
         </div>
         <div className="agent-list__icons">
-          {handleEditIcon()}
-          {handleDeleteIcon()}
+          {isEditMode && (
+            <>
+              {handleEditIcon()}
+              {handleDeleteIcon()}
+            </>
+          )}
         </div>
       </div>
       <div className={`agent-list__body ${widget.view === MAIN_VIEWING_OPTIONS.TABLE ? 'agent-list__body--table' : ''}`}>
