@@ -1,13 +1,14 @@
 import React, { useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { handleWallboardActiveModalAC } from 'src/store/actions/modal.action';
+import { deleteWallboardComponentByIdAC } from 'src/store/actions/wallboards.action';
 import { deleteWallboardThunk } from 'src/store/thunk/wallboards.thunk';
 import useOnClickOutside from '../../../common/hooks/useOnClickOutside';
 
-const ModalDeleteWallboard = ({ ...props }) => {
+const ModalDeleteWallboardComponent = ({ ...props }) => {
   const modalRef = useRef(null);
   const dispatch = useDispatch();
-  const { wallboardIdForDelete } = useSelector((state) => state.wallboards.present);
+  const componentForDelete = useSelector((state) => state.modal.wallboardComponentForDelete);
   const closeModal = () => {
     dispatch(handleWallboardActiveModalAC(null));
   };
@@ -30,7 +31,7 @@ const ModalDeleteWallboard = ({ ...props }) => {
 
   const handleDeleteButton = () => {
     const onClickDeleteButton = () => {
-      dispatch(deleteWallboardThunk(wallboardIdForDelete));
+      dispatch(deleteWallboardComponentByIdAC(componentForDelete.id));
       closeModal();
     };
 
@@ -48,10 +49,10 @@ const ModalDeleteWallboard = ({ ...props }) => {
       <div ref={modalRef} className="c-modal__container c-modal__container--save-changes ">
         <div className="c-modal__content">
           <div className="c-modal__header">
-            <div className="c-modal__title c-modal__title--bold">Delete Wallboard</div>
+            <div className="c-modal__title c-modal__title--bold">Delete {componentForDelete.name}</div>
           </div>
           <div className="c-modal__body c-modal__body--save-changes">
-            <div className="c-modal__body--save-changes__phrase">Are you sure you want to delete this wallboard?</div>
+            <div className="c-modal__body--save-changes__phrase">Are you sure you want to delete this component?</div>
           </div>
           <div className="c-modal__footer">
             <div className="c-modal__footer-left-side" />
@@ -65,4 +66,4 @@ const ModalDeleteWallboard = ({ ...props }) => {
     </div>
   );
 };
-export default ModalDeleteWallboard;
+export default ModalDeleteWallboardComponent;
