@@ -1,6 +1,6 @@
 .c-wallboard {
   &--read-only {
-    height: 90vh;
+    min-height: 90vh;
     display: flex;
     flex-direction: column;
     padding-bottom: 15px;
