@@ -205,6 +205,18 @@ export const wallboardsReducer = (state = { ...initialState }, action) => {
         },
       };
 
+    case wallboardsActions.HANDLE_SELECTED_WALLBOARD_DESCRIPTION:
+      return {
+        ...state,
+        activeWallboard: {
+          ...state.activeWallboard,
+          wallboard: {
+            ...state.activeWallboard.wallboard,
+            description: action.payload,
+          },
+        },
+      };
+
     case wallboardsActions.RESET_WALLBOARD_EDIT_PAGE_DATA: {
       return {
         ...state,
@@ -219,6 +231,22 @@ export const wallboardsReducer = (state = { ...initialState }, action) => {
         ...state,
         wallboardIdForDelete: action.payload,
       };
+    }
+
+    case wallboardsActions.SET_WALLBOARD_DISPLAY_SETTINGS: {
+      return {
+        ...state,
+        activeWallboard: {
+          ...state.activeWallboard,
+          wallboard: {
+            ...state.activeWallboard.wallboard,
+            settings: {
+              ...state.activeWallboard.settings,
+              display: action.payload,
+            }
+          }
+        }
+      }
     }
     default:
       return state;

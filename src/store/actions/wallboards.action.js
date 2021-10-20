@@ -1,5 +1,6 @@
 export const wallboardsActions = {
   HANDLE_NEW_WALLBOARD_TITLE: 'HANDLE_NEW_WALLBOARD_TITLE',
+  HANDLE_SELECTED_WALLBOARD_DESCRIPTION: 'HANDLE_SELECTED_WALLBOARD_DESCRIPTION',
   LANDING_SELECTED_WALLBOARD_CATEGORY: 'LANDING_SELECTED_WALLBOARD_CATEGORY',
   SET_FILTERED_WALLBOARDS: 'SET_FILTERED_WALLBOARDS',
   SET_WALLBOARDS_BY_CATEGORY: 'SET_WALLBOARDS_BY_CATEGORY',
@@ -26,14 +27,22 @@ export const wallboardsActions = {
   RESET_WALLBOARD_EDIT_PAGE_DATA: 'RESET_WALLBOARD_EDIT_PAGE_DATA',
 
   SET_WALLBOARD_ID_FOR_DELETE: 'SET_WALLBOARD_ID_FOR_DELETE',
+  
 
   WALLBOARD_UNDO: 'WALLBOARD_UNDO',
   WALLBOARD_REDO: 'WALLBOARD_REDO',
+
+  SET_WALLBOARD_DISPLAY_SETTINGS: 'SET_WALLBOARD_DISPLAY_SETTINGS',
 };
 
 export const handleNewWallboardTitleAC = (title) => ({
   type: wallboardsActions.HANDLE_NEW_WALLBOARD_TITLE,
   payload: title,
+});
+
+export const handleSelectedWallboardDescriptionAC = (description) => ({
+  type: wallboardsActions.HANDLE_SELECTED_WALLBOARD_DESCRIPTION,
+  payload: description,
 });
 
 export const handleSelectedWallboardCategoryAC = (category) => ({
@@ -104,6 +113,11 @@ export const changeWallboardComponentsOrderAC = (components) => ({
 export const setWidgetSizeAC = (size, widgetId) => ({
   type: wallboardsActions.SET_WIDGET_SIZE,
   payload: { size, widgetId },
+});
+
+export const setSelectedWallboardDisplaySettingsAC = (display) => ({
+  type: wallboardsActions.SET_WALLBOARD_DISPLAY_SETTINGS,
+  payload: display,
 });
 
 export const resetWallboardEditPageDataAC = () => ({

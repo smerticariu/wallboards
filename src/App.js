@@ -14,6 +14,7 @@ import { WALLBOARD_MODAL_NAMES } from './components/modal/new-wallboard/modal.ne
 import ModalNewWallboard from './components/modal/new-wallboard/modal.new-wallboard';
 import ModalAddComponent from './components/modal/add-component/modal.add-component';
 import ModalSaveWallboard from './components/modal/save-wallboard/modal.save-wallboard';
+import ModalEditWallboard from './components/modal/edit-wallboard/modal.edit-wallboard';
 import ModalDeleteWallboard from './components/modal/delete-wallboard/modal.delete-wallboard';
 import NotificationMessage from './components/agent-card/notification-message/notification-message';
 
@@ -78,6 +79,7 @@ function App() {
           {activeModalName === WALLBOARD_MODAL_NAMES.ADD_COMPONENT && <ModalAddComponent />}
           {activeModalName === WALLBOARD_MODAL_NAMES.SAVE_WALLBOARD && <ModalSaveWallboard />}
           {activeModalName === WALLBOARD_MODAL_NAMES.DELETE_WALLBOARD && <ModalDeleteWallboard />}
+          {activeModalName === WALLBOARD_MODAL_NAMES.EDIT_WALLBOARD && <ModalEditWallboard />}
         </>
       )}
 

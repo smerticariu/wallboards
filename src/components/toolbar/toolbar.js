@@ -211,7 +211,10 @@ const Toolbar = (props) => {
   };
 
   const handleSettingsIcon = () => {
-    return <SettingsIcon className="i--settings i--settings--toolbar" />;
+    const onClikEditWallboardModal = () => {
+      dispatch(handleWallboardActiveModalAC(WALLBOARD_MODAL_NAMES.EDIT_WALLBOARD));
+    }
+    return <SettingsIcon onClick={() => onClikEditWallboardModal()} className="i--settings i--settings--toolbar" />;
   };
 
   const handleRightToolbar = (template) => {
