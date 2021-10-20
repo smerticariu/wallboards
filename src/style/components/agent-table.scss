@@ -60,11 +60,21 @@
         white-space: nowrap;
         overflow: hidden;
       }
-      &--black,
+      &--lighter-red,
+      &--dark-blue,
       &--red,
-      &--green {
+      &--green,
+      &--grey {
         position: relative;
         padding-right: 10px;
+      }
+      &--lighter-red {
+        background-color: $natterbox-lighter-red;
+        color: $white;
+      }
+      &--dark-blue {
+        background-color: $natterbox-dark-blue-grey;
+        color: $white;
       }
       &--red {
         background-color: $natterbox-red;
@@ -72,11 +82,9 @@
       }
       &--green {
         background-color: $natterbox-green;
-        color: $slate-gray;
       }
-      &--black {
-        background-color: $natterbox-dark-blue-grey;
-        color: $white;
+      &--grey {
+        background-color: $pinkish-grey;
       }
 
       &--circle {
@@ -100,14 +108,26 @@
             height: 15px;
           }
           border-radius: 50%;
-          &--green {
-            background-color: rgba($natterbox-green, 0.58);
+          &--sun-yellow {
+            background-color: rgba($sun-yellow, 0.58);
           }
-          &--red {
+          &--lighter-red {
             background-color: rgba($natterbox-lighter-red, 0.58);
           }
           &--orange {
             background-color: rgba($natterbox-orange, 0.58);
+          }
+          &--magenta {
+            background-color: rgba($natterbox-magenta, 0.58);
+          }
+          &--aqua {
+            background-color: rgba($natterbox-aqua, 0.58);
+          }
+          &--sick-green {
+            background-color: rgba($sick-green, 0.58);
+          }
+          &--grey {
+            background-color: rgba($pinkish-grey-two, 0.58);
           }
         }
         &-center {
@@ -118,14 +138,26 @@
             height: 10px;
           }
           border-radius: 50%;
-          &--green {
-            background-color: $natterbox-green;
+          &--sun-yellow {
+            background-color: $sun-yellow;
           }
-          &--red {
+          &--lighter-red {
             background-color: $natterbox-lighter-red;
           }
           &--orange {
             background-color: $natterbox-orange;
+          }
+          &--magenta {
+            background-color: $natterbox-magenta;
+          }
+          &--aqua {
+            background-color: $natterbox-aqua;
+          }
+          &--sick-green {
+            background-color: $sick-green;
+          }
+          &--grey {
+            background-color: $pinkish-grey-two;
           }
         }
       }

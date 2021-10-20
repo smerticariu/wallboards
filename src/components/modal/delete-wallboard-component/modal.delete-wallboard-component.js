@@ -2,7 +2,6 @@ import React, { useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { handleWallboardActiveModalAC } from 'src/store/actions/modal.action';
 import { deleteWallboardComponentByIdAC } from 'src/store/actions/wallboards.action';
-import { deleteWallboardThunk } from 'src/store/thunk/wallboards.thunk';
 import useOnClickOutside from '../../../common/hooks/useOnClickOutside';
 
 const ModalDeleteWallboardComponent = ({ ...props }) => {

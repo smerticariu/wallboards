@@ -10,6 +10,7 @@ import {
   fetchWallboardByIdAC,
   fetchWallboardByIdFailAC,
   fetchWallboardByIdSuccessAC,
+  resetWallboardEditPageDataAC,
   saveWallboardAC,
   saveWallboardFailAC,
   saveWallboardSuccessAC,
@@ -84,6 +85,7 @@ export const saveWallboardThunk = () => async (dispatch, getState) => {
       description: 'Not implemented yet',
       widgets: activeWallboard.widgets,
     };
+
     const options = {
       method: 'put',
       url: `https://wallboards-store.redmatter-qa01.pub/organisation/${userInfo.organisationId}/key/${wbId}`,
@@ -166,7 +168,7 @@ export const copyWallboardThunk =
 
       await axios(options);
 
-      dispatch(saveWallboardSuccessAC(data));
+      dispatch(resetWallboardEditPageDataAC());
       dispatch(updateConfig(data, 'save'));
     } catch (error) {
       dispatch(saveWallboardFailAC());

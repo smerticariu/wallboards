@@ -5,7 +5,6 @@ import Toolbar from '../toolbar/toolbar';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchWallboardByIdThunk } from 'src/store/thunk/wallboards.thunk';
 import { FetchStatus } from 'src/store/reducers/wallboards.reducer';
-import AgentCard from '../agent-card/agent-card';
 import GridResizeContainer from '../grid/grid.resize-container';
 
 const WallboardReadOnly = () => {
