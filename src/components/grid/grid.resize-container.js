@@ -50,7 +50,7 @@ const GridResizeContainer = ({ widgets = [], ...props }) => {
       cols={192}
       rowHeight={1}
       className={'layout'}
-      draggableHandle=".agent-list__header"
+      draggableHandle=".agent-list__title"
       layout={handleLayout()}
       onLayoutChange={onLayoutChange}
     >
