@@ -8,15 +8,19 @@ import {
 } from 'src/components/modal/add-component/modal.add-component.defaults';
 const initialState = {
   activeModalName: null,
+  warningMessage: '',
   modalSelectComponent: {
     selectedElement: '',
   },
-
+  wallboardComponentForDelete: null,
   modalAddComponent: {
     isEditMode: false,
     id: null,
-    title: '',
-    callQueue: CALL_QUEUE_OPTIONS[1].VALUE,
+    title: {
+      value: '',
+      errorMessage: '',
+    },
+    callQueue: { value: CALL_QUEUE_OPTIONS[1].VALUE, errorMessage: '' },
     mainViewing: MAIN_VIEWING_OPTIONS.CARD,
     sortBy: SORT_BY_OPTIONS[0].text,
     columns: ADD_COMPONENT_COLUMNS_NO_OPTIONS.ONE,
@@ -75,7 +79,7 @@ export const modalReducer = (state = initialState, action) => {
         },
         modalAddComponent: {
           ...state.modalAddComponent,
-          title: action.payload,
+          title: { value: action.payload, errorMessage: '' },
         },
       };
     case modalActions.HANDLE_ADD_MODAL_COMPONENT_FORM_DATA:
@@ -91,14 +95,24 @@ export const modalReducer = (state = initialState, action) => {
         ...state,
         modalAddComponent: { ...initialState.modalAddComponent },
       };
+    case modalActions.SET_WALLBOARD_COMPONENT_FOR_DELETE:
+      return {
+        ...state,
+        wallboardComponentForDelete: action.payload,
+      };
+    case modalActions.HANDLE_WARNING_MESSAGE:
+      return {
+        ...state,
+        warningMessage: action.payload,
+      };
 
     case modalActions.SET_WIDGET_FOR_EDIT: {
       const widgetForEdit = action.payload;
       return {
         ...state,
         modalAddComponent: {
-          title: widgetForEdit.name,
-          callQueue: widgetForEdit.queue,
+          title: { value: widgetForEdit.name, errorMessage: '' },
+          callQueue: { value: widgetForEdit.queue, errorMessage: '' },
           mainViewing: widgetForEdit.view,
           sortBy: widgetForEdit.sortBy,
           columns: widgetForEdit.columns,
@@ -108,6 +122,7 @@ export const modalReducer = (state = initialState, action) => {
           interactivityOptions: widgetForEdit.interactivity,
           columnsToViewOptions: widgetForEdit.columnsToView,
           isEditMode: true,
+          size: widgetForEdit.size,
           id: widgetForEdit.id,
         },
       };

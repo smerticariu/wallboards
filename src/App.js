@@ -17,12 +17,16 @@ import ModalSaveWallboard from './components/modal/save-wallboard/modal.save-wal
 import ModalEditWallboard from './components/modal/edit-wallboard/modal.edit-wallboard';
 import ModalDeleteWallboard from './components/modal/delete-wallboard/modal.delete-wallboard';
 import NotificationMessage from './components/agent-card/notification-message/notification-message';
+import ModalDeleteWallboardComponent from './components/modal/delete-wallboard-component/modal.delete-wallboard-component';
+import ModalConfirmSaveWallboard from './components/modal/save-wallboard/modal.confirm-save-wallboard';
+import ModalWarning from './components/modal/warning/modal.warning';
 
 function App() {
   const dispatch = useDispatch();
   const { userInfo, userTokenInfo } = useSelector((state) => state.login);
   const { isAuthenticated, getAccessTokenSilently, logout, isLoading } = useAuth0();
   const activeModalName = useSelector((state) => state.modal.activeModalName);
+  const { warningMessage } = useSelector((state) => state.modal);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -80,6 +84,9 @@ function App() {
           {activeModalName === WALLBOARD_MODAL_NAMES.SAVE_WALLBOARD && <ModalSaveWallboard />}
           {activeModalName === WALLBOARD_MODAL_NAMES.DELETE_WALLBOARD && <ModalDeleteWallboard />}
           {activeModalName === WALLBOARD_MODAL_NAMES.EDIT_WALLBOARD && <ModalEditWallboard />}
+          {activeModalName === WALLBOARD_MODAL_NAMES.DELETE_WALLBOARD_COMPONENT && <ModalDeleteWallboardComponent />}
+          {activeModalName === WALLBOARD_MODAL_NAMES.CONFIRM_SAVE_WALLBOARD && <ModalConfirmSaveWallboard />}
+          {warningMessage && <ModalWarning />}
         </>
       )}
 

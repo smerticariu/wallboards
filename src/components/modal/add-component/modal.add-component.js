@@ -22,6 +22,7 @@ import {
   handleWallboardActiveModalAC,
   resetModalAddComponentFormDataAC,
 } from 'src/store/actions/modal.action';
+import { checkIsAlphanumeric } from 'src/common/utils/alphanumeric-validation';
 
 const ModalAddComponent = ({ ...props }) => {
   const modalRef = useRef(null);
@@ -38,7 +39,9 @@ const ModalAddComponent = ({ ...props }) => {
     dispatch(resetModalAddComponentFormDataAC());
   };
 
-  useOnClickOutside(modalRef, () => closeModal());
+  useOnClickOutside(modalRef, () => {
+    closeModal();
+  });
 
   const handleCancelButton = () => {
     const onClickCancelButton = (e) => {
@@ -54,6 +57,19 @@ const ModalAddComponent = ({ ...props }) => {
 
   const handleAddButton = () => {
     const onClickAddButton = (e) => {
+      if (!checkIsAlphanumeric(formData.title.value)) {
+        dispatch(
+          handleModalAddComponentFormDataAC({
+            ...formData,
+            title: {
+              ...formData.title,
+              errorMessage: 'Wallboard name must be alphanumeric',
+            },
+          })
+        );
+
+        return alert('Wallboard name must be alphanumeric');
+      }
       dispatch(addWallboardComponentAC(userInfo, formData));
       closeModal();
     };
@@ -71,7 +87,10 @@ const ModalAddComponent = ({ ...props }) => {
       dispatch(
         handleModalAddComponentFormDataAC({
           ...formData,
-          [name]: value,
+          [name]: {
+            value,
+            errorMessage: '',
+          },
         })
       );
     };
@@ -256,12 +275,13 @@ const ModalAddComponent = ({ ...props }) => {
             placeholder="Placeholder..."
             name="title"
             onChange={handleInputAndSelect}
-            value={formData.title}
+            value={formData.title.value}
           />
+          {formData.title.errorMessage && <div className="c-input__error-message">{formData.title.errorMessage}</div>}
         </div>
         <div className="c-modal--add-component__input-section">
           <div className="c-modal--add-component__input-label">Call Queue</div>
-          <select name="callQueue" className="c-select" onChange={handleInputAndSelect} value={formData.callQueue}>
+          <select name="callQueue" className="c-select" onChange={handleInputAndSelect} value={formData.callQueue.value}>
             {CALL_QUEUE_OPTIONS.map((option) => (
               <option key={option.VALUE} value={option.VALUE}>
                 {option.TEXT}
@@ -391,7 +411,7 @@ const ModalAddComponent = ({ ...props }) => {
   };
 
   const handleModalRightSide = () => {
-    const agentListText = CALL_QUEUE_OPTIONS.find((option) => option.VALUE === formData.callQueue)?.TEXT ?? '';
+    const agentListText = CALL_QUEUE_OPTIONS.find((option) => option.VALUE === formData.callQueue.value)?.TEXT ?? '';
 
     return (
       <div className="c-modal--add-component__right-side">
@@ -399,7 +419,7 @@ const ModalAddComponent = ({ ...props }) => {
 
         <div className="c-modal--add-component__preview-container">
           <div className="c-modal--add-component__preview-title">
-            <span className="c-modal--add-component__preview-title--bold">{formData.title}:</span> {agentListText}
+            <span className="c-modal--add-component__preview-title--bold">{formData.title.value}:</span> {agentListText}
           </div>
           {isCardFormat ? (
             <div className="c-modal--add-component__agent-card">

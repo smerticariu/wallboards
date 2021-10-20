@@ -121,24 +121,12 @@ export const wallboardsReducer = (state = { ...initialState }, action) => {
         },
       };
 
-    case wallboardsActions.CHANGE_WALLBOARD_COMPONENTS_ORDER:
-      return {
-        ...state,
-        activeWallboard: {
-          ...state.activeWallboard,
-          wallboard: {
-            ...state.activeWallboard.wallboard,
-            widgets: [...action.payload],
-          },
-        },
-      };
-
     case wallboardsActions.ADD_WALLBOARD_COMPONENT: {
       const { widgets } = state.activeWallboard.wallboard;
       const modalAddComponent = action.payload.modalAddComponent;
       const newWidget = {
-        name: modalAddComponent.title,
-        queue: modalAddComponent.callQueue,
+        name: modalAddComponent.title.value,
+        queue: modalAddComponent.callQueue.value,
         view: modalAddComponent.mainViewing,
         sortBy: modalAddComponent.sortBy,
         availabilityStates: modalAddComponent.availabilityStates,
@@ -147,10 +135,14 @@ export const wallboardsReducer = (state = { ...initialState }, action) => {
         columnsToView: modalAddComponent.columnsToViewOptions,
         skills: modalAddComponent.skillsToView,
         columns: modalAddComponent.columns,
-        size: {
-          width: 'auto',
-          height: 'fit-content',
-        },
+        size: modalAddComponent.isEditMode
+          ? modalAddComponent.size
+          : {
+              h: 50, //initial height
+              w: 192, //initial width
+              x: 0, // x position
+              y: widgets.reduce((newH, widget) => (widget.size.y >= newH ? widget.size.y + 1 : newH), 0), //y position
+            },
       };
       return {
         ...state,
@@ -167,13 +159,27 @@ export const wallboardsReducer = (state = { ...initialState }, action) => {
                         id: modalAddComponent.id,
                       }
                 )
-              : [...widgets, { ...newWidget, id: generateWallboardWidgetId(action.payload.user.organisationId, action.payload.user) }],
+              : [...widgets, { ...newWidget, id: generateWallboardWidgetId(action.payload.user.organisationId, action.payload.user.id) }],
+          },
+        },
+      };
+    }
+    case wallboardsActions.DELETE_WALLBOARD_COMPONENT_BY_ID: {
+      const { widgets } = state.activeWallboard.wallboard;
+
+      return {
+        ...state,
+        activeWallboard: {
+          ...state.activeWallboard,
+          wallboard: {
+            ...state.activeWallboard.wallboard,
+            widgets: widgets.filter((widget) => widget.id !== action.payload),
           },
         },
       };
     }
 
-    case wallboardsActions.SET_WIDGET_SIZE: {
+    case wallboardsActions.WALLBOARD_GRID_LAYOUT_CHANGE: {
       const { widgets } = state.activeWallboard.wallboard;
       return {
         ...state,
@@ -181,14 +187,14 @@ export const wallboardsReducer = (state = { ...initialState }, action) => {
           ...state.activeWallboard,
           wallboard: {
             ...state.activeWallboard.wallboard,
-            widgets: widgets.map((widget) =>
-              widget.id === action.payload.widgetId
-                ? {
-                    ...widget,
-                    size: action.payload.size,
-                  }
-                : widget
-            ),
+            widgets: widgets.map((widget) => {
+              const layoutData = action.payload.find((layout) => layout.i === widget.id);
+              const { h, w, x, y } = layoutData;
+              return {
+                ...widget,
+                size: { h, w, x, y },
+              };
+            }),
           },
         },
       };

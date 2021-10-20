@@ -161,6 +161,7 @@ const Toolbar = (props) => {
   const checkIfExistWallboardChanges = () => {
     return Object.keys(activeWallboardInitialValues).some((key) => {
       if (key === 'widgets') {
+        if (activeWallboard.widgets.length !== activeWallboardInitialValues.widgets.length) return true;
         return activeWallboard.widgets.some((_, index) => {
           return JSON.stringify(activeWallboard.widgets[index]) !== JSON.stringify(activeWallboardInitialValues.widgets[index]);
         });
@@ -174,8 +175,7 @@ const Toolbar = (props) => {
 
   const handleSaveButton = () => {
     const handleClick = () => {
-      setIsNewWallboardClicked(true);
-      dispatch(saveWallboardThunk());
+      dispatch(handleWallboardActiveModalAC(WALLBOARD_MODAL_NAMES.CONFIRM_SAVE_WALLBOARD));
     };
     return (
       <button

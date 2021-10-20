@@ -1,5 +1,7 @@
 import axios from 'axios';
+import { checkIsAlphanumeric } from 'src/common/utils/alphanumeric-validation';
 import { generateWallboardId } from 'src/common/utils/generateId';
+import { handleWarningMessageAC } from '../actions/modal.action';
 import { handleIsNotificationShowAC } from '../actions/notification.action';
 import {
   fetchAllWallboardsAC,
@@ -29,13 +31,11 @@ export const fetchWallboardByIdThunk =
           Accept: 'application/json',
         },
       };
-
       const response = await axios(options);
-
       dispatch(fetchWallboardByIdSuccessAC({ widgets: [], ...response.data }));
     } catch (error) {
-      dispatch(fetchWallboardByIdFailAC(error.response.data.error.message));
-      console.log(error.response.data);
+      dispatch(fetchWallboardByIdFailAC(error?.response?.data?.error?.message));
+      console.log(error?.response?.data);
     }
   };
 
@@ -66,6 +66,10 @@ export const fetchAllWallboardsThunk = () => async (dispatch, getState) => {
 export const saveWallboardThunk = () => async (dispatch, getState) => {
   const activeWallboard = getState().wallboards.present.activeWallboard.wallboard;
   const { userInfo, token } = getState().login;
+
+  if (!checkIsAlphanumeric(activeWallboard.name)) {
+    return dispatch(handleWarningMessageAC('Wallboard name must be alphanumeric'));
+  }
   try {
     dispatch(saveWallboardAC());
     const currentDate = new Date().getTime();
