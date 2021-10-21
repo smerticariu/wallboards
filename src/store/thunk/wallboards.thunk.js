@@ -46,7 +46,6 @@ export const fetchAllWallboardsThunk = () => async (dispatch, getState) => {
     const { userInfo, token } = getState().login;
     const options = {
       method: 'get',
-      // url: `https://wallboards-store.redmatter-qa01.pub/organisation/${userInfo.organisationId}`,
       url: `https://wallboards-store.redmatter-qa01.pub/organisation/${userInfo.organisationId}/key/config.json`,
       headers: {
         'Content-Type': 'application/json',
@@ -81,9 +80,16 @@ export const saveWallboardThunk = () => async (dispatch, getState) => {
       id: wbId,
       name: activeWallboard.name,
       createdBy: `${userInfo.firstName} ${userInfo.lastName}`,
-      createdOn: currentDate,
-      description: 'Not implemented yet',
+      createdOn: activeWallboard.createdOn ?? currentDate,
+      lastEdited: currentDate,
+      description: activeWallboard.description || "New Wallboard Description",
       widgets: activeWallboard.widgets,
+      settings: activeWallboard.settings || {
+        display: {
+          shrinkWidth: false,
+          shrinkHeight: false,
+        }
+      }
     };
 
     const options = {
