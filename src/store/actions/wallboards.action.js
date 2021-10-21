@@ -25,14 +25,11 @@ export const wallboardsActions = {
   RESET_WALLBOARD_EDIT_PAGE_DATA: 'RESET_WALLBOARD_EDIT_PAGE_DATA',
 
   SET_WALLBOARD_ID_FOR_DELETE: 'SET_WALLBOARD_ID_FOR_DELETE',
-  
 
   DELETE_WALLBOARD_COMPONENT_BY_ID: 'DELETE_WALLBOARD_COMPONENT_BY_ID',
 
   WALLBOARD_UNDO: 'WALLBOARD_UNDO',
   WALLBOARD_REDO: 'WALLBOARD_REDO',
-
-  SET_WALLBOARD_DISPLAY_SETTINGS: 'SET_WALLBOARD_DISPLAY_SETTINGS',
 };
 
 export const handleNewWallboardTitleAC = (title) => ({
@@ -110,11 +107,6 @@ export const handleWallboardGridLayoutChangeAC = (gridLayout) => ({
   payload: gridLayout,
 });
 
-export const setSelectedWallboardDisplaySettingsAC = (display) => ({
-  type: wallboardsActions.SET_WALLBOARD_DISPLAY_SETTINGS,
-  payload: display,
-});
-
 export const resetWallboardEditPageDataAC = () => ({
   type: wallboardsActions.RESET_WALLBOARD_EDIT_PAGE_DATA,
 });
@@ -129,9 +121,9 @@ export const deleteWallboardComponentByIdAC = (id) => ({
   payload: id,
 });
 
-export const wallboardUndoAC = (id) => ({
+export const wallboardUndoAC = () => ({
   type: wallboardsActions.WALLBOARD_UNDO,
 });
-export const wallboardRedoAC = (id) => ({
+export const wallboardRedoAC = () => ({
   type: wallboardsActions.WALLBOARD_REDO,
 });

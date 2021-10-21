@@ -61,6 +61,23 @@ const initialState = {
       ),
     },
   },
+  wallboardSettings: {
+    name: {
+      value: '',
+      errorMessage: '',
+    },
+    description: {
+      value: '',
+      errorMessage: '',
+    },
+    display: {
+      shrinkHeight: false,
+      shrinkWidth: false,
+    },
+    link: {
+      isReadOnlyEnabled: false,
+    },
+  },
 };
 
 export const modalReducer = (state = initialState, action) => {
@@ -124,6 +141,41 @@ export const modalReducer = (state = initialState, action) => {
           isEditMode: true,
           size: widgetForEdit.size,
           id: widgetForEdit.id,
+        },
+      };
+    }
+
+    case modalActions.SET_WALLBOARD_SETTINGS: {
+      const wallboard = action.payload;
+      return {
+        ...state,
+        wallboardSettings: {
+          ...state.wallboardSettings,
+          name: {
+            value: wallboard.name,
+            errorMessage: '',
+          },
+          description: {
+            value: wallboard.description,
+            errorMessage: '',
+          },
+          display: {
+            shrinkHeight: wallboard.settings.display.shrinkHeight,
+            shrinkWidth: wallboard.settings.display.shrinkHeight,
+          },
+          link: {
+            isReadOnlyEnabled: wallboard.settings.link.isReadOnlyEnabled,
+          },
+        },
+      };
+    }
+
+    case modalActions.SET_WALLBOARD_DISPLAY_SETTINGS: {
+      return {
+        ...state,
+        wallboardSettings: {
+          ...state.wallboardSettings,
+          display: action.payload,
         },
       };
     }

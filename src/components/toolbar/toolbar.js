@@ -16,7 +16,7 @@ import { saveWallboardThunk } from '../../store/thunk/wallboards.thunk';
 import { FetchStatus } from '../../store/reducers/wallboards.reducer';
 import { useHistory } from 'react-router';
 import { SettingsIcon } from 'src/assets/static/icons/settings';
-import { handleWallboardActiveModalAC } from 'src/store/actions/modal.action';
+import { handleWallboardActiveModalAC, setSelectedWallboardSettingsAC } from 'src/store/actions/modal.action';
 const Toolbar = (props) => {
   const dispatch = useDispatch();
   const [wbSearchValue, setWbSearchValue] = useState('');
@@ -204,7 +204,11 @@ const Toolbar = (props) => {
   const handleRunButton = () => {
     const wallboardIsEmpty = activeWallboard.widgets.length === 0;
     return (
-      <Link target="_blank" to={`/wallboard/${activeWallboard.id}`} className={`c-button c-button--blue c-button--m-left ${wallboardIsEmpty && 'c-button--disabled'}`}>
+      <Link
+        target="_blank"
+        to={`/wallboard/${activeWallboard.id}`}
+        className={`c-button c-button--blue c-button--m-left ${wallboardIsEmpty && 'c-button--disabled'}`}
+      >
         Run
       </Link>
     );
@@ -212,8 +216,9 @@ const Toolbar = (props) => {
 
   const handleSettingsIcon = () => {
     const onClikEditWallboardModal = () => {
+      dispatch(setSelectedWallboardSettingsAC(activeWallboard));
       dispatch(handleWallboardActiveModalAC(WALLBOARD_MODAL_NAMES.EDIT_WALLBOARD));
-    }
+    };
     return <SettingsIcon onClick={() => onClikEditWallboardModal()} className="i--settings i--settings--toolbar" />;
   };
 
