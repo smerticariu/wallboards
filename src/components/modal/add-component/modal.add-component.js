@@ -32,6 +32,7 @@ const ModalAddComponent = ({ ...props }) => {
   });
   const dispatch = useDispatch();
   const formData = useSelector((state) => state.modal.modalAddComponent);
+  const { allSkils } = useSelector((state) => state.skills);
   const isCardFormat = MAIN_VIEWING_OPTIONS.CARD === formData.mainViewing;
   const { userInfo } = useSelector((state) => state.login);
   const closeModal = () => {
@@ -133,6 +134,7 @@ const ModalAddComponent = ({ ...props }) => {
               },
             })
           );
+
         default: {
           dispatch(
             handleModalAddComponentFormDataAC({
@@ -149,6 +151,42 @@ const ModalAddComponent = ({ ...props }) => {
       }
     };
 
+    const handleChangeSkillList = (event) => {
+      const { name, checked } = event.target;
+      let selectedItems = [];
+      let selectAll = false;
+      let selectNone = false;
+      switch (name) {
+        case 'selectAll': {
+          selectedItems = allSkils.map((skill) => skill.name);
+          selectAll = checked;
+          selectNone = false;
+          break;
+        }
+        case 'selectNone': {
+          selectAll = false;
+          selectNone = checked;
+          break;
+        }
+        default: {
+          selectedItems = checked
+            ? [...formData.skillsToView.selectedItems, name]
+            : formData.skillsToView.selectedItems.filter((value) => value !== name);
+        }
+      }
+      dispatch(
+        handleModalAddComponentFormDataAC({
+          ...formData,
+          skillsToView: {
+            ...formData.skillsToView,
+            selectNone,
+            selectAll,
+            selectedItems,
+          },
+        })
+      );
+    };
+
     const checkIsCheckboxChecked = (optionArr, optionName) => {
       return optionArr.includes(optionName);
     };
@@ -161,25 +199,20 @@ const ModalAddComponent = ({ ...props }) => {
     };
 
     const handleSkillsToView = () => {
-      const allTitlesForAutocomplete = ADD_COMPONENT_STATE_OPTIONS.skillsToView.map(({ text }) => text);
+      const allTitlesForAutocomplete = allSkils.map(({ description }) => description);
 
       return (
         <div className="c-modal--add-component__input-section">
           <div className="c-modal--add-component__input-label">Select Skills to view</div>
 
           <div className="c-modal--add-component__select-checkbox">
-            <CheckBox
-              label="Select all"
-              checked={formData.skillsToView.selectAll}
-              name={'selectAll'}
-              onChange={(event) => handleCheckBoxList(event, 'skillsToView')}
-            />
+            <CheckBox label="Select all" checked={formData.skillsToView.selectAll} name={'selectAll'} onChange={handleChangeSkillList} />
             <CheckBox
               label="Select none"
               className="c-checkbox--m-left"
               checked={formData.skillsToView.selectNone}
-              name={'selectNone'}
-              onChange={(event) => handleCheckBoxList(event, 'skillsToView')}
+              name="selectNone"
+              onChange={handleChangeSkillList}
             />
           </div>
 
@@ -194,16 +227,16 @@ const ModalAddComponent = ({ ...props }) => {
                 placeholder="Search by Skill name"
               />
               <div className="c-modal--add-component__av-state-container">
-                {ADD_COMPONENT_STATE_OPTIONS.skillsToView
-                  .filter((option) => option.text.toLowerCase().includes(searchInputValues.skill.toLowerCase()))
-                  .map((option) => (
+                {allSkils
+                  .filter((skill) => skill.description.toLowerCase().includes(searchInputValues.skill.toLowerCase()))
+                  .map((skill) => (
                     <CheckBox
-                      key={option.value}
-                      label={option.text}
-                      name={option.value}
+                      key={skill.id}
+                      label={skill.description}
+                      name={skill.name}
                       className="c-checkbox--margin-top-bottom"
-                      checked={checkIsCheckboxChecked(formData.skillsToView.selectedItems, option.value)}
-                      onChange={(event) => handleCheckBoxList(event, 'skillsToView')}
+                      checked={checkIsCheckboxChecked(formData.skillsToView.selectedItems, skill.name)}
+                      onChange={handleChangeSkillList}
                     />
                   ))}
               </div>

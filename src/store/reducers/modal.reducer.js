@@ -43,10 +43,7 @@ const initialState = {
     skillsToView: {
       selectAll: true,
       selectNone: false,
-      selectedItems: ADD_COMPONENT_STATE_OPTIONS.skillsToView.reduce(
-        (strArr, el) => (el.isInitialChecked ? [...strArr, el.value] : strArr),
-        []
-      ),
+      selectedItems: [],
     },
     interactivityOptions: {
       selectedItems: ADD_COMPONENT_STATE_OPTIONS.interactivityOptions.reduce(
@@ -161,7 +158,7 @@ export const modalReducer = (state = initialState, action) => {
           },
           display: {
             shrinkHeight: wallboard.settings.display.shrinkHeight,
-            shrinkWidth: wallboard.settings.display.shrinkHeight,
+            shrinkWidth: wallboard.settings.display.shrinkWidth,
           },
           link: {
             isReadOnlyEnabled: wallboard.settings.link.isReadOnlyEnabled,
@@ -170,12 +167,12 @@ export const modalReducer = (state = initialState, action) => {
       };
     }
 
-    case modalActions.SET_WALLBOARD_DISPLAY_SETTINGS: {
+    case modalActions.HANLE_SELECTED_WALLBOARD_SETTINGS: {
       return {
         ...state,
         wallboardSettings: {
           ...state.wallboardSettings,
-          display: action.payload,
+          ...action.payload,
         },
       };
     }

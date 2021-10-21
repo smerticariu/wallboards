@@ -30,6 +30,8 @@ export const wallboardsActions = {
 
   WALLBOARD_UNDO: 'WALLBOARD_UNDO',
   WALLBOARD_REDO: 'WALLBOARD_REDO',
+
+  APPLY_WALLBOARD_SETTINGS: 'APPLY_WALLBOARD_SETTINGS',
 };
 
 export const handleNewWallboardTitleAC = (title) => ({
@@ -126,4 +128,9 @@ export const wallboardUndoAC = () => ({
 });
 export const wallboardRedoAC = () => ({
   type: wallboardsActions.WALLBOARD_REDO,
+});
+
+export const applyWallboardSettingsAC = (settings) => ({
+  type: wallboardsActions.APPLY_WALLBOARD_SETTINGS,
+  payload: settings,
 });

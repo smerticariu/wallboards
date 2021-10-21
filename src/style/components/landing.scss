@@ -76,14 +76,6 @@
     &__delete-btn {
       background-image: url('../../assets/static/images/delete_icon.svg');
     }
-    &__empty-message {
-      margin-top: 15px;
-      font-family: $public-sans-bold;
-      font-weight: 500;
-      font-size: 16px;
-      text-align: center;
-      color: $input-text-colour;
-    }
 
     button,
     .c-landing-table__edit-btn {

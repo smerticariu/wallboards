@@ -50,29 +50,30 @@ const ModalNewWallboard = ({ ...props }) => {
     const handleSelectedItem = (name) => {
       setSelectedListItem(name);
     };
-
+    const filtredOptions = MODAL_ADD_COMPONENT_OPTIONS[activeSectionValue].filter((option) =>
+      option.NAME.toLowerCase().includes(newWbFilter.toLowerCase())
+    );
     return (
       <div className="c-modal--new-wallboard__list">
-        {MODAL_ADD_COMPONENT_OPTIONS[activeSectionValue]
-          .filter((option) => option.NAME.toLowerCase().includes(newWbFilter.toLowerCase()))
-          .map((option) => (
-            <div
-              key={option.NAME}
-              onClick={() => handleSelectedItem(option.NAME)}
-              className={`c-modal--new-wallboard__list-item ${
-                selectedListItem === option.NAME ? 'c-modal--new-wallboard__list-item--selected' : ''
-              }`}
-            >
-              <div className="c-modal--new-wallboard__list-title">{option.NAME}</div>
-              <div className="c-modal--new-wallboard__list-subtitle">
-                <div className="c-modal--new-wallboard__list-text">{option.STATUS}</div>
-                <div className="c-modal--new-wallboard__list-separator">|</div>
-                <div className="c-modal--new-wallboard__list-text">{option.DATE}</div>
-                <div className="c-modal--new-wallboard__list-separator">|</div>
-                <div className="c-modal--new-wallboard__list-text">{option.SERVICE}</div>
-              </div>
+        {filtredOptions.map((option) => (
+          <div
+            key={option.NAME}
+            onClick={() => handleSelectedItem(option.NAME)}
+            className={`c-modal--new-wallboard__list-item ${
+              selectedListItem === option.NAME ? 'c-modal--new-wallboard__list-item--selected' : ''
+            }`}
+          >
+            <div className="c-modal--new-wallboard__list-title">{option.NAME}</div>
+            <div className="c-modal--new-wallboard__list-subtitle">
+              <div className="c-modal--new-wallboard__list-text">{option.STATUS}</div>
+              <div className="c-modal--new-wallboard__list-separator">|</div>
+              <div className="c-modal--new-wallboard__list-text">{option.DATE}</div>
+              <div className="c-modal--new-wallboard__list-separator">|</div>
+              <div className="c-modal--new-wallboard__list-text">{option.SERVICE}</div>
             </div>
-          ))}
+          </div>
+        ))}
+        {!filtredOptions.length && <div className="empty-message">No results</div>}
       </div>
     );
   };

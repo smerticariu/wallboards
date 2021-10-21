@@ -1,12 +1,12 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { handleWallboardActiveModalAC, setSelectedWallboardDisplaySettingsAC } from 'src/store/actions/modal.action';
+import { handleChangeSelectedWallboardSettingsAC, handleWallboardActiveModalAC } from 'src/store/actions/modal.action';
 import useOnClickOutside from '../../../common/hooks/useOnClickOutside';
 
 import CheckBox from 'src/components/checkbox/checkbox';
-import { saveWallboardThunk } from '../../../store/thunk/wallboards.thunk';
-import { handleNewWallboardTitleAC, handleSelectedWallboardDescriptionAC } from '../../../store/actions/wallboards.action';
+import { applyWallboardSettingsAC } from '../../../store/actions/wallboards.action';
+import TextArea from 'src/components/textarea/textarea';
 
 const ModalEditWallboard = ({ ...props }) => {
   const dispatch = useDispatch();
@@ -28,7 +28,7 @@ const ModalEditWallboard = ({ ...props }) => {
     };
 
     const onClickSaveButton = (e) => {
-      dispatch(saveWallboardThunk());
+      dispatch(applyWallboardSettingsAC(wallboardSettings));
       closeModal();
     };
 
@@ -37,41 +37,47 @@ const ModalEditWallboard = ({ ...props }) => {
         <button className="c-button" onClick={onClickSaveButton}>
           Save
         </button>
-        <button className="c-button" onClick={onClickCancelButton}>
+        <button className="c-button c-button--grey c-button--m-left" onClick={onClickCancelButton}>
           Cancel
         </button>
       </>
     );
   };
 
-  const handleInputChanges = (e, inputType) => {
-    switch (inputType) {
-      case 'wallboardName':
-        dispatch(handleNewWallboardTitleAC(e.target.value));
-        break;
-      case 'wallboardDescription':
-        dispatch(handleSelectedWallboardDescriptionAC(e.target.value));
-        break;
-      default:
-        return;
-    }
+  const handleInputChanges = (e) => {
+    const { value, name } = e.target;
+    dispatch(
+      handleChangeSelectedWallboardSettingsAC({
+        ...wallboardSettings,
+        [name]: {
+          value: value,
+          errorMessage: '',
+        },
+      })
+    );
   };
 
   const handleSettingsChanges = (e, inputType) => {
     switch (inputType) {
       case 'shrinkWidth':
         dispatch(
-          setSelectedWallboardDisplaySettingsAC({
-            shrinkHeight: wallboardSettings.display.shrinkHeight,
-            shrinkWidth: e.target.checked,
+          handleChangeSelectedWallboardSettingsAC({
+            ...wallboardSettings,
+            display: {
+              shrinkHeight: wallboardSettings.display.shrinkHeight,
+              shrinkWidth: e.target.checked,
+            },
           })
         );
         break;
       case 'shrinkHeight':
         dispatch(
-          setSelectedWallboardDisplaySettingsAC({
-            shrinkHeight: e.target.checked,
-            shrinkWidth: wallboardSettings.display.shrinkWidth,
+          handleChangeSelectedWallboardSettingsAC({
+            ...wallboardSettings,
+            display: {
+              shrinkHeight: e.target.checked,
+              shrinkWidth: wallboardSettings.display.shrinkWidth,
+            },
           })
         );
         break;
@@ -80,14 +86,24 @@ const ModalEditWallboard = ({ ...props }) => {
     }
   };
 
-  const handleCreateWallboardURL = () => {};
+  const handleCreateWallboardURL = (e) => {
+    e.preventDefault();
 
-  const handleCopyLinkToClipoard = () => {};
+    dispatch(
+      handleChangeSelectedWallboardSettingsAC({
+        ...wallboardSettings,
+        link: {
+          isReadOnlyEnabled: !wallboardSettings.link.isReadOnlyEnabled,
+        },
+      })
+    );
+  };
 
-  // useEffect(() => {
-  //   console.log('aa', activeWallboard)
-  // }, [activeWallboard])
-
+  const handleCopyLinkToClipoard = (e) => {
+    e.preventDefault();
+    navigator.clipboard.writeText(wallboardLink);
+  };
+  const wallboardLink = window.location.href.replace('edit', '');
   return (
     <div className={`c-modal c-modal--open`}>
       <div ref={modalRef} className="c-modal__container c-modal__container--edit-wallboard ">
@@ -104,18 +120,19 @@ const ModalEditWallboard = ({ ...props }) => {
                   className="c-input c-input--grey"
                   value={wallboardSettings.name.value}
                   type="text"
-                  onChange={(e) => handleInputChanges(e, 'wallboardName')}
+                  name="name"
+                  onChange={handleInputChanges}
                 />
               </div>
 
               <div className="c-modal__section">
                 <label className="c-modal__label">Wallboard Description:</label>
-                <textarea
-                  rows="3"
-                  className="c-input c-input--grey"
+                <TextArea
+                  className="c-textarea"
                   value={wallboardSettings.description.value}
                   type="text"
-                  onChange={(e) => handleInputChanges(e, 'wallboardDescription')}
+                  name="description"
+                  onChange={handleInputChanges}
                 />
               </div>
 
@@ -123,6 +140,8 @@ const ModalEditWallboard = ({ ...props }) => {
                 <label className="c-modal__label">Display Settings:</label>
                 <div className="c-modal__subsection  c-modal__subsection--small">
                   <CheckBox
+                    className="c-checkbox--grey"
+                    isGrey
                     label="Shrink to fit screen width"
                     checked={wallboardSettings.display.shrinkWidth}
                     name="shrinkWidth"
@@ -130,6 +149,8 @@ const ModalEditWallboard = ({ ...props }) => {
                   />
 
                   <CheckBox
+                    className="c-checkbox--grey"
+                    isGrey
                     label="Shrink to fit screen height"
                     checked={wallboardSettings.display.shrinkHeight}
                     name="shrinkHeight"
@@ -139,8 +160,12 @@ const ModalEditWallboard = ({ ...props }) => {
               </div>
 
               <div className="c-modal__section c-modal__section--read-only">
-                <button onClick={handleCreateWallboardURL()} className="c-button c-button--blue">
-                  Create Read-Only Wallboard URL
+                <button
+                  onClick={handleCreateWallboardURL}
+                  className={`c-button c-button--blue ${wallboardSettings.link.isReadOnlyEnabled ? 'c-button--grey' : ''}`}
+                >
+                  {wallboardSettings.link.isReadOnlyEnabled ? 'Disable ' : 'Create '}
+                  Read-Only Wallboard URL
                 </button>
               </div>
 
@@ -152,20 +177,15 @@ const ModalEditWallboard = ({ ...props }) => {
               </div>
 
               <div className="c-modal__section c-modal__section--read-only c-modal__section--read-only__generate-link">
-                <input
-                  className="c-input c-input--grey"
-                  value={window.location.href.replace('edit', '')}
-                  type="text"
-                  onChange={(e) => handleInputChanges(e, 'wallboardName')}
-                />
-                <button onClick={handleCopyLinkToClipoard()} className="c-button c-button--blue">
+                <input onChange={() => {}} className="c-input c-input--grey" value={wallboardLink} type="text" />
+                <button onClick={handleCopyLinkToClipoard} className="c-button c-button--blue">
                   Copy Link
                 </button>
               </div>
             </form>
           </div>
 
-          <div className="c-modal__buttons">{handleActionButtons()}</div>
+          <div className="c-modal__buttons c-modal__buttons--settings">{handleActionButtons()}</div>
         </div>
       </div>
     </div>

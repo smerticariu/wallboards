@@ -222,6 +222,23 @@ export const wallboardsReducer = (state = { ...initialState }, action) => {
           },
         },
       };
+    case wallboardsActions.APPLY_WALLBOARD_SETTINGS:
+      const settings = action.payload;
+      return {
+        ...state,
+        activeWallboard: {
+          ...state.activeWallboard,
+          wallboard: {
+            ...state.activeWallboard.wallboard,
+            description: settings.description.value,
+            name: settings.name.value,
+            settings: {
+              display: settings.display,
+              link: settings.link,
+            },
+          },
+        },
+      };
 
     case wallboardsActions.RESET_WALLBOARD_EDIT_PAGE_DATA: {
       return {

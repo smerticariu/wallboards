@@ -8,6 +8,7 @@ import { fetchWallboardByIdThunk } from 'src/store/thunk/wallboards.thunk';
 import { useParams } from 'react-router';
 import { FetchStatus } from 'src/store/reducers/wallboards.reducer';
 import { resetWallboardEditPageDataAC } from 'src/store/actions/wallboards.action';
+import { fetchAllSkilsThunk } from 'src/store/thunk/skills.thunk';
 
 const WallboardEdit = () => {
   const activeModalName = useSelector((state) => state.modal.activeModalName);
@@ -17,6 +18,7 @@ const WallboardEdit = () => {
   const activeWallboard = useSelector((state) => state.wallboards.present.activeWallboard.wallboard);
 
   useEffect(() => {
+    dispatch(fetchAllSkilsThunk());
     return () => dispatch(resetWallboardEditPageDataAC());
     // eslint-disable-next-line
   }, []);

@@ -9,7 +9,7 @@ export const modalActions = {
 
   HANDLE_WARNING_MESSAGE: 'HANDLE_WARNING_MESSAGE',
 
-  SET_WALLBOARD_DISPLAY_SETTINGS: 'SET_WALLBOARD_DISPLAY_SETTINGS',
+  HANLE_SELECTED_WALLBOARD_SETTINGS: 'HANLE_SELECTED_WALLBOARD_SETTINGS',
   SET_WALLBOARD_SETTINGS: 'SET_WALLBOARD_SETTINGS',
 };
 export const handleWallboardActiveModalAC = (modalName) => ({
@@ -42,9 +42,9 @@ export const handleWarningMessageAC = (message) => ({
   payload: message,
 });
 
-export const setSelectedWallboardDisplaySettingsAC = (display) => ({
-  type: modalActions.SET_WALLBOARD_DISPLAY_SETTINGS,
-  payload: display,
+export const handleChangeSelectedWallboardSettingsAC = (settings) => ({
+  type: modalActions.HANLE_SELECTED_WALLBOARD_SETTINGS,
+  payload: settings,
 });
 export const setSelectedWallboardSettingsAC = (activeWallboard) => ({
   type: modalActions.SET_WALLBOARD_SETTINGS,
