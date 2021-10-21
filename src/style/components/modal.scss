@@ -24,8 +24,7 @@
     }
     &--save-changes,
     &--add-component {
-      max-width: max-content;
-      min-width: 800px;
+      width: 800px;
     }
     &--edit-wallboard {
       width: 650px;
@@ -257,13 +256,14 @@
       width: 40%;
       max-width: 350px;
       max-height: 600px;
+      min-width: 300px;
       overflow: auto;
       padding-right: 18px;
     }
     &__right-side {
       display: flex;
       flex-direction: column;
-      min-width: 60%;
+      width: 60%;
       padding-left: 11px;
     }
     &__input-section {

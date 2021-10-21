@@ -103,7 +103,7 @@ const ModalNewWallboard = ({ ...props }) => {
   const handleSelectButton = () => {
     const onClickSelectButton = (e) => {
       switch (selectedListItem) {
-        case 'Agent List': {
+        case 'Agent list': {
           dispatch(handleModalSelectActiveElementAC(selectedListItem));
           return dispatch(handleWallboardActiveModalAC(WALLBOARD_MODAL_NAMES.ADD_COMPONENT));
         }

@@ -21,25 +21,25 @@ export const MODAL_NEW_WALLBOARD_DEFAULTS = [
 export const MODAL_ADD_COMPONENT_OPTIONS = {
   [MODAL_NEW_WALLBOARD_SECITONS.QUEUES]: [
     {
-      NAME: 'Agent List',
+      NAME: 'Agent list',
       STATUS: 'Natterbox Admin',
       DATE: '19/03/2021 at 14:19',
       SERVICE: 'Customer Service Calls',
     },
     {
-      NAME: 'Queue List',
+      NAME: 'Queue list',
       STATUS: 'Natterbox Admin',
       DATE: '19/03/2021 at 14:19',
       SERVICE: 'Customer Service Calls',
     },
     {
-      NAME: 'Queue Tracking',
+      NAME: 'Queue tracking',
       STATUS: 'Natterbox Admin',
       DATE: '19/03/2021 at 14:19',
       SERVICE: 'Customer Service Calls',
     },
     {
-      NAME: 'Queue Status',
+      NAME: 'Queue status',
       STATUS: 'Natterbox Admin',
       DATE: '19/03/2021 at 14:19',
       SERVICE: 'Customer Service Calls',
