@@ -5,7 +5,7 @@ export const wallboardsUndoable = (reducer) => {
     past: [],
     present: reducer(undefined, {}),
     future: [],
-    noOfSteptForUndo: 0,
+    noOfSteptsForUndo: 0,
   };
 
   return function (state = initialState, action) {
@@ -17,7 +17,7 @@ export const wallboardsUndoable = (reducer) => {
         const newPast = past.slice(0, past.length - 1);
 
         // if past. length === 0 return the actual state
-        if (!state.noOfSteptForUndo) return state;
+        if (!state.noOfSteptsForUndo) return state;
         return {
           past: newPast,
           present: {
@@ -30,7 +30,7 @@ export const wallboardsUndoable = (reducer) => {
             },
           },
           future: [present, ...future],
-          noOfSteptForUndo: state.noOfSteptForUndo - 1,
+          noOfSteptsForUndo: state.noOfSteptsForUndo - 1,
         };
       }
       case wallboardsActions.WALLBOARD_REDO: {
@@ -42,7 +42,7 @@ export const wallboardsUndoable = (reducer) => {
           past: [...past, present],
           present: next,
           future: newFuture,
-          noOfSteptForUndo: state.noOfSteptForUndo + 1,
+          noOfSteptsForUndo: state.noOfSteptsForUndo + 1,
         };
       }
       case wallboardsActions.CREATE_LOCAL_NEW_EMPTY_WALLBOARD: {
@@ -51,7 +51,7 @@ export const wallboardsUndoable = (reducer) => {
           past: [],
           present: newPresent,
           future: [],
-          noOfSteptForUndo: 0,
+          noOfSteptsForUndo: 0,
         };
       }
       // these changes we do not want to add to the past
@@ -70,7 +70,7 @@ export const wallboardsUndoable = (reducer) => {
           past: past,
           present: newPresent,
           future: future,
-          noOfSteptForUndo: state.noOfSteptForUndo,
+          noOfSteptsForUndo: state.noOfSteptsForUndo,
         };
       }
 
@@ -83,7 +83,7 @@ export const wallboardsUndoable = (reducer) => {
           past: [...past, present],
           present: newPresent,
           future: [],
-          noOfSteptForUndo: state.noOfSteptForUndo + 1,
+          noOfSteptsForUndo: state.noOfSteptsForUndo + 1,
         };
       }
     }

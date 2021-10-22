@@ -123,7 +123,7 @@ const Toolbar = (props) => {
   };
 
   const handleBackToButton = () => {
-    const isUndoDisabled = !wallboardStates.noOfSteptForUndo;
+    const isUndoDisabled = !wallboardStates.noOfSteptsForUndo;
     const isRedoDisabled = !wallboardStates.future.length;
     return (
       <div className="c-arrow-button c-arrow-button--m-left ">
