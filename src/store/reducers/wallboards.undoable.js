@@ -1,11 +1,11 @@
 import { wallboardsActions } from '../actions/wallboards.action';
-import { FetchStatus } from './wallboards.reducer';
 
 export const wallboardsUndoable = (reducer) => {
   const initialState = {
     past: [],
     present: reducer(undefined, {}),
     future: [],
+    noOfSteptForUndo: 0,
   };
 
   return function (state = initialState, action) {
@@ -17,7 +17,7 @@ export const wallboardsUndoable = (reducer) => {
         const newPast = past.slice(0, past.length - 1);
 
         // if past. length === 0 return the actual state
-        if (!past.length || previous.activeWallboard?.fetchStatus !== FetchStatus.SUCCESS) return state;
+        if (!state.noOfSteptForUndo) return state;
         return {
           past: newPast,
           present: {
@@ -30,6 +30,7 @@ export const wallboardsUndoable = (reducer) => {
             },
           },
           future: [present, ...future],
+          noOfSteptForUndo: state.noOfSteptForUndo - 1,
         };
       }
       case wallboardsActions.WALLBOARD_REDO: {
@@ -41,25 +42,26 @@ export const wallboardsUndoable = (reducer) => {
           past: [...past, present],
           present: next,
           future: newFuture,
+          noOfSteptForUndo: state.noOfSteptForUndo + 1,
         };
       }
-
-      case wallboardsActions.SAVE_WALLBOARD_SUCCESS: {
+      case wallboardsActions.CREATE_LOCAL_NEW_EMPTY_WALLBOARD: {
         const newPresent = reducer(present, action);
-        if (present === newPresent) {
-          return state;
-        }
         return {
           past: [],
           present: newPresent,
           future: [],
+          noOfSteptForUndo: 0,
         };
       }
-
       // these changes we do not want to add to the past
       case wallboardsActions.FETCH_ALL_WALLBOARDS:
       case wallboardsActions.FETCH_ALL_WALLBOARDS_FAIL:
-      case wallboardsActions.FETCH_ALL_WALLBOARDS_SUCCESS: {
+      case wallboardsActions.FETCH_ALL_WALLBOARDS_SUCCESS:
+      case wallboardsActions.SAVE_WALLBOARD:
+      case wallboardsActions.SAVE_WALLBOARD_FAIL:
+      case wallboardsActions.SAVE_WALLBOARD_RESET_STATUS:
+      case wallboardsActions.SAVE_WALLBOARD_SUCCESS: {
         const newPresent = reducer(present, action);
         if (present === newPresent) {
           return state;
@@ -68,6 +70,7 @@ export const wallboardsUndoable = (reducer) => {
           past: past,
           present: newPresent,
           future: future,
+          noOfSteptForUndo: state.noOfSteptForUndo,
         };
       }
 
@@ -80,6 +83,7 @@ export const wallboardsUndoable = (reducer) => {
           past: [...past, present],
           present: newPresent,
           future: [],
+          noOfSteptForUndo: state.noOfSteptForUndo + 1,
         };
       }
     }

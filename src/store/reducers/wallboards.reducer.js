@@ -7,16 +7,29 @@ export const FetchStatus = {
   SUCCESS: 'SUCCESS',
   FAIL: 'FAIL',
 };
+
+const wallboardInitialValues = {
+  name: 'My New Wallboard',
+  id: null,
+  description: 'New Wallboard Description',
+  widgets: [],
+  settings: {
+    display: {
+      shrinkHeight: false,
+      shrinkWidth: false,
+    },
+    link: {
+      isReadOnlyEnabled: false,
+    },
+  },
+  isNewWallboard: null,
+};
 const initialState = {
   wallboardIdForDelete: null,
   searchedWallboards: [],
   activeWallboard: {
-    wallboardInitialValues: {
-      name: 'My New Wallboard',
-    },
-    wallboard: {
-      name: 'My New Wallboard',
-    },
+    wallboardInitialValues: wallboardInitialValues,
+    wallboard: wallboardInitialValues,
     fetchStatus: FetchStatus.NULL,
     fetchMessage: '',
     saveStatus: FetchStatus.NULL,
@@ -86,6 +99,16 @@ export const wallboardsReducer = (state = { ...initialState }, action) => {
         },
       };
 
+    case wallboardsActions.CREATE_LOCAL_NEW_EMPTY_WALLBOARD:
+      return {
+        ...state,
+        activeWallboard: {
+          ...state.activeWallboard,
+          wallboard: { ...initialState.activeWallboard.wallboard, id: action.payload, isNewWallboard: true },
+          saveStatus: FetchStatus.SUCCESS,
+        },
+      };
+
     case wallboardsActions.SAVE_WALLBOARD:
       return {
         ...state,
@@ -102,6 +125,7 @@ export const wallboardsReducer = (state = { ...initialState }, action) => {
           wallboard: action.payload,
           wallboardInitialValues: action.payload,
           saveStatus: FetchStatus.SUCCESS,
+          fetchStatus: FetchStatus.SUCCESS,
         },
       };
     case wallboardsActions.SAVE_WALLBOARD_FAIL:

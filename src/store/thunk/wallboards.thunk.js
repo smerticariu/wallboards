@@ -73,20 +73,16 @@ export const saveWallboardThunk = () => async (dispatch, getState) => {
   try {
     dispatch(saveWallboardAC());
     const currentDate = new Date().getTime();
-    const wbId = activeWallboard.id ?? generateWallboardId(userInfo.organisationId, userInfo.id);
-    const wallboardInitialSettings = getState().modal.wallboardSettings;
+    const wbId = activeWallboard.id;
     const data = {
       id: wbId,
       name: activeWallboard.name,
       createdBy: `${userInfo.firstName} ${userInfo.lastName}`,
       createdOn: activeWallboard.createdOn ?? currentDate,
       lastEdited: currentDate,
-      description: activeWallboard.description || 'New Wallboard Description',
+      description: activeWallboard.description,
       widgets: activeWallboard.widgets,
-      settings: activeWallboard.settings || {
-        display: wallboardInitialSettings.display,
-        link: wallboardInitialSettings.link,
-      },
+      settings: activeWallboard.settings,
     };
     const options = {
       method: 'put',

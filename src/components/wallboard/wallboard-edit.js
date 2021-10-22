@@ -24,11 +24,11 @@ const WallboardEdit = () => {
   }, []);
 
   useEffect(() => {
-    dispatch(fetchWallboardByIdThunk(id));
+    if (!activeWallboard.isNewWallboard) dispatch(fetchWallboardByIdThunk(id));
     // eslint-disable-next-line
   }, [id]);
 
-  if (fetchStatus !== FetchStatus.SUCCESS) {
+  if (!activeWallboard.isNewWallboard && fetchStatus !== FetchStatus.SUCCESS) {
     return <div>{fetchMessage}</div>;
   }
   return (

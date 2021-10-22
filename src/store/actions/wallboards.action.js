@@ -13,6 +13,8 @@ export const wallboardsActions = {
   FETCH_ALL_WALLBOARDS_SUCCESS: 'FETCH_ALL_WALLBOARDS_SUCCESS',
   FETCH_ALL_WALLBOARDS_FAIL: 'FETCH_ALL_WALLBOARDS_FAIL',
 
+  CREATE_LOCAL_NEW_EMPTY_WALLBOARD: 'CREATE_LOCAL_NEW_EMPTY_WALLBOARD',
+
   SAVE_WALLBOARD: 'SAVE_WALLBOARD',
   SAVE_WALLBOARD_SUCCESS: 'SAVE_WALLBOARD_SUCCESS',
   SAVE_WALLBOARD_FAIL: 'SAVE_WALLBOARD_FAIL',
@@ -82,6 +84,11 @@ export const fetchAllWallboardsSuccessAC = (wallboards) => ({
 export const fetchAllWallboardsFailAC = (errorMEssage) => ({
   type: wallboardsActions.FETCH_ALL_WALLBOARDS_FAIL,
   payload: errorMEssage,
+});
+
+export const createNewEmptyWallboardAC = (id) => ({
+  type: wallboardsActions.CREATE_LOCAL_NEW_EMPTY_WALLBOARD,
+  payload: id,
 });
 
 export const saveWallboardAC = () => ({
