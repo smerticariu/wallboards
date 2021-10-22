@@ -2,6 +2,8 @@
   padding-bottom: 10px;
   display: flex;
   flex-direction: column;
+  width: 100%;
+  min-width: fit-content;
   &__header {
     display: flex;
     height: 32px;
@@ -26,6 +28,7 @@
       min-width: 170px;
       height: 100%;
       margin: 0 1px 0 0;
+      background-color: $turquoise-blue;
       &--preview {
         min-width: 80px;
       }
@@ -49,22 +52,32 @@
       font-size: 16px;
       color: $natterbox-dark-blue-grey;
       background-color: $pinkish-grey;
-      width: 170px;
+      min-width: 170px;
       margin: 0 1px 0 0;
       text-align: center;
       &--preview {
-        width: 80px;
+        min-width: 80px;
         padding: 3px 2px;
         font-size: 8px;
 
         white-space: nowrap;
         overflow: hidden;
       }
-      &--black,
+      &--lighter-red,
+      &--dark-blue,
       &--red,
-      &--green {
+      &--green,
+      &--grey {
         position: relative;
         padding-right: 10px;
+      }
+      &--lighter-red {
+        background-color: $natterbox-lighter-red;
+        color: $white;
+      }
+      &--dark-blue {
+        background-color: $natterbox-dark-blue-grey;
+        color: $white;
       }
       &--red {
         background-color: $natterbox-red;
@@ -72,42 +85,54 @@
       }
       &--green {
         background-color: $natterbox-green;
-        color: $slate-gray;
       }
-      &--black {
-        background-color: $natterbox-dark-blue-grey;
-        color: $white;
+      &--grey {
+        background-color: $pinkish-grey;
       }
 
       &--circle {
         padding: 0;
         background-color: $white;
         display: flex;
-        justify-content: center;
+        justify-content: flex-start;
+        padding-left: 20px;
         align-items: center;
         &--preview {
-          width: 80px;
+          padding-left: 10px;
+          min-width: 80px;
         }
         &-container {
           display: flex;
           margin-right: 5px;
           justify-content: center;
           align-items: center;
-          width: 30px;
+          min-width: 30px;
           height: 30px;
           &--preview {
-            width: 15px;
+            min-width: 15px;
             height: 15px;
           }
           border-radius: 50%;
-          &--green {
-            background-color: rgba($natterbox-green, 0.58);
+          &--sun-yellow {
+            background-color: rgba($sun-yellow, 0.58);
           }
-          &--red {
+          &--lighter-red {
             background-color: rgba($natterbox-lighter-red, 0.58);
           }
           &--orange {
             background-color: rgba($natterbox-orange, 0.58);
+          }
+          &--magenta {
+            background-color: rgba($natterbox-magenta, 0.58);
+          }
+          &--aqua {
+            background-color: rgba($natterbox-aqua, 0.58);
+          }
+          &--sick-green {
+            background-color: rgba($sick-green, 0.58);
+          }
+          &--grey {
+            background-color: rgba($pinkish-grey-two, 0.58);
           }
         }
         &-center {
@@ -118,14 +143,26 @@
             height: 10px;
           }
           border-radius: 50%;
-          &--green {
-            background-color: $natterbox-green;
+          &--sun-yellow {
+            background-color: $sun-yellow;
           }
-          &--red {
+          &--lighter-red {
             background-color: $natterbox-lighter-red;
           }
           &--orange {
             background-color: $natterbox-orange;
+          }
+          &--magenta {
+            background-color: $natterbox-magenta;
+          }
+          &--aqua {
+            background-color: $natterbox-aqua;
+          }
+          &--sick-green {
+            background-color: $sick-green;
+          }
+          &--grey {
+            background-color: $pinkish-grey-two;
           }
         }
       }

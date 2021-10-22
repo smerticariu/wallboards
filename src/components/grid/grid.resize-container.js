@@ -3,10 +3,11 @@ import RGL, { WidthProvider } from 'react-grid-layout';
 import { useDispatch } from 'react-redux';
 import { handleWallboardGridLayoutChangeAC } from 'src/store/actions/wallboards.action';
 import GridAgentList from './grid.agent-list';
+import { RESIZE_GRID_COLUMNS } from './grid.defaults';
 
 const ReactGridLayout = WidthProvider(RGL);
 
-const GridResizeContainer = ({ widgets = [], ...props }) => {
+const GridResizeContainer = ({ isEditMode = true, widgets = [], ...props }) => {
   const dispatch = useDispatch();
 
   const onLayoutChange = (layout) => {
@@ -47,17 +48,19 @@ const GridResizeContainer = ({ widgets = [], ...props }) => {
 
   return (
     <ReactGridLayout
-      cols={192}
+      cols={RESIZE_GRID_COLUMNS}
       rowHeight={1}
       className={'layout'}
       draggableHandle=".agent-list__title"
       layout={handleLayout()}
       onLayoutChange={onLayoutChange}
+      isDraggable={isEditMode}
+      isResizable={isEditMode}
     >
       {widgets.map((widget) => {
         return (
           <div key={widget.id}>
-            <GridAgentList widget={widget} />
+            <GridAgentList isEditMode={isEditMode} widget={widget} />
           </div>
         );
       })}
