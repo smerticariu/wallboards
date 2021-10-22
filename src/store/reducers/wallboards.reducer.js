@@ -1,3 +1,4 @@
+import { RESIZE_GRID_COLUMNS } from 'src/components/grid/grid.defaults';
 import { generateWallboardWidgetId } from '../../common/utils/generateId';
 
 import { wallboardsActions } from '../actions/wallboards.action';
@@ -139,7 +140,7 @@ export const wallboardsReducer = (state = { ...initialState }, action) => {
           ? modalAddComponent.size
           : {
               h: 50, //initial height
-              w: 192, //initial width
+              w: RESIZE_GRID_COLUMNS, //initial width: ;
               x: 0, // x position
               y: widgets.reduce((newH, widget) => (widget.size.y >= newH ? widget.size.y + 1 : newH), 0), //y position
             },

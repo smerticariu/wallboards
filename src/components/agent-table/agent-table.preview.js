@@ -1,6 +1,7 @@
 import React from 'react';
 import { ArrowDownIcon } from 'src/assets/static/icons/arrow-down';
-import { previewAvailabilityStatusColors, previewStatusColors } from './agent-table.defaults';
+import { PRESENCE_STATE_KEYS_COLOR } from '../modal/add-component/modal.add-component.defaults';
+import { previewAvailabilityStatusColors } from './agent-table.defaults';
 const AgentTablePreview = ({
   agentName,
   agentExtNo,
@@ -40,7 +41,9 @@ const AgentTablePreview = ({
             {agentName && <div className="agent-t__agent-info agent-t__agent-info--preview">Megan Carter</div>}
             {currAvaiState && (
               <div
-                className={`agent-t__agent-info agent-t__agent-info--preview agent-t__agent-info--${previewAvailabilityStatusColors[index]}`}
+                className={`agent-t__agent-info agent-t__agent-info--preview agent-t__agent-info--${
+                  PRESENCE_STATE_KEYS_COLOR.CARD_AVAILABILITY_STATUS_BACKGROUND[previewAvailabilityStatusColors[index]]
+                }`}
               >
                 {index === 0 && 'I’m available'}
                 {index === 1 && 'I’m currently busy'}
@@ -60,10 +63,14 @@ const AgentTablePreview = ({
             {listOfSkills && <div className="agent-t__agent-info agent-t__agent-info--preview">skill</div>}
             <div className="agent-t__agent-info agent-t__agent-info--circle agent-t__agent-info--circle--preview">
               <div
-                className={`agent-t__agent-info--circle-container agent-t__agent-info--circle-container--${previewStatusColors[index]} agent-t__agent-info--circle-container--preview`}
+                className={`agent-t__agent-info--circle-container agent-t__agent-info--circle-container--${
+                  PRESENCE_STATE_KEYS_COLOR.CARD_BACKGROUND[previewAvailabilityStatusColors[index]]
+                } agent-t__agent-info--circle-container--preview`}
               >
                 <div
-                  className={`agent-t__agent-info--circle-center agent-t__agent-info--circle-center--${previewStatusColors[index]} agent-t__agent-info--circle-center--preview`}
+                  className={`agent-t__agent-info--circle-center agent-t__agent-info--circle-center--${
+                    PRESENCE_STATE_KEYS_COLOR.CARD_BACKGROUND[previewAvailabilityStatusColors[index]]
+                  } agent-t__agent-info--circle-center--preview`}
                 ></div>
               </div>
               Idle
