@@ -16,29 +16,29 @@ import {
   saveWallboardSuccessAC,
 } from '../actions/wallboards.action';
 
-export const fetchWallboardByIdThunk =
-  ({ wbId }) =>
-  async (dispatch, getState) => {
-    try {
-      dispatch(fetchWallboardByIdAC('Single wallboard loading...'));
-      const { userInfo, token } = getState().login;
-      const options = {
-        method: 'get',
-        url: `https://wallboards-store.redmatter-qa01.pub/organisation/${userInfo.organisationId}/key/${wbId}`,
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: 'Bearer ' + token,
-          'Access-Control-Allow-Origin': '*',
-          Accept: 'application/json',
-        },
-      };
-      const response = await axios(options);
-      dispatch(fetchWallboardByIdSuccessAC({ widgets: [], ...response.data }));
-    } catch (error) {
-      dispatch(fetchWallboardByIdFailAC(error?.response?.data?.error?.message));
-      console.log(error?.response?.data);
-    }
-  };
+export const fetchWallboardByIdThunk = (wbId) => async (dispatch, getState) => {
+  try {
+    const [organisationId, userId, d, dateCreated] = wbId.split('-');
+
+    dispatch(fetchWallboardByIdAC('Single wallboard loading...'));
+    const { token } = getState().login;
+    const options = {
+      method: 'get',
+      url: `https://wallboards-store.redmatter-qa01.pub/organisation/${organisationId}/key/${organisationId}-${userId}-${d}-${dateCreated}`,
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + token,
+        'Access-Control-Allow-Origin': '*',
+        Accept: 'application/json',
+      },
+    };
+    const response = await axios(options);
+    dispatch(fetchWallboardByIdSuccessAC({ widgets: [], ...response.data }));
+  } catch (error) {
+    dispatch(fetchWallboardByIdFailAC(error?.response?.data?.error?.message));
+    console.log(error?.response?.data);
+  }
+};
 
 export const fetchAllWallboardsThunk = () => async (dispatch, getState) => {
   try {
@@ -74,22 +74,16 @@ export const saveWallboardThunk = () => async (dispatch, getState) => {
   try {
     dispatch(saveWallboardAC());
     const currentDate = new Date().getTime();
-    const wbId = activeWallboard.id ?? generateWallboardId(userInfo.organisationId, userInfo.id);
-
+    const wbId = activeWallboard.id;
     const data = {
       id: wbId,
       name: activeWallboard.name,
       createdBy: `${userInfo.firstName} ${userInfo.lastName}`,
       createdOn: activeWallboard.createdOn ?? currentDate,
       lastEdited: currentDate,
-      description: activeWallboard.description || "New Wallboard Description",
+      description: activeWallboard.description,
       widgets: activeWallboard.widgets,
-      settings: activeWallboard.settings || {
-        display: {
-          shrinkWidth: false,
-          shrinkHeight: false,
-        }
-      }
+      settings: activeWallboard.settings,
     };
 
     const options = {
@@ -147,7 +141,7 @@ export const copyWallboardThunk =
   async (dispatch, getState) => {
     try {
       const { userInfo, token } = getState().login;
-      await dispatch(fetchWallboardByIdThunk({ wbId: wb.id }));
+      await dispatch(fetchWallboardByIdThunk(wb.id));
       let activeWallboard = getState().wallboards.present.activeWallboard.wallboard;
 
       const currentDate = new Date().getTime();

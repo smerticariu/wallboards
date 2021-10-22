@@ -16,7 +16,7 @@ const CustomAutosuggest = ({ allTitles, value, name, placeholder = '', isSmallSi
       return [];
     }
     return allTitles.filter((title) => {
-      return title.toLowerCase().startsWith(escapedValue.toLowerCase());
+      return title.toLowerCase().includes(escapedValue.toLowerCase());
     });
   }
 

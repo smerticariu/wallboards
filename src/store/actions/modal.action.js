@@ -8,6 +8,9 @@ export const modalActions = {
   SET_WALLBOARD_COMPONENT_FOR_DELETE: 'SET_WALLBOARD_COMPONENT_FOR_DELETE',
 
   HANDLE_WARNING_MESSAGE: 'HANDLE_WARNING_MESSAGE',
+
+  HANLE_SELECTED_WALLBOARD_SETTINGS: 'HANLE_SELECTED_WALLBOARD_SETTINGS',
+  SET_WALLBOARD_SETTINGS: 'SET_WALLBOARD_SETTINGS',
 };
 export const handleWallboardActiveModalAC = (modalName) => ({
   type: modalActions.HANDLE_WALLBOARD_ACTIVE_MODAL,
@@ -37,4 +40,13 @@ export const setWallboardComponentForDeleteAC = (component) => ({
 export const handleWarningMessageAC = (message) => ({
   type: modalActions.HANDLE_WARNING_MESSAGE,
   payload: message,
+});
+
+export const handleChangeSelectedWallboardSettingsAC = (settings) => ({
+  type: modalActions.HANLE_SELECTED_WALLBOARD_SETTINGS,
+  payload: settings,
+});
+export const setSelectedWallboardSettingsAC = (activeWallboard) => ({
+  type: modalActions.SET_WALLBOARD_SETTINGS,
+  payload: activeWallboard,
 });

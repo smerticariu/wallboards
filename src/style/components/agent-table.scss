@@ -6,7 +6,7 @@
   min-width: fit-content;
   &__header {
     display: flex;
-    height: 32px;
+    min-height: 32px;
     align-items: center;
     text-align: center;
     font-family: $public-sans-regular;
@@ -17,7 +17,7 @@
     margin-bottom: 15px;
     background-color: $turquoise-blue;
     &--preview {
-      height: 16px;
+      min-height: 16px;
       font-size: 7px;
       margin-bottom: 4px;
     }

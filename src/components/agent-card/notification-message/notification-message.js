@@ -16,14 +16,14 @@ const NotificationMessage = () => {
   };
   useEffect(() => {
     let timeout;
-    if (isNotificationShow) {
+    if (isNotificationShow || notificationMessage) {
       timeout = setTimeout(() => {
         closeNotification();
       }, notificationTime);
     }
     return () => clearTimeout(timeout);
     // eslint-disable-next-line
-  }, [isNotificationShow]);
+  }, [isNotificationShow, notificationMessage]);
   return (
     <div
       className={`notification ${isErrorNotification ? 'notification--error' : 'notification--success'} ${

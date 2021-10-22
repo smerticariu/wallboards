@@ -6,20 +6,26 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchWallboardByIdThunk } from 'src/store/thunk/wallboards.thunk';
 import { FetchStatus } from 'src/store/reducers/wallboards.reducer';
 import GridResizeContainer from '../grid/grid.resize-container';
+import { useHistory } from 'react-router';
 
 const WallboardReadOnly = () => {
   const { id } = useParams();
   const { logout } = useAuth0();
   const dispatch = useDispatch();
+  const history = useHistory();
+  const { userInfo } = useSelector((state) => state.login);
   const { wallboard, fetchStatus, fetchMessage } = useSelector((state) => state.wallboards.present.activeWallboard);
-  const { userInfo, token } = useSelector((state) => state.login);
   useEffect(() => {
-    dispatch(fetchWallboardByIdThunk({ wbId: id, orgId: userInfo.organisationId, token }));
+    dispatch(fetchWallboardByIdThunk(id));
     // eslint-disable-next-line
   }, [id]);
 
   if (fetchStatus !== FetchStatus.SUCCESS) {
     return <div>{fetchMessage}</div>;
+  }
+
+  if (!wallboard.settings.link.isReadOnlyEnabled && userInfo.permissionLevel !== 'ADMINISTRATOR') {
+    history.push('/');
   }
 
   return (

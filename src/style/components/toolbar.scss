@@ -1,19 +1,24 @@
 .c-toolbar {
   width: calc(100% - 30px);
-  height: 80px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex: 0 1 auto;
   margin: 0 auto;
+  padding: 25px 0;
   &-right {
+    width: 60%;
     display: flex;
     align-items: center;
+    justify-content: flex-end;
     &__search-input {
-      width: 560px;
+      width: 100%;
+      max-width: 460px;
     }
   }
   &-left {
+    width: 40%;
+    max-width: 500px;
     &__heading {
       color: $turquoise-blue;
       font-size: 20px;
@@ -25,6 +30,32 @@
       font-family: $public-sans-regular;
       color: $grey;
       margin: 0;
+    }
+  }
+  @media screen and (max-width: $lg) {
+    flex-direction: column;
+    justify-content: space-evenly;
+    padding: 20px 0;
+    &-left,
+    &-right {
+      margin-top: 10px;
+      width: 100%;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    &-right {
+      &__search-input {
+        max-width: 100%;
+        margin-bottom: 10px;
+        display: flex;
+        justify-content: center;
+      }
+    }
+    &-left {
+      &__wrapper {
+        text-align: center;
+      }
     }
   }
 }
