@@ -7,6 +7,7 @@ import useOnClickOutside from '../../../common/hooks/useOnClickOutside';
 import CheckBox from 'src/components/checkbox/checkbox';
 import { applyWallboardSettingsAC } from '../../../store/actions/wallboards.action';
 import TextArea from 'src/components/textarea/textarea';
+import { handleIsNotificationShowAC } from 'src/store/actions/notification.action';
 
 const ModalEditWallboard = ({ ...props }) => {
   const dispatch = useDispatch();
@@ -101,8 +102,10 @@ const ModalEditWallboard = ({ ...props }) => {
 
   const handleCopyLinkToClipoard = (e) => {
     e.preventDefault();
+    dispatch(handleIsNotificationShowAC(true, false, 'Link was successfully copied'));
     navigator.clipboard.writeText(wallboardLink);
   };
+
   const wallboardLink = window.location.href.replace('edit', '');
   return (
     <div className={`c-modal c-modal--open`}>
@@ -178,7 +181,11 @@ const ModalEditWallboard = ({ ...props }) => {
 
               <div className="c-modal__section c-modal__section--read-only c-modal__section--read-only__generate-link">
                 <input onChange={() => {}} className="c-input c-input--grey" value={wallboardLink} type="text" />
-                <button onClick={handleCopyLinkToClipoard} className="c-button c-button--blue">
+                <button
+                  onClick={handleCopyLinkToClipoard}
+                  disabled={!wallboardSettings.link.isReadOnlyEnabled}
+                  className={`c-button c-button--blue ${!wallboardSettings.link.isReadOnlyEnabled ? 'c-button--disabled' : ''}`}
+                >
                   Copy Link
                 </button>
               </div>

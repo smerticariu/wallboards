@@ -7,7 +7,7 @@ const TextArea = ({ value, ...props }) => {
     inputDateRef.current.style.height = inputDateRef.current?.scrollHeight + 'px';
   }, [value]);
 
-  return <textarea resize ref={inputDateRef} value={value} {...props} />;
+  return <textarea ref={inputDateRef} value={value} {...props} />;
 };
 
 export default TextArea;

@@ -55,6 +55,9 @@ export const wallboardsUndoable = (reducer) => {
         };
       }
       // these changes we do not want to add to the past
+      case wallboardsActions.FETCH_WALLBOARD_BY_ID:
+      case wallboardsActions.FETCH_WALLBOARD_BY_ID_SUCCESS:
+      case wallboardsActions.FETCH_WALLBOARD_BY_ID_FAIL:
       case wallboardsActions.FETCH_ALL_WALLBOARDS:
       case wallboardsActions.FETCH_ALL_WALLBOARDS_FAIL:
       case wallboardsActions.FETCH_ALL_WALLBOARDS_SUCCESS:
