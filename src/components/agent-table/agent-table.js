@@ -156,7 +156,7 @@ const AgentTable = ({ agents, ...props }) => {
                   }`}
                 />
               </div>
-              Available
+              {PRESENCE_STATE_KEYS_COLOR.CARD_PRESENCE_STATE_TEXT[agent.callStatusKey]}
             </div>
           </div>
         ))}

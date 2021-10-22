@@ -9,7 +9,7 @@ import {
 } from 'src/store/actions/modal.action';
 import AgentCard from '../agent-card/agent-card';
 import AgentTable from '../agent-table/agent-table';
-import { MAIN_VIEWING_OPTIONS } from '../modal/add-component/modal.add-component.defaults';
+import { ADD_COMPONENT_COLUMNS_NO_OPTIONS, MAIN_VIEWING_OPTIONS } from '../modal/add-component/modal.add-component.defaults';
 import { WALLBOARD_MODAL_NAMES } from '../modal/new-wallboard/modal.new-wallboard.defaults';
 import { AGENTS_TABLE } from './grid.defaults';
 
@@ -73,6 +73,7 @@ const GridAgentList = ({ isEditMode, widget, ...props }) => {
         ) : (
           <>
             <AgentTable agents={AGENTS_TABLE} />
+            {widget.columns === ADD_COMPONENT_COLUMNS_NO_OPTIONS.TWO && <AgentTable agents={AGENTS_TABLE} />}
           </>
         )}
       </div>
