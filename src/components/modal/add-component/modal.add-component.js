@@ -64,12 +64,12 @@ const ModalAddComponent = ({ ...props }) => {
             ...formData,
             title: {
               ...formData.title,
-              errorMessage: 'Wallboard name must be alphanumeric',
+              errorMessage: 'Component name must be alphanumeric',
             },
           })
         );
 
-        return alert('Wallboard name must be alphanumeric');
+        return alert('Component name must be alphanumeric');
       }
       dispatch(addWallboardComponentAC(userInfo, formData));
       closeModal();

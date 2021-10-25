@@ -9,7 +9,11 @@ import {
 } from 'src/store/actions/modal.action';
 import AgentCard from '../agent-card/agent-card';
 import AgentTable from '../agent-table/agent-table';
-import { ADD_COMPONENT_COLUMNS_NO_OPTIONS, MAIN_VIEWING_OPTIONS } from '../modal/add-component/modal.add-component.defaults';
+import {
+  ADD_COMPONENT_COLUMNS_NO_OPTIONS,
+  CALL_QUEUE_OPTIONS,
+  MAIN_VIEWING_OPTIONS,
+} from '../modal/add-component/modal.add-component.defaults';
 import { WALLBOARD_MODAL_NAMES } from '../modal/new-wallboard/modal.new-wallboard.defaults';
 import { AGENTS_TABLE } from './grid.defaults';
 
@@ -45,7 +49,7 @@ const GridAgentList = ({ isEditMode, widget, ...props }) => {
       <div className="agent-list__header">
         <div className="agent-list__title">
           <div className="agent-list__title--bold">{widget.name}:</div>
-          Not urgent but somewhat important queue
+          {CALL_QUEUE_OPTIONS.find((option) => option.VALUE === widget.queue).TEXT}
         </div>
         <div className="agent-list__icons">
           {isEditMode && (

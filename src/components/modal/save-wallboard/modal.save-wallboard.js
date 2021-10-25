@@ -1,7 +1,8 @@
 import React, { useRef } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
-import { handleWallboardActiveModalAC } from 'src/store/actions/modal.action';
+import { checkIsAlphanumeric } from 'src/common/utils/alphanumeric-validation';
+import { handleWallboardActiveModalAC, handleWarningMessageAC } from 'src/store/actions/modal.action';
 
 import { saveWallboardThunk } from 'src/store/thunk/wallboards.thunk';
 import useOnClickOutside from '../../../common/hooks/useOnClickOutside';
@@ -10,6 +11,8 @@ const ModalSaveWallboard = ({ ...props }) => {
   const modalRef = useRef(null);
   const history = useHistory();
   const dispatch = useDispatch();
+  const activeWallboard = useSelector((state) => state.wallboards.present.activeWallboard.wallboard);
+
   const closeModal = () => {
     dispatch(handleWallboardActiveModalAC(null));
   };
@@ -47,8 +50,11 @@ const ModalSaveWallboard = ({ ...props }) => {
 
   const handleSaveButton = () => {
     const onClickSaveButton = (e) => {
-      dispatch(saveWallboardThunk());
       dispatch(handleWallboardActiveModalAC(null));
+      if (!checkIsAlphanumeric(activeWallboard.name)) {
+        return dispatch(handleWarningMessageAC('Wallboard name must be alphanumeric'));
+      }
+      dispatch(saveWallboardThunk());
       history.push('/');
     };
 
