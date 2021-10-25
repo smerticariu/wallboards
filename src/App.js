@@ -30,6 +30,12 @@ function App() {
   const { warningMessage } = useSelector((state) => state.modal);
   const appRunsFromSF = window.wbConfig ? true : false; // check if the app runs inside Salesforce
 
+  
+
+  window.addEventListener('message', e =>{
+    console.log(e.data);
+  });
+
   useEffect(() => {
     console.log('appRunsFromSF', appRunsFromSF,window.wbConfig, window);
 
