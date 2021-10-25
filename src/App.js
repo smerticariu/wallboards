@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useAuth0 } from '@auth0/auth0-react';
 import config from 'src/config/auth';
@@ -30,14 +30,21 @@ function App() {
   const { warningMessage } = useSelector((state) => state.modal);
   const appRunsFromSF = window.wbConfig ? true : false; // check if the app runs inside Salesforce
 
+  const [sfToken, setSfToken] = useState('');
+
   
 
-  window.addEventListener('message', e =>{
-    console.log(e.data);
-  });
+  
 
   useEffect(() => {
-    console.log('appRunsFromSF', appRunsFromSF,window.wbConfig, window);
+    // console.log('appRunsFromSF', appRunsFromSF,window.wbConfig, window);
+    window.addEventListener('message', e =>{
+      if(e.data.call=='sendValue') {
+        setSfToken(e.data.value);
+        console.log(e.data);
+      }
+      
+    });
 
     const fetchData = async () => {
       try {
@@ -55,7 +62,7 @@ function App() {
             url: `https://gatekeeper.redmatter-qa01.pub/token/salesforce?scope=${config.scope}`,
             headers: {
               'Content-Type': 'application/json',
-              Authorization: `Bearer ${window.wbConfig.sfSessionId}`
+              Authorization: `Bearer ${sfToken}`
             }
           }
     
@@ -76,7 +83,7 @@ function App() {
     };
 
     fetchData();
-  }, []);
+  }, [sfToken.length]);
 
   const handleLogout = () => {
     logout();
