@@ -20,6 +20,7 @@ import NotificationMessage from './components/agent-card/notification-message/no
 import ModalDeleteWallboardComponent from './components/modal/delete-wallboard-component/modal.delete-wallboard-component';
 import ModalConfirmSaveWallboard from './components/modal/save-wallboard/modal.confirm-save-wallboard';
 import ModalWarning from './components/modal/warning/modal.warning';
+import axios from 'axios';
 
 function App() {
   const dispatch = useDispatch();
@@ -29,19 +30,61 @@ function App() {
   const { warningMessage } = useSelector((state) => state.modal);
 
   useEffect(() => {
+    // console.log('this is sf config', window.wbConfig);
+
     const fetchData = async () => {
-      try {
-        await getAccessTokenSilently(config).then((res) => {
-          dispatch(setAccessTokenAC(res));
-          dispatch(setUserTokenInfoAC(jwtExtractor(res)));
-          dispatch(fetchUserInfoThunk(res));
-        });
-      } catch (err) {
-        console.log(err);
+      // try {
+      //   await getAccessTokenSilently(config).then((res) => {
+      //     dispatch(setAccessTokenAC(res));
+      //     dispatch(setUserTokenInfoAC(jwtExtractor(res)));
+      //     dispatch(fetchUserInfoThunk(res));
+      //   });
+      // } catch (err) {
+      //   console.log(err);
+      // }
+
+
+      const options = {
+        method: 'get',
+        url: "https://gatekeeper.redmatter-qa01.pub/token/salesforce?scope="+config.scope,
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer 00D8d000000KoTX!AQEAQB1AKrSbNsyljVNaJGI6X8hBz5s5K7zK3RADOELSh1bTkkBSY4GDh54pFDLXviSVLObHIOi3gElJ1wKUta.KE09JGz4Z`
+        }
       }
+
+      await axios(options).then(res => {
+        dispatch(setAccessTokenAC(res.data.jwt));
+        dispatch(setUserTokenInfoAC(jwtExtractor(res.data.jwt)));
+        dispatch(fetchUserInfoThunk(res.data.jwt));
+      })
+
+      console.log(userInfo)
     };
 
     fetchData();
+    // const scope = 'wallboard:basic';
+
+    // const options = {
+    //   method: 'get',
+    //   url: `https://gatekeeper.redmatter-qa01.pub/token/salesforce?scope=${scope}`,
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //     Authorization: `Bearer 00D8d000000KoTX!AQEAQB1AKrSbNsyljVNaJGI6X8hBz5s5K7zK3RADOELSh1bTkkBSY4GDh54pFDLXviSVLObHIOi3gElJ1wKUta.KE09JGz4Z`
+    //   }
+    // }
+
+    // const sftoken = await axios(options).then(res => res.data.jwt);
+
+
+    // const options2 = {
+    //   method: 'get',
+    //   url: `https://gatekeeper.redmatter.pub/token/sapien/organisation/{organisation}/user/{user}?scope={scopes}`,
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //     Authorization: `Bearer 00D8d000000KoTX!AQEAQB1AKrSbNsyljVNaJGI6X8hBz5s5K7zK3RADOELSh1bTkkBSY4GDh54pFDLXviSVLObHIOi3gElJ1wKUta.KE09JGz4Z`
+    //   }
+    // }
 
     // eslint-disable-next-line
   }, []);
@@ -51,7 +94,6 @@ function App() {
     dispatch(handleLogoutAC());
     localStorage.clear();
   };
-
   return (
     <div className="App">
       {!userInfo && isAuthenticated && <p>Loading...</p>}
