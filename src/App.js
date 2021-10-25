@@ -31,7 +31,7 @@ function App() {
   const appRunsFromSF = window.wbConfig ? true : false; // check if the app runs inside Salesforce
 
   useEffect(() => {
-    console.log('window', window);
+    console.log('appRunsFromSF', appRunsFromSF, window);
 
     const fetchData = async () => {
       try {
