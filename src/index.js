@@ -13,7 +13,7 @@ ReactDOM.render(
       <Auth0Provider
         domain="redmatter-qa01.eu.auth0.com"
         clientId="40leAQozuSfAQGf52Lf4JBeY6QIXBvmc"
-        redirectUri="http://localhost:3000/"
+        redirectUri="https://wallboards.herokuapp.com/"
         audience="https://sapien-proxy.redmatter-qa01.pub/"
         scope="wallboard:admin"
         responseType="id_token"

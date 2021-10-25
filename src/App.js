@@ -28,65 +28,48 @@ function App() {
   const { isAuthenticated, getAccessTokenSilently, logout, isLoading } = useAuth0();
   const activeModalName = useSelector((state) => state.modal.activeModalName);
   const { warningMessage } = useSelector((state) => state.modal);
+  const appRunsFromSF = window.wbConfig ? true : false; // check if the app runs inside Salesforce
 
   useEffect(() => {
     // console.log('this is sf config', window.wbConfig);
 
     const fetchData = async () => {
-      // try {
-      //   await getAccessTokenSilently(config).then((res) => {
-      //     dispatch(setAccessTokenAC(res));
-      //     dispatch(setUserTokenInfoAC(jwtExtractor(res)));
-      //     dispatch(fetchUserInfoThunk(res));
-      //   });
-      // } catch (err) {
-      //   console.log(err);
-      // }
-
-
-      const options = {
-        method: 'get',
-        url: "https://gatekeeper.redmatter-qa01.pub/token/salesforce?scope="+config.scope,
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer 00D8d000000KoTX!AQEAQB1AKrSbNsyljVNaJGI6X8hBz5s5K7zK3RADOELSh1bTkkBSY4GDh54pFDLXviSVLObHIOi3gElJ1wKUta.KE09JGz4Z`
+      try {
+        if(!appRunsFromSF) {
+          await getAccessTokenSilently(config).then((res) => {
+            dispatch(setAccessTokenAC(res));
+            dispatch(setUserTokenInfoAC(jwtExtractor(res)));
+            dispatch(fetchUserInfoThunk(res));
+          });
         }
+
+        else {
+          const options = {
+            method: 'get',
+            url: `https://gatekeeper.redmatter-qa01.pub/token/salesforce?scope=${config.scope}`,
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${window.wbConfig.sfSessionId}`
+            }
+          }
+    
+          await axios(options).then(res => {
+            dispatch(setAccessTokenAC(res.data.jwt));
+            dispatch(setUserTokenInfoAC(jwtExtractor(res.data.jwt)));
+            dispatch(fetchUserInfoThunk(res.data.jwt));
+          })
+        }
+      } catch (err) {
+        console.log(err);
       }
 
-      await axios(options).then(res => {
-        dispatch(setAccessTokenAC(res.data.jwt));
-        dispatch(setUserTokenInfoAC(jwtExtractor(res.data.jwt)));
-        dispatch(fetchUserInfoThunk(res.data.jwt));
-      })
+
+      
 
       console.log(userInfo)
     };
 
     fetchData();
-    // const scope = 'wallboard:basic';
-
-    // const options = {
-    //   method: 'get',
-    //   url: `https://gatekeeper.redmatter-qa01.pub/token/salesforce?scope=${scope}`,
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //     Authorization: `Bearer 00D8d000000KoTX!AQEAQB1AKrSbNsyljVNaJGI6X8hBz5s5K7zK3RADOELSh1bTkkBSY4GDh54pFDLXviSVLObHIOi3gElJ1wKUta.KE09JGz4Z`
-    //   }
-    // }
-
-    // const sftoken = await axios(options).then(res => res.data.jwt);
-
-
-    // const options2 = {
-    //   method: 'get',
-    //   url: `https://gatekeeper.redmatter.pub/token/sapien/organisation/{organisation}/user/{user}?scope={scopes}`,
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //     Authorization: `Bearer 00D8d000000KoTX!AQEAQB1AKrSbNsyljVNaJGI6X8hBz5s5K7zK3RADOELSh1bTkkBSY4GDh54pFDLXviSVLObHIOi3gElJ1wKUta.KE09JGz4Z`
-    //   }
-    // }
-
-    // eslint-disable-next-line
   }, []);
 
   const handleLogout = () => {
@@ -132,7 +115,7 @@ function App() {
         </>
       )}
 
-      {!isAuthenticated && !isLoading && <Login />}
+      {!appRunsFromSF && (!isAuthenticated && !isLoading) && <Login />}
     </div>
   );
 }
