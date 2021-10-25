@@ -28,7 +28,7 @@ function App() {
   const { isAuthenticated, getAccessTokenSilently, logout, isLoading } = useAuth0();
   const activeModalName = useSelector((state) => state.modal.activeModalName);
   const { warningMessage } = useSelector((state) => state.modal);
-  const appRunsFromSF = window.wbConfig ? true : false; // check if the app runs inside Salesforce
+  // const appRunsFromSF = window.wbConfig ? true : false; // check if the app runs inside Salesforce
 
   const [sfToken, setSfToken] = useState('');
 
@@ -41,14 +41,15 @@ function App() {
     window.addEventListener('message', e =>{
       if(e.data.call=='sendValue') {
         setSfToken(e.data.value);
-        console.log(e.data);
+        
       }
+      console.log(e.data);
       
     });
-
+    console.log(userInfo)
     const fetchData = async () => {
       try {
-        if(!sfToken.length) {
+        if(sfToken) {
           await getAccessTokenSilently(config).then((res) => {
             dispatch(setAccessTokenAC(res));
             dispatch(setUserTokenInfoAC(jwtExtractor(res)));
@@ -78,11 +79,11 @@ function App() {
 
 
       
-
-      console.log(userInfo)
+      fetchData();
+      
     };
 
-    fetchData();
+    
   }, [sfToken.length > 0]);
 
   const handleLogout = () => {
@@ -128,7 +129,7 @@ function App() {
         </>
       )}
 
-      {!appRunsFromSF && (!isAuthenticated && !isLoading) && <Login />}
+      {!sfToken && (!isAuthenticated && !isLoading) && <Login />}
     </div>
   );
 }
