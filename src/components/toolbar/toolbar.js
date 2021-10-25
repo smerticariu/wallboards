@@ -16,6 +16,7 @@ import { useHistory } from 'react-router';
 import { SettingsIcon } from 'src/assets/static/icons/settings';
 import { handleWallboardActiveModalAC, setSelectedWallboardSettingsAC } from 'src/store/actions/modal.action';
 import { generateWallboardId } from 'src/common/utils/generateId';
+import checkIfExistWallboardChanges from 'src/common/utils/checkIfExistWallboardChanges';
 const Toolbar = (props) => {
   const dispatch = useDispatch();
   const [wbSearchValue, setWbSearchValue] = useState('');
@@ -148,21 +149,6 @@ const Toolbar = (props) => {
     );
   };
 
-  const checkIfExistWallboardChanges = () => {
-    return Object.keys(activeWallboard).some((key) => {
-      if (key === 'widgets') {
-        if (activeWallboard.widgets.length !== activeWallboardInitialValues.widgets.length) return true;
-        return activeWallboard.widgets.some((_, index) => {
-          return JSON.stringify(activeWallboard.widgets[index]) !== JSON.stringify(activeWallboardInitialValues.widgets[index]);
-        });
-      }
-      if (activeWallboardInitialValues[key] !== activeWallboard[key]) {
-        return true;
-      }
-      return false;
-    });
-  };
-
   const handleSaveButton = () => {
     const handleClick = () => {
       dispatch(handleWallboardActiveModalAC(WALLBOARD_MODAL_NAMES.CONFIRM_SAVE_WALLBOARD));
@@ -180,7 +166,8 @@ const Toolbar = (props) => {
   };
 
   const onClickCloseButton = () => {
-    if (checkIfExistWallboardChanges()) return dispatch(handleWallboardActiveModalAC(WALLBOARD_MODAL_NAMES.SAVE_WALLBOARD));
+    if (checkIfExistWallboardChanges(activeWallboard, activeWallboardInitialValues))
+      return dispatch(handleWallboardActiveModalAC(WALLBOARD_MODAL_NAMES.SAVE_WALLBOARD));
     return history.push('/');
   };
 

@@ -58,7 +58,10 @@
     border-top-right-radius: 12px;
 
     &__wb-name {
-      width: 693px !important;
+      width: calc(50% - 150px - 50px) !important;
+    }
+    &__wb-actions {
+      width: 150px !important;
     }
 
     &__filter {
@@ -93,7 +96,7 @@
 
     table {
       border-spacing: 20px;
-
+      width: 100%;
       thead {
         font-weight: bold;
         color: $slate-gray;
@@ -105,7 +108,7 @@
       tbody {
         td {
           height: 60px;
-          width: 250px;
+          width: 25%;
           background-color: $dark-grey;
           border-radius: 8px;
           padding-left: 17px;
