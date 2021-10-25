@@ -15,9 +15,11 @@ const CustomAutosuggest = ({ allTitles, value, name, placeholder = '', isSmallSi
     if (!escapedValue.length) {
       return [];
     }
-    return allTitles.filter((title) => {
-      return title.toLowerCase().includes(escapedValue.toLowerCase());
-    });
+    return allTitles
+      .filter((title) => {
+        return title.toLowerCase().includes(escapedValue.toLowerCase());
+      })
+      .slice(0, 6);
   }
 
   function getSuggestionValue(suggestion) {

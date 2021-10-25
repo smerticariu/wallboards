@@ -4,13 +4,16 @@ import Adapter from 'enzyme-adapter-react-16';
 import AgentTable from 'components/agent-table/agent-table';
 import { AGENTS_TABLE } from 'components/grid/grid.defaults';
 import { PRESENCE_STATE_KEYS } from 'components/modal/add-component/modal.add-component.defaults';
-
+import { ADD_COMPONENT_COLUMN_OPTIONS } from 'components/modal/add-component/modal.add-component.defaults';
+import { render } from '@testing-library/react';
+import '@testing-library/jest-dom/extend-expect';
 Enzyme.configure({ adapter: new Adapter() });
 
 describe('Agent card', () => {
   test('Sign In button should be rendered', () => {
     let agentTable = mount(
       <AgentTable
+        columnsToView={Object.keys(ADD_COMPONENT_COLUMN_OPTIONS)}
         agents={[
           {
             callStatusKey: PRESENCE_STATE_KEYS.AGENT_STATUS_IDLE,
@@ -35,14 +38,15 @@ describe('Agent card', () => {
   });
 
   test('The number of agents should be the same as AGENTS_TABLE length', () => {
-    const agentTable = shallow(<AgentTable agents={AGENTS_TABLE} />);
+    const agentTable = shallow(<AgentTable columnsToView={Object.keys(ADD_COMPONENT_COLUMN_OPTIONS)} agents={AGENTS_TABLE} />);
     const agents = agentTable.find('.agent-t__agent');
     expect(agents.length).toBe(AGENTS_TABLE.length);
   });
 
-  test('Agent Table card should be TODO', () => {
-    let agentTable = mount(
+  test('Agent Table card should render the agent name', () => {
+    let agentTable = render(
       <AgentTable
+        columnsToView={Object.keys(ADD_COMPONENT_COLUMN_OPTIONS)}
         agents={[
           {
             callStatusKey: PRESENCE_STATE_KEYS.AGENT_STATUS_IDLE,
@@ -62,5 +66,6 @@ describe('Agent card', () => {
         ]}
       />,
     );
+    expect(agentTable.hasClass('agent-t__agent-info')[0]).toHaveTextContent('Megan Carter');
   });
 });
