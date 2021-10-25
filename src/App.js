@@ -48,7 +48,7 @@ function App() {
 
     const fetchData = async () => {
       try {
-        if(!appRunsFromSF) {
+        if(!sfToken.length) {
           await getAccessTokenSilently(config).then((res) => {
             dispatch(setAccessTokenAC(res));
             dispatch(setUserTokenInfoAC(jwtExtractor(res)));
