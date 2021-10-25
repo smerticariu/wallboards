@@ -72,8 +72,10 @@ const GridAgentList = ({ isEditMode, widget, ...props }) => {
           ))
         ) : (
           <>
-            <AgentTable agents={AGENTS_TABLE} />
-            {widget.columns === ADD_COMPONENT_COLUMNS_NO_OPTIONS.TWO && <AgentTable agents={AGENTS_TABLE} />}
+            <AgentTable columnsToView={widget.columnsToView.selectedItems} agents={AGENTS_TABLE} />
+            {widget.columns === ADD_COMPONENT_COLUMNS_NO_OPTIONS.TWO && (
+              <AgentTable columnsToView={widget.columnsToView.selectedItems} agents={AGENTS_TABLE} />
+            )}
           </>
         )}
       </div>

@@ -24,6 +24,7 @@ const WallboardReadOnly = () => {
     return <div>{fetchMessage}</div>;
   }
 
+  // if (!wallboard.settings.link.isReadOnlyEnabled) {
   if (!wallboard.settings.link.isReadOnlyEnabled && userInfo.permissionLevel !== 'ADMINISTRATOR') {
     history.push('/');
   }
