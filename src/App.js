@@ -83,7 +83,7 @@ function App() {
     };
 
     fetchData();
-  }, [sfToken.length]);
+  }, [sfToken.length > 0]);
 
   const handleLogout = () => {
     logout();
