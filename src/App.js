@@ -28,7 +28,7 @@ function App() {
   const { isAuthenticated, getAccessTokenSilently, logout, isLoading } = useAuth0();
   const activeModalName = useSelector((state) => state.modal.activeModalName);
   const { warningMessage } = useSelector((state) => state.modal);
-  const appRunsFromSF = window.parent.wbConfig ? true : false; // check if the app runs inside Salesforce
+  const appRunsFromSF = window.wbConfig ? true : false; // check if the app runs inside Salesforce
 
   useEffect(() => {
     console.log('appRunsFromSF', appRunsFromSF,window.wbConfig, window);
