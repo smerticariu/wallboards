@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { CloseIcon } from 'src/assets/static/icons/close';
 import { EditIcon } from 'src/assets/static/icons/edit';
@@ -17,7 +17,7 @@ import {
 import { WALLBOARD_MODAL_NAMES } from '../modal/new-wallboard/modal.new-wallboard.defaults';
 import { AGENTS_TABLE } from './grid.defaults';
 
-const GridAgentList = ({ isEditMode, widget, ...props }) => {
+const GridAgentList = forwardRef(({ isEditMode, widget, ...props }, ref) => {
   const dispatch = useDispatch();
 
   const handleEditIcon = () => {
@@ -45,7 +45,7 @@ const GridAgentList = ({ isEditMode, widget, ...props }) => {
   };
 
   return (
-    <div className="agent-list">
+    <div ref={ref} id={widget.id} className="agent-list">
       <div className="agent-list__header">
         <div className="agent-list__title">
           <div className="agent-list__title--bold">{widget.name}:</div>
@@ -85,5 +85,5 @@ const GridAgentList = ({ isEditMode, widget, ...props }) => {
       </div>
     </div>
   );
-};
+});
 export default GridAgentList;

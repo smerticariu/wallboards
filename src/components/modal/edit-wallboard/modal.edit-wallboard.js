@@ -38,7 +38,7 @@ const ModalEditWallboard = ({ ...props }) => {
         <button className="c-button" onClick={onClickSaveButton}>
           Save
         </button>
-        <button className="c-button c-button--grey c-button--m-left" onClick={onClickCancelButton}>
+        <button className="c-button c-button--m-left" onClick={onClickCancelButton}>
           Cancel
         </button>
       </>
@@ -175,12 +175,17 @@ const ModalEditWallboard = ({ ...props }) => {
               <div className="c-modal__section c-modal__section--read-only">
                 <p className="c-modal__text">
                   A read only Wallboard URL allows anyone to access this wallboard with the basic Chatter Free Salesforce licence. This is
-                  great for non-Salesforce users or putting
+                  great for non-Salesforce users or putting wallboards on a TV
                 </p>
               </div>
 
               <div className="c-modal__section c-modal__section--read-only c-modal__section--read-only__generate-link">
-                <input onChange={() => {}} className="c-input c-input--grey" value={wallboardLink} type="text" />
+                <input
+                  onChange={() => {}}
+                  className="c-input c-input--grey"
+                  value={wallboardSettings.link.isReadOnlyEnabled ? wallboardLink : ''}
+                  type="text"
+                />
                 <button
                   onClick={handleCopyLinkToClipoard}
                   disabled={!wallboardSettings.link.isReadOnlyEnabled}

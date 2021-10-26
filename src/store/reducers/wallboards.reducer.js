@@ -167,6 +167,8 @@ export const wallboardsReducer = (state = { ...initialState }, action) => {
               w: RESIZE_GRID_COLUMNS, //initial width: ;
               x: 0, // x position
               y: widgets.reduce((newH, widget) => (widget.size.y >= newH ? widget.size.y + 1 : newH), 0), //y position
+              offsetHeight: '100%',
+              offsetWidth: '100%',
             },
       };
       return {
@@ -214,10 +216,10 @@ export const wallboardsReducer = (state = { ...initialState }, action) => {
             ...state.activeWallboard.wallboard,
             widgets: widgets.map((widget) => {
               const layoutData = action.payload.find((layout) => layout.i === widget.id);
-              const { h, w, x, y } = layoutData;
+              const { h, w, x, y, offsetWidth, offsetHeight } = layoutData;
               return {
                 ...widget,
-                size: { h, w, x, y },
+                size: { h, w, x, y, offsetWidth, offsetHeight },
               };
             }),
           },

@@ -226,7 +226,6 @@ const Toolbar = (props) => {
             <button className="c-button c-button--m-left" onClick={() => props.logout()}>
               Logout
             </button>
-            {handleSettingsIcon()}
           </>
         );
       default:
