@@ -70,10 +70,10 @@ function App() {
 
 
       
-      fetchData();
+      
       
     };
-
+    fetchData();
     
   }, []);
 
