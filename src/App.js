@@ -74,7 +74,7 @@ function App() {
     };
 
     
-  }, [sfToken.length > 0]);
+  }, []);
 
   const handleLogout = () => {
     logout();
