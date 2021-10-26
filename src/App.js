@@ -31,7 +31,8 @@ function App() {
   // const appRunsFromSF = window.wbConfig ? true : false; // check if the app runs inside Salesforce
 
   const [sfToken, setSfToken] = useState('');
-
+debugger
+console.log(window)
   
 
   
