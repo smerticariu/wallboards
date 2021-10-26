@@ -30,19 +30,7 @@ function App() {
   const { warningMessage } = useSelector((state) => state.modal);
   // const appRunsFromSF = window.wbConfig ? true : false; // check if the app runs inside Salesforce
 
-  const [sfToken, setSfToken] = useState('');
-// debugger
-console.log(window)
-  
-window.addEventListener('message', e =>{
-  console.log(e.data, e);
-  if(e.data.call=='sendValue') {
-    setSfToken(e.data.value);
-    
-  }
-  
-  
-});
+  const [sfToken, setSfToken] = useState(window?.WbConfig?.sfSessionId);
   
 
   useEffect(() => {
@@ -51,7 +39,7 @@ window.addEventListener('message', e =>{
     console.log(userInfo)
     const fetchData = async () => {
       try {
-        if(sfToken) {
+        if(!sfToken) {
           await getAccessTokenSilently(config).then((res) => {
             dispatch(setAccessTokenAC(res));
             dispatch(setUserTokenInfoAC(jwtExtractor(res)));
