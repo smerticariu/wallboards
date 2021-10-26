@@ -98,10 +98,10 @@ function App() {
             logout
           </button>
           <Switch>
-            <Route exact path="/">
+            <Route  path="/">
               <Landing />
             </Route>
-            <Route exact path="/wallboard/:id/edit">
+            <Route  path="/wallboard/:id/edit">
               <WallboardEdit />
             </Route>
             <Route path="/wallboard/:id">
@@ -120,7 +120,7 @@ function App() {
         </>
       )}
 
-      {!sfToken && (!isAuthenticated && !isLoading) && <Login />}
+      {!sfToken && (!isAuthenticated) && <Login />}
     </div>
   );
 }
