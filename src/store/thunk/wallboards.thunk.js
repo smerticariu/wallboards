@@ -47,6 +47,7 @@ export const fetchAllWallboardsThunk = () => async (dispatch, getState) => {
     const options = {
       method: 'get',
       url: `https://wallboards-store.redmatter-qa01.pub/organisation/${userInfo.organisationId}/key/config.json`,
+      // url: `https://sapien-proxy.redmatter-qa01.pub/v1/organisation/${userInfo.organisationId}/call-queue`,
       headers: {
         'Content-Type': 'application/json',
         Authorization: 'Bearer ' + token,
@@ -56,6 +57,22 @@ export const fetchAllWallboardsThunk = () => async (dispatch, getState) => {
     };
 
     const response = await axios(options);
+
+    const ooo = {
+      method: 'get',
+      // url: `https://wallboards-store.redmatter-qa01.pub/organisation/${userInfo.organisationId}/key/config.json`,
+      url: `https://sapien-proxy.redmatter-qa01.pub/v1/organisation/${userInfo.organisationId}/call-queue/T00000063/agent`,
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + token,
+        'Access-Control-Allow-Origin': '*',
+        Accept: 'application/json',
+      },
+    };
+
+    const res = await axios(ooo);
+
+    console.log(res)
 
     dispatch(fetchAllWallboardsSuccessAC(response.data));
   } catch (error) {
