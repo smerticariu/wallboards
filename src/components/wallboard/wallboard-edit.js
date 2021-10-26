@@ -9,6 +9,7 @@ import { useParams } from 'react-router';
 import { FetchStatus } from 'src/store/reducers/wallboards.reducer';
 import { resetWallboardEditPageDataAC } from 'src/store/actions/wallboards.action';
 import { fetchAllSkilsThunk } from 'src/store/thunk/skills.thunk';
+import { fetchAllCallsQueuesThunk } from 'src/store/thunk/callsQueues.thunk';
 
 const WallboardEdit = () => {
   const activeModalName = useSelector((state) => state.modal.activeModalName);
@@ -19,6 +20,7 @@ const WallboardEdit = () => {
 
   useEffect(() => {
     dispatch(fetchAllSkilsThunk());
+    dispatch(fetchAllCallsQueuesThunk());
     return () => dispatch(resetWallboardEditPageDataAC());
     // eslint-disable-next-line
   }, []);

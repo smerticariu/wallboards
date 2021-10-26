@@ -33,6 +33,7 @@ const ModalAddComponent = ({ ...props }) => {
   const dispatch = useDispatch();
   const formData = useSelector((state) => state.modal.modalAddComponent);
   const { allSkils } = useSelector((state) => state.skills);
+  const  { allCallsQueues }  = useSelector((state) => state.callsQueues);
   const isCardFormat = MAIN_VIEWING_OPTIONS.CARD === formData.mainViewing;
   const { userInfo } = useSelector((state) => state.login);
   const closeModal = () => {
@@ -315,9 +316,9 @@ const ModalAddComponent = ({ ...props }) => {
         <div className="c-modal--add-component__input-section">
           <div className="c-modal--add-component__input-label">Call Queue</div>
           <select name="callQueue" className="c-select" onChange={handleInputAndSelect} value={formData.callQueue.value}>
-            {CALL_QUEUE_OPTIONS.map((option) => (
-              <option key={option.VALUE} value={option.VALUE}>
-                {option.TEXT}
+            {allCallsQueues.map((option) => (
+              <option key={option.id} value={option.id}>
+                {option.name}
               </option>
             ))}
           </select>

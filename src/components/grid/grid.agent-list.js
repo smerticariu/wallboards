@@ -49,7 +49,7 @@ const GridAgentList = ({ isEditMode, widget, ...props }) => {
       <div className="agent-list__header">
         <div className="agent-list__title">
           <div className="agent-list__title--bold">{widget.name}:</div>
-          {CALL_QUEUE_OPTIONS.find((option) => option.VALUE === widget.queue).TEXT}
+          {/* {CALL_QUEUE_OPTIONS.find((option) => option.VALUE === widget.queue).TEXT} */}
         </div>
         <div className="agent-list__icons">
           {isEditMode && (
