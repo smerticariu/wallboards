@@ -31,22 +31,23 @@ function App() {
   // const appRunsFromSF = window.wbConfig ? true : false; // check if the app runs inside Salesforce
 
   const [sfToken, setSfToken] = useState('');
-debugger
+// debugger
 console.log(window)
   
-
+window.addEventListener('message', e =>{
+  console.log(e.data, e);
+  if(e.data.call=='sendValue') {
+    setSfToken(e.data.value);
+    
+  }
+  
+  
+});
   
 
   useEffect(() => {
     // console.log('appRunsFromSF', appRunsFromSF,window.wbConfig, window);
-    window.addEventListener('message', e =>{
-      if(e.data.call=='sendValue') {
-        setSfToken(e.data.value);
-        
-      }
-      console.log(e.data);
-      
-    });
+    
     console.log(userInfo)
     const fetchData = async () => {
       try {
