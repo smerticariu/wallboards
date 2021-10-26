@@ -30,14 +30,14 @@ function App() {
   const { warningMessage } = useSelector((state) => state.modal);
   // const appRunsFromSF = window.wbConfig ? true : false; // check if the app runs inside Salesforce
 
-  const [sfToken, setSfToken] = useState(window?.WbConfig?.sfSessionId);
-  
+  const sfToken = window?.WbConfig?.sfSessionId;
 
   useEffect(() => {
     // console.log('appRunsFromSF', appRunsFromSF,window.wbConfig, window);
     
     console.log(userInfo)
     const fetchData = async () => {
+      console.log('fetchData')
       try {
         if(!sfToken) {
           await getAccessTokenSilently(config).then((res) => {
@@ -48,6 +48,7 @@ function App() {
         }
 
         else {
+          console.log('else')
           const options = {
             method: 'get',
             url: `https://gatekeeper.redmatter-qa01.pub/token/salesforce?scope=${config.scope}`,
