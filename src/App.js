@@ -88,13 +88,6 @@ function App() {
       {!userInfo && isAuthenticated && <p>Loading...</p>}
       {userInfo && userTokenInfo && (
         <>
-          <button
-            onClick={() => {
-              handleLogout();
-            }}
-          >
-            logout
-          </button>
           <HashRouter>
             <Switch>
               <Route exact path="/">
