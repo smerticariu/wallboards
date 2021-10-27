@@ -151,9 +151,9 @@ const LandingTable = () => {
                   <tr key={index}>
                     <td className="c-landing-table__wb-name">
                       <p>
-                        <a target="_blank" rel="noreferrer" href={`http://localhost:3000/wallboard/${wb.id}`}>
+                        <Link target="_blank" to={`/wallboard/${wb.id}`}  rel="noreferrer">
                           {wb.name}
-                        </a>
+                        </Link>
                       </p>
                       <span>{wb.description}</span>
                     </td>
@@ -164,7 +164,7 @@ const LandingTable = () => {
                       <p>{handleConvertDate(wb.createdOn)}</p>
                     </td>
                     <td className="c-landing-table__wb-actions">
-                      <Link target="_blank" to={`/wallboard/${wb.id}/edit`} className="c-landing-table__edit-btn" />
+                      <Link target="_blank"  to={`/wallboard/${wb.id}/edit`} className="c-landing-table__edit-btn" />
                       <button
                         onClick={() => {
                           handleCopy(wb);
