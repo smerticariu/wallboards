@@ -43,10 +43,7 @@ const initialState = {
     skillsToView: {
       selectAll: true,
       selectNone: false,
-      selectedItems: ADD_COMPONENT_STATE_OPTIONS.skillsToView.reduce(
-        (strArr, el) => (el.isInitialChecked ? [...strArr, el.value] : strArr),
-        []
-      ),
+      selectedItems: [],
     },
     interactivityOptions: {
       selectedItems: ADD_COMPONENT_STATE_OPTIONS.interactivityOptions.reduce(
@@ -59,6 +56,23 @@ const initialState = {
         (strArr, el) => (el.isInitialChecked ? [...strArr, el.value] : strArr),
         []
       ),
+    },
+  },
+  wallboardSettings: {
+    name: {
+      value: '',
+      errorMessage: '',
+    },
+    description: {
+      value: '',
+      errorMessage: '',
+    },
+    display: {
+      shrinkHeight: false,
+      shrinkWidth: false,
+    },
+    link: {
+      isReadOnlyEnabled: false,
     },
   },
 };
@@ -124,6 +138,41 @@ export const modalReducer = (state = initialState, action) => {
           isEditMode: true,
           size: widgetForEdit.size,
           id: widgetForEdit.id,
+        },
+      };
+    }
+
+    case modalActions.SET_WALLBOARD_SETTINGS: {
+      const wallboard = action.payload;
+      return {
+        ...state,
+        wallboardSettings: {
+          ...state.wallboardSettings,
+          name: {
+            value: wallboard.name,
+            errorMessage: '',
+          },
+          description: {
+            value: wallboard.description,
+            errorMessage: '',
+          },
+          display: {
+            shrinkHeight: wallboard.settings.display.shrinkHeight,
+            shrinkWidth: wallboard.settings.display.shrinkWidth,
+          },
+          link: {
+            isReadOnlyEnabled: wallboard.settings.link.isReadOnlyEnabled,
+          },
+        },
+      };
+    }
+
+    case modalActions.HANLE_SELECTED_WALLBOARD_SETTINGS: {
+      return {
+        ...state,
+        wallboardSettings: {
+          ...state.wallboardSettings,
+          ...action.payload,
         },
       };
     }

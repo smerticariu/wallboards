@@ -13,6 +13,8 @@ export const wallboardsActions = {
   FETCH_ALL_WALLBOARDS_SUCCESS: 'FETCH_ALL_WALLBOARDS_SUCCESS',
   FETCH_ALL_WALLBOARDS_FAIL: 'FETCH_ALL_WALLBOARDS_FAIL',
 
+  CREATE_LOCAL_NEW_EMPTY_WALLBOARD: 'CREATE_LOCAL_NEW_EMPTY_WALLBOARD',
+
   SAVE_WALLBOARD: 'SAVE_WALLBOARD',
   SAVE_WALLBOARD_SUCCESS: 'SAVE_WALLBOARD_SUCCESS',
   SAVE_WALLBOARD_FAIL: 'SAVE_WALLBOARD_FAIL',
@@ -25,14 +27,13 @@ export const wallboardsActions = {
   RESET_WALLBOARD_EDIT_PAGE_DATA: 'RESET_WALLBOARD_EDIT_PAGE_DATA',
 
   SET_WALLBOARD_ID_FOR_DELETE: 'SET_WALLBOARD_ID_FOR_DELETE',
-  
 
   DELETE_WALLBOARD_COMPONENT_BY_ID: 'DELETE_WALLBOARD_COMPONENT_BY_ID',
 
   WALLBOARD_UNDO: 'WALLBOARD_UNDO',
   WALLBOARD_REDO: 'WALLBOARD_REDO',
 
-  SET_WALLBOARD_DISPLAY_SETTINGS: 'SET_WALLBOARD_DISPLAY_SETTINGS',
+  APPLY_WALLBOARD_SETTINGS: 'APPLY_WALLBOARD_SETTINGS',
 };
 
 export const handleNewWallboardTitleAC = (title) => ({
@@ -85,6 +86,11 @@ export const fetchAllWallboardsFailAC = (errorMEssage) => ({
   payload: errorMEssage,
 });
 
+export const createNewEmptyWallboardAC = (id) => ({
+  type: wallboardsActions.CREATE_LOCAL_NEW_EMPTY_WALLBOARD,
+  payload: id,
+});
+
 export const saveWallboardAC = () => ({
   type: wallboardsActions.SAVE_WALLBOARD,
 });
@@ -110,11 +116,6 @@ export const handleWallboardGridLayoutChangeAC = (gridLayout) => ({
   payload: gridLayout,
 });
 
-export const setSelectedWallboardDisplaySettingsAC = (display) => ({
-  type: wallboardsActions.SET_WALLBOARD_DISPLAY_SETTINGS,
-  payload: display,
-});
-
 export const resetWallboardEditPageDataAC = () => ({
   type: wallboardsActions.RESET_WALLBOARD_EDIT_PAGE_DATA,
 });
@@ -129,9 +130,14 @@ export const deleteWallboardComponentByIdAC = (id) => ({
   payload: id,
 });
 
-export const wallboardUndoAC = (id) => ({
+export const wallboardUndoAC = () => ({
   type: wallboardsActions.WALLBOARD_UNDO,
 });
-export const wallboardRedoAC = (id) => ({
+export const wallboardRedoAC = () => ({
   type: wallboardsActions.WALLBOARD_REDO,
+});
+
+export const applyWallboardSettingsAC = (settings) => ({
+  type: wallboardsActions.APPLY_WALLBOARD_SETTINGS,
+  payload: settings,
 });

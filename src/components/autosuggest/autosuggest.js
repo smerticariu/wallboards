@@ -15,9 +15,11 @@ const CustomAutosuggest = ({ allTitles, value, name, placeholder = '', isSmallSi
     if (!escapedValue.length) {
       return [];
     }
-    return allTitles.filter((title) => {
-      return title.toLowerCase().startsWith(escapedValue.toLowerCase());
-    });
+    return allTitles
+      .filter((title) => {
+        return title.toLowerCase().includes(escapedValue.toLowerCase());
+      })
+      .slice(0, 8); // show only first 8 suggestions
   }
 
   function getSuggestionValue(suggestion) {
@@ -59,7 +61,7 @@ const CustomAutosuggest = ({ allTitles, value, name, placeholder = '', isSmallSi
     placeholder: placeholder,
     value: value,
     onChange: onChangeInput,
-    name: 'skill',
+    name,
   };
 
   return (

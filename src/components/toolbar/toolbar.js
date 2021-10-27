@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import {
+  createNewEmptyWallboardAC,
   handleNewWallboardTitleAC,
-  saveWallboardResetStatusAC,
   setFiltredWallboardsAC,
   wallboardRedoAC,
   wallboardUndoAC,
@@ -12,31 +12,21 @@ import { RedoIcon } from '../../assets/static/icons/redo';
 import { UndoIcon } from '../../assets/static/icons/undo';
 import { WALLBOARD_MODAL_NAMES } from '../modal/new-wallboard/modal.new-wallboard.defaults';
 import CustomAutosuggest from '../autosuggest/autosuggest';
-import { saveWallboardThunk } from '../../store/thunk/wallboards.thunk';
-import { FetchStatus } from '../../store/reducers/wallboards.reducer';
 import { useHistory } from 'react-router';
 import { SettingsIcon } from 'src/assets/static/icons/settings';
-import { handleWallboardActiveModalAC } from 'src/store/actions/modal.action';
+import { handleWallboardActiveModalAC, setSelectedWallboardSettingsAC } from 'src/store/actions/modal.action';
+import { generateWallboardId } from 'src/common/utils/generateId';
+import checkIfExistWallboardChanges from 'src/common/utils/checkIfExistWallboardChanges';
 const Toolbar = (props) => {
   const dispatch = useDispatch();
   const [wbSearchValue, setWbSearchValue] = useState('');
   const wallboards = useSelector((state) => state.landing.wallboardsByCategory);
   const { userInfo } = useSelector((state) => state.login);
-  const newWallboardSaveStatus = useSelector((state) => state.wallboards.present.activeWallboard.saveStatus);
   const activeWallboard = useSelector((state) => state.wallboards.present.activeWallboard.wallboard);
   const activeWallboardInitialValues = useSelector((state) => state.wallboards.present.activeWallboard.wallboardInitialValues);
   const wallboardStates = useSelector((state) => state.wallboards);
-  const [isNewWallboardClicked, setIsNewWallboardClicked] = useState(false);
   const history = useHistory();
 
-  useEffect(() => {
-    if (newWallboardSaveStatus === FetchStatus.SUCCESS && isNewWallboardClicked) {
-      setIsNewWallboardClicked(false);
-      dispatch(saveWallboardResetStatusAC());
-      history.push(`/wallboard/${activeWallboard.id}/edit`);
-    }
-    // eslint-disable-next-line
-  }, [newWallboardSaveStatus]);
   const heading = () => {
     return (
       <div className="c-toolbar-left__wrapper">
@@ -96,12 +86,13 @@ const Toolbar = (props) => {
   };
 
   const handleNewWallboardButton = () => {
-    const onClick = () => {
-      setIsNewWallboardClicked(true);
-      dispatch(saveWallboardThunk());
+    const onNewWallboardClick = () => {
+      const newWallboardId = generateWallboardId(userInfo.organisationId, userInfo.id);
+      dispatch(createNewEmptyWallboardAC(newWallboardId));
+      history.push(`/wallboard/${newWallboardId}/edit`);
     };
     return (
-      <button onClick={onClick} className="c-button c-button--m-left">
+      <button onClick={onNewWallboardClick} className="c-button c-button--m-left">
         + New Wallboard
       </button>
     );
@@ -131,7 +122,7 @@ const Toolbar = (props) => {
   };
 
   const handleBackToButton = () => {
-    const isUndoDisabled = wallboardStates.past[wallboardStates.past.length - 1]?.activeWallboard?.fetchStatus !== FetchStatus.SUCCESS;
+    const isUndoDisabled = !wallboardStates.noOfSteptsForUndo;
     const isRedoDisabled = !wallboardStates.future.length;
     return (
       <div className="c-arrow-button c-arrow-button--m-left ">
@@ -158,21 +149,6 @@ const Toolbar = (props) => {
     );
   };
 
-  const checkIfExistWallboardChanges = () => {
-    return Object.keys(activeWallboardInitialValues).some((key) => {
-      if (key === 'widgets') {
-        if (activeWallboard.widgets.length !== activeWallboardInitialValues.widgets.length) return true;
-        return activeWallboard.widgets.some((_, index) => {
-          return JSON.stringify(activeWallboard.widgets[index]) !== JSON.stringify(activeWallboardInitialValues.widgets[index]);
-        });
-      }
-      if (activeWallboardInitialValues[key] !== activeWallboard[key]) {
-        return true;
-      }
-      return false;
-    });
-  };
-
   const handleSaveButton = () => {
     const handleClick = () => {
       dispatch(handleWallboardActiveModalAC(WALLBOARD_MODAL_NAMES.CONFIRM_SAVE_WALLBOARD));
@@ -190,7 +166,8 @@ const Toolbar = (props) => {
   };
 
   const onClickCloseButton = () => {
-    if (checkIfExistWallboardChanges()) return dispatch(handleWallboardActiveModalAC(WALLBOARD_MODAL_NAMES.SAVE_WALLBOARD));
+    if (checkIfExistWallboardChanges(activeWallboard, activeWallboardInitialValues))
+      return dispatch(handleWallboardActiveModalAC(WALLBOARD_MODAL_NAMES.SAVE_WALLBOARD));
     return history.push('/');
   };
 
@@ -202,9 +179,13 @@ const Toolbar = (props) => {
     );
   };
   const handleRunButton = () => {
-    const wallboardIsEmpty = activeWallboard.widgets.length === 0;
+    const isLinkDisabled = !activeWallboard?.widgets?.length || activeWallboard.isNewWallboard;
     return (
-      <Link target="_blank" to={`/wallboard/${activeWallboard.id}`} className={`c-button c-button--blue c-button--m-left ${wallboardIsEmpty && 'c-button--disabled'}`}>
+      <Link
+        target="_blank"
+        to={`/wallboard/${activeWallboard.id}`}
+        className={`c-button c-button--blue c-button--m-left ${isLinkDisabled && 'c-button--disabled'}`}
+      >
         Run
       </Link>
     );
@@ -212,8 +193,9 @@ const Toolbar = (props) => {
 
   const handleSettingsIcon = () => {
     const onClikEditWallboardModal = () => {
+      dispatch(setSelectedWallboardSettingsAC(activeWallboard));
       dispatch(handleWallboardActiveModalAC(WALLBOARD_MODAL_NAMES.EDIT_WALLBOARD));
-    }
+    };
     return <SettingsIcon onClick={() => onClikEditWallboardModal()} className="i--settings i--settings--toolbar" />;
   };
 

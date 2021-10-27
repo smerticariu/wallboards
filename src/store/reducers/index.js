@@ -5,6 +5,7 @@ import { wallboardsReducer } from './wallboards.reducer';
 import { notificationReducer } from './notification.reducer';
 import { modalReducer } from './modal.reducer';
 import { wallboardsUndoable } from './wallboards.undoable';
+import { skillsReducer } from './skills.reducer';
 
 export default combineReducers({
   login: loginReducer,
@@ -12,4 +13,5 @@ export default combineReducers({
   wallboards: wallboardsUndoable(wallboardsReducer),
   notification: notificationReducer,
   modal: modalReducer,
+  skills: skillsReducer,
 });
