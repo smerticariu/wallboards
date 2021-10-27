@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useAuth0 } from '@auth0/auth0-react';
 import config from 'src/config/auth';
@@ -29,16 +29,10 @@ function App() {
   const { isAuthenticated, getAccessTokenSilently, logout, isLoading } = useAuth0();
   const activeModalName = useSelector((state) => state.modal.activeModalName);
   const { warningMessage } = useSelector((state) => state.modal);
-  // const appRunsFromSF = window.wbConfig ? true : false; // check if the app runs inside Salesforce
-
   const sfToken = window?.WbConfig?.sfSessionId;
 
-  useEffect(() => {
-    // console.log('appRunsFromSF', appRunsFromSF,window.wbConfig, window);
-    
-    console.log(userInfo)
+  useEffect(() => {    
     const fetchData = async () => {
-      console.log('fetchData')
       try {
         if(!sfToken) {
           await getAccessTokenSilently(config).then((res) => {
@@ -49,7 +43,6 @@ function App() {
         }
 
         else {
-          console.log('else')
           const options = {
             method: 'get',
             url: `https://gatekeeper.redmatter-qa01.pub/token/salesforce?scope=${config.scope}`,
@@ -69,10 +62,6 @@ function App() {
         console.log(err);
       }
 
-
-      
-      
-      
     };
     fetchData();
     
