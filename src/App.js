@@ -26,7 +26,7 @@ import axios from 'axios';
 function App() {
   const dispatch = useDispatch();
   const { userInfo, userTokenInfo } = useSelector((state) => state.login);
-  const { isAuthenticated, getAccessTokenSilently, logout, isLoading } = useAuth0();
+  const { isAuthenticated, getAccessTokenSilently, logout } = useAuth0();
   const activeModalName = useSelector((state) => state.modal.activeModalName);
   const { warningMessage } = useSelector((state) => state.modal);
   const sfToken = window?.WbConfig?.sfSessionId;
