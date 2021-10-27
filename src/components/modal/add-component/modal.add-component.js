@@ -92,7 +92,7 @@ const ModalAddComponent = ({ ...props }) => {
 
     return (
       <button className={`c-button c-button--m-left c-button--green`} onClick={onClickAddButton}>
-        {formData.isEditMode ? 'Edit' : 'Add'}
+        {formData.isEditMode ? 'Save' : 'Add'}
       </button>
     );
   };
@@ -410,7 +410,7 @@ const ModalAddComponent = ({ ...props }) => {
         <div className="c-modal--add-component__input-section">
           <div className="c-modal--add-component__input-label">Sort by</div>
 
-          <select name="sortBy" className="c-select" onChange={handleInputAndSelect} value={formData.sortBy}>
+          <select name="sortBy" className="c-select" onChange={handleInputAndSelect} value={formData.sortBy.value}>
             {SORT_BY_OPTIONS.map((option) => (
               <option key={option.value} value={option.value}>
                 {option.text}
