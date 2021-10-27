@@ -108,9 +108,9 @@ const ModalEditWallboard = ({ ...props }) => {
     navigator.clipboard.writeText(wallboardLink);
   };
 
-  // const wallboardLink = window.location.href.replace('edit', '');
   const currentDate = new Date().getTime();
   const wallboardLink = `${config.redirectUri}#/wallboard/${activeWallboardId}?d=${currentDate}`;
+  
   return (
     <div className={`c-modal c-modal--open`}>
       <div ref={modalRef} className="c-modal__container c-modal__container--edit-wallboard ">
