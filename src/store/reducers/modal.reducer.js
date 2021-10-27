@@ -2,7 +2,6 @@ import { modalActions } from '../actions/modal.action';
 import {
   ADD_COMPONENT_COLUMNS_NO_OPTIONS,
   ADD_COMPONENT_STATE_OPTIONS,
-  CALL_QUEUE_OPTIONS,
   MAIN_VIEWING_OPTIONS,
   SORT_BY_OPTIONS,
 } from 'src/components/modal/add-component/modal.add-component.defaults';
@@ -20,7 +19,7 @@ const initialState = {
       value: '',
       errorMessage: '',
     },
-    callQueue: { value: CALL_QUEUE_OPTIONS[1].VALUE, errorMessage: '' },
+    callQueue: { id: '', name: '', errorMessage: '' },
     mainViewing: MAIN_VIEWING_OPTIONS.CARD,
     sortBy: SORT_BY_OPTIONS[0].text,
     columns: ADD_COMPONENT_COLUMNS_NO_OPTIONS.ONE,
@@ -125,8 +124,15 @@ export const modalReducer = (state = initialState, action) => {
       return {
         ...state,
         modalAddComponent: {
-          title: { value: widgetForEdit.name, errorMessage: '' },
-          callQueue: { value: widgetForEdit.queue, errorMessage: '' },
+          title: {
+            value: widgetForEdit.name,
+            errorMessage: '',
+          },
+          callQueue: {
+            id: widgetForEdit.callQueue.id,
+            name: widgetForEdit.callQueue.name,
+            errorMessage: '',
+          },
           mainViewing: widgetForEdit.view,
           sortBy: widgetForEdit.sortBy,
           columns: widgetForEdit.columns,

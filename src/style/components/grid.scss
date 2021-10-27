@@ -47,6 +47,7 @@
     cursor: pointer;
     &--bold {
       font-family: $public-sans-bold;
+      margin-right: 3px;
     }
   }
   &__icons {

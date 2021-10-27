@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { createArrayFromTo } from '../../../common/utils/generateArray';
 import AgentCard from 'src/components/agent-card/agent-card';
@@ -12,7 +12,6 @@ import {
   ADD_COMPONENT_COLUMNS_NO_OPTIONS,
   ADD_COMPONENT_COLUMN_OPTIONS,
   ADD_COMPONENT_STATE_OPTIONS,
-  CALL_QUEUE_OPTIONS,
   MAIN_VIEWING_OPTIONS,
   PRESENCE_STATE_KEYS,
   SORT_BY_OPTIONS,
@@ -33,9 +32,24 @@ const ModalAddComponent = ({ ...props }) => {
   const dispatch = useDispatch();
   const formData = useSelector((state) => state.modal.modalAddComponent);
   const { allSkils } = useSelector((state) => state.skills);
-  const  { allCallsQueues }  = useSelector((state) => state.callsQueues);
+  const { allCallsQueues } = useSelector((state) => state.callsQueues);
   const isCardFormat = MAIN_VIEWING_OPTIONS.CARD === formData.mainViewing;
   const { userInfo } = useSelector((state) => state.login);
+  useEffect(() => {
+    if (formData.isEditMode) return;
+    if (allCallsQueues.length) {
+      dispatch(
+        handleModalAddComponentFormDataAC({
+          ...formData,
+          callQueue: {
+            id: allCallsQueues[0].id,
+            name: allCallsQueues[0].name,
+            errorMessage: '',
+          },
+        })
+      );
+    }
+  }, [allCallsQueues]);
   const closeModal = () => {
     dispatch(handleWallboardActiveModalAC(null));
     dispatch(resetModalAddComponentFormDataAC());
@@ -86,15 +100,29 @@ const ModalAddComponent = ({ ...props }) => {
   const handleModalLeftSide = () => {
     const handleInputAndSelect = (event) => {
       const { name, value } = event.target;
-      dispatch(
-        handleModalAddComponentFormDataAC({
-          ...formData,
-          [name]: {
-            value,
-            errorMessage: '',
-          },
-        })
-      );
+      switch (name) {
+        case 'callQueue':
+          const callQueue = allCallsQueues.find((queue) => queue.id === value);
+          return dispatch(
+            handleModalAddComponentFormDataAC({
+              ...formData,
+              callQueue: {
+                ...callQueue,
+                errorMessage: '',
+              },
+            })
+          );
+        default:
+          dispatch(
+            handleModalAddComponentFormDataAC({
+              ...formData,
+              [name]: {
+                value,
+                errorMessage: '',
+              },
+            })
+          );
+      }
     };
 
     const handleRadioButton = (event, formDataProp) => {
@@ -315,7 +343,7 @@ const ModalAddComponent = ({ ...props }) => {
         </div>
         <div className="c-modal--add-component__input-section">
           <div className="c-modal--add-component__input-label">Call Queue</div>
-          <select name="callQueue" className="c-select" onChange={handleInputAndSelect} value={formData.callQueue.value}>
+          <select name="callQueue" className="c-select" onChange={handleInputAndSelect} value={formData.callQueue.id}>
             {allCallsQueues.map((option) => (
               <option key={option.id} value={option.id}>
                 {option.name}
@@ -445,15 +473,13 @@ const ModalAddComponent = ({ ...props }) => {
   };
 
   const handleModalRightSide = () => {
-    const agentListText = CALL_QUEUE_OPTIONS.find((option) => option.VALUE === formData.callQueue.value)?.TEXT ?? '';
-
     return (
       <div className="c-modal--add-component__right-side">
         <div className="c-modal--add-component__input-label c-modal--add-component__input-label--grey">Preview</div>
 
         <div className="c-modal--add-component__preview-container">
           <div className="c-modal--add-component__preview-title">
-            <span className="c-modal--add-component__preview-title--bold">{formData.title.value}:</span> {agentListText}
+            <span className="c-modal--add-component__preview-title--bold">{formData.title.value}:</span> {formData.callQueue.name}
           </div>
           {isCardFormat ? (
             <div className="c-modal--add-component__agent-card">

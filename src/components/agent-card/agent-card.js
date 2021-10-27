@@ -2,7 +2,7 @@ import img from '../../assets/static/images/not_exist_people.png';
 import React from 'react';
 import { PRESENCE_STATE_KEYS_COLOR } from '../modal/add-component/modal.add-component.defaults';
 import { SettingsIcon } from '../../assets/static/icons/settings';
-const AgentCard = ({ name, ext, status, totalTime, callTime, callStatus, callStatusKey, ...props }) => {
+const AgentCard = ({ name, ext, status, totalTime, callTime, callStatusKey, ...props }) => {
   return (
     <div className={`agent-c agent-c--${PRESENCE_STATE_KEYS_COLOR.CARD_BACKGROUND[callStatusKey]}`}>
       <div className="agent-c__header">

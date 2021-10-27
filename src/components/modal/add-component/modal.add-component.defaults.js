@@ -1,10 +1,5 @@
 import { createArrayFromTo } from '../../../common/utils/generateArray';
 
-export const CALL_QUEUE_OPTIONS = [
-  { TEXT: 'Urgent Support Queue', VALUE: 'URGENT' },
-  { TEXT: 'Not urgent but somewhat important queue', VALUE: 'NOT_URGENT' },
-];
-
 export const SORT_BY_OPTIONS = [
   {
     text: 'Agent Name (Alphabetical)',

@@ -34,7 +34,7 @@ const AgentTable = ({ columnsToView, agents, ...props }) => {
         )}
         {activeColumns.isAgentExtNoColumn && (
           <div className="agent-t__header-item" style={{ width: colWidth }}>
-            Phone Number
+            Phone Ext
           </div>
         )}
         {activeColumns.isCurrPresStateColumn && (
@@ -90,7 +90,7 @@ const AgentTable = ({ columnsToView, agents, ...props }) => {
       </div>
 
       <div className="agent-t__body">
-        {agents.map((agent, index) => (
+        {agents?.map((agent, index) => (
           <div key={index} className="agent-t__agent">
             {activeColumns.isAgentNameColumn && (
               <div className="agent-t__agent-info" style={{ width: colWidth }}>

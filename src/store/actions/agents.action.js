@@ -6,9 +6,9 @@ export const agentsActions = {
 export const fetchAllAgentsAC = () => ({
   type: agentsActions.FETCH_ALL_AGENTS,
 });
-export const fetchAllAgentsSuccessAC = (agent) => ({
+export const fetchAllAgentsSuccessAC = (agent, callQueueId) => ({
   type: agentsActions.FETCH_ALL_AGENTS_SUCCESS,
-  payload: agent,
+  payload: { agent, callQueueId },
 });
 export const fetchAllAgentsFailAC = (errorMessage) => ({
   type: agentsActions.FETCH_ALL_AGENTS_FAIL,

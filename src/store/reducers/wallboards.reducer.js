@@ -151,7 +151,10 @@ export const wallboardsReducer = (state = { ...initialState }, action) => {
       const modalAddComponent = action.payload.modalAddComponent;
       const newWidget = {
         name: modalAddComponent.title.value,
-        queue: modalAddComponent.callQueue.value,
+        callQueue: {
+          id: modalAddComponent.callQueue.id,
+          name: modalAddComponent.callQueue.name,
+        },
         view: modalAddComponent.mainViewing,
         sortBy: modalAddComponent.sortBy,
         availabilityStates: modalAddComponent.availabilityStates,

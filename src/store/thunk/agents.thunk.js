@@ -1,14 +1,10 @@
 import axios from 'axios';
-import { fetchAllAgentsAC, fetchAllAgentsFailAC, fetchAllAgentsSuccesAC } from '../actions/agents.action';
-// import { fetchAllCallsQueuesThunk } from './callsQueues.thunk';
+import { fetchAllAgentsAC, fetchAllAgentsFailAC, fetchAllAgentsSuccessAC } from '../actions/agents.action';
 
 export const fetchAllAgentsThunk = (callQueueId) => async (dispatch, getState) => {
-  // dispatch(fetchAllCallsQueuesThunk());
   dispatch(fetchAllAgentsAC());
   try {
     const { userInfo, token } = getState().login;
-    const { callsQueues } = getState().callsQueues;
-    
     const options = {
       method: 'get',
       url: `https://sapien-proxy.redmatter-qa01.pub/v1/organisation/${userInfo.organisationId}/call-queue/${callQueueId}/agent`,
@@ -22,9 +18,9 @@ export const fetchAllAgentsThunk = (callQueueId) => async (dispatch, getState) =
 
     const response = await axios(options);
 
-    dispatch(fetchAllAgentsSuccessAC(response.data.data));
+    dispatch(fetchAllAgentsSuccessAC(response.data.data, callQueueId));
   } catch (error) {
-    dispatch(fetchAllSkilsFailAC('something went wrong'));
+    dispatch(fetchAllAgentsFailAC('something went wrong'));
     console.log(error);
   }
 };
