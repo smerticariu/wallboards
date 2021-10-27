@@ -2,6 +2,7 @@ import img from '../../assets/static/images/not_exist_people.png';
 import React from 'react';
 import { PRESENCE_STATE_KEYS_COLOR } from '../modal/add-component/modal.add-component.defaults';
 import { SettingsIcon } from '../../assets/static/icons/settings';
+import Dropdown from '../dropdown/dropdown';
 const AgentCard = ({ name, ext, status, totalTime, callTime, callStatusKey, ...props }) => {
   return (
     <div className={`agent-c agent-c--${PRESENCE_STATE_KEYS_COLOR.CARD_BACKGROUND[callStatusKey]}`}>
@@ -18,7 +19,10 @@ const AgentCard = ({ name, ext, status, totalTime, callTime, callStatusKey, ...p
             <div className="agent-c__user-ext">Ext: {ext}</div>
           </div>
         </div>
-        <SettingsIcon className="i--settings" />
+        <Dropdown closeOnClick={true} trigger={<SettingsIcon className="i--settings" />}>
+          <div className="c-dropdown__item">Listen live</div>
+          <div className="c-dropdown__item">Call agent</div>
+        </Dropdown>
       </div>
       <div className="agent-c__status-time">
         <div

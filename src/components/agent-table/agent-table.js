@@ -1,5 +1,7 @@
 import React from 'react';
+import { SettingsIcon } from 'src/assets/static/icons/settings';
 import { ArrowDownIcon } from '../../assets/static/icons/arrow-down';
+import Dropdown from '../dropdown/dropdown';
 import { ADD_COMPONENT_COLUMN_OPTIONS, PRESENCE_STATE_KEYS_COLOR } from '../modal/add-component/modal.add-component.defaults';
 const AgentTable = ({ columnsToView, agents, ...props }) => {
   const activeColumns = {
@@ -22,6 +24,7 @@ const AgentTable = ({ columnsToView, agents, ...props }) => {
   return (
     <div className="agent-t">
       <div className="agent-t__header">
+        <div className="agent-t__header-item" style={{ width: colWidth }}></div>
         {activeColumns.isAgentNameColumn && (
           <div className="agent-t__header-item" style={{ width: colWidth }}>
             Name
@@ -92,6 +95,12 @@ const AgentTable = ({ columnsToView, agents, ...props }) => {
       <div className="agent-t__body">
         {agents?.map((agent, index) => (
           <div key={index} className="agent-t__agent">
+            <div className="agent-t__agent-info" style={{ width: colWidth }}>
+              <Dropdown closeOnClick={true} trigger={<SettingsIcon className="i--settings i--settings--table" />}>
+                <div className="c-dropdown__item">Listen live</div>
+                <div className="c-dropdown__item">Call agent</div>
+              </Dropdown>
+            </div>
             {activeColumns.isAgentNameColumn && (
               <div className="agent-t__agent-info" style={{ width: colWidth }}>
                 Megan Carter

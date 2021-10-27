@@ -68,9 +68,10 @@
     &--table {
       padding: 0;
       padding-bottom: 10px;
+      height: 100%;
       display: flex;
       flex-wrap: nowrap;
-      .agent-t:last-child {
+      .agent-t:nth-child(2) {
         margin-left: 30px;
       }
     }
