@@ -88,9 +88,6 @@ function App() {
       {!userInfo && isAuthenticated && <p>Loading...</p>}
       {userInfo && userTokenInfo && (
         <>
-          <span>
-            Logged in as {userInfo.firstName} {userInfo.lastName}
-          </span>
           <button
             onClick={() => {
               handleLogout();
