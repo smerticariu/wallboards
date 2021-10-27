@@ -8,6 +8,7 @@ import jwtExtractor from 'src/common/utils/jwtExtractor';
 import WallboardEdit from './components/wallboard/wallboard-edit';
 import WallboardReadOnly from 'src/components/wallboard/wallboard.read-only';
 import { Route, Switch } from 'react-router';
+import { HashRouter } from 'react-router-dom';
 import { handleLogoutAC, setAccessTokenAC, setUserTokenInfoAC } from './store/actions/login.action';
 import { fetchUserInfoThunk } from './store/thunk/login.thunk';
 import { WALLBOARD_MODAL_NAMES } from './components/modal/new-wallboard/modal.new-wallboard.defaults';
@@ -97,17 +98,19 @@ function App() {
           >
             logout
           </button>
-          <Switch>
-            <Route  path="/">
-              <Landing />
-            </Route>
-            <Route  path="/wallboard/:id/edit">
-              <WallboardEdit />
-            </Route>
-            <Route path="/wallboard/:id">
-              <WallboardReadOnly userInfo={userTokenInfo} />
-            </Route>
-          </Switch>
+          <HashRouter>
+            <Switch>
+              <Route exact path="/">
+                <Landing />
+              </Route>
+              <Route exact path="/wallboard/:id/edit">
+                <WallboardEdit />
+              </Route>
+              <Route path="/wallboard/:id">
+                <WallboardReadOnly userInfo={userTokenInfo} />
+              </Route>
+            </Switch>
+          </HashRouter>
           <NotificationMessage />
           {activeModalName === WALLBOARD_MODAL_NAMES.SELECT_COMPONENT && <ModalNewWallboard />}
           {activeModalName === WALLBOARD_MODAL_NAMES.ADD_COMPONENT && <ModalAddComponent />}

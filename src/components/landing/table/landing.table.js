@@ -151,9 +151,10 @@ const LandingTable = () => {
                   <tr key={index}>
                     <td className="c-landing-table__wb-name">
                       <p>
-                        <a target="_blank" rel="noreferrer" href={`http://wallboards.herokuapp.com/wallboard/${wb.id}`}>
+                        {/* <a target="_blank" rel="noreferrer" href={`https://wallboards.herokuapp.com/wallboard/${wb.id}`}> */}
+                        <Link to={`/wallboard/${wb.id}`} target="_blank" rel="noreferrer">
                           {wb.name}
-                        </a>
+                        </Link>
                       </p>
                       <span>{wb.description}</span>
                     </td>
