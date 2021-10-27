@@ -8,12 +8,14 @@ import CheckBox from 'src/components/checkbox/checkbox';
 import { applyWallboardSettingsAC } from '../../../store/actions/wallboards.action';
 import TextArea from 'src/components/textarea/textarea';
 import { handleIsNotificationShowAC } from 'src/store/actions/notification.action';
+import config from '../../../config/auth';
 
 const ModalEditWallboard = ({ ...props }) => {
   const dispatch = useDispatch();
   const modalRef = useRef(null);
 
   const { wallboardSettings } = useSelector((state) => state.modal);
+  const activeWallboardId = useSelector((state) => state.wallboards.present.activeWallboard.wallboard.id);
 
   const closeModal = () => {
     dispatch(handleWallboardActiveModalAC(null));
@@ -106,7 +108,9 @@ const ModalEditWallboard = ({ ...props }) => {
     navigator.clipboard.writeText(wallboardLink);
   };
 
-  const wallboardLink = window.location.href.replace('edit', '');
+  const currentDate = new Date().getTime();
+  const wallboardLink = `${config.redirectUri}#/wallboard/${activeWallboardId}?d=${currentDate}`;
+  
   return (
     <div className={`c-modal c-modal--open`}>
       <div ref={modalRef} className="c-modal__container c-modal__container--edit-wallboard ">
