@@ -4,21 +4,30 @@ import { HashRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import store from 'src/store/store';
 import './style/main.scss';
+import config from 'src/config/auth';
 import App from './App';
 import { Auth0Provider } from '@auth0/auth0-react';
 import reportWebVitals from './reportWebVitals';
+console.log(config)
 ReactDOM.render(
   <HashRouter>
     <Provider store={store}>
       <Auth0Provider
-        domain="redmatter-qa01.eu.auth0.com"
-        clientId="40leAQozuSfAQGf52Lf4JBeY6QIXBvmc"
-        redirectUri="https://wallboards.herokuapp.com/"
-        // redirectUri="http://localhost:3000"
-        audience="https://sapien-proxy.redmatter-qa01.pub/"
-        scope="wallboard:admin"
-        responseType="id_token"
-        cacheLocation="localstorage"
+        // domain="redmatter-qa01.eu.auth0.com"
+        // clientId="40leAQozuSfAQGf52Lf4JBeY6QIXBvmc"
+        // redirectUri="https://wallboards.herokuapp.com/"
+        // // redirectUri="http://localhost:3000"
+        // audience="https://sapien-proxy.redmatter-qa01.pub/"
+        // scope="wallboard:admin"
+        // responseType="id_token"
+        // cacheLocation="localstorage"
+        domain={config.domain}
+        clientId={config.clientId}
+        redirectUri={config.redirectUri}
+        audience={config.audience}
+        scope={config.scope}
+        responseType={config.responseType}
+        cacheLocation={config.cacheLocation}
       >
         <App />
       </Auth0Provider>

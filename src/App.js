@@ -30,8 +30,9 @@ function App() {
   const activeModalName = useSelector((state) => state.modal.activeModalName);
   const { warningMessage } = useSelector((state) => state.modal);
   const sfToken = window?.WbConfig?.sfSessionId;
-
+  const pr = process.env;
   useEffect(() => {    
+    console.log('aa', pr)
     const fetchData = async () => {
       try {
         if(!sfToken) {
