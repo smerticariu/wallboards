@@ -4,17 +4,22 @@ function useWindowSize() {
     width: undefined,
     height: undefined,
   });
+  const [windowSizeHistory, handleWindowSizeHistory] = useState([]);
   useEffect(() => {
     function handleResize() {
-      setWindowSize({
-        width: window.innerWidth,
-        height: window.innerHeight,
-      });
+      if (!windowSizeHistory.length || Math.abs(windowSizeHistory[windowSizeHistory.length - 1].width - window.innerWidth) > 200) {
+        const size = {
+          width: window.innerWidth,
+          height: window.innerHeight,
+        };
+        handleWindowSizeHistory([...windowSizeHistory, size]);
+        setWindowSize(size);
+      }
     }
     window.addEventListener('resize', handleResize);
     handleResize();
     return () => window.removeEventListener('resize', handleResize);
-  }, []);
+  }, [windowSizeHistory]);
   return windowSize;
 }
 export default useWindowSize;

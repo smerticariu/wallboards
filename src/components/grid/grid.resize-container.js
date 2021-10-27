@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import RGL, { WidthProvider } from 'react-grid-layout';
 import { useDispatch, useSelector } from 'react-redux';
+import useWindowSize from 'src/common/hooks/useWindowSize';
 import { handleWallboardGridLayoutChangeAC } from 'src/store/actions/wallboards.action';
 import GridAgentList from './grid.agent-list';
 import { RESIZE_GRID_COLUMNS } from './grid.defaults';
@@ -44,6 +45,7 @@ const GridResizeContainer = ({ isEditMode = true, widgets = [], ...props }) => {
       dispatch(handleWallboardGridLayoutChangeAC(layoutWithPxSize));
     }
   };
+  const windowSize = useWindowSize();
   useEffect(() => {
     setLayoutState(
       widgets.map((widget) => {
@@ -53,9 +55,9 @@ const GridResizeContainer = ({ isEditMode = true, widgets = [], ...props }) => {
         return {
           x: widget.size.x, // position on the x-axis
           y: widget.size.y, // position on the y-axis
-          w: !shrinkWidth ? (wi > RESIZE_GRID_COLUMNS ? RESIZE_GRID_COLUMNS : Math.round(wi)) : widget.size.w, // width (grid units)
+          w: shrinkWidth ? (wi > RESIZE_GRID_COLUMNS ? RESIZE_GRID_COLUMNS : Math.round(wi)) : widget.size.w, // width (grid units)
           h: widget.size.h, // height (grid units)
-          minW: 5, // min width (grid units)
+          minW: 2, // min width (grid units)
           minH: 20, // min height (grid units)
           i: widget.id, // custom key
           maxW: RESIZE_GRID_COLUMNS,
@@ -63,7 +65,7 @@ const GridResizeContainer = ({ isEditMode = true, widgets = [], ...props }) => {
         };
       })
     );
-  }, [widgets, shrinkWidth]);
+  }, [widgets, shrinkWidth, windowSize.width]);
   return (
     <ReactGridLayout
       cols={RESIZE_GRID_COLUMNS}
