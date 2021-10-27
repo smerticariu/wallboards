@@ -491,6 +491,7 @@ const ModalAddComponent = ({ ...props }) => {
                 name="Staff Member Name"
                 status="User online status"
                 totalTime="00:00:00"
+                isPreview={true}
               />
             </div>
           ) : (

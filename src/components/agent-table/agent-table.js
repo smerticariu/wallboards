@@ -113,8 +113,19 @@ const AgentTable = ({ columnsToView, agents, ...props }) => {
                 }`}
                 style={{ width: colWidth }}
               >
-                {agent.currAvaiState}
-                <ArrowDownIcon className="i--arrow--down i--arrow--down--table i--arrow--down--large" />
+                <Dropdown
+                  closeOnClick={true}
+                  containerClassName="c-dropdown__container--availability"
+                  trigger={
+                    <div className="agent-t__arrow-container">
+                      {agent.currAvaiState}
+                      <ArrowDownIcon className="i--arrow--down i--arrow--down--table i--arrow--down--large" />
+                    </div>
+                  }
+                >
+                  <div className="c-dropdown__item">Listen live</div>
+                  <div className="c-dropdown__item">Call agent</div>
+                </Dropdown>
               </div>
             )}
             {activeColumns.isAgentExtNoColumn && (

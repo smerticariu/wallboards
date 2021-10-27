@@ -1,4 +1,6 @@
 .c-dropdown {
+  display: flex;
+  width: 100%;
   position: relative;
   &__container {
     position: absolute;
@@ -11,6 +13,16 @@
     border: 1px solid $pinkish-grey;
     transform: translateX(-50%);
     width: max-content;
+    &--availability {
+      width: 100%;
+      top: 100%;
+      left: 0;
+      transform: none;
+    }
+  }
+  &__trigger {
+    display: flex;
+    width: 100%;
   }
   &__item {
     color: $slate-gray;

@@ -31,7 +31,7 @@ export const fetchAgentById = (id) => async (dispatch, getState) => {
     const { userInfo, token } = getState().login;
     const options = {
       method: 'get',
-      url: `https://sapien-proxy.redmatter-qa01.pub/v1/organisation/${userInfo.organisationId}/user/${id}`,
+      url: `https://sapien-proxy.redmatter-qa01.pub/v1/organisation/${userInfo.organisationId}/availability/history`,
       headers: {
         'Content-Type': 'application/json',
         Authorization: 'Bearer ' + token,
