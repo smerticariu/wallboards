@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useAuth0 } from '@auth0/auth0-react';
 import config from 'src/config/auth';
@@ -30,6 +30,7 @@ function App() {
   const activeModalName = useSelector((state) => state.modal.activeModalName);
   const { warningMessage } = useSelector((state) => state.modal);
   const sfToken = window?.WbConfig?.sfSessionId;
+  const [wbToRedirect, setWbToRedirect] = useState(localStorage.getItem('wallboard'));
   
   useEffect(() => {    
     const fetchData = async () => {
@@ -67,6 +68,11 @@ function App() {
     
   }, []);
 
+  const handleRedirect = () => {
+    localStorage.removeItem('wallboard');
+    if(wbToRedirect) window.location.href = wbToRedirect;
+  }
+
   const handleLogout = () => {
     logout();
     dispatch(handleLogoutAC());
@@ -77,6 +83,7 @@ function App() {
       {!userInfo && isAuthenticated && <p>Loading...</p>}
       {userInfo && userTokenInfo && (
         <>
+          {handleRedirect()}
           <HashRouter>
             <Switch>
               <Route exact path="/">
