@@ -22,7 +22,7 @@ const GridResizeContainer = ({ isEditMode = true, widgets = [], ...props }) => {
     const layoutWithPxSize = layout.map((lay) => {
       const ref = itemsRef.current.find((ref) => ref.id === lay.i);
       const { offsetWidth, offsetHeight } = ref;
-      return { ...lay, offsetHeight, offsetWidth, pos: ref.getBoundingClientRect() };
+      return { ...lay, offsetHeight, offsetWidth };
     });
     // check for changes
     let isLayoutChanged = layoutWithPxSize.some((layoutElement) => {
