@@ -32,7 +32,6 @@ function App() {
   const sfToken = window?.WbConfig?.sfSessionId;
   
   useEffect(() => {   
-    console.log(`isAuthenticated: ${isAuthenticated}, isLoading: ${isLoading}`) 
     const fetchData = async () => {
  
       try {
