@@ -84,6 +84,7 @@ function App() {
       {!userInfo && isAuthenticated && <p>Loading...</p>}
       {userInfo && userTokenInfo && (
         <>
+        <button onClick={() => handleLogout()}>logout</button>
           {handleRedirect()}
           <HashRouter>
             <Switch>
