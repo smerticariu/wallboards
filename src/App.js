@@ -111,7 +111,7 @@ function App() {
         </>
       )}
 
-      {!sfToken && (!isAuthenticated && !isLoading) && <Login />}
+      {!sfToken && (!isAuthenticated) && <Login />}
     </div>
   );
 }
