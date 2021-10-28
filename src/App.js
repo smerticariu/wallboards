@@ -35,8 +35,9 @@ function App() {
   useEffect(() => {   
     console.log(`isAuthenticated: ${isAuthenticated}, isLoading: ${isLoading}`) 
     const fetchData = async () => {
+ 
       try {
-        if(!sfToken) {
+        if(!sfToken && (isAuthenticated)) {
           await getAccessTokenSilently(config).then((res) => {
             dispatch(setAccessTokenAC(res));
             dispatch(setUserTokenInfoAC(jwtExtractor(res)));
@@ -44,7 +45,7 @@ function App() {
           });
         }
 
-        else {
+        else if(sfToken) {
           const options = {
             method: 'get',
             url: `https://gatekeeper.redmatter-qa01.pub/token/salesforce?scope=${config.scope}`,
@@ -66,8 +67,7 @@ function App() {
 
     };
     fetchData();
-    
-  }, []);
+  }, [isAuthenticated]);
 
   const handleRedirect = () => {
     localStorage.removeItem('wallboard');
@@ -111,7 +111,7 @@ function App() {
         </>
       )}
 
-      {!sfToken && (!isAuthenticated) && <Login />}
+      {!sfToken && (!isAuthenticated && !isLoading) && <Login />}
     </div>
   );
 }
