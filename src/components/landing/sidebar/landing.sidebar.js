@@ -1,4 +1,4 @@
-import React, { forwardRef, useEffect, useState } from 'react';
+import React, { forwardRef, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { handleSelectedWallboardCategoryAC } from '../../../store/actions/wallboards.action';
 import { LANDING_DEFAULTS } from '../landing.defaults';

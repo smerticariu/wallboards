@@ -8,7 +8,6 @@ import config from 'src/config/auth';
 import App from './App';
 import { Auth0Provider } from '@auth0/auth0-react';
 import reportWebVitals from './reportWebVitals';
-console.log(config)
 ReactDOM.render(
   <HashRouter>
     <Provider store={store}>
