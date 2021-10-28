@@ -32,7 +32,8 @@ function App() {
   const sfToken = window?.WbConfig?.sfSessionId;
   const [wbToRedirect, setWbToRedirect] = useState(localStorage.getItem('wallboard'));
   
-  useEffect(() => {    
+  useEffect(() => {   
+    console.log(`isAuthenticated: ${isAuthenticated}, isLoading: ${isLoading}`) 
     const fetchData = async () => {
       try {
         if(!sfToken) {
