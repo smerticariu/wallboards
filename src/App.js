@@ -30,7 +30,6 @@ function App() {
   const activeModalName = useSelector((state) => state.modal.activeModalName);
   const { warningMessage } = useSelector((state) => state.modal);
   const sfToken = window?.WbConfig?.sfSessionId;
-  const [wbToRedirect, setWbToRedirect] = useState(localStorage.getItem('wallboard'));
   
   useEffect(() => {   
     console.log(`isAuthenticated: ${isAuthenticated}, isLoading: ${isLoading}`) 
@@ -70,8 +69,9 @@ function App() {
   }, [isAuthenticated]);
 
   const handleRedirect = () => {
-    localStorage.removeItem('wallboard');
-    if(wbToRedirect) window.location.href = wbToRedirect;
+    const wbToRedirect = localStorage.getItem('wallboard'); //store the link of the read-only wallboard
+    localStorage.removeItem('wallboard'); //remove the link of the read-only wallboard
+    if(wbToRedirect) window.location.href = wbToRedirect; //redirect to the link of the read-only wallboard
   }
 
   const handleLogout = () => {
