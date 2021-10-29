@@ -1,4 +1,4 @@
-const env = window.WbConfig.env;
+const env = window.WbConfig?.env;
 console.log('env', env);
 const config = {
   domain:"redmatter-qa01.eu.auth0.com",
