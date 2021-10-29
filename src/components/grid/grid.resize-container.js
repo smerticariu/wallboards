@@ -3,6 +3,7 @@ import RGL, { WidthProvider } from 'react-grid-layout';
 import { useDispatch, useSelector } from 'react-redux';
 import useWindowSize from 'src/common/hooks/useWindowSize';
 import { handleWallboardGridLayoutChangeAC } from 'src/store/actions/wallboards.action';
+import { MAIN_VIEWING_OPTIONS } from '../modal/add-component/modal.add-component.defaults';
 import GridAgentList from './grid.agent-list';
 import { RESIZE_GRID_COLUMNS } from './grid.defaults';
 
@@ -58,7 +59,7 @@ const GridResizeContainer = ({ isEditMode = true, widgets = [], ...props }) => {
           w: shrinkWidth ? (wi > RESIZE_GRID_COLUMNS ? RESIZE_GRID_COLUMNS : Math.round(wi)) : widget.size.w, // width (grid units)
           h: widget.size.h, // height (grid units)
           minW: 2, // min width (grid units)
-          minH: 20, // min height (grid units)
+          minH: widget.view === MAIN_VIEWING_OPTIONS.CARD ? 8 : 5, // min height (grid units)
           i: widget.id, // custom key
           maxW: RESIZE_GRID_COLUMNS,
           resizeHandles: ['s', 'e', 'se'], // south , east, south-east
@@ -69,7 +70,7 @@ const GridResizeContainer = ({ isEditMode = true, widgets = [], ...props }) => {
   return (
     <ReactGridLayout
       cols={RESIZE_GRID_COLUMNS}
-      rowHeight={2}
+      rowHeight={19}
       className={'layout'}
       draggableHandle=".agent-list__title"
       layout={layoutState}

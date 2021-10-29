@@ -163,7 +163,7 @@ export const wallboardsReducer = (state = { ...initialState }, action) => {
         size: modalAddComponent.isEditMode
           ? modalAddComponent.size
           : {
-              h: 50, //initial height
+              h: 20, //initial height
               w: RESIZE_GRID_COLUMNS, //initial width: ;
               x: 0, // x position
               y: widgets.reduce((newH, widget) => (widget.size.y >= newH ? widget.size.y + 1 : newH), 0), //y position
