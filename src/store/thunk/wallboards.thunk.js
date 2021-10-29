@@ -236,7 +236,7 @@ export const syncWallboardsWithConfig = () => async (dispatch, getState) => {
         });
       });
 
-      if (allwbs.data.data.length == index + 1) {
+      if (allwbs.data.data.length === index + 1) {
         const options = {
           method: 'put',
           url: `https://wallboards-store.redmatter-qa01.pub/organisation/${userInfo.organisationId}/key/config.json`, // add each wb to config
