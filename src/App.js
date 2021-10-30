@@ -26,16 +26,16 @@ import axios from 'axios';
 function App() {
   const dispatch = useDispatch();
   const { userInfo, userTokenInfo } = useSelector((state) => state.login);
-  const { isAuthenticated, getAccessTokenSilently, logout } = useAuth0();
+  const { isAuthenticated, getAccessTokenSilently, logout, isLoading } = useAuth0();
   const activeModalName = useSelector((state) => state.modal.activeModalName);
   const { warningMessage } = useSelector((state) => state.modal);
   const sfToken = window?.WbConfig?.sfSessionId;
-  const [wbToRedirect, setWbToRedirect] = useState(localStorage.getItem('wallboard'));
   
-  useEffect(() => {    
+  useEffect(() => {   
     const fetchData = async () => {
+ 
       try {
-        if(!sfToken) {
+        if(!sfToken && (isAuthenticated)) {
           await getAccessTokenSilently(config).then((res) => {
             dispatch(setAccessTokenAC(res));
             dispatch(setUserTokenInfoAC(jwtExtractor(res)));
@@ -43,7 +43,7 @@ function App() {
           });
         }
 
-        else {
+        else if(sfToken) {
           const options = {
             method: 'get',
             url: `https://gatekeeper.redmatter-qa01.pub/token/salesforce?scope=${config.scope}`,
@@ -65,12 +65,12 @@ function App() {
 
     };
     fetchData();
-    
-  }, []);
+  }, [isAuthenticated]);
 
   const handleRedirect = () => {
-    localStorage.removeItem('wallboard');
-    if(wbToRedirect) window.location.href = wbToRedirect;
+    const wbToRedirect = localStorage.getItem('wallboard'); //store the link of the read-only wallboard
+    localStorage.removeItem('wallboard'); //remove the link of the read-only wallboard
+    if(wbToRedirect) window.location.href = wbToRedirect; //redirect to the link of the read-only wallboard
   }
 
   const handleLogout = () => {
@@ -83,6 +83,7 @@ function App() {
       {!userInfo && isAuthenticated && <p>Loading...</p>}
       {userInfo && userTokenInfo && (
         <>
+        <button onClick={() => handleLogout()}>logout</button>
           {handleRedirect()}
           <HashRouter>
             <Switch>
@@ -109,7 +110,7 @@ function App() {
         </>
       )}
 
-      {!sfToken && (!isAuthenticated) && <Login />}
+      {!sfToken && (!isAuthenticated && !isLoading) && <Login />}
     </div>
   );
 }
