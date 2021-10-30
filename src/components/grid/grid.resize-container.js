@@ -33,14 +33,14 @@ const GridResizeContainer = ({ isEditMode = true, widgets = [], ...props }) => {
     });
 
     // check if there has been a change on the y axis
-    const widgetsWithChangedY = layoutWithPxSize.filter((layoutElement) => {
-      const widget = widgets.find((widget) => widget.id === layoutElement.i);
-      return widget.size.y !== layoutElement.y;
-    });
+    // const widgetsWithChangedY = layoutWithPxSize.filter((layoutElement) => {
+    //   const widget = widgets.find((widget) => widget.id === layoutElement.i);
+    //   return widget.size.y !== layoutElement.y;
+    // });
 
-    if (widgetsWithChangedY.length > 1) {
-      isLayoutChanged = true;
-    }
+    // if (widgetsWithChangedY.length > 1) {
+    //   isLayoutChanged = true;
+    // }
     if (!layoutState.length || layoutState.length !== widgets.length) return;
     if (isLayoutChanged) {
       dispatch(handleWallboardGridLayoutChangeAC(layoutWithPxSize));
@@ -53,11 +53,12 @@ const GridResizeContainer = ({ isEditMode = true, widgets = [], ...props }) => {
         const widgetWidth =
           widget.size.offsetWidth === '100%' ? containerRef.current.elementRef.current.offsetWidth : widget.size.offsetWidth;
         const wi = (RESIZE_GRID_COLUMNS * widgetWidth) / containerRef.current.elementRef.current.offsetWidth;
+        const widgetContentRef = itemsRef.current.find((ref) => ref.id === widget.id);
         return {
           x: widget.size.x, // position on the x-axis
           y: widget.size.y, // position on the y-axis
           w: shrinkWidth ? (wi > RESIZE_GRID_COLUMNS ? RESIZE_GRID_COLUMNS : Math.round(wi)) : widget.size.w, // width (grid units)
-          h: widget.size.h, // height (grid units)
+          h: !shrinkHeight ? widget.size.h : Math.round(widgetContentRef.offsetHeight / 28.5), // height (grid units)
           minW: 2, // min width (grid units)
           minH: widget.view === MAIN_VIEWING_OPTIONS.CARD ? 8 : 5, // min height (grid units)
           i: widget.id, // custom key
@@ -66,7 +67,7 @@ const GridResizeContainer = ({ isEditMode = true, widgets = [], ...props }) => {
         };
       })
     );
-  }, [widgets, shrinkWidth, windowSize.width]);
+  }, [widgets, shrinkWidth, shrinkHeight, windowSize.width]);
   return (
     <ReactGridLayout
       cols={RESIZE_GRID_COLUMNS}

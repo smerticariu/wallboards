@@ -45,7 +45,7 @@ const GridAgentList = forwardRef(({ isEditMode, widget, ...props }, ref) => {
   };
 
   return (
-    <div ref={ref} id={widget.id} className="agent-list">
+    <div className="agent-list">
       <div className="agent-list__header">
         <div className="agent-list__title">
           <div className="agent-list__title--bold">{widget.name}:</div>
@@ -60,7 +60,11 @@ const GridAgentList = forwardRef(({ isEditMode, widget, ...props }, ref) => {
           )}
         </div>
       </div>
-      <div className={`agent-list__body ${widget.view === MAIN_VIEWING_OPTIONS.TABLE ? 'agent-list__body--table' : ''}`}>
+      <div
+        ref={ref}
+        id={widget.id}
+        className={`agent-list__body ${widget.view === MAIN_VIEWING_OPTIONS.TABLE ? 'agent-list__body--table' : ''}`}
+      >
         {widget.view === MAIN_VIEWING_OPTIONS.CARD ? (
           widget.presenceStates.selectedItems.map((presenceState) => (
             <AgentCard
