@@ -47,12 +47,12 @@ const AgentTablePreview = ({
             {agentName && <div className="agent-t__agent-info agent-t__agent-info--preview">Megan Carter</div>}
             {currAvaiState && (
               <div
-                className={`agent-t__agent-info agent-t__agent-info--preview agent-t__agent-info--${
+                className={`agent-t__agent-info agent-t__agent-info--preview agent-t__agent-info--preview--color agent-t__agent-info--${
                   PRESENCE_STATE_KEYS_COLOR.CARD_AVAILABILITY_STATUS_BACKGROUND[previewAvailabilityStatusColors[index]]
                 }`}
               >
                 {index === 0 && 'I’m available'}
-                {index === 1 && 'I’m currently busy'}
+                {index === 1 && 'I’m busy'}
                 {index === 2 && 'On calls'}
                 <ArrowDownIcon className="i--arrow--down i--arrow--down--table i--arrow--down--small" />
               </div>
@@ -79,7 +79,7 @@ const AgentTablePreview = ({
                   } agent-t__agent-info--circle-center--preview`}
                 ></div>
               </div>
-              Idle
+              {PRESENCE_STATE_KEYS_COLOR.CARD_PRESENCE_STATE_TEXT[previewAvailabilityStatusColors[index]]}{' '}
             </div>
           </div>
         ))}

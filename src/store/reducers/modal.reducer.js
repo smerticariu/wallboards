@@ -26,10 +26,7 @@ const initialState = {
     availabilityStates: {
       selectAll: true,
       selectNone: false,
-      selectedItems: ADD_COMPONENT_STATE_OPTIONS.availabilityStates.reduce(
-        (strArr, el) => (el.isInitialChecked ? [...strArr, el.value] : strArr),
-        []
-      ),
+      selectedItems: [],
     },
     presenceStates: {
       selectAll: true,

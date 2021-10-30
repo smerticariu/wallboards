@@ -3,6 +3,7 @@ import { SettingsIcon } from 'src/assets/static/icons/settings';
 import { ArrowDownIcon } from '../../assets/static/icons/arrow-down';
 import Dropdown from '../dropdown/dropdown';
 import { ADD_COMPONENT_COLUMN_OPTIONS, PRESENCE_STATE_KEYS_COLOR } from '../modal/add-component/modal.add-component.defaults';
+import TimeInterval from '../time-interval/time-interval';
 const AgentTable = ({ columnsToView, agents, ...props }) => {
   const activeColumns = {
     isAgentNameColumn: columnsToView.includes(ADD_COMPONENT_COLUMN_OPTIONS.AGENT_NAME),
@@ -24,7 +25,7 @@ const AgentTable = ({ columnsToView, agents, ...props }) => {
   return (
     <div className="agent-t">
       <div className="agent-t__header">
-        <div className="agent-t__header-item" style={{ width: colWidth }}></div>
+        <div className="agent-t__header-item"></div>
         {activeColumns.isAgentNameColumn && (
           <div className="agent-t__header-item" style={{ width: colWidth }}>
             Name
@@ -37,7 +38,7 @@ const AgentTable = ({ columnsToView, agents, ...props }) => {
         )}
         {activeColumns.isAgentExtNoColumn && (
           <div className="agent-t__header-item" style={{ width: colWidth }}>
-            Phone Ext
+            Extension No
           </div>
         )}
         {activeColumns.isCurrPresStateColumn && (
@@ -62,12 +63,12 @@ const AgentTable = ({ columnsToView, agents, ...props }) => {
         )}
         {activeColumns.isTimeInCurrentPresenceStateColumn && (
           <div className="agent-t__header-item" style={{ width: colWidth }}>
-            Time in current
+            Time in current p.state
           </div>
         )}
         {activeColumns.isTimeInCurrentAvailabilityStateColumn && (
           <div className="agent-t__header-item" style={{ width: colWidth }}>
-            Time availability
+            Time in current a.state
           </div>
         )}
         {activeColumns.isTimeInCurrentCallColumn && (
@@ -95,7 +96,7 @@ const AgentTable = ({ columnsToView, agents, ...props }) => {
       <div className="agent-t__body">
         {agents?.map((agent, index) => (
           <div key={index} className="agent-t__agent">
-            <div className="agent-t__agent-info" style={{ width: colWidth }}>
+            <div className="agent-t__agent-info">
               <Dropdown closeOnClick={true} trigger={<SettingsIcon className="i--settings i--settings--table" />}>
                 <div className="c-dropdown__item">Listen live</div>
                 <div className="c-dropdown__item">Call agent</div>
@@ -103,7 +104,7 @@ const AgentTable = ({ columnsToView, agents, ...props }) => {
             </div>
             {activeColumns.isAgentNameColumn && (
               <div className="agent-t__agent-info" style={{ width: colWidth }}>
-                Megan Carter
+                {agent.agentName}
               </div>
             )}
             {activeColumns.isCurrAvaiStateColumn && (
@@ -135,7 +136,7 @@ const AgentTable = ({ columnsToView, agents, ...props }) => {
             )}
             {activeColumns.isCurrPresStateColumn && (
               <div className="agent-t__agent-info" style={{ width: colWidth }}>
-                {agent.currPresState}
+                {PRESENCE_STATE_KEYS_COLOR.CARD_PRESENCE_STATE_TEXT[agent.currPresState]}
               </div>
             )}
             {activeColumns.isNoCallsOfferedColumn && (
@@ -155,27 +156,33 @@ const AgentTable = ({ columnsToView, agents, ...props }) => {
             )}
             {activeColumns.isTimeInCurrentPresenceStateColumn && (
               <div className="agent-t__agent-info" style={{ width: colWidth }}>
-                {agent.timeInCurrentPresenceState}
+                <TimeInterval seconds={agent.timeInCurrentPresenceState} />
               </div>
             )}
             {activeColumns.isTimeInCurrentAvailabilityStateColumn && (
               <div className="agent-t__agent-info" style={{ width: colWidth }}>
-                {agent.timeInCurrentAvailabilityState}
+                <TimeInterval seconds={agent.timeInCurrentAvailabilityState} />
               </div>
             )}
             {activeColumns.isTimeInCurrentCallColumn && (
               <div className="agent-t__agent-info" style={{ width: colWidth }}>
-                {agent.timeInCurrentCall}
+                <TimeInterval seconds={agent.timeInCurrentCall} />
               </div>
             )}
             {activeColumns.isTimeInCurrentWrapupColumn && (
               <div className="agent-t__agent-info" style={{ width: colWidth }}>
-                {agent.timeInCurrentWrapup}
+                <TimeInterval seconds={agent.timeInCurrentWrapup} />
               </div>
             )}
             {activeColumns.isListOfSkillsColumn && (
               <div className="agent-t__agent-info" style={{ width: colWidth }}>
-                {agent.listOfSkills}
+                <Dropdown openOnHover closeOnClick={true} trigger={<div className="agent-t__agent-info__skills">...</div>}>
+                  {agent.listOfSkills.map((skill, index) => (
+                    <div key={index} className="c-dropdown__item">
+                      {skill.name}
+                    </div>
+                  ))}
+                </Dropdown>
               </div>
             )}
             <div className="agent-t__agent-info  agent-t__agent-info--circle" style={{ width: colWidth }}>

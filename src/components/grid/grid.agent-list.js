@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { CloseIcon } from 'src/assets/static/icons/close';
 import { EditIcon } from 'src/assets/static/icons/edit';
@@ -7,19 +7,84 @@ import {
   setWallboardComponentForDeleteAC,
   setWidgetComponentForEditAC,
 } from 'src/store/actions/modal.action';
-import { fetchAllAgentsThunk } from 'src/store/thunk/agents.thunk';
+import {
+  fetchAllAgentsThunk,
+  fetchDevicesSipAgentsThunk,
+  fetchOrganisationAgentsThunk,
+  fetchUserGroupsThunk,
+} from 'src/store/thunk/agents.thunk';
 import AgentCard from '../agent-card/agent-card';
 import AgentTable from '../agent-table/agent-table';
-import { ADD_COMPONENT_COLUMNS_NO_OPTIONS, MAIN_VIEWING_OPTIONS } from '../modal/add-component/modal.add-component.defaults';
+import {
+  ADD_COMPONENT_COLUMNS_NO_OPTIONS,
+  MAIN_VIEWING_OPTIONS,
+  PRESENCE_STATE_KEYS,
+} from '../modal/add-component/modal.add-component.defaults';
 import { WALLBOARD_MODAL_NAMES } from '../modal/new-wallboard/modal.new-wallboard.defaults';
 import { AGENTS_TABLE } from './grid.defaults';
-import moment from 'moment';
+import { FetchStatus } from 'src/store/reducers/wallboards.reducer';
+import { fetchAgentSkillThunk } from 'src/store/thunk/skills.thunk';
 const GridAgentList = ({ isEditMode, widget, ...props }) => {
   const dispatch = useDispatch();
   const agentQueues = useSelector((state) => state.agents.agentsQueues.find((queue) => queue.callQueueId === widget.callQueue.id));
+  const agents = useSelector((state) => state.agents);
+  const { agentsSkill } = useSelector((state) => state.skills);
+  const [agentsForDisplay, setAgentsForDisplay] = useState([]);
   useEffect(() => {
     dispatch(fetchAllAgentsThunk(widget.callQueue.id));
+    const agentsInterval = setInterval(() => {
+      dispatch(fetchAllAgentsThunk(widget.callQueue.id));
+    }, 2000);
+    dispatch(fetchOrganisationAgentsThunk());
+    dispatch(fetchDevicesSipAgentsThunk());
+    dispatch(fetchUserGroupsThunk());
+    return () => clearInterval(agentsInterval);
   }, [widget.callQueue.id]);
+
+  useEffect(() => {
+    if (agentQueues?.agents?.length) {
+      agentQueues.agents.forEach((agent) => {
+        dispatch(fetchAgentSkillThunk(agent.userId));
+      });
+    }
+  }, [agentQueues]);
+
+  useEffect(() => {
+    if (
+      agents.agentsQueuesFetchStatus === FetchStatus.SUCCESS &&
+      agents.organisationUsersFetchStatus === FetchStatus.SUCCESS &&
+      agents.sipDevicesFetchStatus === FetchStatus.SUCCESS &&
+      agents.userGroupsFetchStatus === FetchStatus.SUCCESS
+    ) {
+      const agentsWithFullInfo = agentQueues.agents.map((agentQueue) => {
+        const orgUser = agents.organisationUsers.find((orgUser) => orgUser.id === agentQueue.userId);
+        const agentSkills = agentsSkill.find((agentSkills) => agentSkills.agentId === agentQueue.userId);
+        const lastAvailabilityStateChangeSeconds = (new Date() - new Date(agentQueue.lastAvailabilityStateChange)) / 1000;
+
+        return {
+          ...agentQueue,
+          agentSkills: agentSkills?.skills?.map((skill) => ({ description: skill.description, name: skill.name })) ?? [],
+          sipExtension: orgUser.sipExtension,
+          userName: orgUser.userName,
+          firstName: orgUser.firstName,
+          lastName: orgUser.lastName,
+          timeInCurrentAvailabilityState:
+            agentQueue.status === PRESENCE_STATE_KEYS.AGENT_STATUS_IDLE ? 0 : lastAvailabilityStateChangeSeconds,
+        };
+      });
+
+      const filtredAgentsWithFullInfo = agentsWithFullInfo.filter((agent) => {
+        const isSkill =
+          widget.skills.selectAll || agent.agentSkills.some((agentSkill) => widget.skills.selectedItems.includes(agentSkill.name));
+        const isPresenceState = widget.presenceStates.selectAll || widget.presenceStates.selectedItems.includes(agent.status);
+        const isAvailabilityState =
+          widget.availabilityStates.selectAll ||
+          widget.availabilityStates.selectedItems.some((state) => state.availabilityStateId === agent.availabilityState.id);
+        return isSkill && isPresenceState && isAvailabilityState;
+      });
+      setAgentsForDisplay(filtredAgentsWithFullInfo);
+    }
+  }, [agents, agentsSkill]);
 
   const handleEditIcon = () => {
     const onEditClick = () => {
@@ -63,14 +128,16 @@ const GridAgentList = ({ isEditMode, widget, ...props }) => {
         </div>
       </div>
       <div className={`agent-list__body ${widget.view === MAIN_VIEWING_OPTIONS.TABLE ? 'agent-list__body--table' : ''}`}>
-        {widget.view === MAIN_VIEWING_OPTIONS.CARD ? (
-          agentQueues?.agents?.map((agent) => (
+        {!agentsForDisplay.length ? (
+          <div className="empty-message empty-message--agents">No agents</div>
+        ) : widget.view === MAIN_VIEWING_OPTIONS.CARD ? (
+          agentsForDisplay.map((agent) => (
             <AgentCard
               key={agent.userId}
               callStatusKey={agent.status}
-              callTime="--:--:--"
-              ext="0000"
-              name="Staff Member Name"
+              callTime={0}
+              ext={agent.sipExtension}
+              name={`${agent.lastName} ${agent.firstName}`}
               status={agent.availabilityState.displayName}
               totalTime="00:00:00"
             />
@@ -79,20 +146,20 @@ const GridAgentList = ({ isEditMode, widget, ...props }) => {
           <>
             <AgentTable
               columnsToView={widget.columnsToView.selectedItems}
-              agents={agentQueues?.agents?.map((agent) => ({
+              agents={agentsForDisplay.map((agent) => ({
                 callStatusKey: agent.status,
-                agentName: 'Megan Carter',
-                agentExtNo: '0000',
+                agentName: `${agent.lastName} ${agent.firstName}`,
+                agentExtNo: agent.sipExtension,
                 currAvaiState: agent.availabilityState.displayName,
                 currPresState: agent.status,
                 noCallsOffered: agent.callCount,
                 noCallsAnswered: '0',
                 noCallsMissed: '0',
-                timeInCurrentPresenceState: '- - : - - : - -',
-                timeInCurrentAvailabilityState: '- - : - - : - -',
-                timeInCurrentCall: '- - : - - : - -',
-                timeInCurrentWrapup: moment({}).seconds(agent.wrapUpTime).format('H:mm:ss'),
-                listOfSkills: 'Skill',
+                timeInCurrentPresenceState: 0,
+                timeInCurrentAvailabilityState: agent.timeInCurrentAvailabilityState,
+                timeInCurrentCall: 0,
+                timeInCurrentWrapup: 0,
+                listOfSkills: agent.agentSkills,
               }))}
             />
             {widget.columns === ADD_COMPONENT_COLUMNS_NO_OPTIONS.TWO && (

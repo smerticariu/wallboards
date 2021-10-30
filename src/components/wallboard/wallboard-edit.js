@@ -8,8 +8,9 @@ import { fetchWallboardByIdThunk } from 'src/store/thunk/wallboards.thunk';
 import { useParams } from 'react-router';
 import { FetchStatus } from 'src/store/reducers/wallboards.reducer';
 import { resetWallboardEditPageDataAC } from 'src/store/actions/wallboards.action';
-import { fetchAllSkilsThunk } from 'src/store/thunk/skills.thunk';
+import { fetchAllSkillsThunk } from 'src/store/thunk/skills.thunk';
 import { fetchAllCallsQueuesThunk } from 'src/store/thunk/callsQueues.thunk';
+import { fetchAvailabilityProfilesThunk, fetchAvailabilityStatesThunk } from 'src/store/thunk/agents.thunk';
 
 const WallboardEdit = () => {
   const activeModalName = useSelector((state) => state.modal.activeModalName);
@@ -17,13 +18,24 @@ const WallboardEdit = () => {
   const { id } = useParams();
   const { fetchStatus, fetchMessage } = useSelector((state) => state.wallboards.present.activeWallboard);
   const activeWallboard = useSelector((state) => state.wallboards.present.activeWallboard.wallboard);
+  const { availabilityProfiles } = useSelector((state) => state.agents);
 
   useEffect(() => {
-    dispatch(fetchAllSkilsThunk());
+    dispatch(fetchAllSkillsThunk());
     dispatch(fetchAllCallsQueuesThunk());
+    dispatch(fetchAvailabilityProfilesThunk());
+
     return () => dispatch(resetWallboardEditPageDataAC());
     // eslint-disable-next-line
   }, []);
+
+  useEffect(() => {
+    if (availabilityProfiles.length) {
+      availabilityProfiles.forEach((avProfile) => {
+        dispatch(fetchAvailabilityStatesThunk(avProfile.id));
+      });
+    }
+  }, [availabilityProfiles]);
 
   useEffect(() => {
     if (!activeWallboard.isNewWallboard) dispatch(fetchWallboardByIdThunk(id));

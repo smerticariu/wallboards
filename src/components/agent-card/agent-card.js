@@ -3,6 +3,7 @@ import React from 'react';
 import { PRESENCE_STATE_KEYS_COLOR } from '../modal/add-component/modal.add-component.defaults';
 import { SettingsIcon } from '../../assets/static/icons/settings';
 import Dropdown from '../dropdown/dropdown';
+import TimeInterval from '../time-interval/time-interval';
 const AgentCard = ({ isPreview, name, ext, status, totalTime, callTime, callStatusKey, ...props }) => {
   return (
     <div className={`agent-c agent-c--${PRESENCE_STATE_KEYS_COLOR.CARD_BACKGROUND[callStatusKey]}`}>
@@ -19,14 +20,16 @@ const AgentCard = ({ isPreview, name, ext, status, totalTime, callTime, callStat
             <div className="agent-c__user-ext">Ext: {ext}</div>
           </div>
         </div>
-        {isPreview ? (
-          <SettingsIcon className="i--settings" />
-        ) : (
-          <Dropdown closeOnClick={true} trigger={<SettingsIcon className="i--settings" />}>
-            <div className="c-dropdown__item">Listen live</div>
-            <div className="c-dropdown__item">Call agent</div>
-          </Dropdown>
-        )}
+        <div className="agent-c__cog-icon">
+          {isPreview ? (
+            <SettingsIcon className="i--settings" />
+          ) : (
+            <Dropdown closeOnClick={true} trigger={<SettingsIcon className="i--settings" />}>
+              <div className="c-dropdown__item">Listen live</div>
+              <div className="c-dropdown__item">Call agent</div>
+            </Dropdown>
+          )}
+        </div>
       </div>
       <div className="agent-c__status-time">
         <div
@@ -39,7 +42,9 @@ const AgentCard = ({ isPreview, name, ext, status, totalTime, callTime, callStat
       <div className="agent-c__body">
         <div className="agent-c__call-time-text">Call time</div>
         <div className="agent-c__call-time-container">
-          <div className="agent-c__call-time">{callTime}</div>
+          <div className="agent-c__call-time">
+            <TimeInterval seconds={callTime} />
+          </div>
         </div>
         <div className="agent-c__footer">{PRESENCE_STATE_KEYS_COLOR.CARD_PRESENCE_STATE_TEXT[callStatusKey]}</div>
       </div>

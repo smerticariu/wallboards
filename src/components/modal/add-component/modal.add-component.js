@@ -35,6 +35,30 @@ const ModalAddComponent = ({ ...props }) => {
   const { allCallsQueues } = useSelector((state) => state.callsQueues);
   const isCardFormat = MAIN_VIEWING_OPTIONS.CARD === formData.mainViewing;
   const { userInfo } = useSelector((state) => state.login);
+  const { availabilityStates, availabilityProfiles } = useSelector((state) => state.agents);
+  const [availabilityStatesList, handleAvailabilityStatesList] = useState([]);
+
+  useEffect(() => {
+    if (availabilityStates.length && availabilityProfiles.length) {
+      handleAvailabilityStatesList(
+        availabilityProfiles.reduce((availabilityList, availabilityProfile) => {
+          const list = [];
+          const availabilityState = availabilityStates.find((state) => state.availabilityProfileId === availabilityProfile.id);
+          if (availabilityState) {
+            availabilityState.states.forEach((state) =>
+              list.push({
+                availabilityProfileId: availabilityProfile.id,
+                availabilityProfileName: availabilityProfile.name,
+                availabilityStateId: state.id,
+                availabilityStateDisplayName: state.displayName,
+              })
+            );
+          }
+          return [...availabilityList, ...list];
+        }, [])
+      );
+    }
+  }, [availabilityProfiles, availabilityStates]);
   useEffect(() => {
     if (formData.isEditMode) return;
     if (allCallsQueues.length) {
@@ -216,8 +240,56 @@ const ModalAddComponent = ({ ...props }) => {
       );
     };
 
+    const handleChangeAvailabilityList = (event, availabilityStateId, availabilityProfileId) => {
+      const { name, checked } = event.target;
+      let selectedItems = [];
+      let selectAll = false;
+      let selectNone = false;
+      switch (name) {
+        case 'selectAll': {
+          selectedItems = availabilityStatesList.map(({ availabilityStateId, availabilityProfileId }) => ({
+            availabilityStateId,
+            availabilityProfileId,
+          }));
+          selectAll = checked;
+          selectNone = false;
+          break;
+        }
+        case 'selectNone': {
+          selectAll = false;
+          selectNone = checked;
+          break;
+        }
+        default: {
+          selectedItems = checked
+            ? [...formData.availabilityStates.selectedItems, { availabilityStateId, availabilityProfileId }]
+            : formData.availabilityStates.selectedItems.filter(
+                (option) => !(option.availabilityStateId === availabilityStateId && option.availabilityProfileId === availabilityProfileId)
+              );
+        }
+      }
+      dispatch(
+        handleModalAddComponentFormDataAC({
+          ...formData,
+          availabilityStates: {
+            ...formData.availabilityStates,
+            selectNone,
+            selectAll,
+            selectedItems,
+          },
+        })
+      );
+    };
+
     const checkIsCheckboxChecked = (optionArr, optionName) => {
       return optionArr.includes(optionName);
+    };
+    const checkIsAvailabilityCheckboxChecked = (optionArr, availabilityStateId, availabilityProfileId) => {
+      const r = optionArr.some(
+        (option) => option.availabilityStateId === availabilityStateId && option.availabilityProfileId === availabilityProfileId
+      );
+      console.log(r);
+      return r;
     };
 
     const onChangeSearchInput = (value, name) => {
@@ -276,7 +348,9 @@ const ModalAddComponent = ({ ...props }) => {
     };
 
     const handleAvailabilityStatesToView = () => {
-      const allTitlesForAutocomplete = ADD_COMPONENT_STATE_OPTIONS.availabilityStates.map(({ text }) => text);
+      const allTitlesForAutocomplete = availabilityStatesList.map(
+        (state) => `${state.availabilityProfileName} - ${state.availabilityStateDisplayName}`
+      );
 
       return (
         <div className="c-modal--add-component__input-section">
@@ -287,14 +361,14 @@ const ModalAddComponent = ({ ...props }) => {
               label="Select all"
               checked={formData.availabilityStates.selectAll}
               name={'selectAll'}
-              onChange={(event) => handleCheckBoxList(event, 'availabilityStates')}
+              onChange={handleChangeAvailabilityList}
             />
             <CheckBox
               label="Select none"
               className="c-checkbox--m-left"
               checked={formData.availabilityStates.selectNone}
               name={'selectNone'}
-              onChange={(event) => handleCheckBoxList(event, 'availabilityStates')}
+              onChange={handleChangeAvailabilityList}
             />
           </div>
 
@@ -309,16 +383,23 @@ const ModalAddComponent = ({ ...props }) => {
                 placeholder="Search by name"
               />
               <div className="c-modal--add-component__av-state-container">
-                {ADD_COMPONENT_STATE_OPTIONS.availabilityStates
-                  .filter((option) => option.text.toLowerCase().includes(searchInputValues.availabilityStates.toLowerCase()))
-                  .map((option) => (
+                {availabilityStatesList
+                  .filter((option) =>
+                    `${option.availabilityProfileName} ${option.availabilityStateDisplayName}`
+                      .toLowerCase()
+                      .includes(searchInputValues.availabilityStates.toLowerCase())
+                  )
+                  .map((option, index) => (
                     <CheckBox
-                      key={option.value}
-                      label={option.text}
-                      name={option.value}
+                      key={index}
+                      label={`${option.availabilityProfileName}  -  ${option.availabilityStateDisplayName}`}
                       className="c-checkbox--margin-top-bottom"
-                      checked={checkIsCheckboxChecked(formData.availabilityStates.selectedItems, option.value)}
-                      onChange={(event) => handleCheckBoxList(event, 'availabilityStates')}
+                      checked={checkIsAvailabilityCheckboxChecked(
+                        formData.availabilityStates.selectedItems,
+                        option.availabilityStateId,
+                        option.availabilityProfileId
+                      )}
+                      onChange={(event) => handleChangeAvailabilityList(event, option.availabilityStateId, option.availabilityProfileId)}
                     />
                   ))}
               </div>
@@ -486,7 +567,7 @@ const ModalAddComponent = ({ ...props }) => {
               <AgentCard
                 callStatus="Inbound Call"
                 callStatusKey={PRESENCE_STATE_KEYS.AGENT_STATUS_INBOUND_CALL_OTHER}
-                callTime="--:--:--"
+                callTime={0}
                 ext="0000"
                 name="Staff Member Name"
                 status="User online status"

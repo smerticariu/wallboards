@@ -72,8 +72,6 @@ export const fetchAllWallboardsThunk = () => async (dispatch, getState) => {
 
     const res = await axios(ooo);
 
-    console.log(res)
-
     dispatch(fetchAllWallboardsSuccessAC(response.data));
   } catch (error) {
     dispatch(fetchAllWallboardsFailAC());

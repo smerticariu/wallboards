@@ -5,13 +5,12 @@
   &__container {
     position: absolute;
     left: 50px;
-    top: 50%;
+    top: 100%;
     z-index: 10;
     padding: 8px 6px;
     border-radius: 6px;
     background-color: $white;
     border: 1px solid $pinkish-grey;
-    transform: translateX(-50%);
     width: max-content;
     &--availability {
       width: 100%;
@@ -23,6 +22,7 @@
   &__trigger {
     display: flex;
     width: 100%;
+    justify-content: center;
   }
   &__item {
     color: $slate-gray;
