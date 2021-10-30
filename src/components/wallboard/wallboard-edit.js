@@ -35,6 +35,7 @@ const WallboardEdit = () => {
         dispatch(fetchAvailabilityStatesThunk(avProfile.id));
       });
     }
+    // eslint-disable-next-line
   }, [availabilityProfiles]);
 
   useEffect(() => {

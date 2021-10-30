@@ -39,6 +39,7 @@ const GridAgentList = ({ isEditMode, widget, ...props }) => {
     dispatch(fetchDevicesSipAgentsThunk());
     dispatch(fetchUserGroupsThunk());
     return () => clearInterval(agentsInterval);
+    // eslint-disable-next-line
   }, [widget.callQueue.id]);
 
   useEffect(() => {
@@ -47,6 +48,7 @@ const GridAgentList = ({ isEditMode, widget, ...props }) => {
         dispatch(fetchAgentSkillThunk(agent.userId));
       });
     }
+    // eslint-disable-next-line
   }, [agentQueues]);
 
   useEffect(() => {
@@ -84,6 +86,7 @@ const GridAgentList = ({ isEditMode, widget, ...props }) => {
       });
       setAgentsForDisplay(filtredAgentsWithFullInfo);
     }
+    // eslint-disable-next-line
   }, [agents, agentsSkill]);
 
   const handleEditIcon = () => {

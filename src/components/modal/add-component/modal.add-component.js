@@ -73,6 +73,7 @@ const ModalAddComponent = ({ ...props }) => {
         })
       );
     }
+    // eslint-disable-next-line
   }, [allCallsQueues]);
   const closeModal = () => {
     dispatch(handleWallboardActiveModalAC(null));
@@ -285,11 +286,9 @@ const ModalAddComponent = ({ ...props }) => {
       return optionArr.includes(optionName);
     };
     const checkIsAvailabilityCheckboxChecked = (optionArr, availabilityStateId, availabilityProfileId) => {
-      const r = optionArr.some(
+      return optionArr.some(
         (option) => option.availabilityStateId === availabilityStateId && option.availabilityProfileId === availabilityProfileId
       );
-      console.log(r);
-      return r;
     };
 
     const onChangeSearchInput = (value, name) => {
