@@ -149,6 +149,13 @@ export const wallboardsReducer = (state = { ...initialState }, action) => {
     case wallboardsActions.ADD_WALLBOARD_COMPONENT: {
       const { widgets } = state.activeWallboard.wallboard;
       const modalAddComponent = action.payload.modalAddComponent;
+      let newWidgetYPosition = 0;
+      widgets.forEach((widget) => {
+        if (widget.size.endY > newWidgetYPosition) {
+          newWidgetYPosition = widget.size.endY + 10;
+        }
+      });
+
       const newWidget = {
         name: modalAddComponent.title.value,
         queue: modalAddComponent.callQueue.value,
@@ -163,12 +170,17 @@ export const wallboardsReducer = (state = { ...initialState }, action) => {
         size: modalAddComponent.isEditMode
           ? modalAddComponent.size
           : {
-              h: 20, //initial height
-              w: RESIZE_GRID_COLUMNS, //initial width: ;
-              x: 0, // x position
-              y: widgets.reduce((newH, widget) => (widget.size.y >= newH ? widget.size.y + 1 : newH), 0), //y position
-              offsetHeight: '100%',
-              offsetWidth: '100%',
+              startX: 0,
+              endX: 600,
+
+              startY: newWidgetYPosition,
+              endY: newWidgetYPosition + 400,
+
+              width: 600,
+              height: 400,
+
+              widthProcent: 100,
+              heightProcent: 0,
             },
       };
       return {
@@ -207,21 +219,13 @@ export const wallboardsReducer = (state = { ...initialState }, action) => {
     }
 
     case wallboardsActions.WALLBOARD_GRID_LAYOUT_CHANGE: {
-      const { widgets } = state.activeWallboard.wallboard;
       return {
         ...state,
         activeWallboard: {
           ...state.activeWallboard,
           wallboard: {
             ...state.activeWallboard.wallboard,
-            widgets: widgets.map((widget) => {
-              const layoutData = action.payload.find((layout) => layout.i === widget.id);
-              const { h, w, x, y, offsetWidth, offsetHeight } = layoutData;
-              return {
-                ...widget,
-                size: { h, w, x, y, offsetWidth, offsetHeight },
-              };
-            }),
+            widgets: [...action.payload],
           },
         },
       };

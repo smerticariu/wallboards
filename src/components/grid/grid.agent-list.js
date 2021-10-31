@@ -43,7 +43,6 @@ const GridAgentList = forwardRef(({ isEditMode, widget, ...props }, ref) => {
       </div>
     );
   };
-
   return (
     <div className="agent-list">
       <div className="agent-list__header">
