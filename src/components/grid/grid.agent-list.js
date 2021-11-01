@@ -107,7 +107,7 @@ const GridAgentList = ({ isEditMode, widget, ...props }) => {
         const isPresenceState = widget.presenceStates.selectAll || widget.presenceStates.selectedItems.includes(agent.status);
         const isAvailabilityState =
           widget.availabilityStates.selectAll ||
-          widget.availabilityStates.selectedItems.some((state) => state.availabilityStateId === agent.availabilityState.id);
+          widget.availabilityStates.selectedItems.some((state) => state.availabilityStateId === agent.availabilityState?.id);
         return isSkill && isPresenceState && isAvailabilityState;
       });
       setAgentsForDisplay(filtredAgentsWithFullInfo);
@@ -162,17 +162,17 @@ const GridAgentList = ({ isEditMode, widget, ...props }) => {
         {!agentsForDisplay.length ? (
           <div className="empty-message empty-message--agents">No agents</div>
         ) : widget.view === MAIN_VIEWING_OPTIONS.CARD ? (
-          agentsForDisplay.map((agent) => (
+          agentsForDisplay.map((agent, index) => (
             <AgentCard
               id={agent.userId}
               availabilityStatesList={availabilityStatesList}
               handleAgentAvailabilityState={handleAgentAvailabilityState}
-              key={agent.userId}
+              key={`${agent.userId} ${index}`}
               callStatusKey={agent.status}
               callTime={0}
               ext={agent.sipExtension}
               name={`${agent.lastName} ${agent.firstName}`}
-              status={agent.availabilityState.displayName}
+              status={agent?.availabilityState?.displayName ?? 'None'}
               totalTime="00:00:00"
             />
           ))
@@ -187,7 +187,7 @@ const GridAgentList = ({ isEditMode, widget, ...props }) => {
                 callStatusKey: agent.status,
                 agentName: `${agent.lastName} ${agent.firstName}`,
                 agentExtNo: agent.sipExtension,
-                currAvaiState: agent.availabilityState.displayName,
+                currAvaiState: agent.availabilityState?.displayName ?? 'None',
                 currPresState: agent.status,
                 noCallsOffered: agent.callCount,
                 noCallsAnswered: '0',
@@ -209,7 +209,7 @@ const GridAgentList = ({ isEditMode, widget, ...props }) => {
                   callStatusKey: agent.status,
                   agentName: `${agent.lastName} ${agent.firstName}`,
                   agentExtNo: agent.sipExtension,
-                  currAvaiState: agent.availabilityState.displayName,
+                  currAvaiState: agent.availabilityState?.displayName ?? 'None',
                   currPresState: agent.status,
                   noCallsOffered: agent.callCount,
                   noCallsAnswered: '0',
