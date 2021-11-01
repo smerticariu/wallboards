@@ -43,29 +43,6 @@ export const fetchAllAgentsThunk = (callQueueId) => async (dispatch, getState) =
   }
 };
 
-export const fetchAgentByIdThunk = (id) => async (dispatch, getState) => {
-  // dispatch(fetchAllAgentsAC());
-  try {
-    const { userInfo, token } = getState().login;
-    const options = {
-      method: 'get',
-      url: `https://sapien-proxy.redmatter-qa01.pub/v1/organisation/${userInfo.organisationId}/availability/history`,
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + token,
-        'Access-Control-Allow-Origin': '*',
-        Accept: 'application/json',
-      },
-    };
-
-    const response = await axios(options);
-    // dispatch(fetchAllAgentsSuccessAC(response.data.data));
-  } catch (error) {
-    // dispatch(fetchAllAgentsFailAC('something went wrong'));
-    console.log(error);
-  }
-};
-
 export const fetchOrganisationAgentsThunk = () => async (dispatch, getState) => {
   dispatch(fetchOrganisationUsersAC());
   try {

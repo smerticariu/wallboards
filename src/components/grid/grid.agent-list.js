@@ -201,7 +201,27 @@ const GridAgentList = ({ isEditMode, widget, ...props }) => {
               }))}
             />
             {widget.columns === ADD_COMPONENT_COLUMNS_NO_OPTIONS.TWO && (
-              <AgentTable columnsToView={widget.columnsToView.selectedItems} agents={AGENTS_TABLE} />
+              <AgentTable
+                columnsToView={widget.columnsToView.selectedItems}
+                availabilityStatesList={availabilityStatesList}
+                handleAgentAvailabilityState={handleAgentAvailabilityState}
+                agents={agentsForDisplay.map((agent) => ({
+                  id: agent.userId,
+                  callStatusKey: agent.status,
+                  agentName: `${agent.lastName} ${agent.firstName}`,
+                  agentExtNo: agent.sipExtension,
+                  currAvaiState: agent.availabilityState.displayName,
+                  currPresState: agent.status,
+                  noCallsOffered: agent.callCount,
+                  noCallsAnswered: '0',
+                  noCallsMissed: '0',
+                  timeInCurrentPresenceState: 0,
+                  timeInCurrentAvailabilityState: agent.timeInCurrentAvailabilityState,
+                  timeInCurrentCall: 0,
+                  timeInCurrentWrapup: 0,
+                  listOfSkills: agent.agentSkills,
+                }))}
+              />
             )}
           </>
         )}

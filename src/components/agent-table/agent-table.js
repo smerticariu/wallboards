@@ -126,6 +126,7 @@ const AgentTable = ({ availabilityStatesList, handleAgentAvailabilityState, colu
                 >
                   {availabilityStatesList.map((state) => (
                     <div
+                      key={`${state.availabilityProfileId} ${state.availabilityStateId}`}
                       onClick={() =>
                         handleAgentAvailabilityState(
                           agent.id,

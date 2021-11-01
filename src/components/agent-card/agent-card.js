@@ -55,6 +55,7 @@ const AgentCard = ({
             >
               {availabilityStatesList.map((state) => (
                 <div
+                  key={`${state.availabilityProfileId} ${state.availabilityStateId}`}
                   onClick={() =>
                     handleAgentAvailabilityState(id, state.availabilityProfileId, state.availabilityStateId, state.availabilityStateName)
                   }
