@@ -25,6 +25,7 @@
         display: flex;
         align-items: center;
         padding-left: 15px;
+        margin: 0;
       }
 
       &__filter {
@@ -97,7 +98,7 @@
     table {
       border-spacing: 20px;
       width: 100%;
-      thead {
+      thead td {
         font-weight: bold;
         color: $slate-gray;
         font-size: 14px;
