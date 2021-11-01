@@ -84,6 +84,7 @@ export const saveWallboardThunk = () => async (dispatch, getState) => {
       description: activeWallboard.description,
       widgets: activeWallboard.widgets,
       settings: activeWallboard.settings,
+      size: activeWallboard.size,
     };
 
     const options = {

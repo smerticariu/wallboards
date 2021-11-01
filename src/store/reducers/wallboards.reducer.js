@@ -14,6 +14,10 @@ const wallboardInitialValues = {
   id: null,
   description: 'New Wallboard Description',
   widgets: [],
+  size: {
+    height: null,
+    width: null,
+  },
   settings: {
     display: {
       shrinkHeight: false,
@@ -34,6 +38,7 @@ const initialState = {
     fetchStatus: FetchStatus.NULL,
     fetchMessage: '',
     saveStatus: FetchStatus.NULL,
+    syncDataWithRedux: false,
   },
   allWallboards: {
     wallboards: [],
@@ -179,7 +184,7 @@ export const wallboardsReducer = (state = { ...initialState }, action) => {
               width: 600,
               height: 400,
 
-              widthProcent: 100,
+              widthProcent: 0,
               heightProcent: 0,
             },
       };
@@ -284,6 +289,27 @@ export const wallboardsReducer = (state = { ...initialState }, action) => {
       return {
         ...state,
         wallboardIdForDelete: action.payload,
+      };
+    }
+    case wallboardsActions.SYNC_WALLBOARD_SIZE: {
+      return {
+        ...state,
+        activeWallboard: {
+          ...state.activeWallboard,
+          wallboard: {
+            ...state.activeWallboard.wallboard,
+            size: action.payload,
+          },
+        },
+      };
+    }
+    case wallboardsActions.HANDLE_SYNC_WALLBOARD_SIZE: {
+      return {
+        ...state,
+        activeWallboard: {
+          ...state.activeWallboard,
+          syncDataWithRedux: action.payload,
+        },
       };
     }
 

@@ -187,10 +187,6 @@ const GridResizeContainer = ({ isEditMode = true, widgets = [], ...props }) => {
         endX: gridItem.startX + data.size.width,
         height: data.size.height,
         endY: gridItem.startY + data.size.height,
-        widthProcent: parseFloat((data.size.width * 100) / containerRef.current.offsetWidth).toFixed(2),
-        heightProcent: parseFloat((data.size.height * 100) / containerRef.current.offsetHeight).toFixed(2),
-        // startXProcent: parseFloat((data.size.startX * 100) / containerRef.current.offsetWidth).toFixed(2),
-        // startYProcent: parseFloat((data.size.startY * 100) / containerRef.current.offsetHeight).toFixed(2),
       };
       return activeGridItem;
     });
@@ -207,43 +203,36 @@ const GridResizeContainer = ({ isEditMode = true, widgets = [], ...props }) => {
   };
 
   return (
-    <div ref={containerRef} className="c-grid__components-container">
-      {containerRef.current &&
-        gridComponents
-          .filter((gridComponent) => widgets.some((widget) => widget.id === gridComponent.id))
-          .map((gridComponent) => {
-            const width = shrinkWidth ? gridComponent.width : (containerRef.current.offsetWidth * gridComponent.widthProcent) / 100;
-            const height = shrinkHeight
-              ? gridComponent.height
-              : gridComponent.heightProcent === 0
-              ? 400
-              : (containerRef.current.offsetHeight * gridComponent.heightProcent) / 100;
-            const positionX = shrinkWidth
-              ? gridComponent.startX
-              : (((gridComponent.startX * gridComponent.widthProcent) / gridComponent.width) * containerRef.current.offsetWidth) / 100;
-            //de adaugat sa se numere numarul de coloane
-            return (
-              <Draggable
+    <div className="c-grid__components-container">
+      {gridComponents
+        .filter((gridComponent) => widgets.some((widget) => widget.id === gridComponent.id))
+        .map((gridComponent) => {
+          const width = shrinkWidth;
+          const height = shrinkHeight;
+          const positionX = shrinkWidth;
+          //de adaugat sa se numere numarul de coloane
+          return (
+            <Draggable
+              key={gridComponent.id}
+              bounds="parent"
+              position={{ x: positionX, y: gridComponent.startY }}
+              onStop={(e, position) => onStop(e, position, gridComponent.id)}
+              onDrag={(e, position) => onControlledDrag(e, position, gridComponent.id)}
+              handle=".agent-list__title"
+              disabled={!isEditMode}
+            >
+              <ResizableBox
                 key={gridComponent.id}
-                bounds="parent"
-                position={{ x: positionX, y: gridComponent.startY }}
-                onStop={(e, position) => onStop(e, position, gridComponent.id)}
-                onDrag={(e, position) => onControlledDrag(e, position, gridComponent.id)}
-                handle=".agent-list__title"
-                disabled={!isEditMode}
+                height={height}
+                width={width}
+                onResize={(e, data) => onGridItemResize(e, data, gridComponent.id)}
+                onResizeStop={() => syncDataWithRedux()}
               >
-                <ResizableBox
-                  key={gridComponent.id}
-                  height={height}
-                  width={width}
-                  onResize={(e, data) => onGridItemResize(e, data, gridComponent.id)}
-                  onResizeStop={() => syncDataWithRedux()}
-                >
-                  <GridAgentList isEditMode={isEditMode} widget={widgets.find((widget) => widget.id === gridComponent.id)} />
-                </ResizableBox>
-              </Draggable>
-            );
-          })}
+                <GridAgentList isEditMode={isEditMode} widget={widgets.find((widget) => widget.id === gridComponent.id)} />
+              </ResizableBox>
+            </Draggable>
+          );
+        })}
     </div>
   );
 };
