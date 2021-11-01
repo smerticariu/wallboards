@@ -1,10 +1,5 @@
 import { createArrayFromTo } from '../../../common/utils/generateArray';
 
-export const CALL_QUEUE_OPTIONS = [
-  { TEXT: 'Urgent Support Queue', VALUE: 'URGENT' },
-  { TEXT: 'Not urgent but somewhat important queue', VALUE: 'NOT_URGENT' },
-];
-
 export const SORT_BY_OPTIONS = [
   {
     text: 'Agent Name (Alphabetical)',
@@ -53,7 +48,7 @@ export const PRESENCE_STATE_KEYS = {
   AGENT_STATUS_RINGING: 'ringing',
   AGENT_STATUS_IN_WRAP_UP: 'inWrapUp',
   AGENT_STATUS_IDLE: 'idle',
-  AGENT_STATUS_LOGGED_OFF: 'loggedOff',
+  AGENT_STATUS_LOGGED_OFF: 'loggedoff',
 };
 
 export const PRESENCE_STATE_KEYS_COLOR = {

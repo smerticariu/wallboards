@@ -1,0 +1,40 @@
+.c-dropdown {
+  display: flex;
+  width: 100%;
+  position: relative;
+  &__container {
+    position: absolute;
+    left: 10px;
+    top: 100%;
+    z-index: 10;
+    padding: 8px 6px;
+    border-radius: 6px;
+    background-color: $white;
+    border: 1px solid $pinkish-grey;
+    width: max-content;
+    &--availability {
+      width: 100%;
+      top: 100%;
+      left: 0;
+      transform: none;
+    }
+  }
+  &__trigger {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+  }
+  &__item {
+    color: $slate-gray;
+    font-size: 14px;
+    font-family: $public-sans-regular;
+    cursor: pointer;
+    margin-bottom: 10px;
+    &:hover {
+      text-decoration: underline;
+    }
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}

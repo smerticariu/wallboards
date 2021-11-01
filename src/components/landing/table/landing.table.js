@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
 import { WALLBOARD_MODAL_NAMES } from 'src/components/modal/new-wallboard/modal.new-wallboard.defaults';
 import { handleWallboardActiveModalAC } from 'src/store/actions/modal.action';
 import { setWallboardIdForDeleteAC, setWallboardsByCategoryAC } from 'src/store/actions/wallboards.action';
@@ -153,7 +152,7 @@ const LandingTable = () => {
                   <tr key={index}>
                     <td className="c-landing-table__wb-name">
                       <p>
-                        <a target="_blank" href={wallboardUrl}  rel="noreferrer">
+                        <a target="_blank" href={wallboardUrl} rel="noreferrer">
                           {wb.name}
                         </a>
                       </p>
@@ -166,7 +165,7 @@ const LandingTable = () => {
                       <p>{handleConvertDate(wb.createdOn)}</p>
                     </td>
                     <td className="c-landing-table__wb-actions">
-                      <a target="_blank"  href={`${wallboardUrl}/edit`} className="c-landing-table__edit-btn" />
+                      <a target="_blank" href={`${wallboardUrl}/edit`} className="c-landing-table__edit-btn" />
                       <button
                         onClick={() => {
                           handleCopy(wb);
