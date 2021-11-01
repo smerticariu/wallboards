@@ -175,3 +175,27 @@ export const fetchAvailabilityStatesThunk = (availabilityId) => async (dispatch,
     console.log(error);
   }
 };
+
+export const changeAgentAvailabilityStateThunk =
+  (agentId, availabilityProfileId, availabilityStateId, stateName) => async (dispatch, getState) => {
+    try {
+      const { userInfo, token } = getState().login;
+      const options = {
+        method: 'patch',
+        url: `https://sapien-proxy.redmatter-qa01.pub/v1/organisation/${userInfo.organisationId}/user/${agentId}`,
+        data: {
+          availabilityProfileId: availabilityProfileId,
+          availabilityStateId: availabilityStateId,
+        },
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + token,
+          'Access-Control-Allow-Origin': '*',
+          Accept: 'application/json',
+        },
+      };
+      await axios(options);
+    } catch (error) {
+      console.log(error);
+    }
+  };

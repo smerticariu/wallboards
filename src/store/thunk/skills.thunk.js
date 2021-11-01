@@ -14,8 +14,7 @@ export const fetchAllSkillsThunk = () => async (dispatch, getState) => {
     const { userInfo, token } = getState().login;
     const options = {
       method: 'get',
-      // url: `https://sapien-proxy.redmatter-qa01.pub/v1/organisation/${userInfo.organisationId}/skill`,
-      url: `https://sapien-proxy.redmatter-qa01.pub/v1/organisation/${userInfo.organisationId}/user/${userInfo.id}/skill`,
+      url: `https://sapien-proxy.redmatter-qa01.pub/v1/organisation/${userInfo.organisationId}/skill`,
 
       headers: {
         'Content-Type': 'application/json',

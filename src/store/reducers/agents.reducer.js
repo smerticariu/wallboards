@@ -32,13 +32,17 @@ export const agentsReducer = (state = initialState, action) => {
     case agentsActions.FETCH_ALL_AGENTS_SUCCESS:
       return {
         ...state,
-        agentsQueues: [
-          ...state.agentsQueues,
-          {
-            callQueueId: action.payload.callQueueId,
-            agents: action.payload.agent,
-          },
-        ],
+        agentsQueues: state.agentsQueues.some((agent) => agent.callQueueId === action.payload.callQueueId)
+          ? state.agentsQueues.map((agent) =>
+              agent.callQueueId !== action.payload.callQueueId ? agent : { ...agent, agents: action.payload.agent }
+            )
+          : [
+              ...state.agentsQueues,
+              {
+                callQueueId: action.payload.callQueueId,
+                agents: action.payload.agent,
+              },
+            ],
         agentsQueuesFetchStatus: FetchStatus.SUCCESS,
       };
 
@@ -147,6 +151,19 @@ export const agentsReducer = (state = initialState, action) => {
       return {
         ...state,
         availabilityStatesFetchStatus: FetchStatus.FAIL,
+      };
+
+    case agentsActions.CHANGE_AGENT_AVAILABILITY_STATUS_SUCCESS:
+      return {
+        ...state,
+        agentsQueues: state.agentsQueues.map((agentGroup) => ({
+          ...agentGroup,
+          agents: agentGroup.agents.map((agent) =>
+            agent.userId !== action.payload.userId
+              ? agent
+              : { ...agent, availabilityState: { ...agent.availabilityState, displayName: action.payload.name, name: action.payload.name } }
+          ),
+        })),
       };
 
     default:

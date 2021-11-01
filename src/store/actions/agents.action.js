@@ -22,6 +22,10 @@ export const agentsActions = {
   FETCH_AVAILABILITY_STATES: 'FETCH_AVAILABILITY_STATES',
   FETCH_AVAILABILITY_STATES_SUCCESS: 'FETCH_AVAILABILITY_STATES_SUCCESS',
   FETCH_AVAILABILITY_STATES_FAIL: 'FETCH_AVAILABILITY_STATES_FAIL',
+
+  CHANGE_AGENT_AVAILABILITY_STATUS: 'CHANGE_AGENT_AVAILABILITY_STATUS',
+  CHANGE_AGENT_AVAILABILITY_STATUS_SUCCESS: 'CHANGE_AGENT_AVAILABILITY_STATUS_SUCCESS',
+  CHANGE_AGENT_AVAILABILITY_STATUS_FAIL: 'CHANGE_AGENT_AVAILABILITY_STATUS_FAIL',
 };
 export const fetchAllAgentsAC = () => ({
   type: agentsActions.FETCH_ALL_AGENTS,
@@ -92,5 +96,17 @@ export const fetchAvailabilityStatesSuccessAC = (profiles, availabilityId) => ({
 });
 export const fetchAvailabilityStatesFailAC = (errorMessage) => ({
   type: agentsActions.FETCH_AVAILABILITY_STATES_FAIL,
+  payload: errorMessage,
+});
+
+export const changeAgentAvailabilityStateAC = () => ({
+  type: agentsActions.CHANGE_AGENT_AVAILABILITY_STATUS,
+});
+export const changeAgentAvailabilityStateSuccessAC = (userId, name) => ({
+  type: agentsActions.CHANGE_AGENT_AVAILABILITY_STATUS_SUCCESS,
+  payload: { userId, name },
+});
+export const changeAgentAvailabilityStateFailAC = (errorMessage) => ({
+  type: agentsActions.CHANGE_AGENT_AVAILABILITY_STATUS_FAIL,
   payload: errorMessage,
 });

@@ -4,7 +4,19 @@ import { PRESENCE_STATE_KEYS_COLOR } from '../modal/add-component/modal.add-comp
 import { SettingsIcon } from '../../assets/static/icons/settings';
 import Dropdown from '../dropdown/dropdown';
 import TimeInterval from '../time-interval/time-interval';
-const AgentCard = ({ isPreview, name, ext, status, totalTime, callTime, callStatusKey, ...props }) => {
+const AgentCard = ({
+  id,
+  availabilityStatesList = [],
+  handleAgentAvailabilityState,
+  isPreview,
+  name,
+  ext,
+  status,
+  totalTime,
+  callTime,
+  callStatusKey,
+  ...props
+}) => {
   return (
     <div className={`agent-c agent-c--${PRESENCE_STATE_KEYS_COLOR.CARD_BACKGROUND[callStatusKey]}`}>
       <div className="agent-c__header">
@@ -35,7 +47,26 @@ const AgentCard = ({ isPreview, name, ext, status, totalTime, callTime, callStat
         <div
           className={`agent-c__status agent-c__status--${PRESENCE_STATE_KEYS_COLOR.CARD_AVAILABILITY_STATUS_BACKGROUND[callStatusKey]} agent-c__status--${PRESENCE_STATE_KEYS_COLOR.CARD_AVAILABILITY_STATUS[callStatusKey]}`}
         >
-          {status}
+          {availabilityStatesList.length ? (
+            <Dropdown
+              closeOnClick={true}
+              containerClassName="c-dropdown__container--availability"
+              trigger={<div className="agent-t__arrow-container">{status}</div>}
+            >
+              {availabilityStatesList.map((state) => (
+                <div
+                  onClick={() =>
+                    handleAgentAvailabilityState(id, state.availabilityProfileId, state.availabilityStateId, state.availabilityStateName)
+                  }
+                  className="c-dropdown__item"
+                >
+                  {state.availabilityProfileName} - {state.availabilityStateDisplayName}
+                </div>
+              ))}
+            </Dropdown>
+          ) : (
+            status
+          )}
         </div>
         <div className={`agent-c__time agent-c__time--${PRESENCE_STATE_KEYS_COLOR.CARD_TOTAL_TIME[callStatusKey]}`}>{totalTime}</div>
       </div>

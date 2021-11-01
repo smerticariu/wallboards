@@ -8,6 +8,7 @@ import {
   setWidgetComponentForEditAC,
 } from 'src/store/actions/modal.action';
 import {
+  changeAgentAvailabilityStateThunk,
   fetchAllAgentsThunk,
   fetchDevicesSipAgentsThunk,
   fetchOrganisationAgentsThunk,
@@ -30,6 +31,32 @@ const GridAgentList = ({ isEditMode, widget, ...props }) => {
   const agents = useSelector((state) => state.agents);
   const { agentsSkill } = useSelector((state) => state.skills);
   const [agentsForDisplay, setAgentsForDisplay] = useState([]);
+
+  const { availabilityStates, availabilityProfiles } = useSelector((state) => state.agents);
+  const [availabilityStatesList, handleAvailabilityStatesList] = useState([]);
+
+  useEffect(() => {
+    if (availabilityStates.length && availabilityProfiles.length) {
+      handleAvailabilityStatesList(
+        availabilityProfiles.reduce((availabilityList, availabilityProfile) => {
+          const list = [];
+          const availabilityState = availabilityStates.find((state) => state.availabilityProfileId === availabilityProfile.id);
+          if (availabilityState) {
+            availabilityState.states.forEach((state) =>
+              list.push({
+                availabilityProfileId: availabilityProfile.id,
+                availabilityProfileName: availabilityProfile.name,
+                availabilityStateId: state.id,
+                availabilityStateName: state.name,
+                availabilityStateDisplayName: state.displayName,
+              })
+            );
+          }
+          return [...availabilityList, ...list];
+        }, [])
+      );
+    }
+  }, [availabilityProfiles, availabilityStates]);
   useEffect(() => {
     dispatch(fetchAllAgentsThunk(widget.callQueue.id));
     const agentsInterval = setInterval(() => {
@@ -113,7 +140,9 @@ const GridAgentList = ({ isEditMode, widget, ...props }) => {
       </div>
     );
   };
-
+  const handleAgentAvailabilityState = (agentId, profileId, stateId, availabilityStateName) => {
+    dispatch(changeAgentAvailabilityStateThunk(agentId, profileId, stateId, availabilityStateName));
+  };
   return (
     <div className="agent-list">
       <div className="agent-list__header">
@@ -136,6 +165,9 @@ const GridAgentList = ({ isEditMode, widget, ...props }) => {
         ) : widget.view === MAIN_VIEWING_OPTIONS.CARD ? (
           agentsForDisplay.map((agent) => (
             <AgentCard
+              id={agent.userId}
+              availabilityStatesList={availabilityStatesList}
+              handleAgentAvailabilityState={handleAgentAvailabilityState}
               key={agent.userId}
               callStatusKey={agent.status}
               callTime={0}
@@ -149,7 +181,10 @@ const GridAgentList = ({ isEditMode, widget, ...props }) => {
           <>
             <AgentTable
               columnsToView={widget.columnsToView.selectedItems}
+              availabilityStatesList={availabilityStatesList}
+              handleAgentAvailabilityState={handleAgentAvailabilityState}
               agents={agentsForDisplay.map((agent) => ({
+                id: agent.userId,
                 callStatusKey: agent.status,
                 agentName: `${agent.lastName} ${agent.firstName}`,
                 agentExtNo: agent.sipExtension,

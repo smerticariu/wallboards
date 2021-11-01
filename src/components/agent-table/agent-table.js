@@ -4,7 +4,7 @@ import { ArrowDownIcon } from '../../assets/static/icons/arrow-down';
 import Dropdown from '../dropdown/dropdown';
 import { ADD_COMPONENT_COLUMN_OPTIONS, PRESENCE_STATE_KEYS_COLOR } from '../modal/add-component/modal.add-component.defaults';
 import TimeInterval from '../time-interval/time-interval';
-const AgentTable = ({ columnsToView, agents, ...props }) => {
+const AgentTable = ({ availabilityStatesList, handleAgentAvailabilityState, columnsToView, agents, ...props }) => {
   const activeColumns = {
     isAgentNameColumn: columnsToView.includes(ADD_COMPONENT_COLUMN_OPTIONS.AGENT_NAME),
     isAgentExtNoColumn: columnsToView.includes(ADD_COMPONENT_COLUMN_OPTIONS.AGENT_EXTENSION),
@@ -124,8 +124,21 @@ const AgentTable = ({ columnsToView, agents, ...props }) => {
                     </div>
                   }
                 >
-                  <div className="c-dropdown__item">Listen live</div>
-                  <div className="c-dropdown__item">Call agent</div>
+                  {availabilityStatesList.map((state) => (
+                    <div
+                      onClick={() =>
+                        handleAgentAvailabilityState(
+                          agent.id,
+                          state.availabilityProfileId,
+                          state.availabilityStateId,
+                          state.availabilityStateName
+                        )
+                      }
+                      className="c-dropdown__item"
+                    >
+                      {state.availabilityProfileName} - {state.availabilityStateDisplayName}
+                    </div>
+                  ))}
                 </Dropdown>
               </div>
             )}
