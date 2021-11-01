@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useAuth0 } from '@auth0/auth0-react';
 import config from 'src/config/auth';
@@ -30,48 +30,45 @@ function App() {
   const activeModalName = useSelector((state) => state.modal.activeModalName);
   const { warningMessage } = useSelector((state) => state.modal);
   const sfToken = window?.WbConfig?.sfSessionId;
-  
-  useEffect(() => {   
+
+  useEffect(() => {
     const fetchData = async () => {
- 
       try {
-        if(!sfToken && (isAuthenticated)) {
+        if (!sfToken && isAuthenticated) {
           await getAccessTokenSilently(config).then((res) => {
             dispatch(setAccessTokenAC(res));
             dispatch(setUserTokenInfoAC(jwtExtractor(res)));
             dispatch(fetchUserInfoThunk(res));
           });
-        }
-
-        else if(sfToken) {
+        } else if (sfToken) {
           const options = {
             method: 'get',
             url: `https://gatekeeper.redmatter-qa01.pub/token/salesforce?scope=${config.scope}`,
             headers: {
               'Content-Type': 'application/json',
-              Authorization: `Bearer ${sfToken}`
-            }
-          }
-    
-          await axios(options).then(res => {
+              Authorization: `Bearer ${sfToken}`,
+            },
+          };
+
+          await axios(options).then((res) => {
             dispatch(setAccessTokenAC(res.data.jwt));
             dispatch(setUserTokenInfoAC(jwtExtractor(res.data.jwt)));
             dispatch(fetchUserInfoThunk(res.data.jwt));
-          })
+          });
         }
       } catch (err) {
         console.log(err);
       }
-
     };
     fetchData();
+    // eslint-disable-next-line
   }, [isAuthenticated]);
 
   const handleRedirect = () => {
     const wbToRedirect = localStorage.getItem('wallboard'); //store the link of the read-only wallboard
     localStorage.removeItem('wallboard'); //remove the link of the read-only wallboard
-    if(wbToRedirect) window.location.href = wbToRedirect; //redirect to the link of the read-only wallboard
-  }
+    if (wbToRedirect) window.location.href = wbToRedirect; //redirect to the link of the read-only wallboard
+  };
 
   const handleLogout = () => {
     logout();
@@ -83,7 +80,7 @@ function App() {
       {!userInfo && isAuthenticated && <p>Loading...</p>}
       {userInfo && userTokenInfo && (
         <>
-        <button onClick={() => handleLogout()}>logout</button>
+          <button onClick={() => handleLogout()}>logout</button>
           {handleRedirect()}
           <HashRouter>
             <Switch>
@@ -110,7 +107,7 @@ function App() {
         </>
       )}
 
-      {!sfToken && (!isAuthenticated && !isLoading) && <Login />}
+      {!sfToken && !isAuthenticated && !isLoading && <Login />}
     </div>
   );
 }

@@ -207,23 +207,28 @@ const GridResizeContainer = ({ isEditMode = true, wallboardSize, widgets = [], .
         gridComponents
           .filter((gridComponent) => widgets.some((widget) => widget.id === gridComponent.id))
           .map((gridComponent) => {
-
-
-            const precentForOnePxInLastContainerWidth = (100 / wallboardSize.width)
-            const precentForOnePxInNewContainerWidth = (100 / containerRef.current.offsetWidth)
             const width = shrinkWidth
               ? gridComponent.width
               : wallboardSize
-              ? 
+              ? (containerRef.current.offsetWidth * gridComponent.width) / wallboardSize.width
               : gridComponent.width;
-            const height = gridComponent.height;
-            // const positionX = shrinkWidth ?  ;
-            //de adaugat sa se numere numarul de coloane
+            const startX = shrinkWidth
+              ? gridComponent.startX
+              : wallboardSize
+              ? (containerRef.current.offsetWidth * gridComponent.startX) / wallboardSize.width
+              : gridComponent.startX;
+
+            const height = shrinkHeight
+              ? gridComponent.height
+              : wallboardSize
+              ? (containerRef.current.offsetHeight * gridComponent.height) / wallboardSize.htight
+              : gridComponent.htight;
+
             return (
               <Draggable
                 key={gridComponent.id}
                 bounds="parent"
-                position={{ x: gridComponent.startX, y: gridComponent.startY }}
+                position={{ x: startX, y: gridComponent.startY }}
                 onStop={(e, position) => onStop(e, position, gridComponent.id)}
                 onDrag={(e, position) => onControlledDrag(e, position, gridComponent.id)}
                 handle=".agent-list__title"

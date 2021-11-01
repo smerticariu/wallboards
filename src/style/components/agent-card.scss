@@ -93,6 +93,10 @@
       color: $white;
     }
   }
+  &__cog-icon {
+    display: flex;
+    width: 10px;
+  }
   &__time {
     background-color: rgba($white, 0.08);
     width: fit-content;

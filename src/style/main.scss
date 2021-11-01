@@ -17,6 +17,7 @@
 @import 'components/autosuggest.scss';
 @import 'components/notification.scss';
 @import 'components/resizable.scss';
+@import 'components/dropdown.scss';
 
 *,
 ::before,
@@ -76,4 +77,9 @@ body {
   font-size: 16px;
   text-align: center;
   color: $input-text-colour;
+  &--agents {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+  }
 }
