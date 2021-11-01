@@ -221,9 +221,9 @@ const GridResizeContainer = ({ isEditMode = true, wallboardSize, widgets = [], .
             const height = shrinkHeight
               ? gridComponent.height
               : wallboardSize
-              ? (containerRef.current.offsetHeight * gridComponent.height) / wallboardSize.htight
-              : gridComponent.htight;
-
+              ? (containerRef.current.offsetHeight * gridComponent.height) / wallboardSize.height
+              : gridComponent.height;
+            // sa vad ce e cu height
             return (
               <Draggable
                 key={gridComponent.id}
