@@ -15,6 +15,10 @@ const AgentCard = ({
   totalTime,
   callTime,
   callStatusKey,
+  isEditMode,
+  canCallAgents,
+  canListenLive,
+  canChangeAvailabilityState,
   ...props
 }) => {
   return (
@@ -33,12 +37,12 @@ const AgentCard = ({
           </div>
         </div>
         <div className="agent-c__cog-icon">
-          {isPreview ? (
+          {isPreview || !isEditMode || (!canListenLive && !canCallAgents) ? (
             <SettingsIcon className="i--settings" />
           ) : (
             <Dropdown closeOnClick={true} trigger={<SettingsIcon className="i--settings" />}>
-              <div className="c-dropdown__item">Listen live</div>
-              <div className="c-dropdown__item">Call agent</div>
+              {canListenLive && <div className="c-dropdown__item">Listen live</div>}
+              {canCallAgents && <div className="c-dropdown__item">Call agent</div>}
             </Dropdown>
           )}
         </div>
@@ -47,7 +51,7 @@ const AgentCard = ({
         <div
           className={`agent-c__status agent-c__status--${PRESENCE_STATE_KEYS_COLOR.CARD_AVAILABILITY_STATUS_BACKGROUND[callStatusKey]} agent-c__status--${PRESENCE_STATE_KEYS_COLOR.CARD_AVAILABILITY_STATUS[callStatusKey]}`}
         >
-          {availabilityStatesList.length ? (
+          {isEditMode && availabilityStatesList.length && canChangeAvailabilityState ? (
             <Dropdown
               closeOnClick={true}
               containerClassName="c-dropdown__container--availability"
@@ -61,7 +65,7 @@ const AgentCard = ({
                   }
                   className="c-dropdown__item"
                 >
-                  {state.availabilityProfileName} - {state.availabilityStateDisplayName}
+                  {state.availabilityStateDisplayName}
                 </div>
               ))}
             </Dropdown>
