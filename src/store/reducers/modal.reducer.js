@@ -21,7 +21,7 @@ const initialState = {
     },
     callQueue: { id: '', name: '', errorMessage: '' },
     mainViewing: MAIN_VIEWING_OPTIONS.CARD,
-    sortBy: SORT_BY_OPTIONS[0].text,
+    sortBy: { value: SORT_BY_OPTIONS[0].value, errorMessage: '' },
     columns: ADD_COMPONENT_COLUMNS_NO_OPTIONS.ONE,
     availabilityStates: {
       selectAll: true,
@@ -131,7 +131,7 @@ export const modalReducer = (state = initialState, action) => {
             errorMessage: '',
           },
           mainViewing: widgetForEdit.view,
-          sortBy: widgetForEdit.sortBy,
+          sortBy: { value: widgetForEdit.sortBy, errorMessage: '' },
           columns: widgetForEdit.columns,
           availabilityStates: widgetForEdit.availabilityStates,
           presenceStates: widgetForEdit.presenceStates,

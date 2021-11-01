@@ -20,6 +20,7 @@ import {
   ADD_COMPONENT_COLUMNS_NO_OPTIONS,
   MAIN_VIEWING_OPTIONS,
   PRESENCE_STATE_KEYS,
+  SORT_BY_VALUES,
 } from '../modal/add-component/modal.add-component.defaults';
 import { WALLBOARD_MODAL_NAMES } from '../modal/new-wallboard/modal.new-wallboard.defaults';
 import { FetchStatus } from 'src/store/reducers/wallboards.reducer';
@@ -112,7 +113,18 @@ const GridAgentList = ({ isEditMode, widget, ...props }) => {
           widget.availabilityStates.selectedItems.some((state) => state.availabilityStateId === agent.availabilityState?.id);
         return isSkill && isPresenceState && isAvailabilityState;
       });
-      setAgentsForDisplay(filtredAgentsWithFullInfo);
+
+      const sortedAgents = filtredAgentsWithFullInfo.sort((agent1, agent2) => {
+        if (widget.sortBy === SORT_BY_VALUES.AGENT_NAME)
+          return `${agent1.firstName} ${agent1.lastName}`.localeCompare(`${agent2.firstName} ${agent2.lastName}`);
+        if (widget.sortBy === SORT_BY_VALUES.AVAILABILITY_STATE)
+          return agent1?.availabilityState?.displayName.localeCompare(agent2?.availabilityState?.displayName);
+        if (widget.sortBy === SORT_BY_VALUES.PRESENCE_STATE) return agent1.status.localeCompare(agent2.status);
+        if (widget.sortBy === SORT_BY_VALUES.TIME_CURRENT_AVAILABILITY_STATE)
+          return agent2.timeInCurrentAvailabilityState - agent1.timeInCurrentAvailabilityState;
+        return 0;
+      });
+      setAgentsForDisplay(sortedAgents);
     }
     // eslint-disable-next-line
   }, [agents, agentsSkill]);
