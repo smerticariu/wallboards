@@ -10,6 +10,8 @@
   max-width: max-content;
   text-decoration: none;
   min-width: fit-content;
+  background: transparent;
+
   &--blue {
     background-color: $sf-brand-blue;
     color: $white;
