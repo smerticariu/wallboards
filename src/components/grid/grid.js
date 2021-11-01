@@ -34,7 +34,7 @@ const GridPage = ({ ...props }) => {
   const handleGridComponents = () => {
     return (
       <div className="c-grid__components" ref={sortableListRef}>
-        <GridResizeContainer widgets={activeWallboard.widgets} />
+        <GridResizeContainer wallboardSize={activeWallboard.size} widgets={activeWallboard.widgets} />
       </div>
     );
   };

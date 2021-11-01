@@ -5,7 +5,7 @@ import { ResizableBox } from 'react-resizable';
 import { handleWallboardGridLayoutChangeAC } from 'src/store/actions/wallboards.action';
 import GridAgentList from './grid.agent-list';
 
-const GridResizeContainer = ({ isEditMode = true, widgets = [], ...props }) => {
+const GridResizeContainer = ({ isEditMode = true, wallboardSize, widgets = [], ...props }) => {
   const dispatch = useDispatch();
   const containerRef = useRef();
   const { shrinkHeight, shrinkWidth } = useSelector((state) => state.wallboards.present.activeWallboard.wallboard.settings.display);
@@ -177,7 +177,6 @@ const GridResizeContainer = ({ isEditMode = true, widgets = [], ...props }) => {
   };
   const onGridItemResize = (e, data, gridItemId) => {
     let activeGridItem;
-    if (data.size.width > containerRef.current.offsetWidth) return;
 
     const gridItemsWithChangedSize = gridComponents.map((gridItem) => {
       if (gridItem.id !== gridItemId) return gridItem;
@@ -203,36 +202,45 @@ const GridResizeContainer = ({ isEditMode = true, widgets = [], ...props }) => {
   };
 
   return (
-    <div className="c-grid__components-container">
-      {gridComponents
-        .filter((gridComponent) => widgets.some((widget) => widget.id === gridComponent.id))
-        .map((gridComponent) => {
-          const width = shrinkWidth;
-          const height = shrinkHeight;
-          const positionX = shrinkWidth;
-          //de adaugat sa se numere numarul de coloane
-          return (
-            <Draggable
-              key={gridComponent.id}
-              bounds="parent"
-              position={{ x: positionX, y: gridComponent.startY }}
-              onStop={(e, position) => onStop(e, position, gridComponent.id)}
-              onDrag={(e, position) => onControlledDrag(e, position, gridComponent.id)}
-              handle=".agent-list__title"
-              disabled={!isEditMode}
-            >
-              <ResizableBox
+    <div ref={containerRef} className="c-grid__components-container">
+      {containerRef.current &&
+        gridComponents
+          .filter((gridComponent) => widgets.some((widget) => widget.id === gridComponent.id))
+          .map((gridComponent) => {
+
+
+            const precentForOnePxInLastContainerWidth = (100 / wallboardSize.width)
+            const precentForOnePxInNewContainerWidth = (100 / containerRef.current.offsetWidth)
+            const width = shrinkWidth
+              ? gridComponent.width
+              : wallboardSize
+              ? 
+              : gridComponent.width;
+            const height = gridComponent.height;
+            // const positionX = shrinkWidth ?  ;
+            //de adaugat sa se numere numarul de coloane
+            return (
+              <Draggable
                 key={gridComponent.id}
-                height={height}
-                width={width}
-                onResize={(e, data) => onGridItemResize(e, data, gridComponent.id)}
-                onResizeStop={() => syncDataWithRedux()}
+                bounds="parent"
+                position={{ x: gridComponent.startX, y: gridComponent.startY }}
+                onStop={(e, position) => onStop(e, position, gridComponent.id)}
+                onDrag={(e, position) => onControlledDrag(e, position, gridComponent.id)}
+                handle=".agent-list__title"
+                disabled={!isEditMode}
               >
-                <GridAgentList isEditMode={isEditMode} widget={widgets.find((widget) => widget.id === gridComponent.id)} />
-              </ResizableBox>
-            </Draggable>
-          );
-        })}
+                <ResizableBox
+                  key={gridComponent.id}
+                  height={height}
+                  width={width}
+                  onResize={(e, data) => onGridItemResize(e, data, gridComponent.id)}
+                  onResizeStop={() => syncDataWithRedux()}
+                >
+                  <GridAgentList isEditMode={isEditMode} widget={widgets.find((widget) => widget.id === gridComponent.id)} />
+                </ResizableBox>
+              </Draggable>
+            );
+          })}
     </div>
   );
 };

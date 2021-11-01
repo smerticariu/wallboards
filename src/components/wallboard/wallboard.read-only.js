@@ -35,7 +35,7 @@ const WallboardReadOnly = () => {
 
       <div className="c-wallboard--read-only__component">
         <div className="c-wallboard--read-only__cards">
-          <GridResizeContainer isEditMode={false} widgets={wallboard.widgets} />
+          <GridResizeContainer wallboardSize={wallboard.size} isEditMode={false} widgets={wallboard.widgets} />
         </div>
       </div>
     </div>
