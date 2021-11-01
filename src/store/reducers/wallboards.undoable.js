@@ -65,7 +65,8 @@ export const wallboardsUndoable = (reducer) => {
       case wallboardsActions.FETCH_ALL_WALLBOARDS_SUCCESS:
       case wallboardsActions.SAVE_WALLBOARD:
       case wallboardsActions.SAVE_WALLBOARD_FAIL:
-      case wallboardsActions.SAVE_WALLBOARD_RESET_STATUS: {
+      case wallboardsActions.SAVE_WALLBOARD_RESET_STATUS:
+      case wallboardsActions.SYNC_WALLBOARD_SIZE: {
         const newPresent = reducer(present, action);
         if (present === newPresent) {
           return state;

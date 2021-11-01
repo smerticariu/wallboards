@@ -13,9 +13,6 @@ const ModalSaveWallboard = ({ ...props }) => {
   const history = useHistory();
   const dispatch = useDispatch();
   const activeWallboard = useSelector((state) => state.wallboards.present.activeWallboard.wallboard);
-  useEffect(() => {
-    dispatch(handleSyncWallboardSizeAC(true));
-  }, []);
   const closeModal = () => {
     dispatch(handleWallboardActiveModalAC(null));
   };

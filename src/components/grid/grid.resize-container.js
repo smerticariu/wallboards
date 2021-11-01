@@ -218,17 +218,28 @@ const GridResizeContainer = ({ isEditMode = true, wallboardSize, widgets = [], .
               ? (containerRef.current.offsetWidth * gridComponent.startX) / wallboardSize.width
               : gridComponent.startX;
 
-            const height = shrinkHeight
-              ? gridComponent.height
-              : wallboardSize
-              ? (containerRef.current.offsetHeight * gridComponent.height) / wallboardSize.height
-              : gridComponent.height;
-            // sa vad ce e cu height
+            const height =
+              shrinkHeight || isEditMode
+                ? gridComponent.height
+                : wallboardSize
+                ? (containerRef.current.offsetHeight * gridComponent.height) / wallboardSize.height
+                : gridComponent.height;
+
+            const startY =
+              shrinkHeight || isEditMode
+                ? gridComponent.startY
+                : wallboardSize
+                ? (containerRef.current.offsetHeight * gridComponent.startY) / wallboardSize.height
+                : gridComponent.startY;
+            //trebuie sa vad cum fac de pe screen mare pe screen mic
             return (
               <Draggable
                 key={gridComponent.id}
                 bounds="parent"
-                position={{ x: startX, y: gridComponent.startY }}
+                position={{
+                  x: isEditMode ? (((gridComponent.startX * 100) / wallboardSize.width) * containerRef.current.offsetWidth) / 100 : startX,
+                  y: startY,
+                }}
                 onStop={(e, position) => onStop(e, position, gridComponent.id)}
                 onDrag={(e, position) => onControlledDrag(e, position, gridComponent.id)}
                 handle=".agent-list__title"
@@ -237,9 +248,12 @@ const GridResizeContainer = ({ isEditMode = true, wallboardSize, widgets = [], .
                 <ResizableBox
                   key={gridComponent.id}
                   height={height}
-                  width={width}
+                  width={
+                    isEditMode ? (((gridComponent.width * 100) / wallboardSize.width) * containerRef.current.offsetWidth) / 100 : width
+                  }
                   onResize={(e, data) => onGridItemResize(e, data, gridComponent.id)}
                   onResizeStop={() => syncDataWithRedux()}
+                  resizeHandles={isEditMode ? ['se', 'e', 's'] : []}
                 >
                   <GridAgentList isEditMode={isEditMode} widget={widgets.find((widget) => widget.id === gridComponent.id)} />
                 </ResizableBox>

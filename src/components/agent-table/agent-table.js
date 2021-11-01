@@ -4,7 +4,7 @@ import { ArrowDownIcon } from '../../assets/static/icons/arrow-down';
 import Dropdown from '../dropdown/dropdown';
 import { ADD_COMPONENT_COLUMN_OPTIONS, PRESENCE_STATE_KEYS_COLOR } from '../modal/add-component/modal.add-component.defaults';
 import TimeInterval from '../time-interval/time-interval';
-const AgentTable = ({ availabilityStatesList, handleAgentAvailabilityState, columnsToView, agents, ...props }) => {
+const AgentTable = ({ isEditMode, availabilityStatesList, handleAgentAvailabilityState, columnsToView, agents, ...props }) => {
   const activeColumns = {
     isAgentNameColumn: columnsToView.includes(ADD_COMPONENT_COLUMN_OPTIONS.AGENT_NAME),
     isAgentExtNoColumn: columnsToView.includes(ADD_COMPONENT_COLUMN_OPTIONS.AGENT_EXTENSION),
@@ -97,10 +97,14 @@ const AgentTable = ({ availabilityStatesList, handleAgentAvailabilityState, colu
         {agents?.map((agent, index) => (
           <div key={`${agent.userId} ${index}`} className="agent-t__agent">
             <div className="agent-t__agent-info">
-              <Dropdown closeOnClick={true} trigger={<SettingsIcon className="i--settings i--settings--table" />}>
-                <div className="c-dropdown__item">Listen live</div>
-                <div className="c-dropdown__item">Call agent</div>
-              </Dropdown>
+              {!isEditMode ? (
+                <SettingsIcon className="i--settings i--settings--table" />
+              ) : (
+                <Dropdown closeOnClick={true} trigger={<SettingsIcon className="i--settings i--settings--table" />}>
+                  <div className="c-dropdown__item">Listen live</div>
+                  <div className="c-dropdown__item">Call agent</div>
+                </Dropdown>
+              )}
             </div>
             {activeColumns.isAgentNameColumn && (
               <div className="agent-t__agent-info" style={{ width: colWidth }}>
@@ -114,33 +118,37 @@ const AgentTable = ({ availabilityStatesList, handleAgentAvailabilityState, colu
                 }`}
                 style={{ width: colWidth }}
               >
-                <Dropdown
-                  closeOnClick={true}
-                  containerClassName="c-dropdown__container--availability"
-                  trigger={
-                    <div className="agent-t__arrow-container">
-                      {agent.currAvaiState}
-                      <ArrowDownIcon className="i--arrow--down i--arrow--down--table i--arrow--down--large" />
-                    </div>
-                  }
-                >
-                  {availabilityStatesList.map((state) => (
-                    <div
-                      key={`${state.availabilityProfileId} ${state.availabilityStateId}`}
-                      onClick={() =>
-                        handleAgentAvailabilityState(
-                          agent.id,
-                          state.availabilityProfileId,
-                          state.availabilityStateId,
-                          state.availabilityStateName
-                        )
-                      }
-                      className="c-dropdown__item"
-                    >
-                      {state.availabilityProfileName} - {state.availabilityStateDisplayName}
-                    </div>
-                  ))}
-                </Dropdown>
+                {isEditMode ? (
+                  <Dropdown
+                    closeOnClick={true}
+                    containerClassName="c-dropdown__container--availability"
+                    trigger={
+                      <div className="agent-t__arrow-container">
+                        {agent.currAvaiState}
+                        <ArrowDownIcon className="i--arrow--down i--arrow--down--table i--arrow--down--large" />
+                      </div>
+                    }
+                  >
+                    {availabilityStatesList.map((state) => (
+                      <div
+                        key={`${state.availabilityProfileId} ${state.availabilityStateId}`}
+                        onClick={() =>
+                          handleAgentAvailabilityState(
+                            agent.id,
+                            state.availabilityProfileId,
+                            state.availabilityStateId,
+                            state.availabilityStateName
+                          )
+                        }
+                        className="c-dropdown__item"
+                      >
+                        {state.availabilityProfileName} - {state.availabilityStateDisplayName}
+                      </div>
+                    ))}
+                  </Dropdown>
+                ) : (
+                  agent.currAvaiState
+                )}
               </div>
             )}
             {activeColumns.isAgentExtNoColumn && (
@@ -190,13 +198,17 @@ const AgentTable = ({ availabilityStatesList, handleAgentAvailabilityState, colu
             )}
             {activeColumns.isListOfSkillsColumn && (
               <div className="agent-t__agent-info" style={{ width: colWidth }}>
-                <Dropdown openOnHover closeOnClick={true} trigger={<div className="agent-t__agent-info__skills">...</div>}>
-                  {agent.listOfSkills.map((skill, index) => (
-                    <div key={index} className="c-dropdown__item">
-                      {skill.name}
-                    </div>
-                  ))}
-                </Dropdown>
+                {agent.listOfSkills.length ? (
+                  <Dropdown closeOnClick={true} trigger={<div className="agent-t__agent-info__skills">...</div>}>
+                    {agent.listOfSkills.map((skill, index) => (
+                      <div key={index} className="c-dropdown__item">
+                        {skill.name}
+                      </div>
+                    ))}
+                  </Dropdown>
+                ) : (
+                  'None'
+                )}
               </div>
             )}
             <div className="agent-t__agent-info  agent-t__agent-info--circle" style={{ width: colWidth }}>

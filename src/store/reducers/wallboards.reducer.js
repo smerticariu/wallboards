@@ -306,15 +306,6 @@ export const wallboardsReducer = (state = { ...initialState }, action) => {
         },
       };
     }
-    case wallboardsActions.HANDLE_SYNC_WALLBOARD_SIZE: {
-      return {
-        ...state,
-        activeWallboard: {
-          ...state.activeWallboard,
-          syncDataWithRedux: action.payload,
-        },
-      };
-    }
 
     default:
       return state;

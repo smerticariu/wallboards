@@ -75,7 +75,7 @@ const GridAgentList = ({ isEditMode, widget, ...props }) => {
       });
     }
     // eslint-disable-next-line
-  }, [agentQueues]);
+  }, [agentQueues?.agents?.length]);
 
   useEffect(() => {
     if (
@@ -97,7 +97,7 @@ const GridAgentList = ({ isEditMode, widget, ...props }) => {
           firstName: orgUser.firstName,
           lastName: orgUser.lastName,
           timeInCurrentAvailabilityState:
-            agentQueue.status === PRESENCE_STATE_KEYS.AGENT_STATUS_IDLE ? 0 : lastAvailabilityStateChangeSeconds,
+            agentQueue.status !== PRESENCE_STATE_KEYS.AGENT_STATUS_INBOUND_CALL_OTHER ? 0 : lastAvailabilityStateChangeSeconds,
         };
       });
 
@@ -170,6 +170,7 @@ const GridAgentList = ({ isEditMode, widget, ...props }) => {
               key={`${agent.userId} ${index}`}
               callStatusKey={agent.status}
               callTime={0}
+              isEditMode={isEditMode}
               ext={agent.sipExtension}
               name={`${agent.lastName} ${agent.firstName}`}
               status={agent?.availabilityState?.displayName ?? 'None'}
@@ -178,29 +179,10 @@ const GridAgentList = ({ isEditMode, widget, ...props }) => {
           ))
         ) : (
           <>
-            <AgentTable
-              columnsToView={widget.columnsToView.selectedItems}
-              availabilityStatesList={availabilityStatesList}
-              handleAgentAvailabilityState={handleAgentAvailabilityState}
-              agents={agentsForDisplay.map((agent) => ({
-                id: agent.userId,
-                callStatusKey: agent.status,
-                agentName: `${agent.lastName} ${agent.firstName}`,
-                agentExtNo: agent.sipExtension,
-                currAvaiState: agent.availabilityState?.displayName ?? 'None',
-                currPresState: agent.status,
-                noCallsOffered: agent.callCount,
-                noCallsAnswered: '0',
-                noCallsMissed: '0',
-                timeInCurrentPresenceState: 0,
-                timeInCurrentAvailabilityState: agent.timeInCurrentAvailabilityState,
-                timeInCurrentCall: 0,
-                timeInCurrentWrapup: 0,
-                listOfSkills: agent.agentSkills,
-              }))}
-            />
-            {widget.columns === ADD_COMPONENT_COLUMNS_NO_OPTIONS.TWO && (
+            {[...new Array(widget.columns === ADD_COMPONENT_COLUMNS_NO_OPTIONS.TWO ? 2 : 1)].map((_, index) => (
               <AgentTable
+                key={index}
+                isEditMode={isEditMode}
                 columnsToView={widget.columnsToView.selectedItems}
                 availabilityStatesList={availabilityStatesList}
                 handleAgentAvailabilityState={handleAgentAvailabilityState}
@@ -221,7 +203,7 @@ const GridAgentList = ({ isEditMode, widget, ...props }) => {
                   listOfSkills: agent.agentSkills,
                 }))}
               />
-            )}
+            ))}
           </>
         )}
       </div>

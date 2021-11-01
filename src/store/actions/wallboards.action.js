@@ -35,8 +35,6 @@ export const wallboardsActions = {
 
   APPLY_WALLBOARD_SETTINGS: 'APPLY_WALLBOARD_SETTINGS',
 
-  HANDLE_SYNC_WALLBOARD_SIZE: 'HANDLE_SYNC_WALLBOARD_SIZE',
-
   SYNC_WALLBOARD_SIZE: 'SYNC_WALLBOARD_SIZE',
 };
 
@@ -144,11 +142,6 @@ export const wallboardRedoAC = () => ({
 export const applyWallboardSettingsAC = (settings) => ({
   type: wallboardsActions.APPLY_WALLBOARD_SETTINGS,
   payload: settings,
-});
-
-export const handleSyncWallboardSizeAC = (syncDataWithRedux) => ({
-  type: wallboardsActions.HANDLE_SYNC_WALLBOARD_SIZE,
-  payload: syncDataWithRedux,
 });
 
 export const syncWallboardSizeAC = (size) => ({

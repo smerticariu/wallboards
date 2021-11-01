@@ -12,9 +12,6 @@ const ModalConfirmSaveWallboard = ({ ...props }) => {
     dispatch(handleWallboardActiveModalAC(null));
   };
 
-  useEffect(() => {
-    dispatch(handleSyncWallboardSizeAC(true));
-  }, []);
   useOnClickOutside(modalRef, () => closeModal());
 
   const handleCancelButton = () => {

@@ -5,7 +5,7 @@ import Toolbar from '../toolbar/toolbar';
 import { WALLBOARD_MODAL_NAMES } from '../modal/new-wallboard/modal.new-wallboard.defaults';
 import GridPage from '../grid/grid';
 import { fetchWallboardByIdThunk } from 'src/store/thunk/wallboards.thunk';
-import { useParams } from 'react-router';
+import { Redirect, useParams } from 'react-router';
 import { FetchStatus } from 'src/store/reducers/wallboards.reducer';
 import { resetWallboardEditPageDataAC } from 'src/store/actions/wallboards.action';
 import { fetchAllSkillsThunk } from 'src/store/thunk/skills.thunk';
@@ -43,6 +43,9 @@ const WallboardEdit = () => {
     // eslint-disable-next-line
   }, [id]);
 
+  if (!activeWallboard.isNewWallboard && fetchStatus === FetchStatus.FAIL) {
+    return <Redirect to="/" />;
+  }
   if (!activeWallboard.isNewWallboard && fetchStatus !== FetchStatus.SUCCESS) {
     return <div>{fetchMessage}</div>;
   }
