@@ -95,7 +95,7 @@ const AgentTable = ({ availabilityStatesList, handleAgentAvailabilityState, colu
 
       <div className="agent-t__body">
         {agents?.map((agent, index) => (
-          <div key={index} className="agent-t__agent">
+          <div key={`${agent.userId} ${index}`} className="agent-t__agent">
             <div className="agent-t__agent-info">
               <Dropdown closeOnClick={true} trigger={<SettingsIcon className="i--settings i--settings--table" />}>
                 <div className="c-dropdown__item">Listen live</div>
