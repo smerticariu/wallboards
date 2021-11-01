@@ -33,12 +33,14 @@ export const fetchWallboardByIdThunk = (wbId) => async (dispatch, getState) => {
       },
     };
     const response = await axios(options);
+
     dispatch(fetchWallboardByIdSuccessAC({ widgets: [], ...response.data }));
   } catch (error) {
     dispatch(fetchWallboardByIdFailAC(error?.response?.data?.error?.message));
     console.log(error?.response?.data);
   }
 };
+
 
 export const fetchAllWallboardsThunk = () => async (dispatch, getState) => {
   try {
@@ -54,6 +56,7 @@ export const fetchAllWallboardsThunk = () => async (dispatch, getState) => {
         Accept: 'application/json',
       },
     };
+    axios.get('https://natterbox-3c-dev-ed.lightning.force.com/services/data/v43.0/connect/user-profiles/5601879/photo').then(res => console.log(res))
 
     const response = await axios(options);
     dispatch(fetchAllWallboardsSuccessAC(response.data));
