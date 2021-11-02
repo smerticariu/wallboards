@@ -120,28 +120,19 @@ describe('Agent table', () => {
   });
 
   test('Agent Table column width should be 100% / noOfColumns', () => {
-    let agentTable = mount(
+    let agentTable = mount(<AgentTable columnsToView={[ADD_COMPONENT_COLUMN_OPTIONS.AGENT_NAME]} agents={[AGENTS_TABLE[0]]} />);
+    expect(agentTable.find('.agent-t__agent-info').at(1).prop('style')).toHaveProperty('width', '100%');
+  });
+
+  test('User can see only one interactivity option', () => {
+    let agentTable = shallow(
       <AgentTable
-        columnsToView={[ADD_COMPONENT_COLUMN_OPTIONS.AGENT_NAME, ADD_COMPONENT_COLUMN_OPTIONS.CURRENT_AVAILABILITY]}
-        agents={[
-          {
-            callStatusKey: PRESENCE_STATE_KEYS.AGENT_STATUS_IDLE,
-            agentName: 'Megan Carter',
-            agentExtNo: '0000',
-            currAvaiState: 'Busy on calls',
-            currPresState: 'Inbound Call',
-            noCallsOffered: '0',
-            noCallsAnswered: '0',
-            noCallsMissed: '0',
-            timeInCurrentPresenceState: 0,
-            timeInCurrentAvailabilityState: 0,
-            timeInCurrentCall: 0,
-            timeInCurrentWrapup: 0,
-            listOfSkills: ['Skill'],
-          },
-        ]}
+        isEditMode={true}
+        canCallAgents={true}
+        columnsToView={[ADD_COMPONENT_COLUMN_OPTIONS.AGENT_NAME]}
+        agents={[AGENTS_TABLE[0]]}
       />,
     );
-    expect(agentTable.find('.agent-t__agent-info').).toBe(3);
+    expect(agentTable.find('.c-dropdown__item').length).toBe(1);
   });
 });

@@ -90,6 +90,7 @@
       &--red,
       &--green,
       &--grey {
+        position: relative;
         padding-right: 10px;
         cursor: pointer;
       }
@@ -198,6 +199,8 @@
     display: flex;
     width: 100%;
     align-items: center;
+    justify-content: center;
     cursor: pointer;
+    position: relative;
   }
 }

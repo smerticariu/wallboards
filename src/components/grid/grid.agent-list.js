@@ -113,7 +113,6 @@ const GridAgentList = ({ isEditMode, widget, ...props }) => {
           widget.availabilityStates.selectedItems.some((state) => state.availabilityStateId === agent.availabilityState?.id);
         return isSkill && isPresenceState && isAvailabilityState;
       });
-
       const sortedAgents = filtredAgentsWithFullInfo.sort((agent1, agent2) => {
         if (widget.sortBy === SORT_BY_VALUES.AGENT_NAME)
           return `${agent1.firstName} ${agent1.lastName}`.localeCompare(`${agent2.firstName} ${agent2.lastName}`);
