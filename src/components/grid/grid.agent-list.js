@@ -19,7 +19,7 @@ import AgentTable from '../agent-table/agent-table';
 import {
   ADD_COMPONENT_COLUMNS_NO_OPTIONS,
   MAIN_VIEWING_OPTIONS,
-  PRESENCE_STATE_KEYS,
+  SORT_BY_VALUES,
 } from '../modal/add-component/modal.add-component.defaults';
 import { WALLBOARD_MODAL_NAMES } from '../modal/new-wallboard/modal.new-wallboard.defaults';
 import { FetchStatus } from 'src/store/reducers/wallboards.reducer';
@@ -96,21 +96,35 @@ const GridAgentList = ({ isEditMode, widget, ...props }) => {
           userName: orgUser.userName,
           firstName: orgUser.firstName,
           lastName: orgUser.lastName,
-          timeInCurrentAvailabilityState:
-            agentQueue.status !== PRESENCE_STATE_KEYS.AGENT_STATUS_INBOUND_CALL_OTHER ? 0 : lastAvailabilityStateChangeSeconds,
+          timeInCurrentAvailabilityState: lastAvailabilityStateChangeSeconds ?? 0,
         };
       });
 
       const filtredAgentsWithFullInfo = agentsWithFullInfo.filter((agent) => {
         const isSkill =
-          widget.skills.selectAll || agent.agentSkills.some((agentSkill) => widget.skills.selectedItems.includes(agentSkill.name));
+          agent.agentSkills.length === 0
+            ? false
+            : widget.skills.selectAll || agent.agentSkills.some((agentSkill) => widget.skills.selectedItems.includes(agentSkill.name));
         const isPresenceState = widget.presenceStates.selectAll || widget.presenceStates.selectedItems.includes(agent.status);
         const isAvailabilityState =
           widget.availabilityStates.selectAll ||
           widget.availabilityStates.selectedItems.some((state) => state.availabilityStateId === agent.availabilityState?.id);
         return isSkill && isPresenceState && isAvailabilityState;
       });
-      setAgentsForDisplay(filtredAgentsWithFullInfo);
+
+      const sortedAgents = filtredAgentsWithFullInfo.sort((agent1, agent2) => {
+        if (widget.sortBy === SORT_BY_VALUES.AGENT_NAME)
+          return `${agent2.firstName} ${agent2.lastName}`
+            .toUpperCase()
+            .localeCompare(`${agent1.firstName} ${agent1.lastName}`.toUpperCase());
+        if (widget.sortBy === SORT_BY_VALUES.AVAILABILITY_STATE)
+          return agent1?.availabilityState?.displayName.localeCompare(agent2?.availabilityState?.displayName);
+        if (widget.sortBy === SORT_BY_VALUES.PRESENCE_STATE) return agent1.status.localeCompare(agent2.status);
+        if (widget.sortBy === SORT_BY_VALUES.TIME_CURRENT_AVAILABILITY_STATE)
+          return agent2.timeInCurrentAvailabilityState - agent1.timeInCurrentAvailabilityState;
+        return 0;
+      });
+      setAgentsForDisplay(sortedAgents);
     }
     // eslint-disable-next-line
   }, [agents, agentsSkill]);
@@ -175,35 +189,62 @@ const GridAgentList = ({ isEditMode, widget, ...props }) => {
               name={`${agent.lastName} ${agent.firstName}`}
               status={agent?.availabilityState?.displayName ?? 'None'}
               totalTime="00:00:00"
+              canChangeAvailabilityState={widget.interactivity.selectedItems.includes('CHANGE_AVAILABILITY_STATE')}
+              canListenLive={widget.interactivity.selectedItems.includes('LISTEN_LIVE')}
+              canCallAgents={widget.interactivity.selectedItems.includes('CALL_AGENTS')}
             />
           ))
         ) : (
           <>
-            {[...new Array(widget.columns === ADD_COMPONENT_COLUMNS_NO_OPTIONS.TWO ? 2 : 1)].map((_, index) => (
-              <AgentTable
-                key={index}
-                isEditMode={isEditMode}
-                columnsToView={widget.columnsToView.selectedItems}
-                availabilityStatesList={availabilityStatesList}
-                handleAgentAvailabilityState={handleAgentAvailabilityState}
-                agents={agentsForDisplay.map((agent) => ({
-                  id: agent.userId,
-                  callStatusKey: agent.status,
-                  agentName: `${agent.lastName} ${agent.firstName}`,
-                  agentExtNo: agent.sipExtension,
-                  currAvaiState: agent.availabilityState?.displayName ?? 'None',
-                  currPresState: agent.status,
-                  noCallsOffered: agent.callCount,
-                  noCallsAnswered: '0',
-                  noCallsMissed: '0',
-                  timeInCurrentPresenceState: 0,
-                  timeInCurrentAvailabilityState: agent.timeInCurrentAvailabilityState,
-                  timeInCurrentCall: 0,
-                  timeInCurrentWrapup: 0,
-                  listOfSkills: agent.agentSkills,
-                }))}
-              />
-            ))}
+            {[...new Array(widget.columns === ADD_COMPONENT_COLUMNS_NO_OPTIONS.TWO ? 2 : 1)].map((_, index) => {
+              const startSlice =
+                widget.columns === ADD_COMPONENT_COLUMNS_NO_OPTIONS.TWO
+                  ? index === 0
+                    ? 0
+                    : agentsForDisplay.length % 2 === 0
+                    ? agentsForDisplay.length / 2
+                    : agentsForDisplay.length / 2 + 1
+                  : 0;
+
+              const endSlice =
+                widget.columns === ADD_COMPONENT_COLUMNS_NO_OPTIONS.TWO
+                  ? index === 0
+                    ? agentsForDisplay.length % 2 === 0
+                      ? agentsForDisplay.length / 2
+                      : (agentsForDisplay.length + 1) / 2
+                    : agentsForDisplay.length
+                  : agentsForDisplay.length;
+              return (
+                <AgentTable
+                  key={index}
+                  canChangeAvailabilityState={widget.interactivity.selectedItems.includes('CHANGE_AVAILABILITY_STATE')}
+                  canListenLive={widget.interactivity.selectedItems.includes('LISTEN_LIVE')}
+                  canCallAgents={widget.interactivity.selectedItems.includes('CALL_AGENTS')}
+                  isEditMode={isEditMode}
+                  columnsToView={widget.columnsToView.selectedItems}
+                  availabilityStatesList={availabilityStatesList}
+                  handleAgentAvailabilityState={handleAgentAvailabilityState}
+                  agents={JSON.parse(JSON.stringify(agentsForDisplay))
+                    .splice(startSlice, endSlice)
+                    .map((agent) => ({
+                      id: agent.userId,
+                      callStatusKey: agent.status,
+                      agentName: `${agent.lastName} ${agent.firstName}`,
+                      agentExtNo: agent.sipExtension,
+                      currAvaiState: agent.availabilityState?.displayName ?? 'None',
+                      currPresState: agent.status,
+                      noCallsOffered: agent.callCount,
+                      noCallsAnswered: '0',
+                      noCallsMissed: '0',
+                      timeInCurrentPresenceState: 0,
+                      timeInCurrentAvailabilityState: agent.timeInCurrentAvailabilityState,
+                      timeInCurrentCall: 0,
+                      timeInCurrentWrapup: 0,
+                      listOfSkills: agent.agentSkills,
+                    }))}
+                />
+              );
+            })}
           </>
         )}
       </div>

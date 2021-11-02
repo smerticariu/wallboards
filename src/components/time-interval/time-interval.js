@@ -4,7 +4,6 @@ const TimeInterval = ({ seconds, ...props }) => {
   const [timeLocal, setTimeLocal] = useState(seconds);
   useEffect(() => {
     let interval;
-
     if (seconds) {
       setTimeLocal(seconds);
       interval = setInterval(() => {

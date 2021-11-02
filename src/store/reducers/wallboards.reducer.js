@@ -168,7 +168,7 @@ export const wallboardsReducer = (state = { ...initialState }, action) => {
           name: modalAddComponent.callQueue.name,
         },
         view: modalAddComponent.mainViewing,
-        sortBy: modalAddComponent.sortBy,
+        sortBy: modalAddComponent.sortBy.value,
         availabilityStates: modalAddComponent.availabilityStates,
         presenceStates: modalAddComponent.presenceStates,
         interactivity: modalAddComponent.interactivityOptions,

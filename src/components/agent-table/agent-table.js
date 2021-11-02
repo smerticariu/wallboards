@@ -4,7 +4,17 @@ import { ArrowDownIcon } from '../../assets/static/icons/arrow-down';
 import Dropdown from '../dropdown/dropdown';
 import { ADD_COMPONENT_COLUMN_OPTIONS, PRESENCE_STATE_KEYS_COLOR } from '../modal/add-component/modal.add-component.defaults';
 import TimeInterval from '../time-interval/time-interval';
-const AgentTable = ({ isEditMode, availabilityStatesList, handleAgentAvailabilityState, columnsToView, agents, ...props }) => {
+const AgentTable = ({
+  canCallAgents,
+  canListenLive,
+  canChangeAvailabilityState,
+  isEditMode,
+  availabilityStatesList,
+  handleAgentAvailabilityState,
+  columnsToView,
+  agents,
+  ...props
+}) => {
   const activeColumns = {
     isAgentNameColumn: columnsToView.includes(ADD_COMPONENT_COLUMN_OPTIONS.AGENT_NAME),
     isAgentExtNoColumn: columnsToView.includes(ADD_COMPONENT_COLUMN_OPTIONS.AGENT_EXTENSION),
@@ -97,12 +107,12 @@ const AgentTable = ({ isEditMode, availabilityStatesList, handleAgentAvailabilit
         {agents?.map((agent, index) => (
           <div key={`${agent.userId} ${index}`} className="agent-t__agent">
             <div className="agent-t__agent-info">
-              {!isEditMode ? (
+              {!isEditMode || (!canListenLive && !canCallAgents) ? (
                 <SettingsIcon className="i--settings i--settings--table" />
               ) : (
                 <Dropdown closeOnClick={true} trigger={<SettingsIcon className="i--settings i--settings--table" />}>
-                  <div className="c-dropdown__item">Listen live</div>
-                  <div className="c-dropdown__item">Call agent</div>
+                  {canListenLive && <div className="c-dropdown__item">Listen live</div>}
+                  {canCallAgents && <div className="c-dropdown__item">Call agent</div>}
                 </Dropdown>
               )}
             </div>
@@ -118,7 +128,7 @@ const AgentTable = ({ isEditMode, availabilityStatesList, handleAgentAvailabilit
                 }`}
                 style={{ width: colWidth }}
               >
-                {isEditMode ? (
+                {isEditMode && canChangeAvailabilityState ? (
                   <Dropdown
                     closeOnClick={true}
                     containerClassName="c-dropdown__container--availability"
@@ -142,7 +152,7 @@ const AgentTable = ({ isEditMode, availabilityStatesList, handleAgentAvailabilit
                         }
                         className="c-dropdown__item"
                       >
-                        {state.availabilityProfileName} - {state.availabilityStateDisplayName}
+                        {state.availabilityStateDisplayName}
                       </div>
                     ))}
                   </Dropdown>
@@ -202,7 +212,7 @@ const AgentTable = ({ isEditMode, availabilityStatesList, handleAgentAvailabilit
                   <Dropdown closeOnClick={true} trigger={<div className="agent-t__agent-info__skills">...</div>}>
                     {agent.listOfSkills.map((skill, index) => (
                       <div key={index} className="c-dropdown__item">
-                        {skill.name}
+                        {skill.description}
                       </div>
                     ))}
                   </Dropdown>
