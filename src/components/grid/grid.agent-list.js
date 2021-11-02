@@ -97,8 +97,7 @@ const GridAgentList = ({ isEditMode, widget, ...props }) => {
           userName: orgUser.userName,
           firstName: orgUser.firstName,
           lastName: orgUser.lastName,
-          timeInCurrentAvailabilityState:
-            agentQueue.status !== PRESENCE_STATE_KEYS.AGENT_STATUS_INBOUND_CALL_OTHER ? 0 : lastAvailabilityStateChangeSeconds,
+          timeInCurrentAvailabilityState: lastAvailabilityStateChangeSeconds ?? 0,
         };
       });
 
