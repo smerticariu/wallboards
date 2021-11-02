@@ -67,7 +67,7 @@ describe('Agent table', () => {
     expect(agentTable.text()).toMatch(/Megan Carter/);
   });
 
-  test('Agent Table should have 2 columns (state and settings icon)', () => {
+  test('Agent Table should have 1 column (settings icon)', () => {
     let agentTable = mount(
       <AgentTable
         columnsToView={[]}
@@ -90,10 +90,10 @@ describe('Agent table', () => {
         ]}
       />,
     );
-    expect(agentTable.find('.agent-t__agent-info').length).toBe(2);
+    expect(agentTable.find('.agent-t__agent-info').length).toBe(1);
   });
 
-  test('Agent Table should have 3 columns (state, settings icon and agent name )', () => {
+  test('Agent Table should have 2 columns (settings icon and agent name )', () => {
     let agentTable = mount(
       <AgentTable
         columnsToView={[ADD_COMPONENT_COLUMN_OPTIONS.AGENT_NAME]}
@@ -116,7 +116,7 @@ describe('Agent table', () => {
         ]}
       />,
     );
-    expect(agentTable.find('.agent-t__agent-info').length).toBe(3);
+    expect(agentTable.find('.agent-t__agent-info').length).toBe(2);
   });
 
   test('Agent Table column width should be 100% / noOfColumns', () => {
@@ -134,5 +134,17 @@ describe('Agent table', () => {
       />,
     );
     expect(agentTable.find('.c-dropdown__item').length).toBe(1);
+  });
+
+  test('If is not edit mode, user can"t see interactivity options and availanility state options', () => {
+    let agentTable = shallow(
+      <AgentTable
+        isEditMode={false}
+        canCallAgents={true}
+        columnsToView={[ADD_COMPONENT_COLUMN_OPTIONS.AGENT_NAME]}
+        agents={[AGENTS_TABLE[0]]}
+      />,
+    );
+    expect(agentTable.find('.c-dropdown__item').length).toBe(0);
   });
 });
