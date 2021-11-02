@@ -1,6 +1,6 @@
 import React from 'react';
-import { SettingsIcon } from 'src/assets/static/icons/settings';
 import { ArrowDownIcon } from '../../assets/static/icons/arrow-down';
+import { SettingsIcon } from '../../assets/static/icons/settings';
 import Dropdown from '../dropdown/dropdown';
 import { ADD_COMPONENT_COLUMN_OPTIONS, PRESENCE_STATE_KEYS_COLOR } from '../modal/add-component/modal.add-component.defaults';
 import TimeInterval from '../time-interval/time-interval';
@@ -134,7 +134,7 @@ const AgentTable = ({
                     containerClassName="c-dropdown__container--availability"
                     trigger={
                       <div className="agent-t__arrow-container">
-                        {agent.currAvaiState}
+                        <div className="agent-t__availability-status">{agent.currAvaiState}</div>
                         <ArrowDownIcon className="i--arrow--down i--arrow--down--table i--arrow--down--large" />
                       </div>
                     }

@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import useOnClickOutside from 'src/common/hooks/useOnClickOutside';
+import useOnClickOutside from '../../common/hooks/useOnClickOutside';
 
 const Dropdown = ({ trigger, containerClassName = '', openOnHover, closeOnClick, value, children, ...props }) => {
   const triggerRef = useRef(null);

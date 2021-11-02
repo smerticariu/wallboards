@@ -1,16 +1,14 @@
 import React from 'react';
 import Enzyme, { mount, shallow } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-import AgentTable from 'components/agent-table/agent-table';
-import { AGENTS_TABLE } from 'components/grid/grid.defaults';
-import { PRESENCE_STATE_KEYS } from 'components/modal/add-component/modal.add-component.defaults';
-import { ADD_COMPONENT_COLUMN_OPTIONS } from 'components/modal/add-component/modal.add-component.defaults';
-import { render } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
+import { ADD_COMPONENT_COLUMN_OPTIONS, PRESENCE_STATE_KEYS } from '../../src/components/modal/add-component/modal.add-component.defaults';
+import AgentTable from '../../src/components/agent-table/agent-table';
+import { AGENTS_TABLE } from '../../src/components/grid/grid.defaults';
 Enzyme.configure({ adapter: new Adapter() });
 
-describe('Agent card', () => {
-  test('Sign In button should be rendered', () => {
+describe('Agent table', () => {
+  test('Agent table should be rendered', () => {
     let agentTable = mount(
       <AgentTable
         columnsToView={Object.keys(ADD_COMPONENT_COLUMN_OPTIONS)}
@@ -24,11 +22,11 @@ describe('Agent card', () => {
             noCallsOffered: '0',
             noCallsAnswered: '0',
             noCallsMissed: '0',
-            timeInCurrentPresenceState: '- - : - - : - -',
-            timeInCurrentAvailabilityState: '- - : - - : - -',
-            timeInCurrentCall: '- - : - - : - -',
-            timeInCurrentWrapup: '- - : - - : - -',
-            listOfSkills: 'Skill',
+            timeInCurrentPresenceState: 0,
+            timeInCurrentAvailabilityState: 0,
+            timeInCurrentCall: 0,
+            timeInCurrentWrapup: 0,
+            listOfSkills: ['Skill'],
           },
         ]}
       />,
@@ -44,7 +42,7 @@ describe('Agent card', () => {
   });
 
   test('Agent Table card should render the agent name', () => {
-    let agentTable = render(
+    let agentTable = mount(
       <AgentTable
         columnsToView={Object.keys(ADD_COMPONENT_COLUMN_OPTIONS)}
         agents={[
@@ -57,15 +55,93 @@ describe('Agent card', () => {
             noCallsOffered: '0',
             noCallsAnswered: '0',
             noCallsMissed: '0',
-            timeInCurrentPresenceState: '- - : - - : - -',
-            timeInCurrentAvailabilityState: '- - : - - : - -',
-            timeInCurrentCall: '- - : - - : - -',
-            timeInCurrentWrapup: '- - : - - : - -',
-            listOfSkills: 'Skill',
+            timeInCurrentPresenceState: 0,
+            timeInCurrentAvailabilityState: 0,
+            timeInCurrentCall: 0,
+            timeInCurrentWrapup: 0,
+            listOfSkills: ['Skill'],
           },
         ]}
       />,
     );
-    expect(agentTable.hasClass('agent-t__agent-info')[0]).toHaveTextContent('Megan Carter');
+    expect(agentTable.text()).toMatch(/Megan Carter/);
+  });
+
+  test('Agent Table should have 2 columns (state and settings icon)', () => {
+    let agentTable = mount(
+      <AgentTable
+        columnsToView={[]}
+        agents={[
+          {
+            callStatusKey: PRESENCE_STATE_KEYS.AGENT_STATUS_IDLE,
+            agentName: 'Megan Carter',
+            agentExtNo: '0000',
+            currAvaiState: 'Busy on calls',
+            currPresState: 'Inbound Call',
+            noCallsOffered: '0',
+            noCallsAnswered: '0',
+            noCallsMissed: '0',
+            timeInCurrentPresenceState: 0,
+            timeInCurrentAvailabilityState: 0,
+            timeInCurrentCall: 0,
+            timeInCurrentWrapup: 0,
+            listOfSkills: ['Skill'],
+          },
+        ]}
+      />,
+    );
+    expect(agentTable.find('.agent-t__agent-info').length).toBe(2);
+  });
+
+  test('Agent Table should have 3 columns (state, settings icon and agent name )', () => {
+    let agentTable = mount(
+      <AgentTable
+        columnsToView={[ADD_COMPONENT_COLUMN_OPTIONS.AGENT_NAME]}
+        agents={[
+          {
+            callStatusKey: PRESENCE_STATE_KEYS.AGENT_STATUS_IDLE,
+            agentName: 'Megan Carter',
+            agentExtNo: '0000',
+            currAvaiState: 'Busy on calls',
+            currPresState: 'Inbound Call',
+            noCallsOffered: '0',
+            noCallsAnswered: '0',
+            noCallsMissed: '0',
+            timeInCurrentPresenceState: 0,
+            timeInCurrentAvailabilityState: 0,
+            timeInCurrentCall: 0,
+            timeInCurrentWrapup: 0,
+            listOfSkills: ['Skill'],
+          },
+        ]}
+      />,
+    );
+    expect(agentTable.find('.agent-t__agent-info').length).toBe(3);
+  });
+
+  test('Agent Table column width should be 100% / noOfColumns', () => {
+    let agentTable = mount(
+      <AgentTable
+        columnsToView={[ADD_COMPONENT_COLUMN_OPTIONS.AGENT_NAME, ADD_COMPONENT_COLUMN_OPTIONS.CURRENT_AVAILABILITY]}
+        agents={[
+          {
+            callStatusKey: PRESENCE_STATE_KEYS.AGENT_STATUS_IDLE,
+            agentName: 'Megan Carter',
+            agentExtNo: '0000',
+            currAvaiState: 'Busy on calls',
+            currPresState: 'Inbound Call',
+            noCallsOffered: '0',
+            noCallsAnswered: '0',
+            noCallsMissed: '0',
+            timeInCurrentPresenceState: 0,
+            timeInCurrentAvailabilityState: 0,
+            timeInCurrentCall: 0,
+            timeInCurrentWrapup: 0,
+            listOfSkills: ['Skill'],
+          },
+        ]}
+      />,
+    );
+    expect(agentTable.find('.agent-t__agent-info').).toBe(3);
   });
 });
