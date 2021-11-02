@@ -6,6 +6,8 @@ import { notificationReducer } from './notification.reducer';
 import { modalReducer } from './modal.reducer';
 import { wallboardsUndoable } from './wallboards.undoable';
 import { skillsReducer } from './skills.reducer';
+import { callsQueuesReducer } from './callsQueues.reducer';
+import { agentsReducer } from './agents.reducer';
 
 export default combineReducers({
   login: loginReducer,
@@ -14,4 +16,6 @@ export default combineReducers({
   notification: notificationReducer,
   modal: modalReducer,
   skills: skillsReducer,
+  callsQueues: callsQueuesReducer,
+  agents: agentsReducer,
 });

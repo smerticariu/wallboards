@@ -16,7 +16,7 @@ const jwtExtractor = (token) => {
     sapienUsername: data['https://sapien/username'],
     sapienOrgId: data['https://sapien/orgId'],
     sapienUserId: data['https://sapien/userId'],
-    salesforceRestUrl: data['https://natterbox.com/claim/salesforce/restUrl'].replace('{version}', '42.0'),
+    salesforceRestUrl: data['https://natterbox.com/claim/salesforce/restUrl']?.replace('{version}', '42.0'),
     salesforceAccessToken: data['https://natterbox.com/claim/salesforce/accessToken'],
   });
 };

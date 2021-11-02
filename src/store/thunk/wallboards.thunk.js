@@ -33,12 +33,14 @@ export const fetchWallboardByIdThunk = (wbId) => async (dispatch, getState) => {
       },
     };
     const response = await axios(options);
+
     dispatch(fetchWallboardByIdSuccessAC({ widgets: [], ...response.data }));
   } catch (error) {
     dispatch(fetchWallboardByIdFailAC(error?.response?.data?.error?.message));
     console.log(error?.response?.data);
   }
 };
+
 
 export const fetchAllWallboardsThunk = () => async (dispatch, getState) => {
   try {
@@ -56,7 +58,6 @@ export const fetchAllWallboardsThunk = () => async (dispatch, getState) => {
     };
 
     const response = await axios(options);
-
     dispatch(fetchAllWallboardsSuccessAC(response.data));
   } catch (error) {
     dispatch(fetchAllWallboardsFailAC());
@@ -219,7 +220,7 @@ export const syncWallboardsWithConfig = () => async (dispatch, getState) => {
         });
       });
 
-      if (allwbs.data.data.length == index + 1) {
+      if (allwbs.data.data.length === index + 1) {
         const options = {
           method: 'put',
           url: `https://wallboards-store.redmatter-qa01.pub/organisation/${userInfo.organisationId}/key/config.json`, // add each wb to config

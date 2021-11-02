@@ -2,7 +2,6 @@ import { modalActions } from '../actions/modal.action';
 import {
   ADD_COMPONENT_COLUMNS_NO_OPTIONS,
   ADD_COMPONENT_STATE_OPTIONS,
-  CALL_QUEUE_OPTIONS,
   MAIN_VIEWING_OPTIONS,
   SORT_BY_OPTIONS,
 } from 'src/components/modal/add-component/modal.add-component.defaults';
@@ -20,17 +19,14 @@ const initialState = {
       value: '',
       errorMessage: '',
     },
-    callQueue: { value: CALL_QUEUE_OPTIONS[1].VALUE, errorMessage: '' },
+    callQueue: { id: '', name: '', errorMessage: '' },
     mainViewing: MAIN_VIEWING_OPTIONS.CARD,
-    sortBy: SORT_BY_OPTIONS[0].text,
+    sortBy: { value: SORT_BY_OPTIONS[0].value, errorMessage: '' },
     columns: ADD_COMPONENT_COLUMNS_NO_OPTIONS.ONE,
     availabilityStates: {
       selectAll: true,
       selectNone: false,
-      selectedItems: ADD_COMPONENT_STATE_OPTIONS.availabilityStates.reduce(
-        (strArr, el) => (el.isInitialChecked ? [...strArr, el.value] : strArr),
-        []
-      ),
+      selectedItems: [],
     },
     presenceStates: {
       selectAll: true,
@@ -125,10 +121,17 @@ export const modalReducer = (state = initialState, action) => {
       return {
         ...state,
         modalAddComponent: {
-          title: { value: widgetForEdit.name, errorMessage: '' },
-          callQueue: { value: widgetForEdit.queue, errorMessage: '' },
+          title: {
+            value: widgetForEdit.name,
+            errorMessage: '',
+          },
+          callQueue: {
+            id: widgetForEdit.callQueue.id,
+            name: widgetForEdit.callQueue.name,
+            errorMessage: '',
+          },
           mainViewing: widgetForEdit.view,
-          sortBy: widgetForEdit.sortBy,
+          sortBy: { value: widgetForEdit.sortBy, errorMessage: '' },
           columns: widgetForEdit.columns,
           availabilityStates: widgetForEdit.availabilityStates,
           presenceStates: widgetForEdit.presenceStates,

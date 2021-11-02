@@ -1,34 +1,41 @@
 import { createArrayFromTo } from '../../../common/utils/generateArray';
+export const SORT_BY_VALUES = {
+  AGENT_NAME: 'AGENT_NAME',
 
-export const CALL_QUEUE_OPTIONS = [
-  { TEXT: 'Urgent Support Queue', VALUE: 'URGENT' },
-  { TEXT: 'Not urgent but somewhat important queue', VALUE: 'NOT_URGENT' },
-];
+  AVAILABILITY_STATE: 'AVAILABILITY_STATE',
 
+  PRESENCE_STATE: 'PRESENCE_STATE',
+
+  TIME_CURRENT_CALL: 'TIME_CURRENT_CALL',
+
+  TIME_CURRENT_AVAILABILITY_STATE: 'TIME_CURRENT_AVAILABILITY_STATE',
+
+  TIME_PHONE_TODAY: 'TIME_PHONE_TODAY',
+};
 export const SORT_BY_OPTIONS = [
   {
     text: 'Agent Name (Alphabetical)',
-    value: 'AGENT_NAME',
+    value: SORT_BY_VALUES.AGENT_NAME,
   },
   {
     text: 'Availability state (Alphabetical)',
-    value: 'AVAILABILITY_STATE',
+    value: SORT_BY_VALUES.AVAILABILITY_STATE,
   },
   {
     text: 'Presence state',
-    value: 'PRESENCE_STATE',
+    value: SORT_BY_VALUES.PRESENCE_STATE,
   },
   {
     text: 'Time on current call (Most time on the phone first)',
-    value: 'TIME_CURRENT_CALL',
+    value: SORT_BY_VALUES.TIME_CURRENT_CALL,
   },
   {
     text: 'Time spent in current availability state (Most time in the state first)',
-    value: 'TIME_CURRENT_AVAILABILITY_STATE',
+    value: SORT_BY_VALUES.TIME_CURRENT_AVAILABILITY_STATE,
   },
   {
     text: 'Total time spent on the phone today (Most time first)',
-    value: 'TIME_PHONE_TODAY',
+    value: SORT_BY_VALUES.TIME_PHONE_TODAY,
   },
 ];
 
@@ -53,7 +60,7 @@ export const PRESENCE_STATE_KEYS = {
   AGENT_STATUS_RINGING: 'ringing',
   AGENT_STATUS_IN_WRAP_UP: 'inWrapUp',
   AGENT_STATUS_IDLE: 'idle',
-  AGENT_STATUS_LOGGED_OFF: 'loggedOff',
+  AGENT_STATUS_LOGGED_OFF: 'loggedoff',
 };
 
 export const PRESENCE_STATE_KEYS_COLOR = {

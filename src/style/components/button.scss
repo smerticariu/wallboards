@@ -10,6 +10,9 @@
   max-width: max-content;
   text-decoration: none;
   min-width: fit-content;
+  background: transparent;
+  font-weight: normal;
+
   &--blue {
     background-color: $sf-brand-blue;
     color: $white;
@@ -58,6 +61,7 @@
     background-color: $white;
     border: none;
     width: 40px;
+    background: transparent;
   }
   &__separator {
     display: flex;
