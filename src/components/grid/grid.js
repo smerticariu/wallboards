@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { createArrayFromTo } from '../../common/utils/generateArray';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { CELLS_NUMBER_ADD, INITIAL_CELLS_NUMBER } from './grid.defaults';
 import GridResizeContainer from './grid.resize-container';
 const GridPage = ({ ...props }) => {
@@ -9,14 +9,13 @@ const GridPage = ({ ...props }) => {
 
   const sortableListRef = useRef();
   const gridRef = useRef();
-  const dispatch = useDispatch();
 
   useEffect(() => {
-    gridRef.current.addEventListener('scroll', function () {
-      console.log(gridRef.current.scrollHeight);
-      console.log(gridRef.current.offsetHeight);
-      console.log(gridRef.current.scrollTop);
-      if (gridRef.current.scrollHeight < gridRef.current.offsetHeight + gridRef.current.scrollTop) {
+    if (gridRef.current.scrollHeight === gridRef.current.offsetHeight) {
+      setGridCells((gridCellsLocal) => gridCellsLocal + CELLS_NUMBER_ADD);
+    }
+    gridRef.current.addEventListener('scroll', () => {
+      if (gridRef.current.scrollHeight <= gridRef.current.offsetHeight + gridRef.current.scrollTop) {
         setGridCells((gridCellsLocal) => gridCellsLocal + CELLS_NUMBER_ADD);
       }
     });

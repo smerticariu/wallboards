@@ -13,6 +13,7 @@ const GridResizeContainer = ({ isEditMode = true, wallboardSize, widgets = [], .
 
   const [gridComponents, setGridComponents] = useState([]);
   const screenWidth = useWindowSize();
+
   useEffect(() => {
     if (containerRef.current?.offsetWidth) {
       const containerWidth = containerRef.current.offsetWidth;
@@ -63,9 +64,8 @@ const GridResizeContainer = ({ isEditMode = true, wallboardSize, widgets = [], .
           };
         })
       );
-      console.log(screenWidth);
     }
-  }, [widgets, screenWidth]);
+  }, [screenWidth]);
 
   const syncDataWithRedux = (gridData = gridComponents) => {
     dispatch(
@@ -235,7 +235,6 @@ const GridResizeContainer = ({ isEditMode = true, wallboardSize, widgets = [], .
       };
       return activeGridItem;
     });
-
     const elementsThatNeedToChangeYPosition = identifyElementsThatNeedToTranslateToBottom(gridItemsWithChangedSize, activeGridItem);
     const gridItemsWithChangedYPosition = changeGridElementsYPosition(
       gridItemsWithChangedSize,
@@ -246,7 +245,6 @@ const GridResizeContainer = ({ isEditMode = true, wallboardSize, widgets = [], .
 
     setGridComponents(gridItemsToTop);
   };
-
   return (
     <div ref={containerRef} className="c-grid__components-container">
       {containerRef.current &&
@@ -271,6 +269,7 @@ const GridResizeContainer = ({ isEditMode = true, wallboardSize, widgets = [], .
                   height={gridComponent.height}
                   onResize={(e, data) => onGridItemResize(e, data, gridComponent.id)}
                   onResizeStop={() => syncDataWithRedux()}
+                  maxConstraints={[containerRef.current.offsetWidth - gridComponent.startX - 5, Infinity]}
                   resizeHandles={isEditMode ? ['se', 'e', 's'] : []}
                 >
                   <GridAgentList isEditMode={isEditMode} widget={widgets.find((widget) => widget.id === gridComponent.id)} />

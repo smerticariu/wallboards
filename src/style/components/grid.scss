@@ -2,7 +2,9 @@
   width: calc(100% - 30px);
   margin: 0 auto;
   position: relative;
+  max-height: calc(100vh - 150px);
   overflow: auto;
+
   &__cells {
     display: grid;
     width: 100%;
