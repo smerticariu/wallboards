@@ -20,6 +20,9 @@ const WallboardEdit = () => {
   const activeWallboard = useSelector((state) => state.wallboards.present.activeWallboard.wallboard);
   const { availabilityProfiles } = useSelector((state) => state.agents);
 
+  const { userInfo } = useSelector((state) => state.login);
+  const userPermission = userInfo?.permissionLevel;
+
   useEffect(() => {
     dispatch(fetchAllSkillsThunk());
     dispatch(fetchAllCallsQueuesThunk());
@@ -49,6 +52,13 @@ const WallboardEdit = () => {
   if (!activeWallboard.isNewWallboard && fetchStatus !== FetchStatus.SUCCESS) {
     return <div>{fetchMessage}</div>;
   }
+
+  if(userPermission === "BASIC") {
+    return (
+      <div>You are not allowed to edit this wallboard. Please contact your Administrator</div>
+    )
+  }
+  
   return (
     <div className="c-wallboard--new">
       <Toolbar template="new-wallboard" />
