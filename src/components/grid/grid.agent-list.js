@@ -231,7 +231,7 @@ const GridAgentList = ({ isEditMode, widget, ...props }) => {
                       id: agent.userId,
                       callStatusKey: agent.status,
                       agentName: `${agent.lastName} ${agent.firstName}`,
-                      agentExtNo: agent.sipExtension,
+                      agentExtNo: agent.sipExtension ?? 'No data',
                       currAvaiState: agent.availabilityState?.displayName ?? 'None',
                       currPresState: agent.status,
                       noCallsOffered: agent.callCount,

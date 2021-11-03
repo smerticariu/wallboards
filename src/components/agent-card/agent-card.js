@@ -51,7 +51,7 @@ const AgentCard = ({
         <div
           className={`agent-c__status agent-c__status--${PRESENCE_STATE_KEYS_COLOR.CARD_AVAILABILITY_STATUS_BACKGROUND[callStatusKey]} agent-c__status--${PRESENCE_STATE_KEYS_COLOR.CARD_AVAILABILITY_STATUS[callStatusKey]}`}
         >
-          {isEditMode && availabilityStatesList.length && canChangeAvailabilityState ? (
+          {availabilityStatesList.length && canChangeAvailabilityState ? (
             <Dropdown
               closeOnClick={true}
               containerClassName="c-dropdown__container--availability"

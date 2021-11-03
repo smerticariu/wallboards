@@ -11,9 +11,6 @@ const Dropdown = ({ trigger, containerClassName = '', openOnHover, closeOnClick,
 
   useOnClickOutside(triggerRef, () => handleOnClickOutside());
 
-  const handleMouseLeave = () => {
-    handleOnClickOutside();
-  };
   return (
     <span className="c-dropdown" ref={triggerRef} {...props}>
       <span
@@ -25,7 +22,6 @@ const Dropdown = ({ trigger, containerClassName = '', openOnHover, closeOnClick,
       </span>
       {isDropdownShow && (
         <div
-          onMouseLeave={handleMouseLeave}
           ref={containerRef}
           onClick={() => (closeOnClick ? handleIsDropdownShow(false) : null)}
           className={`c-dropdown__container ${containerClassName}`}

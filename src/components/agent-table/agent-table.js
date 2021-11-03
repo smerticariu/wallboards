@@ -123,7 +123,7 @@ const AgentTable = ({
                 }`}
                 style={{ width: colWidth }}
               >
-                {isEditMode && canChangeAvailabilityState ? (
+                {canChangeAvailabilityState ? (
                   <Dropdown
                     closeOnClick={true}
                     containerClassName="c-dropdown__container--availability"

@@ -77,6 +77,7 @@
           width: 100%;
           justify-content: space-between;
           padding-left: 10px;
+          width: 80px;
         }
         &:first-child {
           min-width: 50px;
@@ -92,7 +93,6 @@
       &--grey {
         position: relative;
         padding-right: 10px;
-        cursor: pointer;
       }
       &--lighter-red {
         background-color: $natterbox-lighter-red;
