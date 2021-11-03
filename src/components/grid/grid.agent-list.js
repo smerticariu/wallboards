@@ -101,17 +101,17 @@ const GridAgentList = ({ isEditMode, widget, ...props }) => {
       });
 
       const filtredAgentsWithFullInfo = agentsWithFullInfo.filter((agent) => {
-        const isSkill =
+        let isSkill =
           agent.agentSkills.length === 0
             ? false
             : widget.skills.selectAll || agent.agentSkills.some((agentSkill) => widget.skills.selectedItems.includes(agentSkill.name));
+        isSkill = widget.view === MAIN_VIEWING_OPTIONS.CARD ? true : isSkill;
         const isPresenceState = widget.presenceStates.selectAll || widget.presenceStates.selectedItems.includes(agent.status);
         const isAvailabilityState =
           widget.availabilityStates.selectAll ||
           widget.availabilityStates.selectedItems.some((state) => state.availabilityStateId === agent.availabilityState?.id);
         return isSkill && isPresenceState && isAvailabilityState;
       });
-
       const sortedAgents = filtredAgentsWithFullInfo.sort((agent1, agent2) => {
         if (widget.sortBy === SORT_BY_VALUES.AGENT_NAME)
           return `${agent2.firstName} ${agent2.lastName}`
@@ -230,7 +230,7 @@ const GridAgentList = ({ isEditMode, widget, ...props }) => {
                       id: agent.userId,
                       callStatusKey: agent.status,
                       agentName: `${agent.lastName} ${agent.firstName}`,
-                      agentExtNo: agent.sipExtension,
+                      agentExtNo: agent.sipExtension ?? 'No data',
                       currAvaiState: agent.availabilityState?.displayName ?? 'None',
                       currPresState: agent.status,
                       noCallsOffered: agent.callCount,

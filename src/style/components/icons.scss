@@ -21,9 +21,10 @@
         height: 15px;
       }
       &--table {
+        position: absolute;
         top: 50%;
-        right: 5px;
-        transform: rotate(180deg);
+        transform: rotate(180deg) translateY(50%);
+        right: 10px;
       }
     }
   }

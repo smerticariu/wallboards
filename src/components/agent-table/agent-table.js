@@ -1,6 +1,6 @@
 import React from 'react';
-import { SettingsIcon } from 'src/assets/static/icons/settings';
 import { ArrowDownIcon } from '../../assets/static/icons/arrow-down';
+import { SettingsIcon } from '../../assets/static/icons/settings';
 import Dropdown from '../dropdown/dropdown';
 import { ADD_COMPONENT_COLUMN_OPTIONS, PRESENCE_STATE_KEYS_COLOR } from '../modal/add-component/modal.add-component.defaults';
 import TimeInterval from '../time-interval/time-interval';
@@ -51,11 +51,6 @@ const AgentTable = ({
             Extension No
           </div>
         )}
-        {activeColumns.isCurrPresStateColumn && (
-          <div className="agent-t__header-item" style={{ width: colWidth }}>
-            Presence Status
-          </div>
-        )}
         {activeColumns.isNoCallsOfferedColumn && (
           <div className="agent-t__header-item" style={{ width: colWidth }}>
             Calls offered
@@ -96,11 +91,11 @@ const AgentTable = ({
             Skills
           </div>
         )}
-        {
+        {activeColumns.isCurrPresStateColumn && (
           <div className="agent-t__header-item" style={{ width: colWidth }}>
             Status
           </div>
-        }
+        )}
       </div>
 
       <div className="agent-t__body">
@@ -128,13 +123,13 @@ const AgentTable = ({
                 }`}
                 style={{ width: colWidth }}
               >
-                {isEditMode && canChangeAvailabilityState ? (
+                {canChangeAvailabilityState ? (
                   <Dropdown
                     closeOnClick={true}
                     containerClassName="c-dropdown__container--availability"
                     trigger={
                       <div className="agent-t__arrow-container">
-                        {agent.currAvaiState}
+                        <div className="agent-t__availability-status">{agent.currAvaiState}</div>
                         <ArrowDownIcon className="i--arrow--down i--arrow--down--table i--arrow--down--large" />
                       </div>
                     }
@@ -164,11 +159,6 @@ const AgentTable = ({
             {activeColumns.isAgentExtNoColumn && (
               <div className="agent-t__agent-info" style={{ width: colWidth }}>
                 {agent.agentExtNo}
-              </div>
-            )}
-            {activeColumns.isCurrPresStateColumn && (
-              <div className="agent-t__agent-info" style={{ width: colWidth }}>
-                {PRESENCE_STATE_KEYS_COLOR.CARD_PRESENCE_STATE_TEXT[agent.currPresState]}
               </div>
             )}
             {activeColumns.isNoCallsOfferedColumn && (
@@ -221,20 +211,22 @@ const AgentTable = ({
                 )}
               </div>
             )}
-            <div className="agent-t__agent-info  agent-t__agent-info--circle" style={{ width: colWidth }}>
-              <div
-                className={`agent-t__agent-info--circle-container agent-t__agent-info--circle-container--${
-                  PRESENCE_STATE_KEYS_COLOR.CARD_BACKGROUND[agent.callStatusKey]
-                }`}
-              >
+            {activeColumns.isCurrPresStateColumn && (
+              <div className="agent-t__agent-info  agent-t__agent-info--circle" style={{ width: colWidth }}>
                 <div
-                  className={`agent-t__agent-info--circle-center agent-t__agent-info--circle-container--${
+                  className={`agent-t__agent-info--circle-container agent-t__agent-info--circle-container--${
                     PRESENCE_STATE_KEYS_COLOR.CARD_BACKGROUND[agent.callStatusKey]
                   }`}
-                />
+                >
+                  <div
+                    className={`agent-t__agent-info--circle-center agent-t__agent-info--circle-container--${
+                      PRESENCE_STATE_KEYS_COLOR.CARD_BACKGROUND[agent.callStatusKey]
+                    }`}
+                  />
+                </div>
+                {PRESENCE_STATE_KEYS_COLOR.CARD_PRESENCE_STATE_TEXT[agent.callStatusKey]}
               </div>
-              {PRESENCE_STATE_KEYS_COLOR.CARD_PRESENCE_STATE_TEXT[agent.callStatusKey]}
-            </div>
+            )}
           </div>
         ))}
       </div>

@@ -77,6 +77,7 @@
           width: 100%;
           justify-content: space-between;
           padding-left: 10px;
+          width: 80px;
         }
         &:first-child {
           min-width: 50px;
@@ -90,8 +91,8 @@
       &--red,
       &--green,
       &--grey {
+        position: relative;
         padding-right: 10px;
-        cursor: pointer;
       }
       &--lighter-red {
         background-color: $natterbox-lighter-red;
@@ -192,11 +193,14 @@
       }
     }
   }
+  &__availability-status {
+  }
   &__arrow-container {
     display: flex;
     width: 100%;
-    justify-content: space-between;
     align-items: center;
+    justify-content: center;
     cursor: pointer;
+    position: relative;
   }
 }

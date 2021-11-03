@@ -7,6 +7,7 @@ import { fetchWallboardByIdThunk } from 'src/store/thunk/wallboards.thunk';
 import { FetchStatus } from 'src/store/reducers/wallboards.reducer';
 import GridResizeContainer from '../grid/grid.resize-container';
 import { useHistory } from 'react-router';
+import { fetchAvailabilityProfilesThunk, fetchAvailabilityStatesThunk } from '../../store/thunk/agents.thunk';
 
 const WallboardReadOnly = () => {
   const { id } = useParams();
@@ -15,10 +16,26 @@ const WallboardReadOnly = () => {
   const history = useHistory();
   const { userInfo } = useSelector((state) => state.login);
   const { wallboard, fetchStatus, fetchMessage } = useSelector((state) => state.wallboards.present.activeWallboard);
+  const { availabilityProfiles } = useSelector((state) => state.agents);
   useEffect(() => {
     dispatch(fetchWallboardByIdThunk(id));
     // eslint-disable-next-line
   }, [id]);
+
+  useEffect(() => {
+    dispatch(fetchAvailabilityProfilesThunk());
+
+    // eslint-disable-next-line
+  }, []);
+
+  useEffect(() => {
+    if (availabilityProfiles.length) {
+      availabilityProfiles.forEach((avProfile) => {
+        dispatch(fetchAvailabilityStatesThunk(avProfile.id));
+      });
+    }
+    // eslint-disable-next-line
+  }, [availabilityProfiles]);
 
   if (fetchStatus !== FetchStatus.SUCCESS) {
     return <div>{fetchMessage}</div>;

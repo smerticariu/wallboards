@@ -165,7 +165,7 @@ const LandingTable = () => {
                       <p>{handleConvertDate(wb.createdOn)}</p>
                     </td>
                     <td className="c-landing-table__wb-actions">
-                      <a target="_blank" href={`${wallboardUrl}/edit`} className="c-landing-table__edit-btn" />
+                      <a target="_blank" rel="noreferrer" href={`/edit`} className="c-landing-table__edit-btn" />
                       <button
                         onClick={() => {
                           handleCopy(wb);
