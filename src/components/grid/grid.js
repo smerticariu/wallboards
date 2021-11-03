@@ -11,15 +11,19 @@ const GridPage = ({ ...props }) => {
   const gridRef = useRef();
 
   useEffect(() => {
-    if (gridRef.current.scrollHeight === gridRef.current.offsetHeight) {
-      setGridCells((gridCellsLocal) => gridCellsLocal + CELLS_NUMBER_ADD);
+    if (document.body.scrollHeight === window.innerHeight) {
+      setGridCells((gridCellsLocal) => gridCellsLocal + 12);
     }
-    gridRef.current.addEventListener('scroll', () => {
-      if (gridRef.current.scrollHeight <= gridRef.current.offsetHeight + gridRef.current.scrollTop) {
-        setGridCells((gridCellsLocal) => gridCellsLocal + CELLS_NUMBER_ADD);
+    document.addEventListener('scroll', function (e) {
+      let documentHeight = document.body.scrollHeight;
+      let currentScroll = window.scrollY + window.innerHeight;
+      // When the user is [modifier]px from the bottom, fire the event.
+      let modifier = 200;
+      if (currentScroll + modifier > documentHeight) {
+        setGridCells((gridCells) => gridCells + 12);
       }
     });
-  }, []);
+  }, [gridCells]);
 
   const handleGridComponents = () => {
     return (
