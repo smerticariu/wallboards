@@ -34,6 +34,7 @@ const initialState = {
   activeWallboard: {
     wallboardInitialValues: wallboardInitialValues,
     wallboard: wallboardInitialValues,
+    isWidgetsSizeSync: false,
     fetchStatus: FetchStatus.NULL,
     fetchMessage: '',
     saveStatus: FetchStatus.NULL,
@@ -270,6 +271,19 @@ export const wallboardsReducer = (state = { ...initialState }, action) => {
       return {
         ...state,
         wallboardIdForDelete: action.payload,
+      };
+    }
+    case wallboardsActions.SYNC_WIDGET_SIZE_FOR_NEW_SCREEN: {
+      return {
+        ...state,
+        activeWallboard: {
+          ...state.activeWallboard,
+          wallboard: {
+            ...state.activeWallboard.wallboard,
+            widgets: [...action.payload],
+          },
+          isWidgetsSizeSync: true,
+        },
       };
     }
 
