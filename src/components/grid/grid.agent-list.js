@@ -102,10 +102,11 @@ const GridAgentList = ({ isEditMode, widget, ...props }) => {
       });
 
       const filtredAgentsWithFullInfo = agentsWithFullInfo.filter((agent) => {
-        const isSkill =
+        let isSkill =
           agent.agentSkills.length === 0
             ? false
             : widget.skills.selectAll || agent.agentSkills.some((agentSkill) => widget.skills.selectedItems.includes(agentSkill.name));
+        isSkill = widget.view === MAIN_VIEWING_OPTIONS.CARD ? true : isSkill;
         const isPresenceState = widget.presenceStates.selectAll || widget.presenceStates.selectedItems.includes(agent.status);
         const isAvailabilityState =
           widget.availabilityStates.selectAll ||
