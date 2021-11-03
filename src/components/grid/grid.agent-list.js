@@ -19,7 +19,6 @@ import AgentTable from '../agent-table/agent-table';
 import {
   ADD_COMPONENT_COLUMNS_NO_OPTIONS,
   MAIN_VIEWING_OPTIONS,
-  PRESENCE_STATE_KEYS,
   SORT_BY_VALUES,
 } from '../modal/add-component/modal.add-component.defaults';
 import { WALLBOARD_MODAL_NAMES } from '../modal/new-wallboard/modal.new-wallboard.defaults';
