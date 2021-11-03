@@ -1,7 +1,6 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { handleWallboardActiveModalAC } from 'src/store/actions/modal.action';
-import { handleSyncWallboardSizeAC } from 'src/store/actions/wallboards.action';
 import { saveWallboardThunk } from 'src/store/thunk/wallboards.thunk';
 import useOnClickOutside from '../../../common/hooks/useOnClickOutside';
 

@@ -1,4 +1,3 @@
-import { RESIZE_GRID_COLUMNS } from 'src/components/grid/grid.defaults';
 import { generateWallboardWidgetId } from '../../common/utils/generateId';
 
 import { wallboardsActions } from '../actions/wallboards.action';
@@ -38,7 +37,6 @@ const initialState = {
     fetchStatus: FetchStatus.NULL,
     fetchMessage: '',
     saveStatus: FetchStatus.NULL,
-    syncDataWithRedux: false,
   },
   allWallboards: {
     wallboards: [],
@@ -292,18 +290,6 @@ export const wallboardsReducer = (state = { ...initialState }, action) => {
       return {
         ...state,
         wallboardIdForDelete: action.payload,
-      };
-    }
-    case wallboardsActions.SYNC_WALLBOARD_SIZE: {
-      return {
-        ...state,
-        activeWallboard: {
-          ...state.activeWallboard,
-          wallboard: {
-            ...state.activeWallboard.wallboard,
-            size: action.payload,
-          },
-        },
       };
     }
 

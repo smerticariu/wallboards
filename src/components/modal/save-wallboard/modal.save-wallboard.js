@@ -1,9 +1,8 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 import { checkIsAlphanumeric } from 'src/common/utils/alphanumeric-validation';
 import { handleWallboardActiveModalAC, handleWarningMessageAC } from 'src/store/actions/modal.action';
-import { handleSyncWallboardSizeAC } from 'src/store/actions/wallboards.action';
 
 import { saveWallboardThunk } from 'src/store/thunk/wallboards.thunk';
 import useOnClickOutside from '../../../common/hooks/useOnClickOutside';

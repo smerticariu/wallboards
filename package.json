@@ -2,9 +2,6 @@
   "name": "wallboards",
   "version": "1.0.0",
   "private": true,
-  "engines": {
-    "node": "^14"
-  },
   "dependencies": {
     "@auth0/auth0-react": "^1.8.0",
     "@auth0/auth0-spa-js": "^1.18.0",

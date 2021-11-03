@@ -3,11 +3,9 @@ import { createArrayFromTo } from '../../common/utils/generateArray';
 import { useDispatch, useSelector } from 'react-redux';
 import { CELLS_NUMBER_ADD, INITIAL_CELLS_NUMBER } from './grid.defaults';
 import GridResizeContainer from './grid.resize-container';
-import { syncWallboardSizeAC } from 'src/store/actions/wallboards.action';
 const GridPage = ({ ...props }) => {
   const [gridCells, setGridCells] = useState(INITIAL_CELLS_NUMBER);
   const activeWallboard = useSelector((state) => state.wallboards.present.activeWallboard.wallboard);
-  const syncDataWithRedux = useSelector((state) => state.wallboards.present.activeWallboard.syncDataWithRedux);
 
   const sortableListRef = useRef();
   const gridRef = useRef();
@@ -21,19 +19,10 @@ const GridPage = ({ ...props }) => {
     };
   }, []);
 
-  useEffect(() => {
-    if (activeWallboard.widgets) {
-      const height = activeWallboard.widgets.reduce(
-        (maxHeight, widget) => (maxHeight > widget.size.endY ? maxHeight : widget.size.endY),
-        0
-      );
-      dispatch(syncWallboardSizeAC({ width: sortableListRef.current.offsetWidth, height: parseFloat(height).toFixed(2) }));
-    }
-  }, [activeWallboard.widgets]);
   const handleGridComponents = () => {
     return (
       <div className="c-grid__components" ref={sortableListRef}>
-        <GridResizeContainer wallboardSize={activeWallboard.size} widgets={activeWallboard.widgets} />
+        <GridResizeContainer widgets={activeWallboard.widgets} />
       </div>
     );
   };
