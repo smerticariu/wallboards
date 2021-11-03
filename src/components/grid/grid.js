@@ -12,11 +12,14 @@ const GridPage = ({ ...props }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    window.onscroll = function () {
-      if (document.documentElement.scrollHeight <= document.documentElement.offsetHeight + window.scrollY) {
+    gridRef.current.addEventListener('scroll', function () {
+      console.log(gridRef.current.scrollHeight);
+      console.log(gridRef.current.offsetHeight);
+      console.log(gridRef.current.scrollTop);
+      if (gridRef.current.scrollHeight < gridRef.current.offsetHeight + gridRef.current.scrollTop) {
         setGridCells((gridCellsLocal) => gridCellsLocal + CELLS_NUMBER_ADD);
       }
-    };
+    });
   }, []);
 
   const handleGridComponents = () => {
@@ -29,7 +32,7 @@ const GridPage = ({ ...props }) => {
 
   const handleGrid = useCallback(() => {
     return (
-      <div ref={gridRef} className="c-grid__cells">
+      <div className="c-grid__cells">
         {createArrayFromTo(1, gridCells).map((number) => (
           <div className="c-grid__cell" key={number} />
         ))}
@@ -37,7 +40,7 @@ const GridPage = ({ ...props }) => {
     );
   }, [gridCells]);
   return (
-    <div className="c-grid">
+    <div ref={gridRef} className="c-grid">
       {handleGrid()}
       {handleGridComponents()}
     </div>

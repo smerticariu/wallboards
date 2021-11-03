@@ -14,26 +14,52 @@ const GridResizeContainer = ({ isEditMode = true, wallboardSize, widgets = [], .
   const [gridComponents, setGridComponents] = useState([]);
   const screenWidth = useWindowSize();
   useEffect(() => {
-    debugger;
     if (containerRef.current?.offsetWidth) {
       const containerWidth = containerRef.current.offsetWidth;
       const containerHeight = containerRef.current.offsetHeight;
-      const totalHeight = widgets.reduce((height, widget) => (height < widget.size.endY ? widget.size.endY : height), 0);
+      const totalHeight = widgets.reduce(
+        (height, widget) => (widget.size ? (height < widget.size.endY ? widget.size.endY : height) : height),
+        0
+      );
       setGridComponents(
         widgets.map((widget) => {
+          if (!widget.size) {
+            return {
+              id: widget.id,
+
+              startX: 0,
+              endX: containerWidth,
+
+              startY: totalHeight ? totalHeight + 10 : 0,
+              endY: totalHeight + 410,
+
+              width: containerWidth,
+              height: 400,
+
+              widthProcent: 100,
+              heightProcent: (400 * 100) / containerHeight,
+
+              startXProcent: 0,
+              startYProcent: totalHeight ? ((totalHeight + 10) * 100) / containerHeight : 0,
+            };
+          }
+
           const widthProcent = (widget.size.width * 100) / containerWidth;
           const heightProcent = (widget.size.height * 100) / totalHeight;
 
           const startXProcent = (widget.size.startX * 100) / containerWidth;
           const startYProcent = (widget.size.startY * 100) / totalHeight;
-
+          const endXProcent = (widget.size.endX * 100) / containerWidth;
+          const endYProcent = (widget.size.endY * 100) / totalHeight;
           return {
             id: widget.id,
             ...widget.size,
-            widthProcent: widthProcent > 100 ? 100 : widthProcent,
+            widthProcent: shrinkWidth ? widget.size.widthProcent : widthProcent > 100 ? 100 : widthProcent,
             heightProcent: heightProcent,
-            startXProcent,
+            startXProcent: shrinkWidth ? widget.size.startXProcent : startXProcent,
             startYProcent,
+            endXProcent,
+            endYProcent,
           };
         })
       );
@@ -227,13 +253,12 @@ const GridResizeContainer = ({ isEditMode = true, wallboardSize, widgets = [], .
         gridComponents
           .filter((gridComponent) => widgets.some((widget) => widget.id === gridComponent.id))
           .map((gridComponent) => {
-            debugger;
             return (
               <Draggable
                 key={gridComponent.id}
                 bounds="parent"
                 position={{
-                  x: (containerRef.current.offsetWidth * gridComponent.startXProcent) / 100,
+                  x: gridComponent.startX,
                   y: gridComponent.startY,
                 }}
                 onStop={(e, position) => onStop(e, position, gridComponent.id)}
@@ -242,9 +267,8 @@ const GridResizeContainer = ({ isEditMode = true, wallboardSize, widgets = [], .
                 disabled={!isEditMode}
               >
                 <ResizableBox
-                  key={gridComponent.id}
+                  width={gridComponent.width}
                   height={gridComponent.height}
-                  width={isEditMode ? gridComponent.width : (containerRef.current.offsetWidth * gridComponent.widthProcent) / 100}
                   onResize={(e, data) => onGridItemResize(e, data, gridComponent.id)}
                   onResizeStop={() => syncDataWithRedux()}
                   resizeHandles={isEditMode ? ['se', 'e', 's'] : []}

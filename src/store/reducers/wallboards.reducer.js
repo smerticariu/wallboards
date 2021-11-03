@@ -152,12 +152,6 @@ export const wallboardsReducer = (state = { ...initialState }, action) => {
     case wallboardsActions.ADD_WALLBOARD_COMPONENT: {
       const { widgets } = state.activeWallboard.wallboard;
       const modalAddComponent = action.payload.modalAddComponent;
-      let newWidgetYPosition = 0;
-      widgets.forEach((widget) => {
-        if (widget.size.endY > newWidgetYPosition) {
-          newWidgetYPosition = widget.size.endY + 10;
-        }
-      });
 
       const newWidget = {
         name: modalAddComponent.title.value,
@@ -173,21 +167,7 @@ export const wallboardsReducer = (state = { ...initialState }, action) => {
         columnsToView: modalAddComponent.columnsToViewOptions,
         skills: modalAddComponent.skillsToView,
         columns: modalAddComponent.columns,
-        size: modalAddComponent.isEditMode
-          ? modalAddComponent.size
-          : {
-              startX: 0,
-              endX: 600,
-
-              startY: newWidgetYPosition,
-              endY: newWidgetYPosition + 400,
-
-              width: 600,
-              height: 400,
-
-              widthProcent: 0,
-              heightProcent: 0,
-            },
+        size: modalAddComponent.isEditMode ? modalAddComponent.size : null,
       };
       return {
         ...state,
