@@ -25,7 +25,6 @@ const AgentTablePreview = ({
         {agentName && <div className="agent-t__header-item agent-t__header-item--preview">Name</div>}
         {currAvaiState && <div className="agent-t__header-item agent-t__header-item--preview">Availability Status</div>}
         {agentExtNo && <div className="agent-t__header-item agent-t__header-item--preview">Phone Ext</div>}
-        {currPresState && <div className="agent-t__header-item agent-t__header-item--preview">Presence Status</div>}
         {noCallsOffered && <div className="agent-t__header-item agent-t__header-item--preview">Calls offered</div>}
         {noCallsAnswered && <div className="agent-t__header-item agent-t__header-item--preview">Calls answered</div>}
         {noCallsMissed && <div className="agent-t__header-item agent-t__header-item--preview">Calls missed</div>}
@@ -34,7 +33,7 @@ const AgentTablePreview = ({
         {timeInCurrentCall && <div className="agent-t__header-item agent-t__header-item--preview">Time on cur. call</div>}
         {timeInCurrentWrapup && <div className="agent-t__header-item agent-t__header-item--preview">Time on cur. wr.</div>}
         {listOfSkills && <div className="agent-t__header-item agent-t__header-item--preview">Skills</div>}
-        {<div className="agent-t__header-item agent-t__header-item--preview ">Status</div>}
+        {currPresState && <div className="agent-t__header-item agent-t__header-item--preview ">Status</div>}
       </div>
 
       <div className="agent-t__body">
@@ -58,7 +57,6 @@ const AgentTablePreview = ({
               </div>
             )}
             {agentExtNo && <div className="agent-t__agent-info agent-t__agent-info--preview">0000</div>}
-            {currPresState && <div className="agent-t__agent-info agent-t__agent-info--preview">Inbound Call</div>}
             {noCallsOffered && <div className="agent-t__agent-info agent-t__agent-info--preview">0</div>}
             {noCallsAnswered && <div className="agent-t__agent-info agent-t__agent-info--preview">0</div>}
             {noCallsMissed && <div className="agent-t__agent-info agent-t__agent-info--preview">0</div>}
@@ -67,20 +65,23 @@ const AgentTablePreview = ({
             {timeInCurrentCall && <div className="agent-t__agent-info agent-t__agent-info--preview">- - : - - : - -</div>}
             {timeInCurrentWrapup && <div className="agent-t__agent-info agent-t__agent-info--preview">- - : - - : - -</div>}
             {listOfSkills && <div className="agent-t__agent-info agent-t__agent-info--preview">skill</div>}
-            <div className="agent-t__agent-info agent-t__agent-info--circle agent-t__agent-info--circle--preview">
-              <div
-                className={`agent-t__agent-info--circle-container agent-t__agent-info--circle-container--${
-                  PRESENCE_STATE_KEYS_COLOR.CARD_BACKGROUND[previewAvailabilityStatusColors[index]]
-                } agent-t__agent-info--circle-container--preview`}
-              >
+
+            {currPresState && (
+              <div className="agent-t__agent-info agent-t__agent-info--circle agent-t__agent-info--circle--preview">
                 <div
-                  className={`agent-t__agent-info--circle-center agent-t__agent-info--circle-center--${
+                  className={`agent-t__agent-info--circle-container agent-t__agent-info--circle-container--${
                     PRESENCE_STATE_KEYS_COLOR.CARD_BACKGROUND[previewAvailabilityStatusColors[index]]
-                  } agent-t__agent-info--circle-center--preview`}
-                ></div>
+                  } agent-t__agent-info--circle-container--preview`}
+                >
+                  <div
+                    className={`agent-t__agent-info--circle-center agent-t__agent-info--circle-center--${
+                      PRESENCE_STATE_KEYS_COLOR.CARD_BACKGROUND[previewAvailabilityStatusColors[index]]
+                    } agent-t__agent-info--circle-center--preview`}
+                  ></div>
+                </div>
+                {PRESENCE_STATE_KEYS_COLOR.CARD_PRESENCE_STATE_TEXT[previewAvailabilityStatusColors[index]]}{' '}
               </div>
-              {PRESENCE_STATE_KEYS_COLOR.CARD_PRESENCE_STATE_TEXT[previewAvailabilityStatusColors[index]]}{' '}
-            </div>
+            )}
           </div>
         ))}
       </div>
