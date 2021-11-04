@@ -1,23 +1,25 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { createArrayFromTo } from '../../common/utils/generateArray';
 import { useSelector } from 'react-redux';
-import { CELLS_NUMBER_ADD, INITIAL_CELLS_NUMBER } from './grid.defaults';
 import GridResizeContainer from './grid.resize-container';
 const GridPage = ({ ...props }) => {
-  const [gridCells, setGridCells] = useState(INITIAL_CELLS_NUMBER);
+  const [gridCells, setGridCells] = useState(120);
   const activeWallboard = useSelector((state) => state.wallboards.present.activeWallboard.wallboard);
 
   const sortableListRef = useRef();
   const gridRef = useRef();
+  const gridCellsRef = useRef();
 
   useEffect(() => {
-    if (document.body.scrollHeight === window.innerHeight) {
+    if (Math.abs(document.body.scrollHeight - window.innerHeight) < 30) {
+      setGridCells((gridCellsLocal) => gridCellsLocal + 24);
+    }
+    if (gridCellsRef.current.offsetHeight < window.innerHeight) {
       setGridCells((gridCellsLocal) => gridCellsLocal + 12);
     }
     document.addEventListener('scroll', function (e) {
       let documentHeight = document.body.scrollHeight;
       let currentScroll = window.scrollY + window.innerHeight;
-      // When the user is [modifier]px from the bottom, fire the event.
       let modifier = 200;
       if (currentScroll + modifier > documentHeight) {
         setGridCells((gridCells) => gridCells + 12);
@@ -35,7 +37,7 @@ const GridPage = ({ ...props }) => {
 
   const handleGrid = useCallback(() => {
     return (
-      <div className="c-grid__cells">
+      <div className="c-grid__cells" ref={gridCellsRef}>
         {createArrayFromTo(1, gridCells).map((number) => (
           <div className="c-grid__cell" key={number} />
         ))}

@@ -43,9 +43,7 @@ const WallboardReadOnly = () => {
 
   // if (!wallboard.settings.link.isReadOnlyEnabled) {
   if (!wallboard.settings.link.isReadOnlyEnabled && userInfo.permissionLevel !== 'ADMINISTRATOR') {
-    return(
-      <div>You don't have access to this wallboard! Please contact your Administrator.</div>
-    )
+    return <div>You don't have access to this wallboard! Please contact your Administrator.</div>;
   }
 
   return (
@@ -54,7 +52,7 @@ const WallboardReadOnly = () => {
 
       <div className="c-wallboard--read-only__component">
         <div className="c-wallboard--read-only__cards">
-          <GridResizeContainer wallboardSize={wallboard.size} isEditMode={false} widgets={wallboard.widgets} />
+          <GridResizeContainer isEditMode={false} widgets={wallboard.widgets} />
         </div>
       </div>
     </div>

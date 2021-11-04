@@ -41,7 +41,6 @@ export const fetchWallboardByIdThunk = (wbId) => async (dispatch, getState) => {
   }
 };
 
-
 export const fetchAllWallboardsThunk = () => async (dispatch, getState) => {
   try {
     dispatch(fetchAllWallboardsAC());
@@ -85,7 +84,6 @@ export const saveWallboardThunk = () => async (dispatch, getState) => {
       description: activeWallboard.description,
       widgets: activeWallboard.widgets,
       settings: activeWallboard.settings,
-      size: activeWallboard.size,
     };
 
     const options = {

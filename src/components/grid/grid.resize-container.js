@@ -6,87 +6,131 @@ import { handleWallboardGridLayoutChangeAC, syncWidgetsSizeForNewScreenAC } from
 import useWindowSize from '../../common/hooks/useWindowSize';
 import GridAgentList from './grid.agent-list';
 
-const GridResizeContainer = ({ isEditMode = true, wallboardSize, widgets = [], ...props }) => {
+const GridResizeContainer = ({ isEditMode = true, widgets = [], ...props }) => {
   const dispatch = useDispatch();
   const containerRef = useRef();
   const { shrinkHeight, shrinkWidth } = useSelector((state) => state.wallboards.present.activeWallboard.wallboard.settings.display);
-
   const [gridComponents, setGridComponents] = useState([]);
   const screenSize = useWindowSize();
   useEffect(() => {
-    if (widgets.length === 0 && gridComponents.length === 0) return;
+    const needToAddNewComponent = widgets.some((widget) => !widget.size);
+    const containerWidth = containerRef.current.offsetWidth;
+    console.log(containerRef.current.getBoundingClientRect());
+    if (needToAddNewComponent) {
+      const totalHeight = widgets.reduce(
+        (height, widget) => (widget.size ? (height < widget.size.endY ? widget.size.endY : height) : height),
+        0
+      );
 
-    if (widgets.length > gridComponents.length) {
-      const newWidget = widgets.find((widget) => widget.size === null);
-      if (!newWidget) return;
-      const containerWidth = containerRef.current.offsetWidth;
-      const containerHeight = containerRef.current.offsetHeight;
-      const totalHeight = gridComponents.reduce((height, gridItem) => (height < gridItem.endY ? gridItem.endY : height), 0);
-      //trebuie aici ca cand adaug un element sa le sincronizez si pe celelalte cu nou marime de 100%
-      setGridComponents([
-        ...gridComponents,
-        {
-          id: newWidget.id,
+      const gridItemsWithHeight = setGridItemsHeight(
+        widgets.map((widget) => {
+          if (widget.size) {
+            return {
+              id: widget.id,
+              ...widget.size,
+            };
+          } else {
+            return {
+              id: widget.id,
 
-          width: containerWidth,
-          widthProcent: 100,
+              width: containerWidth,
 
-          startX: 0,
-          startXProcent: 0,
+              startX: 0,
 
-          endX: containerWidth,
-          endXProcent: 100,
+              endX: containerWidth,
 
-          height: 400,
-          heightProcent: (400 * 100) / (totalHeight + 400), //nu sunt sigur la container height
+              height: 400,
 
-          startY: totalHeight + 10,
-          startYProcent: ((totalHeight + 10) * 100) / totalHeight,
+              startY: totalHeight === 0 ? 0 : totalHeight + 10,
 
-          endY: totalHeight + 10 + 400,
-          endYProcent: ((totalHeight + 410) * 100) / totalHeight,
-        },
-      ]);
-    }
-  }, [widgets.length]);
-  useEffect(() => {
-    if (screenSize.width) {
-      const containerWidth = containerRef.current.offsetWidth;
-      const containerHeight = containerRef.current.offsetHeight;
-
+              endY: totalHeight === 0 ? 400 : totalHeight + 10 + 400,
+            };
+          }
+        })
+      );
+      dispatch(
+        syncWidgetsSizeForNewScreenAC(
+          widgets.map((widget) => {
+            const { id, ...widgetGrid } = gridItemsWithHeight.find((gridItem) => gridItem.id === widget.id);
+            return {
+              ...widget,
+              size: {
+                ...widgetGrid,
+              },
+            };
+          })
+        )
+      );
+    } else {
       setGridComponents(
-        widgets.map(({ size, id }) => {
+        widgets.map((widget) => {
           return {
-            id,
-
-            width: shrinkWidth ? (size.widthProcent / 100) * containerWidth : size.width,
-            widthProcent: shrinkWidth ? size.widthProcent : (size.width * 100) / containerWidth,
-
-            startX: shrinkWidth ? (size.startXProcent / 100) * containerWidth : size.startX,
-            startXProcent: shrinkWidth ? size.startXProcent : (size.startX * 100) / containerWidth,
-
-            endX: shrinkWidth ? (size.endXProcent / 100) * containerWidth : size.endX,
-            endXProcent: shrinkWidth ? (size.endXProcent / 100) * containerWidth : size.endXProcent,
-
-            height: shrinkHeight ? (size.heightProcent / 100) * containerHeight : size.height,
-            heightProcent: shrinkHeight ? size.heightProcent : (size.height * 100) / containerHeight,
-
-            startY: shrinkHeight ? (size.startYProcent / 100) * containerHeight : size.startY,
-            startYProcent: shrinkHeight ? size.startYProcent : (size.startY * 100) / containerHeight,
-
-            endY: shrinkHeight ? (size.endYProcent / 100) * containerHeight : size.endY,
-            endYProcent: shrinkHeight ? size.endYProcent : (size.endY * 100) / containerHeight,
+            id: widget.id,
+            ...widget.size,
           };
         })
       );
     }
+  }, [widgets]);
+
+  useEffect(() => {
+    if (screenSize.width) {
+      const containerWidth = containerRef.current.offsetWidth;
+      const containerHeight = containerRef.current.offsetHeight;
+      //adaptarea la noul ecran
+      dispatch(
+        syncWidgetsSizeForNewScreenAC(
+          setGridItemsHeight(
+            widgets
+              .map((widget) => {
+                return {
+                  ...widget,
+                  size: {
+                    width: shrinkWidth ? (widget.size.widthProcent / 100) * containerWidth : widget.size.width,
+                    widthProcent: shrinkWidth ? widget.size.widthProcent : (widget.size.width * 100) / containerWidth,
+
+                    startX: shrinkWidth ? (widget.size.startXProcent / 100) * containerWidth : widget.size.startX,
+                    startXProcent: shrinkWidth ? widget.size.startXProcent : (widget.size.startX * 100) / containerWidth,
+
+                    endX: shrinkWidth ? (widget.size.endXProcent / 100) * containerWidth : widget.size.endX,
+                    endXProcent: shrinkWidth ? (widget.size.endXProcent / 100) * containerWidth : widget.size.endXProcent,
+
+                    height: shrinkHeight ? (widget.size.heightProcent / 100) * containerHeight : widget.size.height,
+                    heightProcent: shrinkHeight ? widget.size.heightProcent : (widget.size.height * 100) / containerHeight,
+
+                    startY: shrinkHeight ? (widget.size.startYProcent / 100) * containerHeight : widget.size.startY,
+                    startYProcent: shrinkHeight ? widget.size.startYProcent : (widget.size.startY * 100) / containerHeight,
+
+                    endY: shrinkHeight ? (widget.size.endYProcent / 100) * containerHeight : widget.size.endY,
+                    endYProcent: shrinkHeight ? widget.size.endYProcent : (widget.size.endY * 100) / containerHeight,
+                  },
+                };
+              })
+              .map((widget) => ({ id: widget.id, ...widget.size }))
+          ).map((gridItem, index) => ({ ...widgets[index], size: { ...gridItem } }))
+        )
+      );
+    }
   }, [screenSize]);
 
+  const setGridItemsHeight = (grid) => {
+    const totalHeight = grid.reduce((height, gridItem) => (height < gridItem.endY ? gridItem.endY : height), 0);
+    return grid.map((gridItem) => ({
+      ...gridItem,
+      widthProcent: (gridItem.width * 100) / containerRef.current.offsetWidth,
+      startXProcent: (gridItem.startX * 100) / containerRef.current.offsetWidth,
+      endXProcent: (gridItem.endX * 100) / containerRef.current.offsetWidth,
+      heightProcent: (gridItem.height * 100) / totalHeight,
+      startYProcent: (gridItem.startY * 100) / totalHeight,
+      endYProcent: (gridItem.endY * 100) / totalHeight,
+    }));
+  };
   const syncDataWithRedux = (gridData = gridComponents) => {
+    const gridDataWithSizeInProcent = setGridItemsHeight(gridData);
     dispatch(
       handleWallboardGridLayoutChangeAC(
         widgets.map((widget) => {
-          const { id, ...widgetGrid } = gridData.find((gridItem) => gridItem.id === widget.id);
+          const { id, ...widgetGrid } = gridDataWithSizeInProcent.find((gridItem) => gridItem.id === widget.id);
           return {
             ...widget,
             size: {
@@ -144,24 +188,18 @@ const GridResizeContainer = ({ isEditMode = true, wallboardSize, widgets = [], .
     };
     const gridItems = gridComponents.map((g) => {
       if (g.id !== id) return g;
-      const containerWidth = containerRef.current.offsetWidth;
-      const totalHeight = gridComponents.reduce((height, gridItem) => (height < gridItem.endY ? gridItem.endY : height), 0);
 
       activeGridItem = {
         ...g,
         ...activeGridItem,
 
         startX: activeGridItem.startX,
-        startXProcent: (activeGridItem.startX * 100) / containerWidth,
 
         endX: activeGridItem.startX + g.width,
-        endXProcent: ((activeGridItem.startX + g.width) * 100) / containerWidth,
 
         startY: activeGridItem.startY,
-        startYProcent: (activeGridItem.startY * 100) / totalHeight,
 
         endY: activeGridItem.startY + g.height,
-        endYProcent: ((activeGridItem.startY + g.height) * 100) / totalHeight,
       };
       return { ...activeGridItem };
     });
@@ -170,12 +208,11 @@ const GridResizeContainer = ({ isEditMode = true, wallboardSize, widgets = [], .
     const gridItemsWithChangedYPosition = changeGridElementsYPosition(gridItems, elementsThatNeedToChangeYPosition, activeGridItem);
     const gridItemsToTop = identifyElementsThatNeedToTranslateToTop(gridItemsWithChangedYPosition, activeGridItem);
 
-    setGridComponents(gridItemsToTop);
+    setGridComponents(setGridItemsHeight(gridItemsToTop));
   };
 
   const identifyElementsThatNeedToTranslateToTop = (grid, activeGridItem) => {
     let isChanges = false;
-    const totalHeight = gridComponents.reduce((height, gridItem) => (height < gridItem.endY ? gridItem.endY : height), 0);
 
     let gridCopy = JSON.parse(JSON.stringify(grid));
     do {
@@ -215,9 +252,7 @@ const GridResizeContainer = ({ isEditMode = true, wallboardSize, widgets = [], .
             return {
               ...gridItem,
               startY: minYPosition,
-              startYProcent: (minYPosition * 100) / totalHeight,
               endY: minYPosition + gridItem.height,
-              endYProcent: ((minYPosition + gridItem.height) * 100) / totalHeight,
             };
           }
           return gridItem;
@@ -251,7 +286,6 @@ const GridResizeContainer = ({ isEditMode = true, wallboardSize, widgets = [], .
   };
 
   const changeGridElementsYPosition = (grid, gridItemsToChange, activeGridItem) => {
-    const totalHeight = gridComponents.reduce((height, gridItem) => (height < gridItem.endY ? gridItem.endY : height), 0);
     const containerWidth = containerRef.current.offsetWidth;
 
     let pxToBottom = activeGridItem.height;
@@ -265,7 +299,6 @@ const GridResizeContainer = ({ isEditMode = true, wallboardSize, widgets = [], .
           return {
             ...gridItem,
             startY: gridItem.startY + pxToBottom + 10,
-            startYProcent: ((gridItem.startY + pxToBottom + 10) * 100) / containerWidth,
             endY: ((gridItem.endY + pxToBottom + 10) * 100) / containerWidth,
           };
         }
@@ -274,35 +307,23 @@ const GridResizeContainer = ({ isEditMode = true, wallboardSize, widgets = [], .
   };
   const onGridItemResize = (e, data, gridItemId) => {
     let activeGridItem;
-    const totalHeight = gridComponents.reduce((height, gridItem) => (height < gridItem.endY ? gridItem.endY : height), 0);
 
     const gridItemsWithChangedSize = gridComponents.map((gridItem) => {
-      if (gridItem.id !== gridItemId) {
-        return {
-          ...gridItem,
-          heightProcent: (gridItem.height * 100) / totalHeight,
-          endYProcent: (gridItem.endY * 100) / totalHeight,
-          startYProcent: (gridItem.startY * 100) / totalHeight,
-        };
-      }
+      if (gridItem.id !== gridItemId) return gridItem;
 
-      const containerWidth = containerRef.current.offsetWidth;
       activeGridItem = {
         ...gridItem,
         width: data.size.width,
-        widthProcent: (data.size.width * 100) / containerWidth,
 
         endX: gridItem.startX + data.size.width,
-        endXProcent: ((gridItem.startX + data.size.width) * 100) / containerWidth,
 
         height: data.size.height,
-        heightProcent: (data.size.height * 100) / totalHeight,
 
         endY: gridItem.startY + data.size.height,
-        endYProcent: ((gridItem.startY + data.size.height) * 100) / totalHeight,
       };
       return activeGridItem;
     });
+
     const elementsThatNeedToChangeYPosition = identifyElementsThatNeedToTranslateToBottom(gridItemsWithChangedSize, activeGridItem);
     const gridItemsWithChangedYPosition = changeGridElementsYPosition(
       gridItemsWithChangedSize,
@@ -311,7 +332,7 @@ const GridResizeContainer = ({ isEditMode = true, wallboardSize, widgets = [], .
     );
     const gridItemsToTop = identifyElementsThatNeedToTranslateToTop(gridItemsWithChangedYPosition, activeGridItem);
 
-    setGridComponents(gridItemsToTop);
+    setGridComponents(setGridItemsHeight(gridItemsToTop));
   };
   return (
     <div ref={containerRef} className="c-grid__components-container">

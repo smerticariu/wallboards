@@ -7,7 +7,11 @@ function useWindowSize() {
   const [windowSizeHistory, handleWindowSizeHistory] = useState([]);
   useEffect(() => {
     function handleResize() {
-      if (!windowSizeHistory.length || Math.abs(windowSizeHistory[windowSizeHistory.length - 1].width - window.innerWidth) > 5) {
+      if (
+        !windowSizeHistory.length ||
+        Math.abs(windowSizeHistory[windowSizeHistory.length - 1].width - window.innerWidth) > 5 ||
+        Math.abs(windowSizeHistory[windowSizeHistory.length - 1].height - window.innerHeight) > 5
+      ) {
         const size = {
           width: window.innerWidth,
           height: window.innerHeight,
