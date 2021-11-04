@@ -163,7 +163,6 @@ export const callAgentThunk = (id) => async (dispatch, getState) => {
 
     const userPhoneNumber = userInfo.primaryMobileNumber !== "null" ? userInfo.primaryMobileNumber : "112";
     const agentPhoneNumber = agent.data.data.primaryMobileNumber !== "null" ? agent.data.data.primaryMobileNumber : "7878";
-    console.log('aa', agent)
 
     const data = {
       to: `${agentPhoneNumber}`,

@@ -1,9 +1,11 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
 import { ArrowDownIcon } from '../../assets/static/icons/arrow-down';
 import { SettingsIcon } from '../../assets/static/icons/settings';
 import Dropdown from '../dropdown/dropdown';
 import { ADD_COMPONENT_COLUMN_OPTIONS, PRESENCE_STATE_KEYS_COLOR } from '../modal/add-component/modal.add-component.defaults';
 import TimeInterval from '../time-interval/time-interval';
+import { callAgentThunk } from 'src/store/thunk/agents.thunk';
 const AgentTable = ({
   canCallAgents,
   canListenLive,
@@ -31,6 +33,12 @@ const AgentTable = ({
   };
   const noOfCols = Object.keys(activeColumns).filter((key) => activeColumns[key]).length;
   const colWidth = 100 / noOfCols + '%';
+
+  const dispatch = useDispatch();
+
+  const handleCallAgent = (id) => {
+    dispatch(callAgentThunk(id));
+  }
 
   return (
     <div className="agent-t">
@@ -107,7 +115,7 @@ const AgentTable = ({
               ) : (
                 <Dropdown closeOnClick={true} trigger={<SettingsIcon className="i--settings i--settings--table" />}>
                   {canListenLive && <div className="c-dropdown__item">Listen live</div>}
-                  {canCallAgents && <div className="c-dropdown__item">Call agent</div>}
+                  {canCallAgents && <div onClick={() => {handleCallAgent(agent.id)}} className="c-dropdown__item">Call agent</div>}
                 </Dropdown>
               )}
             </div>
