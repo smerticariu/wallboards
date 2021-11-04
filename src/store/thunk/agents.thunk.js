@@ -1,4 +1,3 @@
-import axios from 'axios';
 import {
   fetchAllAgentsAC,
   fetchAllAgentsFailAC,
@@ -19,26 +18,25 @@ import {
   fetchUserGroupsFailAC,
   fetchUserGroupsSuccessAC,
 } from '../actions/agents.action';
+import { DEFAULTS } from '../../common/defaults/defaults';
+import { AgentsApi } from 'src/common/api/agents.api';
+import { CallsQueuesApi } from 'src/common/api/callsQueues.api';
+import { MiscellaneousApi } from 'src/common/api/miscellaneous.api';
+import { AvailabilityApi } from 'src/common/api/availability.api';
 
 export const fetchAllAgentsThunk = (callQueueId) => async (dispatch, getState) => {
   dispatch(fetchAllAgentsAC());
   try {
     const { userInfo, token } = getState().login;
-    const options = {
-      method: 'get',
-      url: `https://sapien-proxy.redmatter-qa01.pub/v1/organisation/${userInfo.organisationId}/call-queue/${callQueueId}/agent`,
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + token,
-        'Access-Control-Allow-Origin': '*',
-        Accept: 'application/json',
-      },
-    };
-
-    const response = await axios(options);
-    dispatch(fetchAllAgentsSuccessAC(response.data.data, callQueueId));
+    const allAgentsFromCallQueue = await CallsQueuesApi({
+      type: DEFAULTS.CALLS_QUEUES.API.GET.AGENT_FROM_CALL_QUEUE,
+      organizationId: userInfo.organisationId,
+      token,
+      callQueueId,
+    })
+    dispatch(fetchAllAgentsSuccessAC(allAgentsFromCallQueue.data.data, callQueueId));
   } catch (error) {
-    dispatch(fetchAllAgentsFailAC('something went wrong'));
+    dispatch(fetchAllAgentsFailAC(DEFAULTS.GLOBAL.FAIL));
     console.log(error);
   }
 };
@@ -47,20 +45,15 @@ export const fetchOrganisationAgentsThunk = () => async (dispatch, getState) => 
   dispatch(fetchOrganisationUsersAC());
   try {
     const { userInfo, token } = getState().login;
-    const options = {
-      method: 'get',
-      url: `https://sapien-proxy.redmatter-qa01.pub/v1/organisation/${userInfo.organisationId}/user`,
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + token,
-        'Access-Control-Allow-Origin': '*',
-        Accept: 'application/json',
-      },
-    };
-    const response = await axios(options);
-    dispatch(fetchOrganisationUsersSuccessAC(response.data.data));
+
+    const allAgents = await AgentsApi({
+      type: DEFAULTS.AGENTS.API.GET.ALL_AGENTS,
+      organizationId: userInfo.organisationId,
+      token,
+    });
+    dispatch(fetchOrganisationUsersSuccessAC(allAgents.data.data));
   } catch (error) {
-    dispatch(fetchOrganisationUsersFailAC('something went wrong'));
+    dispatch(fetchOrganisationUsersFailAC(DEFAULTS.GLOBAL.FAIL));
     console.log(error);
   }
 };
@@ -69,20 +62,16 @@ export const fetchDevicesSipAgentsThunk = () => async (dispatch, getState) => {
   dispatch(fetchSipDevicesUsersAC());
   try {
     const { userInfo, token } = getState().login;
-    const options = {
-      method: 'get',
-      url: `https://sapien-proxy.redmatter-qa01.pub/v1/organisation/${userInfo.organisationId}/sip-device`,
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + token,
-        'Access-Control-Allow-Origin': '*',
-        Accept: 'application/json',
-      },
-    };
-    const response = await axios(options);
-    dispatch(fetchSipDevicesUsersSuccessAC(response.data.data));
+
+    const sipDevices = await MiscellaneousApi({
+      type: DEFAULTS.MISCELLANEOUS.API.GET.SIP_DEVICE,
+      organizationId: userInfo.organisationId,
+      token,
+    });
+
+    dispatch(fetchSipDevicesUsersSuccessAC(sipDevices.data.data));
   } catch (error) {
-    dispatch(fetchSipDevicesUsersFailAC('something went wrong'));
+    dispatch(fetchSipDevicesUsersFailAC(DEFAULTS.GLOBAL.FAIL));
     console.log(error);
   }
 };
@@ -91,20 +80,15 @@ export const fetchUserGroupsThunk = () => async (dispatch, getState) => {
   dispatch(fetchUserGroupsAC());
   try {
     const { userInfo, token } = getState().login;
-    const options = {
-      method: 'get',
-      url: `https://sapien-proxy.redmatter-qa01.pub/v1/organisation/${userInfo.organisationId}/user-group`,
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + token,
-        'Access-Control-Allow-Origin': '*',
-        Accept: 'application/json',
-      },
-    };
-    const response = await axios(options);
-    dispatch(fetchUserGroupsSuccessAC(response.data.data));
+    const userGroups = await MiscellaneousApi({
+      type: DEFAULTS.MISCELLANEOUS.API.GET.USER_GROUPS,
+      organizationId: userInfo.organisationId,
+      token,
+    });
+
+    dispatch(fetchUserGroupsSuccessAC(userGroups.data.data));
   } catch (error) {
-    dispatch(fetchUserGroupsFailAC('something went wrong'));
+    dispatch(fetchUserGroupsFailAC(DEFAULTS.GLOBAL.FAIL));
     console.log(error);
   }
 };
@@ -113,20 +97,16 @@ export const fetchAvailabilityProfilesThunk = () => async (dispatch, getState) =
   dispatch(fetchAvailabilityProfilesAC());
   try {
     const { userInfo, token } = getState().login;
-    const options = {
-      method: 'get',
-      url: `https://sapien-proxy.redmatter-qa01.pub/v1/organisation/${userInfo.organisationId}/availability/profile`,
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + token,
-        'Access-Control-Allow-Origin': '*',
-        Accept: 'application/json',
-      },
-    };
-    const response = await axios(options);
-    dispatch(fetchAvailabilityProfilesSuccessAC(response.data.data));
+  
+    const availabilityProfiles = await AvailabilityApi({
+      type: DEFAULTS.AVAILABILITY.API.GET.PROFILES,
+      organizationId: userInfo.organisationId,
+      token,
+    });
+
+    dispatch(fetchAvailabilityProfilesSuccessAC(availabilityProfiles.data.data));
   } catch (error) {
-    dispatch(fetchAvailabilityProfilesFailAC('something went wrong'));
+    dispatch(fetchAvailabilityProfilesFailAC(DEFAULTS.GLOBAL.FAIL));
     console.log(error);
   }
 };
@@ -135,20 +115,16 @@ export const fetchAvailabilityStatesThunk = (availabilityId) => async (dispatch,
   dispatch(fetchAvailabilityStatesAC());
   try {
     const { userInfo, token } = getState().login;
-    const options = {
-      method: 'get',
-      url: `https://sapien-proxy.redmatter-qa01.pub/v1/organisation/${userInfo.organisationId}/availability/profile/${availabilityId}/state`,
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + token,
-        'Access-Control-Allow-Origin': '*',
-        Accept: 'application/json',
-      },
-    };
-    const response = await axios(options);
-    dispatch(fetchAvailabilityStatesSuccessAC(response.data.data, availabilityId));
+
+    const availabilityStates = await AvailabilityApi({
+      type: DEFAULTS.AVAILABILITY.API.GET.STATES,
+      organizationId: userInfo.organisationId,
+      token,
+      availabilityId,
+    });
+    dispatch(fetchAvailabilityStatesSuccessAC(availabilityStates.data.data, availabilityId));
   } catch (error) {
-    dispatch(fetchAvailabilityStatesFailAC('something went wrong'));
+    dispatch(fetchAvailabilityStatesFailAC(DEFAULTS.GLOBAL.FAIL));
     console.log(error);
   }
 };
@@ -157,21 +133,19 @@ export const changeAgentAvailabilityStateThunk =
   (agentId, availabilityProfileId, availabilityStateId, stateName) => async (dispatch, getState) => {
     try {
       const { userInfo, token } = getState().login;
-      const options = {
-        method: 'patch',
-        url: `https://sapien-proxy.redmatter-qa01.pub/v1/organisation/${userInfo.organisationId}/user/${agentId}`,
-        data: {
-          availabilityProfileId: availabilityProfileId,
-          availabilityStateId: availabilityStateId,
-        },
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: 'Bearer ' + token,
-          'Access-Control-Allow-Origin': '*',
-          Accept: 'application/json',
-        },
+    
+      const data = {
+        availabilityProfileId: availabilityProfileId,
+        availabilityStateId: availabilityStateId,
       };
-      await axios(options);
+
+      await AgentsApi({
+        type: DEFAULTS.AGENTS.API.SAVE.AGENT,
+        organizationId: userInfo.organisationId,
+        token,
+        agentId,
+        data,
+      });
     } catch (error) {
       console.log(error);
     }

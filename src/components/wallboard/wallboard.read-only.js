@@ -41,7 +41,6 @@ const WallboardReadOnly = () => {
     return <div>{fetchMessage}</div>;
   }
 
-  // if (!wallboard.settings.link.isReadOnlyEnabled) {
   if (!wallboard.settings.link.isReadOnlyEnabled && userInfo.permissionLevel !== 'ADMINISTRATOR') {
     return <div>You don't have access to this wallboard! Please contact your Administrator.</div>;
   }
