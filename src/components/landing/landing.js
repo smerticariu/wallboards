@@ -13,9 +13,9 @@ const Landing = () => {
   const { userInfo } = useSelector((state) => state.login);
   const userPermission = userInfo?.permissionLevel;
 
-  // if(userPermission === "BASIC") {
-  //   return <div>Access Denied!</div>
-  // }
+  if(userPermission === "BASIC") {
+    return <div>Access Denied!</div>
+  }
 
   return (
     <div className="c-landing">
