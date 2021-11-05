@@ -2,8 +2,9 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { createArrayFromTo } from '../../common/utils/generateArray';
 import { useSelector } from 'react-redux';
 import GridResizeContainer from './grid.resize-container';
+import { CELLS_NUMBER_ADD, GRID_MODIFIER, INITIAL_CELLS_NUMBER } from './grid.defaults';
 const GridPage = ({ ...props }) => {
-  const [gridCells, setGridCells] = useState(120);
+  const [gridCells, setGridCells] = useState(INITIAL_CELLS_NUMBER);
   const activeWallboard = useSelector((state) => state.wallboards.present.activeWallboard.wallboard);
 
   const sortableListRef = useRef();
@@ -12,17 +13,16 @@ const GridPage = ({ ...props }) => {
 
   useEffect(() => {
     if (Math.abs(document.body.scrollHeight - window.innerHeight) < 30) {
-      setGridCells((gridCellsLocal) => gridCellsLocal + 24);
+      setGridCells((gridCellsLocal) => gridCellsLocal + CELLS_NUMBER_ADD);
     }
     if (gridCellsRef.current.offsetHeight < window.innerHeight) {
-      setGridCells((gridCellsLocal) => gridCellsLocal + 12);
+      setGridCells((gridCellsLocal) => gridCellsLocal + CELLS_NUMBER_ADD);
     }
     document.addEventListener('scroll', function (e) {
       let documentHeight = document.body.scrollHeight;
       let currentScroll = window.scrollY + window.innerHeight;
-      let modifier = 200;
-      if (currentScroll + modifier > documentHeight) {
-        setGridCells((gridCells) => gridCells + 12);
+      if (currentScroll + GRID_MODIFIER > documentHeight) {
+        setGridCells((gridCells) => gridCells + CELLS_NUMBER_ADD);
       }
     });
   }, [gridCells, activeWallboard.settings.display.shrinkHeight]);

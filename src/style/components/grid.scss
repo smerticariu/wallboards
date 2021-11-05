@@ -27,7 +27,7 @@
   }
   &__components-container {
     display: flex;
-    width: 100%;
+    width: calc(100% - 4px);
     height: 100%;
     position: relative;
     transform: rotateX(180deg);
