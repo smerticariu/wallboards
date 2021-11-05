@@ -80,7 +80,9 @@ const GridResizeContainer = ({ isEditMode = true, widgets = [], ...props }) => {
       setGridComponents(translatedItemsToTop);
       if (isChanges) {
         //if there are elements that have been translated, we sync with redux
-        syncDataWithRedux(translatedItemsToTop);
+        dispatch(
+          syncWidgetsSizeForNewScreenAC(translatedItemsToTop.map((gridItem, index) => ({ ...widgets[index], size: { ...gridItem } })))
+        );
       }
     }
     // eslint-disable-next-line
