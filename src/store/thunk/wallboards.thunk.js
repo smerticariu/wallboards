@@ -144,6 +144,7 @@ export const copyWallboardThunk =
       activeWallboard.id = wbId;
       activeWallboard.name = `${activeWallboard.name} Copy`;
       activeWallboard.createdOn = currentDate;
+      activeWallboard.lastView = currentDate;
 
       const data = {
         ...activeWallboard,
