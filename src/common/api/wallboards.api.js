@@ -34,6 +34,11 @@ export const WallboardsApi = async props => {
       options.url = wallboarIdUrl;
       options.data = props.data;
       break;
+    case DEFAULTS.WALLBOARDS.API.SAVE.CREATE_CONFIG:
+      options.method = 'put';
+      options.url = configUrl;
+      options.data = [];
+
     case DEFAULTS.WALLBOARDS.API.SAVE.SYNC_CONFIG:
       options.method = 'put';
       options.url = configUrl;
@@ -43,6 +48,15 @@ export const WallboardsApi = async props => {
     case DEFAULTS.WALLBOARDS.API.DELETE.WALLBOARD:
       options.method = 'delete';
       options.url = wallboarIdUrl;
+      break;
+
+    case DEFAULTS.WALLBOARDS.API.DELETE.ALL_WALLBOARDS:
+      options.method = 'delete';
+      props.data.data.data.forEach(async wallboard => {
+        if(wallboard.key === 'config.json') return; // do not config.json file
+        options.url = `${baseUrl}/key/${wallboard.key}`;
+        await axios(options);
+      });
       break;
 
       default:

@@ -1,3 +1,4 @@
+import axios from "axios"
 import { DEFAULTS } from '../../common/defaults/defaults';
 import { WallboardsApi } from 'src/common/api/wallboards.api';
 import { checkIsAlphanumeric } from 'src/common/utils/alphanumeric-validation';
@@ -20,14 +21,26 @@ import {
 export const fetchWallboardByIdThunk = (wbId) => async (dispatch, getState) => {
   try {
     dispatch(fetchWallboardByIdAC(DEFAULTS.WALLBOARDS.MESSAGE.LOADING));
-
     const { userInfo, token } = getState().login;
+    const currentDate = new Date().getTime();
+
     const wallboardById = await WallboardsApi({
       type: DEFAULTS.WALLBOARDS.API.GET.BY_ID,
       organizationId: userInfo.organisationId,
       wallboardId: wbId,
       token,
     })
+
+    await WallboardsApi({
+      type: DEFAULTS.WALLBOARDS.API.SAVE.WALLBOARD,
+      organizationId: userInfo.organisationId, 
+      token,
+      data: {
+        ...wallboardById.data,
+        lastView: currentDate
+      },
+      wallboardId: wbId,
+    });
 
     dispatch(fetchWallboardByIdSuccessAC({ widgets: [], ...wallboardById.data }));
   } catch (error) {
@@ -39,6 +52,7 @@ export const fetchWallboardByIdThunk = (wbId) => async (dispatch, getState) => {
 export const fetchAllWallboardsThunk = () => async (dispatch, getState) => {
   try {
     dispatch(fetchAllWallboardsAC());
+
     const { userInfo, token } = getState().login;
     const allWallboards = await WallboardsApi({
       type: DEFAULTS.WALLBOARDS.API.GET.ALL_WALLBOARDS_VIA_CONFIG,
@@ -69,7 +83,7 @@ export const saveWallboardThunk = () => async (dispatch, getState) => {
       name: activeWallboard.name,
       createdBy: `${userInfo.firstName} ${userInfo.lastName}`,
       createdOn: activeWallboard.createdOn ?? currentDate,
-      lastEdited: currentDate,
+      lastView: currentDate,
       description: activeWallboard.description,
       widgets: activeWallboard.widgets,
       settings: activeWallboard.settings,
@@ -177,6 +191,7 @@ export const syncWallboardsWithConfig = () => async (dispatch, getState) => {
           name: res.data.name,
           createdBy: res.data.createdBy,
           createdOn: res.data.createdOn,
+          lastView: res.data.lastView,
           description: res.data.description,
         });
       });
@@ -245,6 +260,32 @@ export const updateConfig = (wallboard, method) => async (dispatch, getState) =>
     dispatch(fetchAllWallboardsThunk());
   } catch (error) {
     dispatch(saveWallboardFailAC());
+    console.log(error);
+  }
+};
+
+
+export const deleteAllWallboardsThunk = () => async (dispatch, getState) => {
+  try {
+    const { userInfo, token } = getState().login;
+
+    const allWallboards = await WallboardsApi({
+      type: DEFAULTS.WALLBOARDS.API.GET.ALL_WALLBOARDS,
+      organizationId: userInfo.organisationId, 
+      token,
+    });
+
+    await WallboardsApi({
+      type: DEFAULTS.WALLBOARDS.API.DELETE.ALL_WALLBOARDS,
+      organizationId: userInfo.organisationId, 
+      token,
+      data: allWallboards
+    });
+
+    dispatch(syncWallboardsWithConfig());
+
+  } catch (error) {
+    dispatch(syncWallboardsWithConfig());
     console.log(error);
   }
 };

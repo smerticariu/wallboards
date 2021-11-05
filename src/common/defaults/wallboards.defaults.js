@@ -21,9 +21,11 @@ export const WALLBOARDS = {
     SAVE: {
       WALLBOARD: 'save wallboard',
       SYNC_CONFIG: 'sync config',
+      CREATE_CONFIG: 'create config file',
     },
     DELETE: {
       WALLBOARD: 'delete wallboard',
+      ALL_WALLBOARDS: 'delete all wallboards',
     }
   }
 }

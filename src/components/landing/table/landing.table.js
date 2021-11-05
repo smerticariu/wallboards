@@ -73,7 +73,7 @@ const LandingTable = () => {
     const filterWbsByCategory = (category) => {
       switch (category) {
         case 'Wallboards':
-          const wbsByDate = wallboards.sort((a, b) => a.createdOn.toString().localeCompare(b.createdOn.toString())).reverse();
+          const wbsByDate = wallboards.sort((a, b) => a.lastView.toString().localeCompare(b.lastView.toString())).reverse();
           return wbsByDate;
         case 'Created By Me':
           const wbsByUser = wallboards.filter((wb) => wb.natterboxUserId === userInfo.natterboxUserId);
