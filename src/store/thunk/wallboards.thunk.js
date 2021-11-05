@@ -42,9 +42,8 @@ export const fetchWallboardByIdThunk = (wbId) => async (dispatch, getState) => {
       wallboardId: wbId,
     });
 
-    dispatch(saveWallboardThunk())
-
     dispatch(fetchWallboardByIdSuccessAC({ widgets: [], ...wallboardById.data }));
+    dispatch(updateConfig(wallboardById.data, DEFAULTS.WALLBOARDS.API.SAVE.WALLBOARD));
   } catch (error) {
     dispatch(fetchWallboardByIdFailAC(error?.wallboardById?.data?.error?.message));
     console.log(error?.wallboardById?.data);
@@ -56,7 +55,6 @@ export const fetchAllWallboardsThunk = () => async (dispatch, getState) => {
     dispatch(fetchAllWallboardsAC());
 
     const { userInfo, token } = getState().login;
-    // dispatch(deleteAllWallboardsThunk())
     const allWallboards = await WallboardsApi({
       type: DEFAULTS.WALLBOARDS.API.GET.ALL_WALLBOARDS_VIA_CONFIG,
       organizationId: userInfo.organisationId, 
