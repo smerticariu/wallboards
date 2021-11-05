@@ -353,7 +353,7 @@ const GridResizeContainer = ({ isEditMode = true, widgets = [], ...props }) => {
     let pxToBottom = activeGridItem.height;
     return JSON.parse(JSON.stringify(grid))
       .sort((a, b) => a.startY - b.startY)
-      .map((gridItem, index, gridArray) => {
+      .map((gridItem, _, gridArray) => {
         if (gridItemsToChange.includes(gridItem.id)) {
           if (gridArray[0].startY + pxToBottom + 10 < activeGridItem.endY) {
             pxToBottom = activeGridItem.endY + 10 - gridArray[0].startY;
@@ -367,12 +367,14 @@ const GridResizeContainer = ({ isEditMode = true, widgets = [], ...props }) => {
         return gridItem;
       });
   };
+
+  //on widget resize
   const onGridItemResize = (e, data, gridItemId) => {
     let activeGridItem;
 
     const gridItemsWithChangedSize = gridComponents.map((gridItem) => {
       if (gridItem.id !== gridItemId) return gridItem;
-
+      //set new size for active widget
       activeGridItem = {
         ...gridItem,
         width: data.size.width,
