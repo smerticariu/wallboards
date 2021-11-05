@@ -106,6 +106,12 @@ const GridAgentList = ({ isEditMode, widget, ...props }) => {
             ? false
             : widget.skills.selectAll || agent.agentSkills.some((agentSkill) => widget.skills.selectedItems.includes(agentSkill.name));
         isSkill = widget.view === MAIN_VIEWING_OPTIONS.CARD ? true : isSkill;
+        isSkill =
+          widget.skills.selectNone || (!widget.skills.selectAll && !widget.skills.selectedItems.length)
+            ? agent.agentSkills.length === 0
+              ? true
+              : false
+            : isSkill;
         const isPresenceState = widget.presenceStates.selectAll || widget.presenceStates.selectedItems.includes(agent.status);
         const isAvailabilityState =
           widget.availabilityStates.selectAll ||
@@ -114,9 +120,7 @@ const GridAgentList = ({ isEditMode, widget, ...props }) => {
       });
       const sortedAgents = filtredAgentsWithFullInfo.sort((agent1, agent2) => {
         if (widget.sortBy === SORT_BY_VALUES.AGENT_NAME)
-          return `${agent2.firstName} ${agent2.lastName}`
-            .toUpperCase()
-            .localeCompare(`${agent1.firstName} ${agent1.lastName}`.toUpperCase());
+          return agent1.firstName.toUpperCase().localeCompare(agent2.firstName.toUpperCase());
         if (widget.sortBy === SORT_BY_VALUES.AVAILABILITY_STATE)
           return agent1?.availabilityState?.displayName.localeCompare(agent2?.availabilityState?.displayName);
         if (widget.sortBy === SORT_BY_VALUES.PRESENCE_STATE) return agent1.status.localeCompare(agent2.status);
@@ -184,11 +188,10 @@ const GridAgentList = ({ isEditMode, widget, ...props }) => {
               key={`${agent.userId} ${index}`}
               callStatusKey={agent.status}
               callTime={0}
-              isEditMode={isEditMode}
               ext={agent.sipExtension}
-              name={`${agent.lastName} ${agent.firstName}`}
+              name={`${agent.firstName} ${agent.lastName}`}
               status={agent?.availabilityState?.displayName ?? 'None'}
-              totalTime="00:00:00"
+              totalTime={agent.timeInCurrentAvailabilityState}
               canChangeAvailabilityState={widget.interactivity.selectedItems.includes('CHANGE_AVAILABILITY_STATE')}
               canListenLive={widget.interactivity.selectedItems.includes('LISTEN_LIVE')}
               canCallAgents={widget.interactivity.selectedItems.includes('CALL_AGENTS')}
@@ -220,7 +223,6 @@ const GridAgentList = ({ isEditMode, widget, ...props }) => {
                   canChangeAvailabilityState={widget.interactivity.selectedItems.includes('CHANGE_AVAILABILITY_STATE')}
                   canListenLive={widget.interactivity.selectedItems.includes('LISTEN_LIVE')}
                   canCallAgents={widget.interactivity.selectedItems.includes('CALL_AGENTS')}
-                  isEditMode={isEditMode}
                   columnsToView={widget.columnsToView.selectedItems}
                   availabilityStatesList={availabilityStatesList}
                   handleAgentAvailabilityState={handleAgentAvailabilityState}
@@ -229,7 +231,7 @@ const GridAgentList = ({ isEditMode, widget, ...props }) => {
                     .map((agent) => ({
                       id: agent.userId,
                       callStatusKey: agent.status,
-                      agentName: `${agent.lastName} ${agent.firstName}`,
+                      agentName: `${agent.firstName} ${agent.lastName}`,
                       agentExtNo: agent.sipExtension ?? 'No data',
                       currAvaiState: agent.availabilityState?.displayName ?? 'None',
                       currPresState: agent.status,

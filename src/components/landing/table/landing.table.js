@@ -73,7 +73,8 @@ const LandingTable = () => {
     const filterWbsByCategory = (category) => {
       switch (category) {
         case 'Wallboards':
-          const wbsByDate = wallboards.sort((a, b) => a.createdOn.toString().localeCompare(b.createdOn.toString())).reverse();
+          // debugger
+          const wbsByDate = wallboards.sort((a, b) => a.lastView.toString().localeCompare(b.lastView.toString())).reverse();
           return wbsByDate;
         case 'Created By Me':
           const wbsByUser = wallboards.filter((wb) => wb.natterboxUserId === userInfo.natterboxUserId);
@@ -152,7 +153,7 @@ const LandingTable = () => {
                   <tr key={index}>
                     <td className="c-landing-table__wb-name">
                       <p>
-                        <a target="_blank" href={wallboardUrl} rel="noreferrer">
+                        <a target="_blank" href={`/#/wallboard/${wb.id}`} rel="noreferrer">
                           {wb.name}
                         </a>
                       </p>
@@ -165,7 +166,7 @@ const LandingTable = () => {
                       <p>{handleConvertDate(wb.createdOn)}</p>
                     </td>
                     <td className="c-landing-table__wb-actions">
-                      <a target="_blank" rel="noreferrer" href={`/edit`} className="c-landing-table__edit-btn" />
+                      <a target="_blank" rel="noreferrer" href={`/#/wallboard/${wb.id}/edit`} className="c-landing-table__edit-btn" />
                       <button
                         onClick={() => {
                           handleCopy(wb);

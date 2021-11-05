@@ -37,14 +37,15 @@ export const skillsReducer = (state = initialState, action) => {
     case skillsActions.FETCH_AGENTS_SKILLS_SUCCESS:
       return {
         ...state,
-        agentsSkill: [...state.agentsSkill, action.payload],
+        agentsSkill: state.agentsSkill.some((skill) => skill.agentId === action.payload.agentId)
+          ? state.agentsSkill.map((skill) => (skill.agentId !== action.payload.agentId ? skill : action.payload))
+          : [...state.agentsSkill, action.payload],
         agentsSkillFetchStatus: FetchStatus.SUCCESS,
       };
 
     case skillsActions.FETCH_AGENTS_SKILLS_FAIL:
       return {
         ...state,
-        agentsSkill: [...state.agentsSkill, action.payload],
         agentsSkillFetchStatus: FetchStatus.FAIL,
       };
     default:

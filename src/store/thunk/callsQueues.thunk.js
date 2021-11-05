@@ -1,26 +1,22 @@
-import axios from 'axios';
 import { fetchAllCallsQueuesAC, fetchAllCallsQueuesFailAC, fetchAllCallsQueuesSuccessAC } from '../actions/callsQueues.action';
+import { DEFAULTS } from '../../common/defaults/defaults';
+
+import { CallsQueuesApi } from 'src/common/api/callsQueues.api';
 
 export const fetchAllCallsQueuesThunk = () => async (dispatch, getState) => {
   dispatch(fetchAllCallsQueuesAC());
   try {
     const { userInfo, token } = getState().login;
-    const options = {
-      method: 'get',
-      url: `https://sapien-proxy.redmatter-qa01.pub/v1/organisation/${userInfo.organisationId}/call-queue`,
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + token,
-        'Access-Control-Allow-Origin': '*',
-        Accept: 'application/json',
-      },
-    };
 
-    const response = await axios(options);
+    const allCallsQueues = await CallsQueuesApi({
+      type: DEFAULTS.CALLS_QUEUES.API.GET.ALL_CALLS_QUEUES,
+      organizationId: userInfo.organisationId,
+      token,
+    })
 
-    dispatch(fetchAllCallsQueuesSuccessAC(response.data.data));
+    dispatch(fetchAllCallsQueuesSuccessAC(allCallsQueues.data.data));
   } catch (error) {
-    dispatch(fetchAllCallsQueuesFailAC('something went wrong'));
+    dispatch(fetchAllCallsQueuesFailAC(DEFAULTS.GLOBAL.FAIL));
     console.log(error);
   }
 };
