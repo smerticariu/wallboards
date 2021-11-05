@@ -75,7 +75,7 @@ const GridAgentList = ({ isEditMode, widget, ...props }) => {
       });
     }
     // eslint-disable-next-line
-  }, [agentQueues?.agents?.length]);
+  }, [agentQueues]);
 
   useEffect(() => {
     if (
