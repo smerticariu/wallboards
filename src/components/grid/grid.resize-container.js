@@ -62,7 +62,7 @@ const GridResizeContainer = ({ isEditMode = true, widgets = [], ...props }) => {
         )
       );
     } else {
-      setGridComponents(
+      const [translatedItemsToTop, isChanges] = translateItemsToTopOnTheGrid(
         widgets.map((widget) => {
           return {
             id: widget.id,
@@ -70,6 +70,10 @@ const GridResizeContainer = ({ isEditMode = true, widgets = [], ...props }) => {
           };
         })
       );
+      setGridComponents(translatedItemsToTop);
+      if (isChanges) {
+        syncDataWithRedux(translatedItemsToTop);
+      }
     }
   }, [widgets]);
 
@@ -171,7 +175,7 @@ const GridResizeContainer = ({ isEditMode = true, widgets = [], ...props }) => {
       return { ...activeGridItem };
     });
 
-    const gridItemsToTop = identifyElementsThatNeedToTranslateToTop(gridItems);
+    const [gridItemsToTop] = translateItemsToTopOnTheGrid(gridItems);
 
     setGridComponents(gridItemsToTop);
 
@@ -206,14 +210,14 @@ const GridResizeContainer = ({ isEditMode = true, widgets = [], ...props }) => {
 
     const elementsThatNeedToChangeYPosition = identifyElementsThatNeedToTranslateToBottom(gridItems, activeGridItem);
     const gridItemsWithChangedYPosition = changeGridElementsYPosition(gridItems, elementsThatNeedToChangeYPosition, activeGridItem);
-    const gridItemsToTop = identifyElementsThatNeedToTranslateToTop(gridItemsWithChangedYPosition, activeGridItem);
+    const [gridItemsToTop] = translateItemsToTopOnTheGrid(gridItemsWithChangedYPosition, activeGridItem);
 
     setGridComponents(setGridItemsHeight(gridItemsToTop));
   };
 
-  const identifyElementsThatNeedToTranslateToTop = (grid, activeGridItem) => {
+  const translateItemsToTopOnTheGrid = (grid, activeGridItem) => {
     let isChanges = false;
-
+    let isGlobalChanges = false;
     let gridCopy = JSON.parse(JSON.stringify(grid));
     do {
       isChanges = false;
@@ -249,6 +253,7 @@ const GridResizeContainer = ({ isEditMode = true, widgets = [], ...props }) => {
 
           if (minYPosition < gridItem.startY) {
             isChanges = true;
+            isGlobalChanges = true;
             return {
               ...gridItem,
               startY: minYPosition,
@@ -258,7 +263,7 @@ const GridResizeContainer = ({ isEditMode = true, widgets = [], ...props }) => {
           return gridItem;
         });
     } while (isChanges);
-    return gridCopy;
+    return [gridCopy, isGlobalChanges];
   };
 
   const identifyElementsThatNeedToTranslateToBottom = (grid, activeGridItem) => {
@@ -330,7 +335,7 @@ const GridResizeContainer = ({ isEditMode = true, widgets = [], ...props }) => {
       elementsThatNeedToChangeYPosition,
       activeGridItem
     );
-    const gridItemsToTop = identifyElementsThatNeedToTranslateToTop(gridItemsWithChangedYPosition, activeGridItem);
+    const [gridItemsToTop] = translateItemsToTopOnTheGrid(gridItemsWithChangedYPosition, activeGridItem);
 
     setGridComponents(setGridItemsHeight(gridItemsToTop));
   };

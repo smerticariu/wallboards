@@ -13,10 +13,6 @@ const wallboardInitialValues = {
   id: null,
   description: 'New Wallboard Description',
   widgets: [],
-  size: {
-    height: null,
-    width: null,
-  },
   settings: {
     display: {
       shrinkHeight: false,
@@ -34,7 +30,6 @@ const initialState = {
   activeWallboard: {
     wallboardInitialValues: wallboardInitialValues,
     wallboard: wallboardInitialValues,
-    isWidgetsSizeSync: false,
     fetchStatus: FetchStatus.NULL,
     fetchMessage: '',
     saveStatus: FetchStatus.NULL,
@@ -282,7 +277,6 @@ export const wallboardsReducer = (state = { ...initialState }, action) => {
             ...state.activeWallboard.wallboard,
             widgets: [...action.payload],
           },
-          isWidgetsSizeSync: true,
         },
       };
     }

@@ -25,7 +25,7 @@ const GridPage = ({ ...props }) => {
         setGridCells((gridCells) => gridCells + 12);
       }
     });
-  }, [gridCells]);
+  }, [gridCells, activeWallboard.settings.display.shrinkHeight]);
 
   const handleGridComponents = () => {
     return (
@@ -39,11 +39,11 @@ const GridPage = ({ ...props }) => {
     return (
       <div className="c-grid__cells" ref={gridCellsRef}>
         {createArrayFromTo(1, gridCells).map((number) => (
-          <div className="c-grid__cell" key={number} />
+          <div className={`c-grid__cell`} key={number} style={{ height: activeWallboard.settings.display.shrinkHeight ? '3vh' : '25px' }} />
         ))}
       </div>
     );
-  }, [gridCells]);
+  }, [gridCells, activeWallboard.settings.display.shrinkHeight]);
   return (
     <div ref={gridRef} className="c-grid">
       {handleGrid()}
