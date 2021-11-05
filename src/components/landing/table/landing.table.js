@@ -73,6 +73,7 @@ const LandingTable = () => {
     const filterWbsByCategory = (category) => {
       switch (category) {
         case 'Wallboards':
+          // debugger
           const wbsByDate = wallboards.sort((a, b) => a.lastView.toString().localeCompare(b.lastView.toString())).reverse();
           return wbsByDate;
         case 'Created By Me':
