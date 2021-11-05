@@ -10,7 +10,6 @@ const AgentTable = ({
   canCallAgents,
   canListenLive,
   canChangeAvailabilityState,
-  isEditMode,
   availabilityStatesList,
   handleAgentAvailabilityState,
   columnsToView,
@@ -38,7 +37,7 @@ const AgentTable = ({
 
   const handleCallAgent = (id) => {
     dispatch(callAgentThunk(id));
-  }
+  };
 
   return (
     <div className="agent-t">
@@ -110,12 +109,21 @@ const AgentTable = ({
         {agents?.map((agent, index) => (
           <div key={`${agent.userId} ${index}`} className="agent-t__agent">
             <div className="agent-t__agent-info">
-              {!isEditMode || (!canListenLive && !canCallAgents) ? (
+              {!canListenLive && !canCallAgents ? (
                 <SettingsIcon className="i--settings i--settings--table" />
               ) : (
                 <Dropdown closeOnClick={true} trigger={<SettingsIcon className="i--settings i--settings--table" />}>
                   {canListenLive && <div className="c-dropdown__item">Listen live</div>}
-                  {canCallAgents && <div onClick={() => {handleCallAgent(agent.id)}} className="c-dropdown__item">Call agent</div>}
+                  {canCallAgents && (
+                    <div
+                      onClick={() => {
+                        handleCallAgent(agent.id);
+                      }}
+                      className="c-dropdown__item"
+                    >
+                      Call agent
+                    </div>
+                  )}
                 </Dropdown>
               )}
             </div>
