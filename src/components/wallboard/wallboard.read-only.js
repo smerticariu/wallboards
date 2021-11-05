@@ -6,14 +6,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchWallboardByIdThunk } from 'src/store/thunk/wallboards.thunk';
 import { FetchStatus } from 'src/store/reducers/wallboards.reducer';
 import GridResizeContainer from '../grid/grid.resize-container';
-import { useHistory } from 'react-router';
 import { fetchAvailabilityProfilesThunk, fetchAvailabilityStatesThunk } from '../../store/thunk/agents.thunk';
 
 const WallboardReadOnly = () => {
   const { id } = useParams();
   const { logout } = useAuth0();
   const dispatch = useDispatch();
-  const history = useHistory();
   const { userInfo } = useSelector((state) => state.login);
   const { wallboard, fetchStatus, fetchMessage } = useSelector((state) => state.wallboards.present.activeWallboard);
   const { availabilityProfiles } = useSelector((state) => state.agents);
@@ -42,9 +40,7 @@ const WallboardReadOnly = () => {
   }
 
   if (!wallboard.settings.link.isReadOnlyEnabled && userInfo.permissionLevel !== 'ADMINISTRATOR') {
-    return(
-      <div>You don't have access to this wallboard! Please contact your Administrator.</div>
-    )
+    return <div>You don't have access to this wallboard! Please contact your Administrator.</div>;
   }
 
   return (

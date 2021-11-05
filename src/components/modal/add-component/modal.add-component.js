@@ -570,7 +570,7 @@ const ModalAddComponent = ({ ...props }) => {
                 ext="0000"
                 name="Staff Member Name"
                 status="User online status"
-                totalTime="00:00:00"
+                totalTime={0}
                 isPreview={true}
               />
             </div>
