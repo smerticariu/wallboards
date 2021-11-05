@@ -42,6 +42,8 @@ export const fetchWallboardByIdThunk = (wbId) => async (dispatch, getState) => {
       wallboardId: wbId,
     });
 
+    dispatch(saveWallboardThunk())
+
     dispatch(fetchWallboardByIdSuccessAC({ widgets: [], ...wallboardById.data }));
   } catch (error) {
     dispatch(fetchWallboardByIdFailAC(error?.wallboardById?.data?.error?.message));
@@ -54,6 +56,7 @@ export const fetchAllWallboardsThunk = () => async (dispatch, getState) => {
     dispatch(fetchAllWallboardsAC());
 
     const { userInfo, token } = getState().login;
+    // dispatch(deleteAllWallboardsThunk())
     const allWallboards = await WallboardsApi({
       type: DEFAULTS.WALLBOARDS.API.GET.ALL_WALLBOARDS_VIA_CONFIG,
       organizationId: userInfo.organisationId, 
@@ -96,9 +99,9 @@ export const saveWallboardThunk = () => async (dispatch, getState) => {
       data,
       wallboardId: wbId,
     });
-
-    dispatch(saveWallboardSuccessAC(data));
     dispatch(updateConfig(data, DEFAULTS.WALLBOARDS.API.SAVE.WALLBOARD));
+    dispatch(saveWallboardSuccessAC(data));
+    
     if (activeWallboard.id !== undefined) {
       dispatch(handleIsNotificationShowAC(true, false, DEFAULTS.WALLBOARDS.NOTIFICATION.SUCCESS.SAVE));
     }
@@ -220,6 +223,8 @@ export const updateConfig = (wallboard, method) => async (dispatch, getState) =>
       token,
     });
 
+    const currentDate = new Date().getTime();
+
     let allWallboards = config.data;
     const currentWallboard = allWallboards.find((el) => el.id === wallboard.id);
     const currentWallboardIndex = allWallboards.indexOf(currentWallboard);
@@ -232,6 +237,7 @@ export const updateConfig = (wallboard, method) => async (dispatch, getState) =>
             name: wallboard.name,
             createdBy: wallboard.createdBy,
             createdOn: wallboard.createdOn,
+            lastView: currentDate,
             description: wallboard.description,
           };
         } else {
@@ -281,7 +287,7 @@ export const deleteAllWallboardsThunk = () => async (dispatch, getState) => {
       token,
       data: allWallboards
     });
-
+console.log(allWallboards)
     dispatch(syncWallboardsWithConfig());
 
   } catch (error) {
