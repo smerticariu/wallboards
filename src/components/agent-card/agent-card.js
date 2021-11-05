@@ -18,7 +18,6 @@ const AgentCard = ({
   totalTime,
   callTime,
   callStatusKey,
-  isEditMode,
   canCallAgents,
   canListenLive,
   canChangeAvailabilityState,
@@ -28,7 +27,7 @@ const AgentCard = ({
 
   const handleCallAgent = () => {
     dispatch(callAgentThunk(id));
-  }
+  };
 
   return (
     <div className={`agent-c agent-c--${PRESENCE_STATE_KEYS_COLOR.CARD_BACKGROUND[callStatusKey]}`}>
@@ -46,12 +45,21 @@ const AgentCard = ({
           </div>
         </div>
         <div className="agent-c__cog-icon">
-          {isPreview || !isEditMode || (!canListenLive && !canCallAgents) ? (
+          {isPreview || (!canListenLive && !canCallAgents) ? (
             <SettingsIcon className="i--settings" />
           ) : (
             <Dropdown closeOnClick={true} trigger={<SettingsIcon className="i--settings" />}>
               {canListenLive && <div className="c-dropdown__item">Listen live</div>}
-              {canCallAgents && <div onClick={() => {handleCallAgent()}} className="c-dropdown__item">Call agent</div>}
+              {canCallAgents && (
+                <div
+                  onClick={() => {
+                    handleCallAgent();
+                  }}
+                  className="c-dropdown__item"
+                >
+                  Call agent
+                </div>
+              )}
             </Dropdown>
           )}
         </div>
@@ -82,7 +90,9 @@ const AgentCard = ({
             status
           )}
         </div>
-        <div className={`agent-c__time agent-c__time--${PRESENCE_STATE_KEYS_COLOR.CARD_TOTAL_TIME[callStatusKey]}`}>{totalTime}</div>
+        <div className={`agent-c__time agent-c__time--${PRESENCE_STATE_KEYS_COLOR.CARD_TOTAL_TIME[callStatusKey]}`}>
+          {isPreview ? '00:00:00' : <TimeInterval seconds={totalTime} />}
+        </div>
       </div>
       <div className="agent-c__body">
         <div className="agent-c__call-time-text">Call time</div>
