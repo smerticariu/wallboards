@@ -21,6 +21,9 @@ export const AgentsApi = async props => {
     case DEFAULTS.AGENTS.API.GET.ALL_AGENTS:
       options.url = baseUrl;
       break;
+    case DEFAULTS.AGENTS.API.GET.BY_ID:
+      options.url = `${baseUrl}/${props.agentId}`;
+      break;
     case DEFAULTS.AGENTS.API.GET.AGENT_SKILLS:
       options.url = `${baseUrl}/${props.agentId}/skill`;
     break;

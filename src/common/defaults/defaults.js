@@ -4,6 +4,7 @@ import { AGENTS } from "./agents.defaults";
 import { CALLS_QUEUES } from "./callsQueues.defaults";
 import { MISCELLANEOUS } from "./miscellaneous.default";
 import { AVAILABILITY } from "./availability.defaults";
+import { CALLS } from "./calls.defaults";
 
 export const DEFAULTS = {
   GLOBAL: {
@@ -15,4 +16,5 @@ export const DEFAULTS = {
   AVAILABILITY,
   CALLS_QUEUES,
   MISCELLANEOUS,
+  CALLS,
 }

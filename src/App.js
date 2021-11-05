@@ -30,7 +30,6 @@ function App() {
   const activeModalName = useSelector((state) => state.modal.activeModalName);
   const { warningMessage } = useSelector((state) => state.modal);
   const sfToken = window?.WbConfig?.sfSessionId;
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -80,7 +79,7 @@ function App() {
       {!userInfo && isAuthenticated && <p>Loading...</p>}
       {userInfo && userTokenInfo && (
         <>
-          {/* <button onClick={() => handleLogout()}>logout</button> */}
+          <button onClick={() => handleLogout()}>logout</button>
           {handleRedirect()}
           <HashRouter>
             <Switch>

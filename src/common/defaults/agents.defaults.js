@@ -4,6 +4,7 @@ export const AGENTS = {
       ALL_AGENTS: 'all agents',
       AGENT_SKILLS: 'agent skills',
       AGENT_INFO: 'agent info',
+      BY_ID: 'agent by id',
     },
     SAVE: {
       AGENT: 'agent',

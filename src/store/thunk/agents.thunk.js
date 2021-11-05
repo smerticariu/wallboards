@@ -23,6 +23,7 @@ import { AgentsApi } from 'src/common/api/agents.api';
 import { CallsQueuesApi } from 'src/common/api/callsQueues.api';
 import { MiscellaneousApi } from 'src/common/api/miscellaneous.api';
 import { AvailabilityApi } from 'src/common/api/availability.api';
+import { CallsApi } from 'src/common/api/calls.api';
 
 export const fetchAllAgentsThunk = (callQueueId) => async (dispatch, getState) => {
   dispatch(fetchAllAgentsAC());
@@ -129,24 +130,56 @@ export const fetchAvailabilityStatesThunk = (availabilityId) => async (dispatch,
   }
 };
 
-export const changeAgentAvailabilityStateThunk =
-  (agentId, availabilityProfileId, availabilityStateId, stateName) => async (dispatch, getState) => {
-    try {
-      const { userInfo, token } = getState().login;
-    
-      const data = {
-        availabilityProfileId: availabilityProfileId,
-        availabilityStateId: availabilityStateId,
-      };
+export const changeAgentAvailabilityStateThunk = (agentId, availabilityProfileId, availabilityStateId, stateName) => async (dispatch, getState) => {
+  try {
+    const { userInfo, token } = getState().login;
+  
+    const data = {
+      availabilityProfileId: availabilityProfileId,
+      availabilityStateId: availabilityStateId,
+    };
 
-      await AgentsApi({
-        type: DEFAULTS.AGENTS.API.SAVE.AGENT,
-        organizationId: userInfo.organisationId,
-        token,
-        agentId,
-        data,
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  };
+    await AgentsApi({
+      type: DEFAULTS.AGENTS.API.SAVE.AGENT,
+      organizationId: userInfo.organisationId,
+      token,
+      agentId,
+      data,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const callAgentThunk = (id) => async (dispatch, getState) => {
+  try {
+    const { userInfo, token } = getState().login;
+    const agent = await AgentsApi({
+      type: DEFAULTS.AGENTS.API.GET.BY_ID,
+      organizationId: userInfo.organisationId,
+      token,
+      agentId: id,
+    });
+
+    const userPhoneNumber = userInfo.primaryMobileNumber !== "null" ? userInfo.primaryMobileNumber : "112";
+    const agentPhoneNumber = agent.data.data.primaryMobileNumber !== "null" ? agent.data.data.primaryMobileNumber : "7878";
+
+    const data = {
+      to: `${agentPhoneNumber}`,
+      from: `+${userPhoneNumber}`, 
+      userId: id, 
+      cli: {present: "DEFAULT"}
+    };
+
+    await CallsApi({
+      type: DEFAULTS.CALLS.API.SAVE.CALL_AGENT,
+      organizationId: userInfo.organisationId,
+      token,
+      agentId: id,
+      data,
+    });
+    
+  } catch (error) {
+    console.log(error);
+  }
+};

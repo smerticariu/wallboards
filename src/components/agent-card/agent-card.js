@@ -1,9 +1,12 @@
 import img from '../../assets/static/images/not_exist_people.png';
 import React from 'react';
+import { useDispatch } from 'react-redux';
 import { PRESENCE_STATE_KEYS_COLOR } from '../modal/add-component/modal.add-component.defaults';
 import { SettingsIcon } from '../../assets/static/icons/settings';
 import Dropdown from '../dropdown/dropdown';
 import TimeInterval from '../time-interval/time-interval';
+import { callAgentThunk } from 'src/store/thunk/agents.thunk';
+
 const AgentCard = ({
   id,
   availabilityStatesList = [],
@@ -21,6 +24,12 @@ const AgentCard = ({
   canChangeAvailabilityState,
   ...props
 }) => {
+  const dispatch = useDispatch();
+
+  const handleCallAgent = () => {
+    dispatch(callAgentThunk(id));
+  }
+
   return (
     <div className={`agent-c agent-c--${PRESENCE_STATE_KEYS_COLOR.CARD_BACKGROUND[callStatusKey]}`}>
       <div className="agent-c__header">
@@ -42,7 +51,7 @@ const AgentCard = ({
           ) : (
             <Dropdown closeOnClick={true} trigger={<SettingsIcon className="i--settings" />}>
               {canListenLive && <div className="c-dropdown__item">Listen live</div>}
-              {canCallAgents && <div className="c-dropdown__item">Call agent</div>}
+              {canCallAgents && <div onClick={() => {handleCallAgent()}} className="c-dropdown__item">Call agent</div>}
             </Dropdown>
           )}
         </div>
