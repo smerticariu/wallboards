@@ -9,7 +9,7 @@ import {
 
 import { DEFAULTS } from '../../common/defaults/defaults';
 import { SkilsApi } from 'src/common/api/skills.api';
-import { AgentsApi } from 'src/common/api/agents.api';
+import { AgentsApi } from '../../common/api/agents.api';
 
 export const fetchAllSkillsThunk = () => async (dispatch, getState) => {
   dispatch(fetchAllSkillsAC());
@@ -20,7 +20,7 @@ export const fetchAllSkillsThunk = () => async (dispatch, getState) => {
       type: DEFAULTS.SKILLS.API.GET.ALL_SKILLS,
       organizationId: userInfo.organisationId,
       token,
-    })
+    });
 
     dispatch(fetchAllSkillsSuccessAC(allSkills.data.data));
   } catch (error) {
@@ -33,14 +33,13 @@ export const fetchAgentSkillThunk = (userId) => async (dispatch, getState) => {
   dispatch(fetchAgentsSkillsAC());
   try {
     const { userInfo, token } = getState().login;
- 
 
     const agentSkills = await AgentsApi({
       type: DEFAULTS.AGENTS.API.GET.AGENT_SKILLS,
       organizationId: userInfo.organisationId,
       token,
       agentId: userId,
-    })
+    });
 
     dispatch(fetchAgentsSkillsSuccessAC(userId, agentSkills.data.data));
   } catch (error) {

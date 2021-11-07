@@ -2,10 +2,10 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { ArrowDownIcon } from '../../assets/static/icons/arrow-down';
 import { SettingsIcon } from '../../assets/static/icons/settings';
+import { callAgentThunk } from '../../store/thunk/agents.thunk';
 import Dropdown from '../dropdown/dropdown';
 import { ADD_COMPONENT_COLUMN_OPTIONS, PRESENCE_STATE_KEYS_COLOR } from '../modal/add-component/modal.add-component.defaults';
 import TimeInterval from '../time-interval/time-interval';
-import { callAgentThunk } from 'src/store/thunk/agents.thunk';
 const AgentTable = ({
   canCallAgents,
   canListenLive,

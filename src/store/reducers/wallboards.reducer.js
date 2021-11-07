@@ -1,5 +1,5 @@
-import { RESIZE_GRID_COLUMNS } from 'src/components/grid/grid.defaults';
 import { generateWallboardWidgetId } from '../../common/utils/generateId';
+import { RESIZE_GRID_COLUMNS } from '../../components/grid/grid.defaults';
 
 import { wallboardsActions } from '../actions/wallboards.action';
 export const FetchStatus = {
