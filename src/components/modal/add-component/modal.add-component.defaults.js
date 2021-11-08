@@ -1,15 +1,9 @@
-import { createArrayFromTo } from '../../../common/utils/generateArray';
 export const SORT_BY_VALUES = {
   AGENT_NAME: 'AGENT_NAME',
-
   AVAILABILITY_STATE: 'AVAILABILITY_STATE',
-
   PRESENCE_STATE: 'PRESENCE_STATE',
-
   TIME_CURRENT_CALL: 'TIME_CURRENT_CALL',
-
   TIME_CURRENT_AVAILABILITY_STATE: 'TIME_CURRENT_AVAILABILITY_STATE',
-
   TIME_PHONE_TODAY: 'TIME_PHONE_TODAY',
 };
 export const SORT_BY_OPTIONS = [
@@ -118,29 +112,6 @@ export const PRESENCE_STATE_KEYS_COLOR = {
 };
 
 export const ADD_COMPONENT_STATE_OPTIONS = {
-  //in the future it may be needed
-  // availabilityStates: [
-  //   {
-  //     text: "I'm currently available for calls",
-  //     value: 'CURRENTLY_AVAILABLE',
-  //     isInitialChecked: true,
-  //   },
-  //   {
-  //     text: "I'm busy on calls",
-  //     value: 'BUSY_ON_CALLS',
-  //     isInitialChecked: true,
-  //   },
-  //   {
-  //     text: 'No calls today please',
-  //     value: 'NO_CALLS_TODAY',
-  //     isInitialChecked: true,
-  //   },
-  // ],
-  availabilityStates: createArrayFromTo(0, 20).map((el) => ({
-    text: `Profile Name ${el - (el % 2)} - State ${el % 4}`,
-    value: `P_${el}_S_${el}`,
-    isInitialChecked: true,
-  })),
   presenceStates: [
     {
       text: 'Inbound Call',
@@ -258,11 +229,6 @@ export const ADD_COMPONENT_STATE_OPTIONS = {
       isInitialChecked: false,
     },
   ],
-  skillsToView: [...new Array(100)].map((skill, index) => ({
-    text: 'Skill ' + index,
-    value: `SKILL_${index}`,
-    isInitialChecked: true,
-  })),
 };
 
 export const MAIN_VIEWING_OPTIONS = {

@@ -5,7 +5,7 @@ import { PRESENCE_STATE_KEYS_COLOR } from '../modal/add-component/modal.add-comp
 import { SettingsIcon } from '../../assets/static/icons/settings';
 import Dropdown from '../dropdown/dropdown';
 import TimeInterval from '../time-interval/time-interval';
-import { callAgentThunk } from 'src/store/thunk/agents.thunk';
+import { callAgentThunk } from '../../store/thunk/agents.thunk';
 
 const AgentCard = ({
   id,
