@@ -31,7 +31,7 @@ const AgentTable = ({
     isListOfSkillsColumn: columnsToView.includes(ADD_COMPONENT_COLUMN_OPTIONS.SKILLS_AGENT_POSSESSES),
   };
   const noOfCols = Object.keys(activeColumns).filter((key) => activeColumns[key]).length;
-  const colWidth = 100 / noOfCols + '%';
+  const colWidth = 100 / (activeColumns.isCurrPresStateColumn ? noOfCols - 1 : noOfCols) + '%';
 
   const dispatch = useDispatch();
 
@@ -42,7 +42,7 @@ const AgentTable = ({
   return (
     <div className="agent-t">
       <div className="agent-t__header">
-        <div className="agent-t__header-item"></div>
+        {(canListenLive || canCallAgents) && <div className="agent-t__header-item agent-t__header-item--settings"></div>}
         {activeColumns.isAgentNameColumn && (
           <div className="agent-t__header-item" style={{ width: colWidth }}>
             Name
@@ -98,20 +98,14 @@ const AgentTable = ({
             Skills
           </div>
         )}
-        {activeColumns.isCurrPresStateColumn && (
-          <div className="agent-t__header-item" style={{ width: colWidth }}>
-            Status
-          </div>
-        )}
+        {activeColumns.isCurrPresStateColumn && <div className="agent-t__header-item agent-t__header-item--status">Status</div>}
       </div>
 
       <div className="agent-t__body">
         {agents?.map((agent, index) => (
           <div key={`${agent.userId} ${index}`} className="agent-t__agent">
-            <div className="agent-t__agent-info">
-              {!canListenLive && !canCallAgents ? (
-                <SettingsIcon className="i--settings i--settings--table" />
-              ) : (
+            {(canListenLive || canCallAgents) && (
+              <div className="agent-t__agent-info agent-t__agent-info--settings">
                 <Dropdown closeOnClick={true} trigger={<SettingsIcon className="i--settings i--settings--table" />}>
                   {canListenLive && <div className="c-dropdown__item">Listen live</div>}
                   {canCallAgents && (
@@ -125,8 +119,8 @@ const AgentTable = ({
                     </div>
                   )}
                 </Dropdown>
-              )}
-            </div>
+              </div>
+            )}
             {activeColumns.isAgentNameColumn && (
               <div className="agent-t__agent-info" style={{ width: colWidth }}>
                 {agent.agentName}
@@ -228,18 +222,12 @@ const AgentTable = ({
               </div>
             )}
             {activeColumns.isCurrPresStateColumn && (
-              <div className="agent-t__agent-info  agent-t__agent-info--circle" style={{ width: colWidth }}>
+              <div className="agent-t__agent-info  agent-t__agent-info--status">
                 <div
-                  className={`agent-t__agent-info--circle-container agent-t__agent-info--circle-container--${
+                  className={`agent-t__agent-info__circle agent-t__agent-info__circle--${
                     PRESENCE_STATE_KEYS_COLOR.CARD_BACKGROUND[agent.callStatusKey]
                   }`}
-                >
-                  <div
-                    className={`agent-t__agent-info--circle-center agent-t__agent-info--circle-container--${
-                      PRESENCE_STATE_KEYS_COLOR.CARD_BACKGROUND[agent.callStatusKey]
-                    }`}
-                  />
-                </div>
+                ></div>
                 {PRESENCE_STATE_KEYS_COLOR.CARD_PRESENCE_STATE_TEXT[agent.callStatusKey]}
               </div>
             )}

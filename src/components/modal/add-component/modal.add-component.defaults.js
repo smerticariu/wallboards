@@ -63,6 +63,12 @@ export const PRESENCE_STATE_KEYS = {
   AGENT_STATUS_LOGGED_OFF: 'loggedoff',
 };
 
+export const INTERACTIVITY_OPTIONS_KEYS = {
+  CHANGE_AVAILABILITY_STATE: 'CHANGE_AVAILABILITY_STATE',
+  LISTEN_LIVE: 'LISTEN_LIVE',
+  CALL_AGENTS: 'CALL_AGENTS',
+};
+
 export const PRESENCE_STATE_KEYS_COLOR = {
   CARD_BACKGROUND: {
     [PRESENCE_STATE_KEYS.AGENT_STATUS_IDLE]: 'sick-green',
@@ -176,17 +182,17 @@ export const ADD_COMPONENT_STATE_OPTIONS = {
   interactivityOptions: [
     {
       text: 'Can change availability state',
-      value: 'CHANGE_AVAILABILITY_STATE',
+      value: INTERACTIVITY_OPTIONS_KEYS.CHANGE_AVAILABILITY_STATE,
       isInitialChecked: true,
     },
     {
       text: 'Can Listen Live to agents',
-      value: 'LISTEN_LIVE',
+      value: INTERACTIVITY_OPTIONS_KEYS.LISTEN_LIVE,
       isInitialChecked: true,
     },
     {
       text: 'Can Call Agents',
-      value: 'CALL_AGENTS',
+      value: INTERACTIVITY_OPTIONS_KEYS.CALL_AGENTS,
       isInitialChecked: true,
     },
   ],

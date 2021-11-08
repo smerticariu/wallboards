@@ -177,7 +177,7 @@ const GridAgentList = ({ isEditMode, widget, ...props }) => {
         </div>
       </div>
       <div className={`agent-list__body ${widget.view === MAIN_VIEWING_OPTIONS.TABLE ? 'agent-list__body--table' : ''}`}>
-        {!agentsForDisplay.length ? (
+        {!agentsForDisplay.length || widget.columnsToView.selectedItems.length === 0 ? (
           <div className="empty-message empty-message--agents">No agents</div>
         ) : widget.view === MAIN_VIEWING_OPTIONS.CARD ? (
           agentsForDisplay.map((agent, index) => (
