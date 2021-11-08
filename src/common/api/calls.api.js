@@ -22,6 +22,16 @@ export const CallsApi = async props => {
       options.data = props.data;
       options.url = `${baseUrl}/channel`;
       break;
+    case DEFAULTS.CALLS.API.SAVE.LISTEN_LIVE:
+      options.method = 'post';
+      options.data = props.data;
+      options.url = `${baseUrl}/channel`;
+      break;
+
+    case DEFAULTS.CALLS.API.GET.CALLS:
+      options.method = 'get';
+      options.url = baseUrl;
+      break;
     
     default:
       return null;

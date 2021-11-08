@@ -286,7 +286,6 @@ export const deleteAllWallboardsThunk = () => async (dispatch, getState) => {
       token,
       data: allWallboards
     });
-console.log(allWallboards)
     dispatch(syncWallboardsWithConfig());
 
   } catch (error) {
