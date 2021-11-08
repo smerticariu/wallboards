@@ -18,6 +18,7 @@ import {
   fetchUserGroupsFailAC,
   fetchUserGroupsSuccessAC,
 } from '../actions/agents.action';
+import { handleIsNotificationShowAC } from '../actions/notification.action';
 import { DEFAULTS } from '../../common/defaults/defaults';
 import { AgentsApi } from '../../common/api/agents.api';
 import { CallsQueuesApi } from '../../common/api/callsQueues.api';
@@ -148,6 +149,7 @@ export const changeAgentAvailabilityStateThunk =
         data,
       });
     } catch (error) {
+      dispatch(handleIsNotificationShowAC(true, true, DEFAULTS.GLOBAL.FAIL));
       console.log(error);
     }
   };
@@ -180,6 +182,62 @@ export const callAgentThunk = (id) => async (dispatch, getState) => {
       data,
     });
   } catch (error) {
+    dispatch(handleIsNotificationShowAC(true, true, DEFAULTS.GLOBAL.FAIL));
+    console.log(error);
+  }
+};
+
+export const listenLiveThunk = (id) => async (dispatch, getState) => {
+  try {
+    const { userInfo, token } = getState().login;
+    const agent = await AgentsApi({
+      type: DEFAULTS.AGENTS.API.GET.BY_ID,
+      organizationId: userInfo.organisationId,
+      token,
+      agentId: id,
+    });
+
+    const userPhoneNumber = userInfo.primaryMobileNumber !== 'null' ? userInfo.primaryMobileNumber : '112';
+
+    const calls = await CallsApi({
+      type: DEFAULTS.CALLS.API.GET.CALLS,
+      organizationId: userInfo.organisationId,
+      token,
+      agentId: id,
+    });
+
+    const currentCall = calls.data.data.find((call) => {
+      return call.channels.find((channel) => {
+        return channel.userId === id;
+      });
+    });
+
+    const currentChannel = currentCall.channels.find((channel) => {
+      return channel.userId === id;
+    });
+
+    const data = {
+      to: 'CPBXListenInService',
+      from: `+${userPhoneNumber}`,
+      userId: parseInt(id),
+      cli: { present: 'DEFAULT' },
+      targetChannelUuid: currentChannel.uuid,
+      variables: {
+        listenInNumber: currentChannel.uuid,
+        listenInName: currentChannel.uuid,
+        listenInExtension: agent.data.data.sipExtention,
+      },
+    };
+
+    await CallsApi({
+      type: DEFAULTS.CALLS.API.SAVE.CALL_AGENT,
+      organizationId: userInfo.organisationId,
+      token,
+      agentId: id,
+      data,
+    });
+  } catch (error) {
+    dispatch(handleIsNotificationShowAC(true, true, DEFAULTS.GLOBAL.FAIL));
     console.log(error);
   }
 };

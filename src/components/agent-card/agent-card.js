@@ -5,7 +5,7 @@ import { PRESENCE_STATE_KEYS_COLOR } from '../modal/add-component/modal.add-comp
 import { SettingsIcon } from '../../assets/static/icons/settings';
 import Dropdown from '../dropdown/dropdown';
 import TimeInterval from '../time-interval/time-interval';
-import { callAgentThunk } from '../../store/thunk/agents.thunk';
+import { callAgentThunk, listenLiveThunk } from 'src/store/thunk/agents.thunk';
 
 const AgentCard = ({
   id,
@@ -29,6 +29,10 @@ const AgentCard = ({
     dispatch(callAgentThunk(id));
   };
 
+  const handleListenLive = () => {
+    dispatch(listenLiveThunk(id));
+  };
+
   return (
     <div className={`agent-c agent-c--${PRESENCE_STATE_KEYS_COLOR.CARD_BACKGROUND[callStatusKey]}`}>
       <div className="agent-c__header">
@@ -49,7 +53,16 @@ const AgentCard = ({
             <SettingsIcon className="i--settings" />
           ) : (
             <Dropdown closeOnClick={true} trigger={<SettingsIcon className="i--settings" />}>
-              {canListenLive && <div className="c-dropdown__item">Listen live</div>}
+              {canListenLive && (
+                <div
+                  className="c-dropdown__item"
+                  onClick={() => {
+                    handleListenLive();
+                  }}
+                >
+                  Listen live
+                </div>
+              )}
               {canCallAgents && (
                 <div
                   onClick={() => {
