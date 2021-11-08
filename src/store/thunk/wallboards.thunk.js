@@ -31,16 +31,16 @@ export const fetchWallboardByIdThunk = (wbId) => async (dispatch, getState) => {
       token,
     })
 
-    await WallboardsApi({
-      type: DEFAULTS.WALLBOARDS.API.SAVE.WALLBOARD,
-      organizationId: userInfo.organisationId, 
-      token,
-      data: {
-        ...wallboardById.data,
-        lastView: currentDate
-      },
-      wallboardId: wbId,
-    });
+    // await WallboardsApi({ // DO NOT DELETE
+    //   type: DEFAULTS.WALLBOARDS.API.SAVE.WALLBOARD,
+    //   organizationId: userInfo.organisationId, 
+    //   token,
+    //   data: {
+    //     ...wallboardById.data,
+    //     lastView: currentDate
+    //   },
+    //   wallboardId: wbId,
+    // });
 
     dispatch(fetchWallboardByIdSuccessAC({ widgets: [], ...wallboardById.data }));
     dispatch(updateConfig(wallboardById.data, DEFAULTS.WALLBOARDS.API.SAVE.WALLBOARD));
