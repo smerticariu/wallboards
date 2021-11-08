@@ -1,11 +1,14 @@
 import { PRESENCE_STATE_KEYS } from '../modal/add-component/modal.add-component.defaults';
 
-export const INITIAL_CELLS_NUMBER = 480;
+export const INITIAL_CELLS_NUMBER = 120;
 export const CELLS_NUMBER_REMOVE = 216;
-export const CELLS_NUMBER_ADD = 240;
+export const CELLS_NUMBER_ADD = 24;
 export const CELL_HEIGHT = 29;
 export const CELLS_ON_ROW = 12;
-export const RESIZE_GRID_COLUMNS = 192;
+export const RESIZE_GRID_COLUMNS = 24;
+export const GRID_MODIFIER = 200;
+export const WIDGET_INITIAL_HEIGHT = 400;
+export const WIDGET_MARGIN_TOP = 10;
 
 export const AGENTS_TABLE = [
   {
