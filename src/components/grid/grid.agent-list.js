@@ -120,7 +120,9 @@ const GridAgentList = ({ isEditMode, widget, ...props }) => {
       });
       const sortedAgents = filtredAgentsWithFullInfo.sort((agent1, agent2) => {
         if (widget.sortBy === SORT_BY_VALUES.AGENT_NAME)
-          return agent1.firstName.toUpperCase().localeCompare(agent2.firstName.toUpperCase());
+          return `${agent1.firstName} ${agent1.lastName}`
+            .toUpperCase()
+            .localeCompare(`${agent2.firstName} ${agent2.lastName}`.toUpperCase());
         if (widget.sortBy === SORT_BY_VALUES.AVAILABILITY_STATE)
           return agent1?.availabilityState?.displayName.localeCompare(agent2?.availabilityState?.displayName);
         if (widget.sortBy === SORT_BY_VALUES.PRESENCE_STATE) return agent1.status.localeCompare(agent2.status);
@@ -177,7 +179,7 @@ const GridAgentList = ({ isEditMode, widget, ...props }) => {
         </div>
       </div>
       <div className={`agent-list__body ${widget.view === MAIN_VIEWING_OPTIONS.TABLE ? 'agent-list__body--table' : ''}`}>
-        {!agentsForDisplay.length ? (
+        {!agentsForDisplay.length || widget.columnsToView.selectedItems.length === 0 ? (
           <div className="empty-message empty-message--agents">No agents</div>
         ) : widget.view === MAIN_VIEWING_OPTIONS.CARD ? (
           agentsForDisplay.map((agent, index) => (

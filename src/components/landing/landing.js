@@ -1,10 +1,9 @@
 import React, { useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
-
 import LandingSidebar from './sidebar/landing.sidebar';
 import LandingTable from './table/landing.table';
 import Toolbar from '../toolbar/toolbar';
-import useOnClickOutside from 'src/common/hooks/useOnClickOutside';
+import useOnClickOutside from '../../common/hooks/useOnClickOutside';
 
 const Landing = () => {
   const [isSidebarOpen, handleIsSidebarOpen] = useState(false);
@@ -13,8 +12,8 @@ const Landing = () => {
   const { userInfo } = useSelector((state) => state.login);
   const userPermission = userInfo?.permissionLevel;
 
-  if(userPermission === "BASIC") {
-    return <div>Access Denied!</div>
+  if (userPermission === 'BASIC') {
+    return <div>Access Denied!</div>;
   }
 
   return (

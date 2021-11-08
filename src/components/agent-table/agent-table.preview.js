@@ -4,6 +4,8 @@ import { SettingsIcon } from 'src/assets/static/icons/settings';
 import { PRESENCE_STATE_KEYS_COLOR } from '../modal/add-component/modal.add-component.defaults';
 import { previewAvailabilityStatusColors } from './agent-table.defaults';
 const AgentTablePreview = ({
+  canCallAgents,
+  canListenLive,
   agentName,
   agentExtNo,
   currAvaiState,
@@ -21,7 +23,9 @@ const AgentTablePreview = ({
   return (
     <div className="agent-t">
       <div className="agent-t__header agent-t__header--preview">
-        <div className="agent-t__header-item agent-t__header-item--preview"></div>
+        {(canCallAgents || canListenLive) && (
+          <div className="agent-t__header-item agent-t__header-item--preview agent-t__header-item--preview--settings"></div>
+        )}
         {agentName && <div className="agent-t__header-item agent-t__header-item--preview">Name</div>}
         {currAvaiState && <div className="agent-t__header-item agent-t__header-item--preview">Availability Status</div>}
         {agentExtNo && <div className="agent-t__header-item agent-t__header-item--preview">Phone Ext</div>}
@@ -39,10 +43,11 @@ const AgentTablePreview = ({
       <div className="agent-t__body">
         {[0, 1, 2].map((index) => (
           <div key={index} className="agent-t__agent agent-t__agent--preview">
-            <div className="agent-t__agent-info agent-t__agent-info--preview">
-              <SettingsIcon onClick={() => {}} className="i--settings i--settings--table i--settings--table--small" />
-            </div>
-
+            {(canCallAgents || canListenLive) && (
+              <div className="agent-t__agent-info agent-t__agent-info--preview agent-t__agent-info--preview--settings">
+                <SettingsIcon onClick={() => {}} className="i--settings i--settings--table i--settings--table--small" />
+              </div>
+            )}
             {agentName && <div className="agent-t__agent-info agent-t__agent-info--preview">Megan Carter</div>}
             {currAvaiState && (
               <div
@@ -67,19 +72,13 @@ const AgentTablePreview = ({
             {listOfSkills && <div className="agent-t__agent-info agent-t__agent-info--preview">skill</div>}
 
             {currPresState && (
-              <div className="agent-t__agent-info agent-t__agent-info--circle agent-t__agent-info--circle--preview">
+              <div className="agent-t__agent-info  agent-t__agent-info--status agent-t__agent-info--status--preview">
                 <div
-                  className={`agent-t__agent-info--circle-container agent-t__agent-info--circle-container--${
+                  className={`agent-t__agent-info__circle agent-t__agent-info__circle--preview agent-t__agent-info__circle--${
                     PRESENCE_STATE_KEYS_COLOR.CARD_BACKGROUND[previewAvailabilityStatusColors[index]]
-                  } agent-t__agent-info--circle-container--preview`}
-                >
-                  <div
-                    className={`agent-t__agent-info--circle-center agent-t__agent-info--circle-center--${
-                      PRESENCE_STATE_KEYS_COLOR.CARD_BACKGROUND[previewAvailabilityStatusColors[index]]
-                    } agent-t__agent-info--circle-center--preview`}
-                  ></div>
-                </div>
-                {PRESENCE_STATE_KEYS_COLOR.CARD_PRESENCE_STATE_TEXT[previewAvailabilityStatusColors[index]]}{' '}
+                  }`}
+                ></div>
+                {PRESENCE_STATE_KEYS_COLOR.CARD_PRESENCE_STATE_TEXT[previewAvailabilityStatusColors[index]]}
               </div>
             )}
           </div>

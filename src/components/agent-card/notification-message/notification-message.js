@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { CheckMarkIcon } from 'src/assets/static/icons/checkmark';
-import { CloseIcon } from 'src/assets/static/icons/close';
-import { handleIsNotificationShowAC } from 'src/store/actions/notification.action';
+import { CheckMarkIcon } from '../../../assets/static/icons/checkmark';
+import { CloseIcon } from '../../../assets/static/icons/close';
+import { handleIsNotificationShowAC } from '../../../store/actions/notification.action';
 
 const NotificationMessage = () => {
   const { isNotificationShow, isErrorNotification, notificationMessage, notificationTime } = useSelector((state) => state.notification);

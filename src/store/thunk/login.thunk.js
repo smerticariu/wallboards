@@ -1,5 +1,5 @@
+import { AgentsApi } from '../../common/api/agents.api';
 import { DEFAULTS } from '../../common/defaults/defaults';
-import { AgentsApi } from 'src/common/api/agents.api';
 import { setUserInfoAC } from '../actions/login.action';
 
 export const fetchUserInfoThunk = (token) => async (dispatch, getState) => {

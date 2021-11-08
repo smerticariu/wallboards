@@ -53,14 +53,16 @@ const AgentCard = ({
             <SettingsIcon className="i--settings" />
           ) : (
             <Dropdown closeOnClick={true} trigger={<SettingsIcon className="i--settings" />}>
-              {canListenLive && 
-                <div 
+              {canListenLive && (
+                <div
                   className="c-dropdown__item"
                   onClick={() => {
                     handleListenLive();
-                  }}>
-                    Listen live
-                </div>}
+                  }}
+                >
+                  Listen live
+                </div>
+              )}
               {canCallAgents && (
                 <div
                   onClick={() => {

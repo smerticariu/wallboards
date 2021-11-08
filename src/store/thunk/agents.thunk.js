@@ -20,11 +20,11 @@ import {
 } from '../actions/agents.action';
 import { handleIsNotificationShowAC } from '../actions/notification.action';
 import { DEFAULTS } from '../../common/defaults/defaults';
-import { AgentsApi } from 'src/common/api/agents.api';
-import { CallsQueuesApi } from 'src/common/api/callsQueues.api';
-import { MiscellaneousApi } from 'src/common/api/miscellaneous.api';
-import { AvailabilityApi } from 'src/common/api/availability.api';
-import { CallsApi } from 'src/common/api/calls.api';
+import { AgentsApi } from '../../common/api/agents.api';
+import { CallsQueuesApi } from '../../common/api/callsQueues.api';
+import { MiscellaneousApi } from '../../common/api/miscellaneous.api';
+import { AvailabilityApi } from '../../common/api/availability.api';
+import { CallsApi } from '../../common/api/calls.api';
 
 export const fetchAllAgentsThunk = (callQueueId) => async (dispatch, getState) => {
   dispatch(fetchAllAgentsAC());
@@ -35,7 +35,7 @@ export const fetchAllAgentsThunk = (callQueueId) => async (dispatch, getState) =
       organizationId: userInfo.organisationId,
       token,
       callQueueId,
-    })
+    });
     dispatch(fetchAllAgentsSuccessAC(allAgentsFromCallQueue.data.data, callQueueId));
   } catch (error) {
     dispatch(fetchAllAgentsFailAC(DEFAULTS.GLOBAL.FAIL));
@@ -99,7 +99,7 @@ export const fetchAvailabilityProfilesThunk = () => async (dispatch, getState) =
   dispatch(fetchAvailabilityProfilesAC());
   try {
     const { userInfo, token } = getState().login;
-  
+
     const availabilityProfiles = await AvailabilityApi({
       type: DEFAULTS.AVAILABILITY.API.GET.PROFILES,
       organizationId: userInfo.organisationId,
@@ -131,27 +131,28 @@ export const fetchAvailabilityStatesThunk = (availabilityId) => async (dispatch,
   }
 };
 
-export const changeAgentAvailabilityStateThunk = (agentId, availabilityProfileId, availabilityStateId, stateName) => async (dispatch, getState) => {
-  try {
-    const { userInfo, token } = getState().login;
-  
-    const data = {
-      availabilityProfileId: availabilityProfileId,
-      availabilityStateId: availabilityStateId,
-    };
+export const changeAgentAvailabilityStateThunk =
+  (agentId, availabilityProfileId, availabilityStateId, stateName) => async (dispatch, getState) => {
+    try {
+      const { userInfo, token } = getState().login;
 
-    await AgentsApi({
-      type: DEFAULTS.AGENTS.API.SAVE.AGENT,
-      organizationId: userInfo.organisationId,
-      token,
-      agentId,
-      data,
-    });
-  } catch (error) {
-    dispatch(handleIsNotificationShowAC(true, true, DEFAULTS.GLOBAL.FAIL));
-    console.log(error);
-  }
-};
+      const data = {
+        availabilityProfileId: availabilityProfileId,
+        availabilityStateId: availabilityStateId,
+      };
+
+      await AgentsApi({
+        type: DEFAULTS.AGENTS.API.SAVE.AGENT,
+        organizationId: userInfo.organisationId,
+        token,
+        agentId,
+        data,
+      });
+    } catch (error) {
+      dispatch(handleIsNotificationShowAC(true, true, DEFAULTS.GLOBAL.FAIL));
+      console.log(error);
+    }
+  };
 
 export const callAgentThunk = (id) => async (dispatch, getState) => {
   try {
@@ -163,14 +164,14 @@ export const callAgentThunk = (id) => async (dispatch, getState) => {
       agentId: id,
     });
 
-    const userPhoneNumber = userInfo.primaryMobileNumber !== "null" ? userInfo.primaryMobileNumber : "112";
-    const agentPhoneNumber = agent.data.data.primaryMobileNumber !== "null" ? agent.data.data.primaryMobileNumber : "7878";
+    const userPhoneNumber = userInfo.primaryMobileNumber !== 'null' ? userInfo.primaryMobileNumber : '112';
+    const agentPhoneNumber = agent.data.data.primaryMobileNumber !== 'null' ? agent.data.data.primaryMobileNumber : '7878';
 
     const data = {
       to: `${agentPhoneNumber}`,
-      from: `+${userPhoneNumber}`, 
-      userId: id, 
-      cli: {present: "DEFAULT"}
+      from: `+${userPhoneNumber}`,
+      userId: id,
+      cli: { present: 'DEFAULT' },
     };
 
     await CallsApi({
@@ -180,7 +181,6 @@ export const callAgentThunk = (id) => async (dispatch, getState) => {
       agentId: id,
       data,
     });
-    
   } catch (error) {
     dispatch(handleIsNotificationShowAC(true, true, DEFAULTS.GLOBAL.FAIL));
     console.log(error);
@@ -197,7 +197,7 @@ export const listenLiveThunk = (id) => async (dispatch, getState) => {
       agentId: id,
     });
 
-    const userPhoneNumber = userInfo.primaryMobileNumber !== "null" ? userInfo.primaryMobileNumber : "112";
+    const userPhoneNumber = userInfo.primaryMobileNumber !== 'null' ? userInfo.primaryMobileNumber : '112';
 
     const calls = await CallsApi({
       type: DEFAULTS.CALLS.API.GET.CALLS,
@@ -206,27 +206,27 @@ export const listenLiveThunk = (id) => async (dispatch, getState) => {
       agentId: id,
     });
 
-    const currentCall = calls.data.data.find(call => {
-      return call.channels.find(channel => {
-         return channel.userId === id;
-     });
+    const currentCall = calls.data.data.find((call) => {
+      return call.channels.find((channel) => {
+        return channel.userId === id;
+      });
     });
 
-    const currentChannel = currentCall.channels.find(channel => {
+    const currentChannel = currentCall.channels.find((channel) => {
       return channel.userId === id;
     });
 
     const data = {
-      to: "CPBXListenInService",
-      from: `+${userPhoneNumber}`, 
-      userId: parseInt(id), 
-      cli: {present: "DEFAULT"},
+      to: 'CPBXListenInService',
+      from: `+${userPhoneNumber}`,
+      userId: parseInt(id),
+      cli: { present: 'DEFAULT' },
       targetChannelUuid: currentChannel.uuid,
       variables: {
         listenInNumber: currentChannel.uuid,
         listenInName: currentChannel.uuid,
         listenInExtension: agent.data.data.sipExtention,
-      }
+      },
     };
 
     await CallsApi({
@@ -236,7 +236,6 @@ export const listenLiveThunk = (id) => async (dispatch, getState) => {
       agentId: id,
       data,
     });
-    
   } catch (error) {
     dispatch(handleIsNotificationShowAC(true, true, DEFAULTS.GLOBAL.FAIL));
     console.log(error);

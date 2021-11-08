@@ -12,6 +12,7 @@ import {
   ADD_COMPONENT_COLUMNS_NO_OPTIONS,
   ADD_COMPONENT_COLUMN_OPTIONS,
   ADD_COMPONENT_STATE_OPTIONS,
+  INTERACTIVITY_OPTIONS_KEYS,
   MAIN_VIEWING_OPTIONS,
   PRESENCE_STATE_KEYS,
   SORT_BY_OPTIONS,
@@ -579,6 +580,8 @@ const ModalAddComponent = ({ ...props }) => {
               {createArrayFromTo(0, ADD_COMPONENT_COLUMNS_NO_OPTIONS.ONE === formData.columns ? 0 : 1).map((index) => (
                 <AgentTablePreview
                   key={index}
+                  canCallAgents={formData.interactivityOptions.selectedItems.includes(INTERACTIVITY_OPTIONS_KEYS.CALL_AGENTS)}
+                  canListenLive={formData.interactivityOptions.selectedItems.includes(INTERACTIVITY_OPTIONS_KEYS.LISTEN_LIVE)}
                   agentName={formData.columnsToViewOptions.selectedItems.includes(ADD_COMPONENT_COLUMN_OPTIONS.AGENT_NAME)}
                   agentExtNo={formData.columnsToViewOptions.selectedItems.includes(ADD_COMPONENT_COLUMN_OPTIONS.AGENT_EXTENSION)}
                   currAvaiState={formData.columnsToViewOptions.selectedItems.includes(ADD_COMPONENT_COLUMN_OPTIONS.CURRENT_AVAILABILITY)}
