@@ -1,5 +1,5 @@
 import React from 'react';
-import Enzyme, { mount, shallow } from 'enzyme';
+import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import '@testing-library/jest-dom/extend-expect';
 import { ADD_COMPONENT_COLUMN_OPTIONS, PRESENCE_STATE_KEYS } from '../../src/components/modal/add-component/modal.add-component.defaults';
@@ -77,7 +77,7 @@ describe('Agent table', () => {
     expect(agentTable.text()).toMatch(/Megan Carter/);
   });
 
-  test('Agent Table should have 1 column (settings icon)', () => {
+  test('Agent Table should have 0 columns', () => {
     let agentTable = mount(
       <Provider store={store}>
         <AgentTable
@@ -102,10 +102,10 @@ describe('Agent table', () => {
         />
       </Provider>,
     );
-    expect(agentTable.find('.agent-t__agent-info').length).toBe(1);
+    expect(agentTable.find('.agent-t__agent-info').length).toBe(0);
   });
 
-  test('Agent Table should have 2 columns (settings icon and agent name )', () => {
+  test('Agent Table should have 1 column (agent name)', () => {
     let agentTable = mount(
       <Provider store={store}>
         <AgentTable
@@ -130,7 +130,7 @@ describe('Agent table', () => {
         />
       </Provider>,
     );
-    expect(agentTable.find('.agent-t__agent-info').length).toBe(2);
+    expect(agentTable.find('.agent-t__agent-info').length).toBe(1);
   });
 
   test('Agent Table column width should be 100% / noOfColumns', () => {
@@ -139,7 +139,7 @@ describe('Agent table', () => {
         <AgentTable columnsToView={[ADD_COMPONENT_COLUMN_OPTIONS.AGENT_NAME]} agents={[AGENTS_TABLE[0]]} />
       </Provider>,
     );
-    expect(agentTable.find('.agent-t__agent-info').at(1).prop('style')).toHaveProperty('width', '100%');
+    expect(agentTable.find('.agent-t__agent-info').prop('style')).toHaveProperty('width', '100%');
   });
 
   test('User can see only one interactivity option', () => {

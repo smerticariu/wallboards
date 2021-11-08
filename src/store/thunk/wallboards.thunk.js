@@ -1,8 +1,8 @@
-import axios from "axios"
+import axios from 'axios';
+import { WallboardsApi } from '../../common/api/wallboards.api';
 import { DEFAULTS } from '../../common/defaults/defaults';
-import { WallboardsApi } from 'src/common/api/wallboards.api';
-import { checkIsAlphanumeric } from 'src/common/utils/alphanumeric-validation';
-import { generateWallboardId } from 'src/common/utils/generateId';
+import { checkIsAlphanumeric } from '../../common/utils/alphanumeric-validation';
+import { generateWallboardId } from '../../common/utils/generateId';
 import { handleWarningMessageAC } from '../actions/modal.action';
 import { handleIsNotificationShowAC } from '../actions/notification.action';
 import {
@@ -29,15 +29,15 @@ export const fetchWallboardByIdThunk = (wbId) => async (dispatch, getState) => {
       organizationId: userInfo.organisationId,
       wallboardId: wbId,
       token,
-    })
+    });
 
     await WallboardsApi({
       type: DEFAULTS.WALLBOARDS.API.SAVE.WALLBOARD,
-      organizationId: userInfo.organisationId, 
+      organizationId: userInfo.organisationId,
       token,
       data: {
         ...wallboardById.data,
-        lastView: currentDate
+        lastView: currentDate,
       },
       wallboardId: wbId,
     });
@@ -57,7 +57,7 @@ export const fetchAllWallboardsThunk = () => async (dispatch, getState) => {
     const { userInfo, token } = getState().login;
     const allWallboards = await WallboardsApi({
       type: DEFAULTS.WALLBOARDS.API.GET.ALL_WALLBOARDS_VIA_CONFIG,
-      organizationId: userInfo.organisationId, 
+      organizationId: userInfo.organisationId,
       token,
     });
 
@@ -92,14 +92,14 @@ export const saveWallboardThunk = () => async (dispatch, getState) => {
 
     await WallboardsApi({
       type: DEFAULTS.WALLBOARDS.API.SAVE.WALLBOARD,
-      organizationId: userInfo.organisationId, 
+      organizationId: userInfo.organisationId,
       token,
       data,
       wallboardId: wbId,
     });
     dispatch(updateConfig(data, DEFAULTS.WALLBOARDS.API.SAVE.WALLBOARD));
     dispatch(saveWallboardSuccessAC(data));
-    
+
     if (activeWallboard.id !== undefined) {
       dispatch(handleIsNotificationShowAC(true, false, DEFAULTS.WALLBOARDS.NOTIFICATION.SUCCESS.SAVE));
     }
@@ -117,7 +117,7 @@ export const deleteWallboardThunk = (wbId) => async (dispatch, getState) => {
     const { userInfo, token } = getState().login;
     await WallboardsApi({
       type: DEFAULTS.WALLBOARDS.API.DELETE.WALLBOARD,
-      organizationId: userInfo.organisationId, 
+      organizationId: userInfo.organisationId,
       token,
       wallboardId: wbId,
     });
@@ -152,7 +152,7 @@ export const copyWallboardThunk =
 
       await WallboardsApi({
         type: DEFAULTS.WALLBOARDS.API.SAVE.WALLBOARD,
-        organizationId: userInfo.organisationId, 
+        organizationId: userInfo.organisationId,
         token,
         data,
         wallboardId: wbId,
@@ -172,16 +172,15 @@ export const syncWallboardsWithConfig = () => async (dispatch, getState) => {
 
     const allWallboards = await WallboardsApi({
       type: DEFAULTS.WALLBOARDS.API.GET.ALL_WALLBOARDS,
-      organizationId: userInfo.organisationId, 
+      organizationId: userInfo.organisationId,
       token,
     });
 
     let configWbs = [];
     await allWallboards.data.data.forEach(async (wb, index) => {
-     
       await WallboardsApi({
         type: DEFAULTS.WALLBOARDS.API.GET.BY_ID,
-        organizationId: userInfo.organisationId, 
+        organizationId: userInfo.organisationId,
         token,
         wallboardId: wb.key,
       }).then((res) => {
@@ -201,10 +200,10 @@ export const syncWallboardsWithConfig = () => async (dispatch, getState) => {
       if (allWallboards.data.data.length === index + 1) {
         await WallboardsApi({
           type: DEFAULTS.WALLBOARDS.API.SAVE.SYNC_CONFIG,
-          organizationId: userInfo.organisationId, 
+          organizationId: userInfo.organisationId,
           token,
           data: configWbs,
-        })
+        });
       }
     });
   } catch (error) {
@@ -218,7 +217,7 @@ export const updateConfig = (wallboard, method) => async (dispatch, getState) =>
     const { userInfo, token } = getState().login;
     const config = await WallboardsApi({
       type: DEFAULTS.WALLBOARDS.API.GET.ALL_WALLBOARDS_VIA_CONFIG,
-      organizationId: userInfo.organisationId, 
+      organizationId: userInfo.organisationId,
       token,
     });
 
@@ -255,11 +254,12 @@ export const updateConfig = (wallboard, method) => async (dispatch, getState) =>
         return;
     }
 
-    await WallboardsApi({ // update the config file
+    await WallboardsApi({
+      // update the config file
       type: DEFAULTS.WALLBOARDS.API.SAVE.SYNC_CONFIG,
-      organizationId: userInfo.organisationId, 
+      organizationId: userInfo.organisationId,
       token,
-      data: allWallboards
+      data: allWallboards,
     });
 
     dispatch(fetchAllWallboardsThunk());
@@ -269,26 +269,24 @@ export const updateConfig = (wallboard, method) => async (dispatch, getState) =>
   }
 };
 
-
 export const deleteAllWallboardsThunk = () => async (dispatch, getState) => {
   try {
     const { userInfo, token } = getState().login;
 
     const allWallboards = await WallboardsApi({
       type: DEFAULTS.WALLBOARDS.API.GET.ALL_WALLBOARDS,
-      organizationId: userInfo.organisationId, 
+      organizationId: userInfo.organisationId,
       token,
     });
 
     await WallboardsApi({
       type: DEFAULTS.WALLBOARDS.API.DELETE.ALL_WALLBOARDS,
-      organizationId: userInfo.organisationId, 
+      organizationId: userInfo.organisationId,
       token,
-      data: allWallboards
+      data: allWallboards,
     });
-console.log(allWallboards)
+    console.log(allWallboards);
     dispatch(syncWallboardsWithConfig());
-
   } catch (error) {
     dispatch(syncWallboardsWithConfig());
     console.log(error);
