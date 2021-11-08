@@ -9,6 +9,7 @@ export const generateWallboardsApi = () => {
     case 'STAGE':
       return 'https://wallboards-store.redmatter-stage.pub/organisation';
     default:
-      return 'https://wallboards-store.redmatter.pub/organisation';
+      // return 'https://wallboards-store.redmatter.pub/organisation'; // do not delete
+      return 'https://wallboards-store.redmatter-qa01.pub/organisation';
   }
 }
