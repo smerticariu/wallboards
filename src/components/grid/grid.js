@@ -1,25 +1,31 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { createArrayFromTo } from '../../common/utils/generateArray';
 import { useSelector } from 'react-redux';
-import { CELLS_NUMBER_ADD, CELLS_NUMBER_REMOVE, CELLS_ON_ROW, CELL_HEIGHT, INITIAL_CELLS_NUMBER } from './grid.defaults';
 import GridResizeContainer from './grid.resize-container';
+import { CELLS_NUMBER_ADD, GRID_MODIFIER, INITIAL_CELLS_NUMBER } from './grid.defaults';
 const GridPage = ({ ...props }) => {
   const [gridCells, setGridCells] = useState(INITIAL_CELLS_NUMBER);
   const activeWallboard = useSelector((state) => state.wallboards.present.activeWallboard.wallboard);
+
   const sortableListRef = useRef();
   const gridRef = useRef();
+  const gridCellsRef = useRef();
 
   useEffect(() => {
-    if (sortableListRef.current.offsetHeight && gridRef.current?.offsetHeight) {
-      if (gridRef.current?.offsetHeight - 200 < sortableListRef.current.offsetHeight) setGridCells((cells) => cells + CELLS_NUMBER_ADD);
-      if (
-        gridRef.current?.offsetHeight > sortableListRef.current.offsetHeight + CELL_HEIGHT * (480 / CELLS_ON_ROW) &&
-        gridCells - CELLS_NUMBER_REMOVE > INITIAL_CELLS_NUMBER
-      ) {
-        setGridCells((cells) => cells - CELLS_NUMBER_REMOVE);
-      }
+    if (Math.abs(document.body.scrollHeight - window.innerHeight) < 30) {
+      setGridCells((gridCellsLocal) => gridCellsLocal + CELLS_NUMBER_ADD);
     }
-  }, [sortableListRef.current?.offsetHeight, gridRef.current?.offsetHeight, gridCells, activeWallboard.widgets]);
+    if (gridCellsRef.current.offsetHeight < window.innerHeight) {
+      setGridCells((gridCellsLocal) => gridCellsLocal + CELLS_NUMBER_ADD);
+    }
+    document.addEventListener('scroll', function (e) {
+      let documentHeight = document.body.scrollHeight;
+      let currentScroll = window.scrollY + window.innerHeight;
+      if (currentScroll + GRID_MODIFIER > documentHeight) {
+        setGridCells((gridCells) => gridCells + CELLS_NUMBER_ADD);
+      }
+    });
+  }, [gridCells, activeWallboard.settings.display.shrinkHeight]);
 
   const handleGridComponents = () => {
     return (
@@ -29,21 +35,19 @@ const GridPage = ({ ...props }) => {
     );
   };
 
-  const handleGrid = () => {
+  const handleGrid = useCallback(() => {
     return (
-      <div ref={gridRef} className="c-grid__cells">
+      <div className="c-grid__cells" ref={gridCellsRef}>
         {createArrayFromTo(1, gridCells).map((number) => (
-          <div className="c-grid__cell" key={number} />
+          <div className={`c-grid__cell`} key={number} style={{ height: activeWallboard.settings.display.shrinkHeight ? '3vh' : '25px' }} />
         ))}
       </div>
     );
-  };
+  }, [gridCells, activeWallboard.settings.display.shrinkHeight]);
   return (
-    <div>
-      <div className="c-grid">
-        {handleGrid()}
-        {handleGridComponents()}
-      </div>
+    <div ref={gridRef} className="c-grid">
+      {handleGrid()}
+      {handleGridComponents()}
     </div>
   );
 };

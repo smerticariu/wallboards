@@ -149,6 +149,7 @@ export const wallboardsReducer = (state = { ...initialState }, action) => {
     case wallboardsActions.ADD_WALLBOARD_COMPONENT: {
       const { widgets } = state.activeWallboard.wallboard;
       const modalAddComponent = action.payload.modalAddComponent;
+
       const newWidget = {
         name: modalAddComponent.title.value,
         callQueue: {
@@ -163,14 +164,7 @@ export const wallboardsReducer = (state = { ...initialState }, action) => {
         columnsToView: modalAddComponent.columnsToViewOptions,
         skills: modalAddComponent.skillsToView,
         columns: modalAddComponent.columns,
-        size: modalAddComponent.isEditMode
-          ? modalAddComponent.size
-          : {
-              h: 50, //initial height
-              w: RESIZE_GRID_COLUMNS, //initial width: ;
-              x: 0, // x position
-              y: widgets.reduce((newH, widget) => (widget.size.y >= newH ? widget.size.y + 1 : newH), 0), //y position
-            },
+        size: modalAddComponent.isEditMode ? modalAddComponent.size : null,
       };
       return {
         ...state,
@@ -208,21 +202,13 @@ export const wallboardsReducer = (state = { ...initialState }, action) => {
     }
 
     case wallboardsActions.WALLBOARD_GRID_LAYOUT_CHANGE: {
-      const { widgets } = state.activeWallboard.wallboard;
       return {
         ...state,
         activeWallboard: {
           ...state.activeWallboard,
           wallboard: {
             ...state.activeWallboard.wallboard,
-            widgets: widgets.map((widget) => {
-              const layoutData = action.payload.find((layout) => layout.i === widget.id);
-              const { h, w, x, y } = layoutData;
-              return {
-                ...widget,
-                size: { h, w, x, y },
-              };
-            }),
+            widgets: [...action.payload],
           },
         },
       };
@@ -281,6 +267,18 @@ export const wallboardsReducer = (state = { ...initialState }, action) => {
       return {
         ...state,
         wallboardIdForDelete: action.payload,
+      };
+    }
+    case wallboardsActions.SYNC_WIDGET_SIZE_FOR_NEW_SCREEN: {
+      return {
+        ...state,
+        activeWallboard: {
+          ...state.activeWallboard,
+          wallboard: {
+            ...state.activeWallboard.wallboard,
+            widgets: [...action.payload],
+          },
+        },
       };
     }
 

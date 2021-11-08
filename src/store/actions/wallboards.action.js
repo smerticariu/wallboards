@@ -34,6 +34,8 @@ export const wallboardsActions = {
   WALLBOARD_REDO: 'WALLBOARD_REDO',
 
   APPLY_WALLBOARD_SETTINGS: 'APPLY_WALLBOARD_SETTINGS',
+
+  SYNC_WIDGET_SIZE_FOR_NEW_SCREEN: 'SYNC_WIDGET_SIZE_FOR_NEW_SCREEN',
 };
 
 export const handleNewWallboardTitleAC = (title) => ({
@@ -140,4 +142,9 @@ export const wallboardRedoAC = () => ({
 export const applyWallboardSettingsAC = (settings) => ({
   type: wallboardsActions.APPLY_WALLBOARD_SETTINGS,
   payload: settings,
+});
+
+export const syncWidgetsSizeForNewScreenAC = (widgets) => ({
+  type: wallboardsActions.SYNC_WIDGET_SIZE_FOR_NEW_SCREEN,
+  payload: widgets,
 });
