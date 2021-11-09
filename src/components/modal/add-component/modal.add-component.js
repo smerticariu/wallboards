@@ -304,7 +304,7 @@ const ModalAddComponent = ({ ...props }) => {
       const allTitlesForAutocomplete = allSkils.map(({ description }) => description);
 
       return (
-        <div className="c-modal--add-component__input-section">
+        <div className="c-modal--add-component__input-section c-modal--add-component__input-section--skills">
           <div className="c-modal--add-component__input-label">Select Skills to view</div>
 
           <div className="c-modal--add-component__select-checkbox">
@@ -434,7 +434,7 @@ const ModalAddComponent = ({ ...props }) => {
           </select>
         </div>
 
-        <div className="c-modal--add-component__input-section">
+        <div className="c-modal--add-component__input-section c-modal--add-component__input-section--view">
           <div className="c-modal--add-component__input-label">View</div>
           <Radio
             label="Card View"
@@ -471,7 +471,7 @@ const ModalAddComponent = ({ ...props }) => {
         </div>
 
         {!isCardFormat && (
-          <div className="c-modal--add-component__input-section">
+          <div className="c-modal--add-component__input-section c-modal--add-component__input-section--columns">
             <div className="c-modal--add-component__input-label">Select columns to view</div>
 
             <div className="c-modal--add-component__av-state-container">
@@ -503,7 +503,7 @@ const ModalAddComponent = ({ ...props }) => {
 
         {handleAvailabilityStatesToView()}
 
-        <div className="c-modal--add-component__input-section">
+        <div className="c-modal--add-component__input-section c-modal--add-component__input-section--presence-state">
           <div className="c-modal--add-component__input-label">Presence states to view</div>
 
           <div className="c-modal--add-component__select-checkbox">
@@ -537,7 +537,7 @@ const ModalAddComponent = ({ ...props }) => {
           )}
         </div>
 
-        <div className="c-modal--add-component__input-section">
+        <div className="c-modal--add-component__input-section c-modal--add-component__input-section--interactivity">
           <div className="c-modal--add-component__input-label">Interactivity options</div>
           {ADD_COMPONENT_STATE_OPTIONS.interactivityOptions.map((option) => (
             <CheckBox
