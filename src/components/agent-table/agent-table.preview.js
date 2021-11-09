@@ -1,6 +1,6 @@
 import React from 'react';
-import { ArrowDownIcon } from 'src/assets/static/icons/arrow-down';
-import { SettingsIcon } from 'src/assets/static/icons/settings';
+import { ArrowDownIcon } from '../../assets/static/icons/arrow-down';
+import { SettingsIcon } from '../../assets/static/icons/settings';
 import { PRESENCE_STATE_KEYS_COLOR } from '../modal/add-component/modal.add-component.defaults';
 import { previewAvailabilityStatusColors } from './agent-table.defaults';
 const AgentTablePreview = ({

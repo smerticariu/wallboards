@@ -1,12 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { createArrayFromTo } from '../../../common/utils/generateArray';
-import AgentCard from 'src/components/agent-card/agent-card';
-import AgentTablePreview from 'src/components/agent-table/agent-table.preview';
-import CustomAutosuggest from 'src/components/autosuggest/autosuggest';
-import CheckBox from 'src/components/checkbox/checkbox';
-import Radio from 'src/components/radio/radio';
-import { addWallboardComponentAC } from 'src/store/actions/wallboards.action';
 import useOnClickOutside from '../../../common/hooks/useOnClickOutside';
 import {
   ADD_COMPONENT_COLUMNS_NO_OPTIONS,
@@ -17,12 +11,19 @@ import {
   PRESENCE_STATE_KEYS,
   SORT_BY_OPTIONS,
 } from './modal.add-component.defaults';
+
+import { addWallboardComponentAC } from '../../../store/actions/wallboards.action';
+import CheckBox from '../../checkbox/checkbox';
+import CustomAutosuggest from '../../autosuggest/autosuggest';
+import Radio from '../../radio/radio';
+import AgentTablePreview from '../../agent-table/agent-table.preview';
+import AgentCard from '../../agent-card/agent-card';
 import {
   handleModalAddComponentFormDataAC,
   handleWallboardActiveModalAC,
   resetModalAddComponentFormDataAC,
-} from 'src/store/actions/modal.action';
-import { checkIsAlphanumeric } from 'src/common/utils/alphanumeric-validation';
+} from '../../../store/actions/modal.action';
+import { checkIsAlphanumeric } from '../../../common/utils/alphanumeric-validation';
 
 const ModalAddComponent = ({ ...props }) => {
   const modalRef = useRef(null);

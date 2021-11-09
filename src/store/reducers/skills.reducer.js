@@ -1,14 +1,14 @@
 import { skillsActions } from '../actions/skills.action';
 import { FetchStatus } from './wallboards.reducer';
 
-const initialState = {
+export const skillsInitialState = {
   allSkils: [],
   allSkillsFetchStatus: FetchStatus.NULL,
   agentsSkill: [],
   agentsSkillFetchStatus: FetchStatus.NULL,
 };
 
-export const skillsReducer = (state = initialState, action) => {
+export const skillsReducer = (state = skillsInitialState, action) => {
   switch (action.type) {
     case skillsActions.FETCH_ALL_SKILLS:
       return {

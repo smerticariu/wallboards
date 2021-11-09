@@ -1,5 +1,4 @@
 import { generateWallboardWidgetId } from '../../common/utils/generateId';
-import { RESIZE_GRID_COLUMNS } from '../../components/grid/grid.defaults';
 
 import { wallboardsActions } from '../actions/wallboards.action';
 export const FetchStatus = {
@@ -25,7 +24,7 @@ const wallboardInitialValues = {
   },
   isNewWallboard: null,
 };
-const initialState = {
+export const wallboardsInitialState = {
   wallboardIdForDelete: null,
   searchedWallboards: [],
   activeWallboard: {
@@ -41,7 +40,7 @@ const initialState = {
   },
 };
 
-export const wallboardsReducer = (state = { ...initialState }, action) => {
+export const wallboardsReducer = (state = { ...wallboardsInitialState }, action) => {
   switch (action.type) {
     case wallboardsActions.FETCH_WALLBOARD_BY_ID:
       return {
@@ -105,7 +104,7 @@ export const wallboardsReducer = (state = { ...initialState }, action) => {
         ...state,
         activeWallboard: {
           ...state.activeWallboard,
-          wallboard: { ...initialState.activeWallboard.wallboard, id: action.payload, isNewWallboard: true },
+          wallboard: { ...wallboardsInitialState.activeWallboard.wallboard, id: action.payload, isNewWallboard: true },
           saveStatus: FetchStatus.SUCCESS,
         },
       };
@@ -258,7 +257,7 @@ export const wallboardsReducer = (state = { ...initialState }, action) => {
       return {
         ...state,
         activeWallboard: {
-          ...initialState.activeWallboard,
+          ...wallboardsInitialState.activeWallboard,
         },
       };
     }
