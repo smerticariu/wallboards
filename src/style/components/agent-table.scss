@@ -188,5 +188,8 @@
     justify-content: center;
     cursor: pointer;
     position: relative;
+    &--card {
+      display: block;
+    }
   }
 }
