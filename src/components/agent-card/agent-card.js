@@ -85,7 +85,7 @@ const AgentCard = ({
             <Dropdown
               closeOnClick={true}
               containerClassName="c-dropdown__container--availability"
-              trigger={<div className="agent-t__arrow-container">{status}</div>}
+              trigger={<div className="agent-t__arrow-container agent-t__arrow-container--card">{status}</div>}
             >
               {availabilityStatesList.map((state) => (
                 <div
