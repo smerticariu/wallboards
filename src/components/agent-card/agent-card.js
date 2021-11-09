@@ -1,11 +1,10 @@
-import img from '../../assets/static/images/not_exist_people.png';
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { PRESENCE_STATE_KEYS_COLOR } from '../modal/add-component/modal.add-component.defaults';
 import { SettingsIcon } from '../../assets/static/icons/settings';
 import Dropdown from '../dropdown/dropdown';
 import TimeInterval from '../time-interval/time-interval';
-import { callAgentThunk, listenLiveThunk } from 'src/store/thunk/agents.thunk';
+import { callAgentThunk, listenLiveThunk } from '../../store/thunk/agents.thunk';
 
 const AgentCard = ({
   id,
@@ -39,9 +38,10 @@ const AgentCard = ({
         <div className="agent-c__user">
           <div
             className="agent-c__user-image"
-            style={{
-              backgroundImage: `url(${img})`,
-            }}
+            //do not delete
+            // style={{
+            //   backgroundImage: `url(${img})`,
+            // }}
           />
           <div className="agent-c__user-name-ext">
             <div className="agent-c__user-name">{name}</div>

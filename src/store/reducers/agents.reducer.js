@@ -1,7 +1,7 @@
 import { agentsActions } from '../actions/agents.action';
 import { FetchStatus } from './wallboards.reducer';
 
-const initialState = {
+export const agentsInitialState = {
   agentsQueues: [],
   agentsQueuesFetchStatus: FetchStatus.NULL,
 
@@ -21,7 +21,7 @@ const initialState = {
   availabilityStatesFetchStatus: FetchStatus.NULL,
 };
 
-export const agentsReducer = (state = initialState, action) => {
+export const agentsReducer = (state = agentsInitialState, action) => {
   switch (action.type) {
     case agentsActions.FETCH_ALL_AGENTS:
       return {
