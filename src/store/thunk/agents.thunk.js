@@ -25,7 +25,6 @@ import { CallsQueuesApi } from '../../common/api/callsQueues.api';
 import { MiscellaneousApi } from '../../common/api/miscellaneous.api';
 import { AvailabilityApi } from '../../common/api/availability.api';
 import { CallsApi } from '../../common/api/calls.api';
-import { removeAuthTokenAC } from '../actions/login.action';
 
 export const fetchAllAgentsThunk = (callQueueId) => async (dispatch, getState) => {
   dispatch(fetchAllAgentsAC());
@@ -40,9 +39,6 @@ export const fetchAllAgentsThunk = (callQueueId) => async (dispatch, getState) =
     dispatch(fetchAllAgentsSuccessAC(allAgentsFromCallQueue.data.data, callQueueId));
   } catch (error) {
     dispatch(fetchAllAgentsFailAC(DEFAULTS.GLOBAL.FAIL));
-    if (error.response.status === 401) {
-      dispatch(removeAuthTokenAC());
-    }
     console.log(error);
   }
 };
