@@ -3,6 +3,7 @@ export const loginActions = {
   SET_ACCESS_TOKEN: 'SET_ACCESS_TOKEN',
   SET_USER_INFO: 'SET_USER_INFO',
   HANDLE_LOGOUT: 'HANDLE_LOGOUT',
+  DELETE_AUTH_TOKEN: 'DELETE_AUTH_TOKEN',
 };
 
 export const setUserTokenInfoAC = (userInfo) => ({
@@ -23,4 +24,8 @@ export const setAccessTokenAC = (accesToken) => ({
 export const handleLogoutAC = (accesToken) => ({
   type: loginActions.HANDLE_LOGOUT,
   payload: accesToken,
+});
+
+export const removeAuthTokenAC = () => ({
+  type: loginActions.DELETE_AUTH_TOKEN,
 });

@@ -28,6 +28,11 @@ export const loginReducer = (state = loginInitialState, action) => {
         ...state,
         userInfo: null,
       };
+    case loginActions.DELETE_AUTH_TOKEN:
+      return {
+        ...state,
+        token: null,
+      };
 
     // case types.SET_SIGN_OUT:
     //   return state;

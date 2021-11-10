@@ -10,7 +10,7 @@ import WallboardReadOnly from 'src/components/wallboard/wallboard.read-only';
 import { Route, Switch } from 'react-router';
 import { HashRouter } from 'react-router-dom';
 import { handleLogoutAC, setAccessTokenAC, setUserTokenInfoAC } from './store/actions/login.action';
-import { fetchUserInfoThunk } from './store/thunk/login.thunk';
+import { fetchUserDataThunk, fetchUserInfoThunk } from './store/thunk/login.thunk';
 import { WALLBOARD_MODAL_NAMES } from './components/modal/new-wallboard/modal.new-wallboard.defaults';
 import ModalNewWallboard from './components/modal/new-wallboard/modal.new-wallboard';
 import ModalAddComponent from './components/modal/add-component/modal.add-component';
@@ -21,11 +21,10 @@ import NotificationMessage from './components/agent-card/notification-message/no
 import ModalDeleteWallboardComponent from './components/modal/delete-wallboard-component/modal.delete-wallboard-component';
 import ModalConfirmSaveWallboard from './components/modal/save-wallboard/modal.confirm-save-wallboard';
 import ModalWarning from './components/modal/warning/modal.warning';
-import axios from 'axios';
 
 function App() {
   const dispatch = useDispatch();
-  const { userInfo, userTokenInfo } = useSelector((state) => state.login);
+  const { userInfo, userTokenInfo, token } = useSelector((state) => state.login);
   const { isAuthenticated, getAccessTokenSilently, logout, isLoading } = useAuth0();
   const activeModalName = useSelector((state) => state.modal.activeModalName);
   const { warningMessage } = useSelector((state) => state.modal);
@@ -40,28 +39,17 @@ function App() {
             dispatch(fetchUserInfoThunk(res));
           });
         } else if (sfToken) {
-          const options = {
-            method: 'get',
-            url: `https://gatekeeper.redmatter-qa01.pub/token/salesforce?scope=${config.scope}`,
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${sfToken}`,
-            },
-          };
-
-          await axios(options).then((res) => {
-            dispatch(setAccessTokenAC(res.data.jwt));
-            dispatch(setUserTokenInfoAC(jwtExtractor(res.data.jwt)));
-            dispatch(fetchUserInfoThunk(res.data.jwt));
-          });
+          dispatch(fetchUserDataThunk());
         }
       } catch (err) {
         console.log(err);
       }
     };
-    fetchData();
+    if (!token) {
+      fetchData();
+    }
     // eslint-disable-next-line
-  }, [isAuthenticated]);
+  }, [isAuthenticated, token]);
 
   const handleRedirect = () => {
     const wbToRedirect = localStorage.getItem('wallboard'); //store the link of the read-only wallboard

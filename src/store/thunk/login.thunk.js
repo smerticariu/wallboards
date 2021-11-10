@@ -1,6 +1,9 @@
+import axios from '../../../node_modules/axios/index';
 import { AgentsApi } from '../../common/api/agents.api';
 import { DEFAULTS } from '../../common/defaults/defaults';
-import { setUserInfoAC } from '../actions/login.action';
+import jwtExtractor from '../../common/utils/jwtExtractor';
+import config from '../../config/auth/index';
+import { setAccessTokenAC, setUserInfoAC, setUserTokenInfoAC } from '../actions/login.action';
 
 export const fetchUserInfoThunk = (token) => async (dispatch, getState) => {
   try {
@@ -14,4 +17,22 @@ export const fetchUserInfoThunk = (token) => async (dispatch, getState) => {
   } catch (error) {
     console.log(error);
   }
+};
+
+export const fetchUserDataThunk = (sfToken) => async (dispatch, getState) => {
+  try {
+    const options = {
+      method: 'get',
+      url: `https://gatekeeper.redmatter-qa01.pub/token/salesforce?scope=${config.scope}`,
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${sfToken}`,
+      },
+    };
+    await axios(options).then((res) => {
+      dispatch(setAccessTokenAC(res.data.jwt));
+      dispatch(setUserTokenInfoAC(jwtExtractor(res.data.jwt)));
+      dispatch(fetchUserInfoThunk(res.data.jwt));
+    });
+  } catch (e) {}
 };
