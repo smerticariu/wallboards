@@ -1,7 +1,11 @@
 .c-dropdown {
   display: flex;
-  width: 100%;
+  width: max-content;
   position: relative;
+  margin: 0 auto;
+  &--availability-state {
+    width: 100%;
+  }
   &__container {
     position: absolute;
     left: 10px;
