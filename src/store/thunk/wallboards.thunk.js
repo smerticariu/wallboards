@@ -45,7 +45,7 @@ export const fetchWallboardByIdThunk = (wbId) => async (dispatch, getState) => {
     dispatch(fetchWallboardByIdSuccessAC({ widgets: [], ...wallboardById.data }));
     dispatch(updateConfig(wallboardById.data, DEFAULTS.WALLBOARDS.API.SAVE.WALLBOARD));
   } catch (error) {
-    dispatch(fetchWallboardByIdFailAC(error?.wallboardById?.data?.error?.message));
+    dispatch(fetchWallboardByIdFailAC(DEFAULTS.GLOBAL.FAIL));
     console.log(error?.wallboardById?.data);
   }
 };
