@@ -30,36 +30,36 @@ function App() {
   const { warningMessage } = useSelector((state) => state.modal);
   const sfToken = window?.WbConfig?.sfSessionId;
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        if (!sfToken && isAuthenticated) {
-          await getAccessTokenSilently(config).then((res) => {
-            dispatch(setAccessTokenAC(res));
-            dispatch(setUserTokenInfoAC(jwtExtractor(res)));
-            dispatch(fetchUserInfoThunk(res));
-          });
-        } else if (sfToken) {
-          dispatch(fetchUserDataThunk());
-        }
-      } catch (err) {
-        console.log(err);
-      }
-    };
     if (!token) {
       fetchData();
     }
     // eslint-disable-next-line
   }, [isAuthenticated, token]);
-
   useEffect(() => {
     let tokenExpiryTimeout = null;
     if (userTokenInfo?.expiry) {
       tokenExpiryTimeout = setTimeout(() => {
-        dispatch(removeAuthTokenAC());
-      }, new Date(userTokenInfo?.expiry * 1000) - new Date());
+        fetchData();
+      }, new Date(userTokenInfo?.expiry * 1000) - new Date() + 2000);
     }
     return () => clearTimeout(tokenExpiryTimeout);
   }, [userTokenInfo]);
+
+  const fetchData = async () => {
+    try {
+      if (!sfToken && isAuthenticated) {
+        await getAccessTokenSilently(config).then((res) => {
+          dispatch(setAccessTokenAC(res));
+          dispatch(setUserTokenInfoAC(jwtExtractor(res)));
+          dispatch(fetchUserInfoThunk(res));
+        });
+      } else if (sfToken) {
+        dispatch(fetchUserDataThunk(sfToken));
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const handleRedirect = () => {
     const wbToRedirect = localStorage.getItem('wallboard'); //store the link of the read-only wallboard
