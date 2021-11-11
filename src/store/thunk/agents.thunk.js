@@ -197,7 +197,7 @@ export const listenLiveThunk = (id) => async (dispatch, getState) => {
       agentId: id,
     });
 
-    const userPhoneNumber = userInfo.primaryMobileNumber !== 'null' ? userInfo.primaryMobileNumber : '112';
+    const userPhoneNumber = userInfo.sipExtension;
 
     const calls = await CallsApi({
       type: DEFAULTS.CALLS.API.GET.CALLS,
@@ -225,7 +225,7 @@ export const listenLiveThunk = (id) => async (dispatch, getState) => {
       variables: {
         listenInNumber: currentChannel.uuid,
         listenInName: currentChannel.uuid,
-        listenInExtension: agent.data.data.sipExtention,
+        listenInExtension: agent.data.data.sipExtension,
       },
     };
 
