@@ -164,8 +164,8 @@ export const callAgentThunk = (id) => async (dispatch, getState) => {
       agentId: id,
     });
 
-    const userPhoneNumber = userInfo.primaryMobileNumber !== 'null' ? userInfo.primaryMobileNumber : '112';
-    const agentPhoneNumber = agent.data.data.primaryMobileNumber !== 'null' ? agent.data.data.primaryMobileNumber : '2001';
+    const userPhoneNumber = userInfo.sipExtension;
+    const agentPhoneNumber = agent.data.data.sipExtension;
 
     const data = {
       to: `${agentPhoneNumber}`,
