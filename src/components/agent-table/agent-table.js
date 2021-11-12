@@ -142,7 +142,7 @@ const AgentTable = ({
                     className="c-dropdown--availability-state"
                     openOnHover={true}
                     closeOnHover={true}
-                    containerClassName={'c-dropdown__container--name-hover'}
+                    containerClassName={'c-dropdown__container--agent-name'}
                     trigger={<div className="c-dropdown__trigger--agent-name">{agent.agentName}</div>}
                   >
                     <div className="c-dropdown--agent-name">{agent.agentName}</div>

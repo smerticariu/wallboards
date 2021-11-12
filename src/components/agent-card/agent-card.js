@@ -50,7 +50,7 @@ const AgentCard = ({
                 <Dropdown
                   openOnHover={true}
                   closeOnHover={true}
-                  containerClassName={'c-dropdown__container--name-hover'}
+                  containerClassName={'c-dropdown__container--agent-name'}
                   trigger={<div className="c-dropdown__trigger--agent-name">{name}</div>}
                 >
                   <div className="c-dropdown--agent-name">{name}</div>
