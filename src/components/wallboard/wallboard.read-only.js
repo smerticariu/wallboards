@@ -15,6 +15,8 @@ const WallboardReadOnly = () => {
   const { userInfo } = useSelector((state) => state.login);
   const { wallboard, fetchStatus, fetchMessage } = useSelector((state) => state.wallboards.present.activeWallboard);
   const { availabilityProfiles } = useSelector((state) => state.agents);
+  const adminPermissions = userInfo.isAdmin;
+  const teamleaderPermissions = userInfo.isTeamLeader;
   useEffect(() => {
     dispatch(fetchWallboardByIdThunk(id));
     // eslint-disable-next-line
@@ -35,23 +37,42 @@ const WallboardReadOnly = () => {
     // eslint-disable-next-line
   }, [availabilityProfiles]);
 
-  if (fetchStatus !== FetchStatus.SUCCESS) {
-    return <div>{fetchMessage}</div>;
-  }
-
-  if (!wallboard.settings.link.isReadOnlyEnabled && userInfo.permissionLevel !== 'ADMINISTRATOR') {
-    return <div>You don't have access to this wallboard! Please contact your Administrator.</div>;
+  const handleErrors = () => {
+    if (fetchStatus !== FetchStatus.SUCCESS) {
+      return (
+        <div>
+          {fetchStatus === FetchStatus.FAIL && <h3>Error:</h3>}
+          <p>{fetchMessage}</p>
+        </div>
+      )
+    }
+  
+    if (!wallboard.settings.link.isReadOnlyEnabled) {
+      if(!adminPermissions && teamleaderPermissions) { // team leader only permissions
+        if(wallboard.createdByUserId !== userInfo.id) { // check if the team leader created owns the wallboard
+          return (
+            <div>
+              <h3>Error:</h3>
+              <p>You don't have access to this wallboard! Please contact your Administrator.</p>
+            </div>
+          )
+        }
+      }
+    }
   }
 
   return (
     <div className="c-wallboard--read-only">
-      <Toolbar template="wb-read-only" wbName={wallboard.name} logout={logout} />
-
-      <div className="c-wallboard--read-only__component">
-        <div className="c-wallboard--read-only__cards">
-          <GridResizeContainer isEditMode={false} widgets={wallboard.widgets} />
-        </div>
-      </div>
+      {fetchStatus !== FetchStatus.SUCCESS ? <Toolbar template="wb-read-only" logout={logout}>{handleErrors()}</Toolbar> :
+        <>
+          <Toolbar template="wb-read-only" wbName={wallboard.name} logout={logout} />
+      
+          <div className="c-wallboard--read-only__component">
+            <div className="c-wallboard--read-only__cards">
+              <GridResizeContainer isEditMode={false} widgets={wallboard.widgets} />
+            </div>
+          </div>
+        </>}
     </div>
   );
 };

@@ -61,7 +61,14 @@ export const fetchAllWallboardsThunk = () => async (dispatch, getState) => {
       token,
     });
 
-    dispatch(fetchAllWallboardsSuccessAC(allWallboards.data));
+    let wallboardsFilteredByPermissions;
+    if(userInfo.isAdmin) {
+      wallboardsFilteredByPermissions = allWallboards.data;
+    } else if (userInfo.isTeamLeader && !userInfo.isAdmin) {
+      wallboardsFilteredByPermissions = allWallboards.data.filter(wb => wb.createdByUserId === userInfo.id);
+    }
+
+    dispatch(fetchAllWallboardsSuccessAC(wallboardsFilteredByPermissions));
   } catch (error) {
     dispatch(fetchAllWallboardsFailAC());
     console.log(error);
@@ -83,6 +90,7 @@ export const saveWallboardThunk = () => async (dispatch, getState) => {
       id: wbId,
       name: activeWallboard.name,
       createdBy: `${userInfo.firstName} ${userInfo.lastName}`,
+      createdByUserId: userInfo.id,
       createdOn: activeWallboard.createdOn ?? currentDate,
       lastView: currentDate,
       description: activeWallboard.description,
@@ -185,7 +193,6 @@ export const syncWallboardsWithConfig = () => async (dispatch, getState) => {
         wallboardId: wb.key,
       }).then((res) => {
         if (!res.data.name) return;
-
         configWbs.push({
           id: res.data.id,
           key: res.data.key,
@@ -234,12 +241,21 @@ export const updateConfig = (wallboard, method) => async (dispatch, getState) =>
             id: wallboard.id,
             name: wallboard.name,
             createdBy: wallboard.createdBy,
+            createdByUserId: userInfo.id,
             createdOn: wallboard.createdOn,
             lastView: currentDate,
             description: wallboard.description,
           };
         } else {
-          allWallboards.push(wallboard);
+          allWallboards.push({
+            id: wallboard.id,
+            name: wallboard.name,
+            createdBy: wallboard.createdBy,
+            createdByUserId: userInfo.id,
+            createdOn: wallboard.createdOn,
+            lastView: currentDate,
+            description: wallboard.description,
+          });
         }
         break;
 

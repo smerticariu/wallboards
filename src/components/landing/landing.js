@@ -10,9 +10,10 @@ const Landing = () => {
   const sidebarRef = useRef();
   useOnClickOutside(sidebarRef, () => handleIsSidebarOpen(false));
   const { userInfo } = useSelector((state) => state.login);
-  const userPermission = userInfo?.permissionLevel;
+  const adminPermissions = userInfo.isAdmin;
+  const teamleaderPermissions = userInfo.isTeamLeader;
 
-  if (userPermission === 'BASIC') {
+  if (!adminPermissions || teamleaderPermissions) {
     return <div>Access Denied!</div>;
   }
 
