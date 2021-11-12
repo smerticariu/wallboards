@@ -135,7 +135,7 @@ const AgentTable = ({
               </div>
             )}
             {activeColumns.isAgentNameColumn && (
-              <div className="agent-t__agent-info" style={{ width: colWidth }}>
+              <div className="agent-t__agent-info agent-t__agent-info--name" style={{ width: colWidth }}>
                 {agent.agentName}
               </div>
             )}
@@ -148,6 +148,7 @@ const AgentTable = ({
               >
                 {canChangeAvailabilityState ? (
                   <Dropdown
+                    className="c-dropdown--availability-state"
                     closeOnClick={true}
                     containerClassName="c-dropdown__container--availability"
                     trigger={

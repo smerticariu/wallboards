@@ -27,10 +27,11 @@ export const SORT_BY_OPTIONS = [
     text: 'Time spent in current availability state (Most time in the state first)',
     value: SORT_BY_VALUES.TIME_CURRENT_AVAILABILITY_STATE,
   },
-  {
-    text: 'Total time spent on the phone today (Most time first)',
-    value: SORT_BY_VALUES.TIME_PHONE_TODAY,
-  },
+  // do not remove
+  // {
+  //   text: 'Total time spent on the phone today (Most time first)',
+  //   value: SORT_BY_VALUES.TIME_PHONE_TODAY,
+  // },
 ];
 
 export const ADD_COMPONENT_COLUMN_OPTIONS = {
@@ -189,26 +190,27 @@ export const ADD_COMPONENT_STATE_OPTIONS = {
       value: ADD_COMPONENT_COLUMN_OPTIONS.CURRENT_PRESENCE,
       isInitialChecked: true,
     },
-    {
-      text: 'Number of calls offered',
-      value: ADD_COMPONENT_COLUMN_OPTIONS.NO_CALLS_OFFERED,
-      isInitialChecked: false,
-    },
-    {
-      text: 'Number of calls answered',
-      value: ADD_COMPONENT_COLUMN_OPTIONS.NO_CALLS_ANSWERED,
-      isInitialChecked: false,
-    },
-    {
-      text: 'Number of calls missed',
-      value: ADD_COMPONENT_COLUMN_OPTIONS.NO_CALLS_MISSED,
-      isInitialChecked: false,
-    },
-    {
-      text: 'Time spent in current presence state',
-      value: ADD_COMPONENT_COLUMN_OPTIONS.TIME_CURRENT_PRESENCE,
-      isInitialChecked: false,
-    },
+    // do not remove
+    // {
+    //   text: 'Number of calls offered',
+    //   value: ADD_COMPONENT_COLUMN_OPTIONS.NO_CALLS_OFFERED,
+    //   isInitialChecked: false,
+    // },
+    // {
+    //   text: 'Number of calls answered',
+    //   value: ADD_COMPONENT_COLUMN_OPTIONS.NO_CALLS_ANSWERED,
+    //   isInitialChecked: false,
+    // },
+    // {
+    //   text: 'Number of calls missed',
+    //   value: ADD_COMPONENT_COLUMN_OPTIONS.NO_CALLS_MISSED,
+    //   isInitialChecked: false,
+    // },
+    // {
+    //   text: 'Time spent in current presence state',
+    //   value: ADD_COMPONENT_COLUMN_OPTIONS.TIME_CURRENT_PRESENCE,
+    //   isInitialChecked: false,
+    // },
     {
       text: 'Time spent in current availability state',
       value: ADD_COMPONENT_COLUMN_OPTIONS.TIME_CURRENT_AVAILABILITY,
@@ -219,11 +221,13 @@ export const ADD_COMPONENT_STATE_OPTIONS = {
       value: ADD_COMPONENT_COLUMN_OPTIONS.TIME_CURRENT_CALL,
       isInitialChecked: true,
     },
-    {
-      text: 'Time spent on current wrapup',
-      value: ADD_COMPONENT_COLUMN_OPTIONS.TIME_CURRENT_WRAPUP,
-      isInitialChecked: false,
-    },
+
+    // do not remove
+    // {
+    //   text: 'Time spent on current wrapup',
+    //   value: ADD_COMPONENT_COLUMN_OPTIONS.TIME_CURRENT_WRAPUP,
+    //   isInitialChecked: false,
+    // },
     {
       text: 'List of skills the agent possesses',
       value: ADD_COMPONENT_COLUMN_OPTIONS.SKILLS_AGENT_POSSESSES,

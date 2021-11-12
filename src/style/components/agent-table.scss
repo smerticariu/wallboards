@@ -65,6 +65,21 @@
       min-width: 170px;
       margin: 0 2px 0 0;
       text-align: center;
+      &--name {
+        white-space: nowrap;
+        overflow-x: auto;
+        &::-webkit-scrollbar {
+          height: 2px;
+          width: 2px;
+        }
+
+        &::-webkit-scrollbar-thumb {
+          box-shadow: 0 0 1px transparent;
+        }
+        &::-webkit-scrollbar-track {
+          background: transparent;
+        }
+      }
       &--settings {
         background-color: transparent;
         padding: 0;
