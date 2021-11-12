@@ -13,6 +13,7 @@ import {
   fetchDevicesSipAgentsThunk,
   fetchOrganisationAgentsThunk,
   fetchUserGroupsThunk,
+  fetchUsersCurrentCallTimeThunk,
 } from 'src/store/thunk/agents.thunk';
 import AgentCard from '../agent-card/agent-card';
 import AgentTable from '../agent-table/agent-table';
@@ -24,6 +25,7 @@ import {
 import { WALLBOARD_MODAL_NAMES } from '../modal/new-wallboard/modal.new-wallboard.defaults';
 import { FetchStatus } from 'src/store/reducers/wallboards.reducer';
 import { fetchAgentSkillThunk } from 'src/store/thunk/skills.thunk';
+import moment from '../../../node_modules/moment/moment';
 const GridAgentList = ({ isEditMode, widget, ...props }) => {
   const dispatch = useDispatch();
   const agentQueues = useSelector((state) => state.agents.agentsQueues.find((queue) => queue.callQueueId === widget.callQueue.id));
@@ -60,6 +62,7 @@ const GridAgentList = ({ isEditMode, widget, ...props }) => {
     dispatch(fetchAllAgentsThunk(widget.callQueue.id));
     const agentsInterval = setInterval(() => {
       dispatch(fetchAllAgentsThunk(widget.callQueue.id));
+      dispatch(fetchUsersCurrentCallTimeThunk());
     }, 2000);
     dispatch(fetchOrganisationAgentsThunk());
     dispatch(fetchDevicesSipAgentsThunk());
@@ -87,7 +90,7 @@ const GridAgentList = ({ isEditMode, widget, ...props }) => {
       const agentsWithFullInfo = agentQueues.agents.map((agentQueue) => {
         const orgUser = agents.organisationUsers.find((orgUser) => orgUser.id === agentQueue.userId);
         const agentSkills = agentsSkill.find((agentSkills) => agentSkills.agentId === agentQueue.userId);
-        const lastAvailabilityStateChangeSeconds = (new Date() - new Date(agentQueue.lastAvailabilityStateChange)) / 1000;
+        const lastAvailabilityStateChangeSeconds = moment().diff(moment(agentQueue.lastAvailabilityStateChange), 'seconds');
 
         return {
           ...agentQueue,
@@ -97,6 +100,9 @@ const GridAgentList = ({ isEditMode, widget, ...props }) => {
           firstName: orgUser.firstName,
           lastName: orgUser.lastName,
           timeInCurrentAvailabilityState: lastAvailabilityStateChangeSeconds ?? 0,
+          currentCallTimeSeconds: agentQueue?.userCurrentCall?.answerTime
+            ? moment().diff(moment(agentQueue.userCurrentCall.answerTime), 'seconds')
+            : 0,
         };
       });
 
@@ -189,7 +195,7 @@ const GridAgentList = ({ isEditMode, widget, ...props }) => {
               handleAgentAvailabilityState={handleAgentAvailabilityState}
               key={`${agent.userId} ${index}`}
               callStatusKey={agent.status}
-              callTime={0}
+              callTime={agent.currentCallTimeSeconds}
               ext={agent.sipExtension}
               name={`${agent.firstName} ${agent.lastName}`}
               status={agent?.availabilityState?.displayName ?? 'None'}
@@ -242,7 +248,7 @@ const GridAgentList = ({ isEditMode, widget, ...props }) => {
                       noCallsMissed: '0',
                       timeInCurrentPresenceState: 0,
                       timeInCurrentAvailabilityState: agent.timeInCurrentAvailabilityState,
-                      timeInCurrentCall: 0,
+                      timeInCurrentCall: agent.currentCallTimeSeconds,
                       timeInCurrentWrapup: 0,
                       listOfSkills: agent.agentSkills,
                     }))}

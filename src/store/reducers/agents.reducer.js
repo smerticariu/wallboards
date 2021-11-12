@@ -32,9 +32,23 @@ export const agentsReducer = (state = agentsInitialState, action) => {
     case agentsActions.FETCH_ALL_AGENTS_SUCCESS:
       return {
         ...state,
-        agentsQueues: state.agentsQueues.some((agent) => agent.callQueueId === action.payload.callQueueId)
-          ? state.agentsQueues.map((agent) =>
-              agent.callQueueId !== action.payload.callQueueId ? agent : { ...agent, agents: action.payload.agent }
+        agentsQueues: state.agentsQueues.some((agentQueue) => agentQueue.callQueueId === action.payload.callQueueId)
+          ? state.agentsQueues.map((agentQueue) =>
+              agentQueue.callQueueId !== action.payload.callQueueId
+                ? agentQueue
+                : {
+                    ...agentQueue,
+                    agents: action.payload.agent.map((agent) => {
+                      const agentFromRedux = agentQueue.agents.find((reduxAgent) => reduxAgent.userId === agent.userId);
+                      if (agentFromRedux) {
+                        return {
+                          ...agentFromRedux,
+                          ...agent,
+                        };
+                      }
+                      return agent;
+                    }),
+                  }
             )
           : [
               ...state.agentsQueues,
@@ -163,6 +177,59 @@ export const agentsReducer = (state = agentsInitialState, action) => {
               ? agent
               : { ...agent, availabilityState: { ...agent.availabilityState, displayName: action.payload.name, name: action.payload.name } }
           ),
+        })),
+      };
+    case agentsActions.FETCH_USERS_CURRENT_CALL_TIME_SUCCESS:
+      const calls = action.payload;
+      console.log(calls);
+      console.log({
+        ...state,
+        agentsQueues: state.agentsQueues.map((queueWithAgents) => ({
+          ...queueWithAgents,
+          agents: queueWithAgents.agents.map((agent) => {
+            let userCall = null;
+            calls.some((call) =>
+              call.channels.some((channel) => {
+                if (channel.userId === agent.userId) {
+                  userCall = {
+                    ...channel,
+                    direction: call.direction,
+                  };
+                  return true;
+                }
+                return false;
+              })
+            );
+            return {
+              ...agent,
+              userCurrentCall: userCall,
+            };
+          }),
+        })),
+      });
+      return {
+        ...state,
+        agentsQueues: state.agentsQueues.map((queueWithAgents) => ({
+          ...queueWithAgents,
+          agents: queueWithAgents.agents.map((agent) => {
+            let userCall = null;
+            calls.some((call) =>
+              call.channels.some((channel) => {
+                if (channel.userId === agent.userId) {
+                  userCall = {
+                    ...channel,
+                    direction: call.direction,
+                  };
+                  return true;
+                }
+                return false;
+              })
+            );
+            return {
+              ...agent,
+              userCurrentCall: userCall,
+            };
+          }),
         })),
       };
 
