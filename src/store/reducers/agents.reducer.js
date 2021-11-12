@@ -181,32 +181,6 @@ export const agentsReducer = (state = agentsInitialState, action) => {
       };
     case agentsActions.FETCH_USERS_CURRENT_CALL_TIME_SUCCESS:
       const calls = action.payload;
-      console.log(calls);
-      console.log({
-        ...state,
-        agentsQueues: state.agentsQueues.map((queueWithAgents) => ({
-          ...queueWithAgents,
-          agents: queueWithAgents.agents.map((agent) => {
-            let userCall = null;
-            calls.some((call) =>
-              call.channels.some((channel) => {
-                if (channel.userId === agent.userId) {
-                  userCall = {
-                    ...channel,
-                    direction: call.direction,
-                  };
-                  return true;
-                }
-                return false;
-              })
-            );
-            return {
-              ...agent,
-              userCurrentCall: userCall,
-            };
-          }),
-        })),
-      });
       return {
         ...state,
         agentsQueues: state.agentsQueues.map((queueWithAgents) => ({
