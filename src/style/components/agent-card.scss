@@ -56,19 +56,6 @@
       font-size: 18px;
       font-weight: 600;
       max-width: 18ch;
-      white-space: nowrap;
-      overflow: auto;
-      &::-webkit-scrollbar {
-        height: 2px;
-        width: 2px;
-      }
-
-      &::-webkit-scrollbar-thumb {
-        box-shadow: 0 0 1px transparent;
-      }
-      &::-webkit-scrollbar-track {
-        background: transparent;
-      }
     }
     &-ext {
       font-family: $public-sans-thin;

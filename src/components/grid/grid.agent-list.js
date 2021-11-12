@@ -64,7 +64,6 @@ const GridAgentList = ({ isEditMode, widget, ...props }) => {
       dispatch(fetchAllAgentsThunk(widget.callQueue.id));
       dispatch(fetchUsersCurrentCallTimeThunk());
     }, 2000);
-    dispatch(fetchOrganisationAgentsThunk());
     dispatch(fetchDevicesSipAgentsThunk());
     dispatch(fetchUserGroupsThunk());
     return () => clearInterval(agentsInterval);
@@ -79,7 +78,10 @@ const GridAgentList = ({ isEditMode, widget, ...props }) => {
     }
     // eslint-disable-next-line
   }, [agentQueues]);
-
+  useEffect(() => {
+    dispatch(fetchOrganisationAgentsThunk());
+    // eslint-disable-next-line
+  }, [agentQueues?.agents?.length]);
   useEffect(() => {
     if (
       agents.agentsQueuesFetchStatus === FetchStatus.SUCCESS &&

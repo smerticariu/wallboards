@@ -6,6 +6,7 @@
   &--availability-state {
     width: 100%;
   }
+
   &__container {
     position: absolute;
     left: 10px;
@@ -16,6 +17,10 @@
     background-color: $white;
     border: 1px solid $pinkish-grey;
     width: max-content;
+    &--name-hover {
+      left: 50%;
+      transform: translateX(-50%);
+    }
     &--availability {
       width: 100%;
       top: 100%;
@@ -27,6 +32,12 @@
     display: flex;
     width: 100%;
     justify-content: center;
+    &--agent-name {
+      max-width: 18ch;
+      white-space: nowrap;
+      overflow-x: hidden;
+      text-overflow: ellipsis;
+    }
   }
   &__item {
     color: $slate-gray;
