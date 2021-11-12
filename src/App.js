@@ -9,7 +9,7 @@ import WallboardEdit from './components/wallboard/wallboard-edit';
 import WallboardReadOnly from 'src/components/wallboard/wallboard.read-only';
 import { Route, Switch } from 'react-router';
 import { HashRouter } from 'react-router-dom';
-import { handleLogoutAC, removeAuthTokenAC, setAccessTokenAC, setUserTokenInfoAC } from './store/actions/login.action';
+import { handleLogoutAC, setAccessTokenAC, setUserTokenInfoAC } from './store/actions/login.action';
 import { fetchUserDataThunk, fetchUserInfoThunk } from './store/thunk/login.thunk';
 import { WALLBOARD_MODAL_NAMES } from './components/modal/new-wallboard/modal.new-wallboard.defaults';
 import ModalNewWallboard from './components/modal/new-wallboard/modal.new-wallboard';
@@ -43,6 +43,7 @@ function App() {
       }, new Date(userTokenInfo?.expiry * 1000) - new Date() + 2000);
     }
     return () => clearTimeout(tokenExpiryTimeout);
+    // eslint-disable-next-line
   }, [userTokenInfo]);
 
   const fetchData = async () => {

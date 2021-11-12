@@ -10,7 +10,8 @@ const TimeInterval = ({ seconds, ...props }) => {
       setTimeLocal((t) => t + 1);
     }, [1000]);
     return () => clearInterval(interval);
-  }, [seconds]);
+    // eslint-disable-next-line
+  }, [Math.abs(seconds - timeLocal) > 1]);
 
   const noOfDays = Math.floor(timeLocal / 86400);
   const dateString = moment.utc(timeLocal * 1000).format('HH:mm:ss');
