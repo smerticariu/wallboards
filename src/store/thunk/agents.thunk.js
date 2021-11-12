@@ -168,8 +168,8 @@ export const callAgentThunk = (id) => async (dispatch, getState) => {
     const agentPhoneNumber = agent.data.data.sipExtension;
 
     const data = {
-      to: `${agentPhoneNumber}`,
-      from: `${userPhoneNumber}`,
+      to: agentPhoneNumber,
+      from: userPhoneNumber,
       userId: id,
       cli: { present: 'DEFAULT' },
     };
@@ -218,7 +218,7 @@ export const listenLiveThunk = (id) => async (dispatch, getState) => {
 
     const data = {
       to: 'CPBXListenInService',
-      from: `${userPhoneNumber}`,
+      from: userPhoneNumber,
       userId: parseInt(id),
       cli: { present: 'DEFAULT' },
       targetChannelUuid: currentChannel.uuid,
