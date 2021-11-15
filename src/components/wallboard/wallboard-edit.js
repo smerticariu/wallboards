@@ -1,12 +1,11 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useAuth0 } from '@auth0/auth0-react';
 import WallboardComponents from './wallboard-components';
 import Toolbar from '../toolbar/toolbar';
 import { WALLBOARD_MODAL_NAMES } from '../modal/new-wallboard/modal.new-wallboard.defaults';
 import GridPage from '../grid/grid';
 import { fetchWallboardByIdThunk } from 'src/store/thunk/wallboards.thunk';
-import { Redirect, useParams } from 'react-router';
+import { useParams } from 'react-router';
 import { FetchStatus } from 'src/store/reducers/wallboards.reducer';
 import { resetWallboardEditPageDataAC } from 'src/store/actions/wallboards.action';
 import { fetchAllSkillsThunk } from 'src/store/thunk/skills.thunk';
@@ -24,7 +23,6 @@ const WallboardEdit = () => {
   const { userInfo } = useSelector((state) => state.login);
   const adminPermissions = userInfo.isAdmin;
   const teamleaderPermissions = userInfo.isTeamLeader;
-  const { logout } = useAuth0();
   useEffect(() => {
     dispatch(fetchAllSkillsThunk());
     dispatch(fetchAllCallsQueuesThunk());

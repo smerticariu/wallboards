@@ -201,7 +201,7 @@ export const agentsReducer = (state = agentsInitialState, action) => {
             let userCall = null;
             calls.some((call) =>
               call.channels.some((channel) => {
-                if (channel.userId === agent.userId || channel.to == agent.organisationUserData?.sipExtension) {
+                if (channel.userId === agent.userId || channel.to === agent.organisationUserData?.sipExtension) {
                   userCall = {
                     ...channel,
                     direction: call.direction,
