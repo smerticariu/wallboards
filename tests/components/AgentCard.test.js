@@ -2,10 +2,10 @@ import React from 'react';
 import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import '@testing-library/jest-dom/extend-expect';
-import { PRESENCE_STATE_KEYS } from '../../src/components/modal/add-component/modal.add-component.defaults';
 import { Provider } from 'react-redux';
 import store from '../../src/store/store';
 import AgentCard from '../../src/components/agent-card/agent-card';
+import { PRESENCE_STATE_KEYS } from '../../src/common/defaults/modal.defaults';
 Enzyme.configure({ adapter: new Adapter() });
 
 describe('Agent card', () => {

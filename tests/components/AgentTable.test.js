@@ -2,11 +2,11 @@ import React from 'react';
 import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import '@testing-library/jest-dom/extend-expect';
-import { ADD_COMPONENT_COLUMN_OPTIONS, PRESENCE_STATE_KEYS } from '../../src/components/modal/add-component/modal.add-component.defaults';
 import AgentTable from '../../src/components/agent-table/agent-table';
-import { AGENTS_TABLE } from '../../src/components/grid/grid.defaults';
 import { Provider } from 'react-redux';
 import store from '../../src/store/store';
+import { ADD_COMPONENT_COLUMN_OPTIONS, PRESENCE_STATE_KEYS } from '../../src/common/defaults/modal.defaults';
+import { DEFAULTS } from '../../src/common/defaults/defaults';
 Enzyme.configure({ adapter: new Adapter() });
 
 describe('Agent table', () => {
@@ -42,11 +42,11 @@ describe('Agent table', () => {
   test('The number of agents should be the same as AGENTS_TABLE length', () => {
     const agentTable = mount(
       <Provider store={store}>
-        <AgentTable columnsToView={Object.keys(ADD_COMPONENT_COLUMN_OPTIONS)} agents={AGENTS_TABLE} />
+        <AgentTable columnsToView={Object.keys(ADD_COMPONENT_COLUMN_OPTIONS)} agents={DEFAULTS.GRID.AGENTS_TABLE_MOCK} />
       </Provider>,
     );
     const agents = agentTable.find('.agent-t__agent');
-    expect(agents.length).toBe(AGENTS_TABLE.length);
+    expect(agents.length).toBe(DEFAULTS.GRID.AGENTS_TABLE_MOCK.length);
   });
 
   test('Agent Table card should render the agent name', () => {
@@ -136,7 +136,7 @@ describe('Agent table', () => {
   test('Agent Table column width should be 100% / noOfColumns', () => {
     let agentTable = mount(
       <Provider store={store}>
-        <AgentTable columnsToView={[ADD_COMPONENT_COLUMN_OPTIONS.AGENT_NAME]} agents={[AGENTS_TABLE[0]]} />
+        <AgentTable columnsToView={[ADD_COMPONENT_COLUMN_OPTIONS.AGENT_NAME]} agents={[DEFAULTS.GRID.AGENTS_TABLE_MOCK[0]]} />
       </Provider>,
     );
     expect(agentTable.find('.agent-t__agent-info').prop('style')).toHaveProperty('width', '100%');

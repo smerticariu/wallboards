@@ -10,12 +10,12 @@ import {
 } from '../../store/actions/wallboards.action';
 import { RedoIcon } from '../../assets/static/icons/redo';
 import { UndoIcon } from '../../assets/static/icons/undo';
-import { WALLBOARD_MODAL_NAMES } from '../modal/new-wallboard/modal.new-wallboard.defaults';
 import CustomAutosuggest from '../autosuggest/autosuggest';
 import { useHistory } from 'react-router';
 import { generateWallboardId } from '../../common/utils/generateId';
 import { handleWallboardActiveModalAC, setSelectedWallboardSettingsAC } from '../../store/actions/modal.action';
 import { SettingsIcon } from '../../assets/static/icons/settings';
+import { DEFAULTS } from '../../common/defaults/defaults';
 const Toolbar = (props) => {
   const dispatch = useDispatch();
   const [wbSearchValue, setWbSearchValue] = useState('');
@@ -110,7 +110,7 @@ const Toolbar = (props) => {
 
   const handleNewComponentButton = () => {
     const onClickNewComponentModal = () => {
-      dispatch(handleWallboardActiveModalAC(WALLBOARD_MODAL_NAMES.SELECT_COMPONENT));
+      dispatch(handleWallboardActiveModalAC(DEFAULTS.MODAL.MODAL_NAMES.SELECT_COMPONENT));
     };
 
     return (
@@ -150,7 +150,7 @@ const Toolbar = (props) => {
 
   const handleSaveButton = () => {
     const handleClick = () => {
-      dispatch(handleWallboardActiveModalAC(WALLBOARD_MODAL_NAMES.CONFIRM_SAVE_WALLBOARD));
+      dispatch(handleWallboardActiveModalAC(DEFAULTS.MODAL.MODAL_NAMES.CONFIRM_SAVE_WALLBOARD));
     };
     return (
       <button
@@ -165,7 +165,7 @@ const Toolbar = (props) => {
   };
 
   const onClickCloseButton = () => {
-    if (noOfSteptsForUndo) return dispatch(handleWallboardActiveModalAC(WALLBOARD_MODAL_NAMES.SAVE_WALLBOARD));
+    if (noOfSteptsForUndo) return dispatch(handleWallboardActiveModalAC(DEFAULTS.MODAL.MODAL_NAMES.SAVE_WALLBOARD));
     return history.push('/');
   };
 
@@ -192,7 +192,7 @@ const Toolbar = (props) => {
   const handleSettingsIcon = () => {
     const onClikEditWallboardModal = () => {
       dispatch(setSelectedWallboardSettingsAC(activeWallboard));
-      dispatch(handleWallboardActiveModalAC(WALLBOARD_MODAL_NAMES.EDIT_WALLBOARD));
+      dispatch(handleWallboardActiveModalAC(DEFAULTS.MODAL.MODAL_NAMES.EDIT_WALLBOARD));
     };
     return <SettingsIcon onClick={() => onClikEditWallboardModal()} className="i--settings i--settings--toolbar" />;
   };
@@ -249,7 +249,7 @@ const Toolbar = (props) => {
     <>
       {handleBanner()}
       <div className={`c-toolbar ${props.template === 'error' ? 'c-toolbar--error' : ''}`}>
-        <div>{props.children}</div>
+        {props.children && <div>{props.children}</div>}
         <div className="c-toolbar-left">{handleLeftToolbar(props.template)}</div>
         <div className="c-toolbar-right">{handleRightToolbar(props.template)}</div>
       </div>
