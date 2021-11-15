@@ -1,11 +1,11 @@
-import img from '../../assets/static/images/not_exist_people.png';
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { PRESENCE_STATE_KEYS_COLOR } from '../modal/add-component/modal.add-component.defaults';
 import { SettingsIcon } from '../../assets/static/icons/settings';
 import Dropdown from '../dropdown/dropdown';
 import TimeInterval from '../time-interval/time-interval';
-import { callAgentThunk } from 'src/store/thunk/agents.thunk';
+import { callAgentThunk, listenLiveThunk } from '../../store/thunk/agents.thunk';
+import { MAX_NAME_CHARACTERS } from '../grid/grid.defaults';
 
 const AgentCard = ({
   id,
@@ -29,18 +29,36 @@ const AgentCard = ({
     dispatch(callAgentThunk(id));
   };
 
+  const handleListenLive = () => {
+    dispatch(listenLiveThunk(id));
+  };
+
   return (
     <div className={`agent-c agent-c--${PRESENCE_STATE_KEYS_COLOR.CARD_BACKGROUND[callStatusKey]}`}>
       <div className="agent-c__header">
         <div className="agent-c__user">
           <div
             className="agent-c__user-image"
-            style={{
-              backgroundImage: `url(${img})`,
-            }}
+            //do not delete
+            // style={{
+            //   backgroundImage: `url(${img})`,
+            // }}
           />
           <div className="agent-c__user-name-ext">
-            <div className="agent-c__user-name">{name}</div>
+            <div className="agent-c__user-name">
+              {name.length > MAX_NAME_CHARACTERS ? (
+                <Dropdown
+                  openOnHover={true}
+                  closeOnHover={true}
+                  containerClassName={'c-dropdown__container--agent-name'}
+                  trigger={<div className="c-dropdown__trigger--agent-name">{name}</div>}
+                >
+                  <div className="c-dropdown--agent-name">{name}</div>
+                </Dropdown>
+              ) : (
+                name
+              )}
+            </div>
             <div className="agent-c__user-ext">Ext: {ext}</div>
           </div>
         </div>
@@ -49,7 +67,16 @@ const AgentCard = ({
             <SettingsIcon className="i--settings" />
           ) : (
             <Dropdown closeOnClick={true} trigger={<SettingsIcon className="i--settings" />}>
-              {canListenLive && <div className="c-dropdown__item">Listen live</div>}
+              {canListenLive && (
+                <div
+                  className="c-dropdown__item"
+                  onClick={() => {
+                    handleListenLive();
+                  }}
+                >
+                  Listen live
+                </div>
+              )}
               {canCallAgents && (
                 <div
                   onClick={() => {
@@ -70,9 +97,10 @@ const AgentCard = ({
         >
           {availabilityStatesList.length && canChangeAvailabilityState ? (
             <Dropdown
+              className="c-dropdown--availability-state"
               closeOnClick={true}
               containerClassName="c-dropdown__container--availability"
-              trigger={<div className="agent-t__arrow-container">{status}</div>}
+              trigger={<div className="agent-t__arrow-container agent-t__arrow-container--card">{status}</div>}
             >
               {availabilityStatesList.map((state) => (
                 <div

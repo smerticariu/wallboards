@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { WALLBOARD_MODAL_NAMES } from 'src/components/modal/new-wallboard/modal.new-wallboard.defaults';
-import { handleWallboardActiveModalAC } from 'src/store/actions/modal.action';
-import { setWallboardIdForDeleteAC, setWallboardsByCategoryAC } from 'src/store/actions/wallboards.action';
 import { FetchStatus } from '../../..//store/reducers/wallboards.reducer';
+import config from '../../../config/auth/index';
+import { handleWallboardActiveModalAC } from '../../../store/actions/modal.action';
+import { setWallboardIdForDeleteAC, setWallboardsByCategoryAC } from '../../../store/actions/wallboards.action';
 import { fetchAllWallboardsThunk, copyWallboardThunk, syncWallboardsWithConfig } from '../../../store/thunk/wallboards.thunk';
-import config from 'src/config/auth';
+import { WALLBOARD_MODAL_NAMES } from '../../modal/new-wallboard/modal.new-wallboard.defaults';
 
 const LandingTable = () => {
   const dispatch = useDispatch();
@@ -73,7 +73,6 @@ const LandingTable = () => {
     const filterWbsByCategory = (category) => {
       switch (category) {
         case 'Wallboards':
-          // debugger
           const wbsByDate = wallboards.sort((a, b) => a.lastView.toString().localeCompare(b.lastView.toString())).reverse();
           return wbsByDate;
         case 'Created By Me':

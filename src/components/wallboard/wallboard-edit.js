@@ -5,7 +5,7 @@ import Toolbar from '../toolbar/toolbar';
 import { WALLBOARD_MODAL_NAMES } from '../modal/new-wallboard/modal.new-wallboard.defaults';
 import GridPage from '../grid/grid';
 import { fetchWallboardByIdThunk } from 'src/store/thunk/wallboards.thunk';
-import { useParams } from 'react-router';
+import { Redirect, useParams } from 'react-router';
 import { FetchStatus } from 'src/store/reducers/wallboards.reducer';
 import { resetWallboardEditPageDataAC } from 'src/store/actions/wallboards.action';
 import { fetchAllSkillsThunk } from 'src/store/thunk/skills.thunk';
@@ -50,12 +50,10 @@ const WallboardEdit = () => {
     return <div>{fetchMessage}</div>;
   }
 
-  if(userPermission === "BASIC") {
-    return (
-      <div>You are not allowed to edit this wallboard. Please contact your Administrator</div>
-    )
+  if (userPermission === 'BASIC') {
+    return <div>You are not allowed to edit this wallboard. Please contact your Administrator</div>;
   }
-  
+
   return (
     <div className="c-wallboard--new">
       <Toolbar template="new-wallboard" />

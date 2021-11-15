@@ -2,10 +2,11 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { ArrowDownIcon } from '../../assets/static/icons/arrow-down';
 import { SettingsIcon } from '../../assets/static/icons/settings';
+import { callAgentThunk, listenLiveThunk } from '../../store/thunk/agents.thunk';
 import Dropdown from '../dropdown/dropdown';
+import { MAX_NAME_CHARACTERS } from '../grid/grid.defaults';
 import { ADD_COMPONENT_COLUMN_OPTIONS, PRESENCE_STATE_KEYS_COLOR } from '../modal/add-component/modal.add-component.defaults';
 import TimeInterval from '../time-interval/time-interval';
-import { callAgentThunk } from 'src/store/thunk/agents.thunk';
 const AgentTable = ({
   canCallAgents,
   canListenLive,
@@ -31,7 +32,7 @@ const AgentTable = ({
     isListOfSkillsColumn: columnsToView.includes(ADD_COMPONENT_COLUMN_OPTIONS.SKILLS_AGENT_POSSESSES),
   };
   const noOfCols = Object.keys(activeColumns).filter((key) => activeColumns[key]).length;
-  const colWidth = 100 / noOfCols + '%';
+  const colWidth = 100 / (activeColumns.isCurrPresStateColumn ? noOfCols - 1 : noOfCols) + '%';
 
   const dispatch = useDispatch();
 
@@ -39,10 +40,14 @@ const AgentTable = ({
     dispatch(callAgentThunk(id));
   };
 
+  const handleListenLive = (id) => {
+    dispatch(listenLiveThunk(id));
+  };
+
   return (
     <div className="agent-t">
       <div className="agent-t__header">
-        <div className="agent-t__header-item"></div>
+        {(canListenLive || canCallAgents) && <div className="agent-t__header-item agent-t__header-item--settings"></div>}
         {activeColumns.isAgentNameColumn && (
           <div className="agent-t__header-item" style={{ width: colWidth }}>
             Name
@@ -98,22 +103,25 @@ const AgentTable = ({
             Skills
           </div>
         )}
-        {activeColumns.isCurrPresStateColumn && (
-          <div className="agent-t__header-item" style={{ width: colWidth }}>
-            Status
-          </div>
-        )}
+        {activeColumns.isCurrPresStateColumn && <div className="agent-t__header-item agent-t__header-item--status">Status</div>}
       </div>
 
       <div className="agent-t__body">
         {agents?.map((agent, index) => (
           <div key={`${agent.userId} ${index}`} className="agent-t__agent">
-            <div className="agent-t__agent-info">
-              {!canListenLive && !canCallAgents ? (
-                <SettingsIcon className="i--settings i--settings--table" />
-              ) : (
+            {(canListenLive || canCallAgents) && (
+              <div className="agent-t__agent-info agent-t__agent-info--settings">
                 <Dropdown closeOnClick={true} trigger={<SettingsIcon className="i--settings i--settings--table" />}>
-                  {canListenLive && <div className="c-dropdown__item">Listen live</div>}
+                  {canListenLive && (
+                    <div
+                      className="c-dropdown__item"
+                      onClick={() => {
+                        handleListenLive(agent.id);
+                      }}
+                    >
+                      Listen live
+                    </div>
+                  )}
                   {canCallAgents && (
                     <div
                       onClick={() => {
@@ -125,11 +133,23 @@ const AgentTable = ({
                     </div>
                   )}
                 </Dropdown>
-              )}
-            </div>
+              </div>
+            )}
             {activeColumns.isAgentNameColumn && (
-              <div className="agent-t__agent-info" style={{ width: colWidth }}>
-                {agent.agentName}
+              <div className="agent-t__agent-info agent-t__agent-info--name" style={{ width: colWidth }}>
+                {agent.agentName.length > MAX_NAME_CHARACTERS ? (
+                  <Dropdown
+                    className="c-dropdown--availability-state"
+                    openOnHover={true}
+                    closeOnHover={true}
+                    containerClassName={'c-dropdown__container--agent-name'}
+                    trigger={<div className="c-dropdown__trigger--agent-name">{agent.agentName}</div>}
+                  >
+                    <div className="c-dropdown--agent-name">{agent.agentName}</div>
+                  </Dropdown>
+                ) : (
+                  agent.agentName
+                )}
               </div>
             )}
             {activeColumns.isCurrAvaiStateColumn && (
@@ -141,6 +161,7 @@ const AgentTable = ({
               >
                 {canChangeAvailabilityState ? (
                   <Dropdown
+                    className="c-dropdown--availability-state"
                     closeOnClick={true}
                     containerClassName="c-dropdown__container--availability"
                     trigger={
@@ -228,18 +249,12 @@ const AgentTable = ({
               </div>
             )}
             {activeColumns.isCurrPresStateColumn && (
-              <div className="agent-t__agent-info  agent-t__agent-info--circle" style={{ width: colWidth }}>
+              <div className="agent-t__agent-info  agent-t__agent-info--status">
                 <div
-                  className={`agent-t__agent-info--circle-container agent-t__agent-info--circle-container--${
+                  className={`agent-t__agent-info__circle agent-t__agent-info__circle--${
                     PRESENCE_STATE_KEYS_COLOR.CARD_BACKGROUND[agent.callStatusKey]
                   }`}
-                >
-                  <div
-                    className={`agent-t__agent-info--circle-center agent-t__agent-info--circle-container--${
-                      PRESENCE_STATE_KEYS_COLOR.CARD_BACKGROUND[agent.callStatusKey]
-                    }`}
-                  />
-                </div>
+                ></div>
                 {PRESENCE_STATE_KEYS_COLOR.CARD_PRESENCE_STATE_TEXT[agent.callStatusKey]}
               </div>
             )}

@@ -1,15 +1,9 @@
-import { createArrayFromTo } from '../../../common/utils/generateArray';
 export const SORT_BY_VALUES = {
   AGENT_NAME: 'AGENT_NAME',
-
   AVAILABILITY_STATE: 'AVAILABILITY_STATE',
-
   PRESENCE_STATE: 'PRESENCE_STATE',
-
   TIME_CURRENT_CALL: 'TIME_CURRENT_CALL',
-
   TIME_CURRENT_AVAILABILITY_STATE: 'TIME_CURRENT_AVAILABILITY_STATE',
-
   TIME_PHONE_TODAY: 'TIME_PHONE_TODAY',
 };
 export const SORT_BY_OPTIONS = [
@@ -33,10 +27,11 @@ export const SORT_BY_OPTIONS = [
     text: 'Time spent in current availability state (Most time in the state first)',
     value: SORT_BY_VALUES.TIME_CURRENT_AVAILABILITY_STATE,
   },
-  {
-    text: 'Total time spent on the phone today (Most time first)',
-    value: SORT_BY_VALUES.TIME_PHONE_TODAY,
-  },
+  // do not remove
+  // {
+  //   text: 'Total time spent on the phone today (Most time first)',
+  //   value: SORT_BY_VALUES.TIME_PHONE_TODAY,
+  // },
 ];
 
 export const ADD_COMPONENT_COLUMN_OPTIONS = {
@@ -55,12 +50,19 @@ export const ADD_COMPONENT_COLUMN_OPTIONS = {
 };
 export const PRESENCE_STATE_KEYS = {
   AGENT_STATUS_INBOUND_CALL_QUEUE: 'onQCall',
-  AGENT_STATUS_INBOUND_CALL_OTHER: 'inboundCall',
+  // AGENT_STATUS_INBOUND_CALL_OTHER: 'inboundCall', // do not remove
+  AGENT_STATUS_INBOUND_CALL_OTHER: 'busy',
   AGENT_STATUS_OUTBOUND: 'outboundCall',
   AGENT_STATUS_RINGING: 'ringing',
   AGENT_STATUS_IN_WRAP_UP: 'inWrapUp',
   AGENT_STATUS_IDLE: 'idle',
   AGENT_STATUS_LOGGED_OFF: 'loggedoff',
+};
+
+export const INTERACTIVITY_OPTIONS_KEYS = {
+  CHANGE_AVAILABILITY_STATE: 'CHANGE_AVAILABILITY_STATE',
+  LISTEN_LIVE: 'LISTEN_LIVE',
+  CALL_AGENTS: 'CALL_AGENTS',
 };
 
 export const PRESENCE_STATE_KEYS_COLOR = {
@@ -112,29 +114,6 @@ export const PRESENCE_STATE_KEYS_COLOR = {
 };
 
 export const ADD_COMPONENT_STATE_OPTIONS = {
-  //in the future it may be needed
-  // availabilityStates: [
-  //   {
-  //     text: "I'm currently available for calls",
-  //     value: 'CURRENTLY_AVAILABLE',
-  //     isInitialChecked: true,
-  //   },
-  //   {
-  //     text: "I'm busy on calls",
-  //     value: 'BUSY_ON_CALLS',
-  //     isInitialChecked: true,
-  //   },
-  //   {
-  //     text: 'No calls today please',
-  //     value: 'NO_CALLS_TODAY',
-  //     isInitialChecked: true,
-  //   },
-  // ],
-  availabilityStates: createArrayFromTo(0, 20).map((el) => ({
-    text: `Profile Name ${el - (el % 2)} - State ${el % 4}`,
-    value: `P_${el}_S_${el}`,
-    isInitialChecked: true,
-  })),
   presenceStates: [
     {
       text: 'Inbound Call',
@@ -176,17 +155,17 @@ export const ADD_COMPONENT_STATE_OPTIONS = {
   interactivityOptions: [
     {
       text: 'Can change availability state',
-      value: 'CHANGE_AVAILABILITY_STATE',
+      value: INTERACTIVITY_OPTIONS_KEYS.CHANGE_AVAILABILITY_STATE,
       isInitialChecked: true,
     },
     {
       text: 'Can Listen Live to agents',
-      value: 'LISTEN_LIVE',
+      value: INTERACTIVITY_OPTIONS_KEYS.LISTEN_LIVE,
       isInitialChecked: true,
     },
     {
       text: 'Can Call Agents',
-      value: 'CALL_AGENTS',
+      value: INTERACTIVITY_OPTIONS_KEYS.CALL_AGENTS,
       isInitialChecked: true,
     },
   ],
@@ -211,26 +190,27 @@ export const ADD_COMPONENT_STATE_OPTIONS = {
       value: ADD_COMPONENT_COLUMN_OPTIONS.CURRENT_PRESENCE,
       isInitialChecked: true,
     },
-    {
-      text: 'Number of calls offered',
-      value: ADD_COMPONENT_COLUMN_OPTIONS.NO_CALLS_OFFERED,
-      isInitialChecked: false,
-    },
-    {
-      text: 'Number of calls answered',
-      value: ADD_COMPONENT_COLUMN_OPTIONS.NO_CALLS_ANSWERED,
-      isInitialChecked: false,
-    },
-    {
-      text: 'Number of calls missed',
-      value: ADD_COMPONENT_COLUMN_OPTIONS.NO_CALLS_MISSED,
-      isInitialChecked: false,
-    },
-    {
-      text: 'Time spent in current presence state',
-      value: ADD_COMPONENT_COLUMN_OPTIONS.TIME_CURRENT_PRESENCE,
-      isInitialChecked: false,
-    },
+    // do not remove
+    // {
+    //   text: 'Number of calls offered',
+    //   value: ADD_COMPONENT_COLUMN_OPTIONS.NO_CALLS_OFFERED,
+    //   isInitialChecked: false,
+    // },
+    // {
+    //   text: 'Number of calls answered',
+    //   value: ADD_COMPONENT_COLUMN_OPTIONS.NO_CALLS_ANSWERED,
+    //   isInitialChecked: false,
+    // },
+    // {
+    //   text: 'Number of calls missed',
+    //   value: ADD_COMPONENT_COLUMN_OPTIONS.NO_CALLS_MISSED,
+    //   isInitialChecked: false,
+    // },
+    // {
+    //   text: 'Time spent in current presence state',
+    //   value: ADD_COMPONENT_COLUMN_OPTIONS.TIME_CURRENT_PRESENCE,
+    //   isInitialChecked: false,
+    // },
     {
       text: 'Time spent in current availability state',
       value: ADD_COMPONENT_COLUMN_OPTIONS.TIME_CURRENT_AVAILABILITY,
@@ -241,22 +221,19 @@ export const ADD_COMPONENT_STATE_OPTIONS = {
       value: ADD_COMPONENT_COLUMN_OPTIONS.TIME_CURRENT_CALL,
       isInitialChecked: true,
     },
-    {
-      text: 'Time spent on current wrapup',
-      value: ADD_COMPONENT_COLUMN_OPTIONS.TIME_CURRENT_WRAPUP,
-      isInitialChecked: false,
-    },
+
+    // do not remove
+    // {
+    //   text: 'Time spent on current wrapup',
+    //   value: ADD_COMPONENT_COLUMN_OPTIONS.TIME_CURRENT_WRAPUP,
+    //   isInitialChecked: false,
+    // },
     {
       text: 'List of skills the agent possesses',
       value: ADD_COMPONENT_COLUMN_OPTIONS.SKILLS_AGENT_POSSESSES,
       isInitialChecked: false,
     },
   ],
-  skillsToView: [...new Array(100)].map((skill, index) => ({
-    text: 'Skill ' + index,
-    value: `SKILL_${index}`,
-    isInitialChecked: true,
-  })),
 };
 
 export const MAIN_VIEWING_OPTIONS = {

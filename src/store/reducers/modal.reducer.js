@@ -1,11 +1,12 @@
-import { modalActions } from '../actions/modal.action';
 import {
   ADD_COMPONENT_COLUMNS_NO_OPTIONS,
   ADD_COMPONENT_STATE_OPTIONS,
   MAIN_VIEWING_OPTIONS,
   SORT_BY_OPTIONS,
-} from 'src/components/modal/add-component/modal.add-component.defaults';
-const initialState = {
+} from '../../components/modal/add-component/modal.add-component.defaults';
+import { modalActions } from '../actions/modal.action';
+
+export const modalInitialState = {
   activeModalName: null,
   warningMessage: '',
   modalSelectComponent: {
@@ -73,7 +74,7 @@ const initialState = {
   },
 };
 
-export const modalReducer = (state = initialState, action) => {
+export const modalReducer = (state = modalInitialState, action) => {
   switch (action.type) {
     case modalActions.HANDLE_WALLBOARD_ACTIVE_MODAL:
       return {
@@ -103,7 +104,7 @@ export const modalReducer = (state = initialState, action) => {
     case modalActions.RESET_ADD_MODAL_COMPONENT_FORM_DATA:
       return {
         ...state,
-        modalAddComponent: { ...initialState.modalAddComponent },
+        modalAddComponent: { ...modalInitialState.modalAddComponent },
       };
     case modalActions.SET_WALLBOARD_COMPONENT_FOR_DELETE:
       return {

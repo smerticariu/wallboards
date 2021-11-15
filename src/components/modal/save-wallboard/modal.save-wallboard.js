@@ -12,7 +12,6 @@ const ModalSaveWallboard = ({ ...props }) => {
   const history = useHistory();
   const dispatch = useDispatch();
   const activeWallboard = useSelector((state) => state.wallboards.present.activeWallboard.wallboard);
-
   const closeModal = () => {
     dispatch(handleWallboardActiveModalAC(null));
   };

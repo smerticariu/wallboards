@@ -1,12 +1,12 @@
 import { callsQueuesActions } from '../actions/callsQueues.action';
 import { FetchStatus } from './wallboards.reducer';
 
-const initialState = {
+export const callsQueuesInitialState = {
   allCallsQueues: [],
   allCallsQueuesFetchStatus: FetchStatus.NULL,
 };
 
-export const callsQueuesReducer = (state = initialState, action) => {
+export const callsQueuesReducer = (state = callsQueuesInitialState, action) => {
   switch (action.type) {
     case callsQueuesActions.FETCH_ALL_CALLS_QUEUES:
       return {

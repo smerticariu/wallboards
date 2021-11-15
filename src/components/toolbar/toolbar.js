@@ -13,17 +13,16 @@ import { UndoIcon } from '../../assets/static/icons/undo';
 import { WALLBOARD_MODAL_NAMES } from '../modal/new-wallboard/modal.new-wallboard.defaults';
 import CustomAutosuggest from '../autosuggest/autosuggest';
 import { useHistory } from 'react-router';
-import { SettingsIcon } from 'src/assets/static/icons/settings';
-import { handleWallboardActiveModalAC, setSelectedWallboardSettingsAC } from 'src/store/actions/modal.action';
-import { generateWallboardId } from 'src/common/utils/generateId';
-import checkIfExistWallboardChanges from 'src/common/utils/checkIfExistWallboardChanges';
+import { generateWallboardId } from '../../common/utils/generateId';
+import { handleWallboardActiveModalAC, setSelectedWallboardSettingsAC } from '../../store/actions/modal.action';
+import { SettingsIcon } from '../../assets/static/icons/settings';
 const Toolbar = (props) => {
   const dispatch = useDispatch();
   const [wbSearchValue, setWbSearchValue] = useState('');
   const wallboards = useSelector((state) => state.landing.wallboardsByCategory);
   const { userInfo } = useSelector((state) => state.login);
   const activeWallboard = useSelector((state) => state.wallboards.present.activeWallboard.wallboard);
-  const activeWallboardInitialValues = useSelector((state) => state.wallboards.present.activeWallboard.wallboardInitialValues);
+  const noOfSteptsForUndo = useSelector((state) => state.wallboards.noOfSteptsForUndo);
   const wallboardStates = useSelector((state) => state.wallboards);
   const history = useHistory();
 
@@ -166,8 +165,7 @@ const Toolbar = (props) => {
   };
 
   const onClickCloseButton = () => {
-    if (checkIfExistWallboardChanges(activeWallboard, activeWallboardInitialValues))
-      return dispatch(handleWallboardActiveModalAC(WALLBOARD_MODAL_NAMES.SAVE_WALLBOARD));
+    if (noOfSteptsForUndo) return dispatch(handleWallboardActiveModalAC(WALLBOARD_MODAL_NAMES.SAVE_WALLBOARD));
     return history.push('/');
   };
 

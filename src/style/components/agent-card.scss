@@ -44,6 +44,7 @@
     &-image {
       min-width: 30px;
       height: 30px;
+      background-image: url('../../assets/static/images/not_exist_people.png');
       background-position: center;
       background-repeat: no-repeat;
       background-size: cover;
@@ -54,6 +55,7 @@
       font-family: $public-sans-thin;
       font-size: 18px;
       font-weight: 600;
+      max-width: 18ch;
     }
     &-ext {
       font-family: $public-sans-thin;

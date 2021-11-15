@@ -1,12 +1,12 @@
 import { wallboardsActions } from '../actions/wallboards.action';
 
-const initialState = {
+export const landingInitialState = {
   category: 'Wallboards',
   searchedWallboards: '',
   wallboardsByCategory: [],
 };
 
-export const landingReducer = (state = initialState, action) => {
+export const landingReducer = (state = landingInitialState, action) => {
   switch (action.type) {
     case wallboardsActions.LANDING_SELECTED_WALLBOARD_CATEGORY:
       return {

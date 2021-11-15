@@ -1,27 +1,29 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { createArrayFromTo } from '../../../common/utils/generateArray';
-import AgentCard from 'src/components/agent-card/agent-card';
-import AgentTablePreview from 'src/components/agent-table/agent-table.preview';
-import CustomAutosuggest from 'src/components/autosuggest/autosuggest';
-import CheckBox from 'src/components/checkbox/checkbox';
-import Radio from 'src/components/radio/radio';
-import { addWallboardComponentAC } from 'src/store/actions/wallboards.action';
 import useOnClickOutside from '../../../common/hooks/useOnClickOutside';
 import {
   ADD_COMPONENT_COLUMNS_NO_OPTIONS,
   ADD_COMPONENT_COLUMN_OPTIONS,
   ADD_COMPONENT_STATE_OPTIONS,
+  INTERACTIVITY_OPTIONS_KEYS,
   MAIN_VIEWING_OPTIONS,
   PRESENCE_STATE_KEYS,
   SORT_BY_OPTIONS,
 } from './modal.add-component.defaults';
+
+import { addWallboardComponentAC } from '../../../store/actions/wallboards.action';
+import CheckBox from '../../checkbox/checkbox';
+import CustomAutosuggest from '../../autosuggest/autosuggest';
+import Radio from '../../radio/radio';
+import AgentTablePreview from '../../agent-table/agent-table.preview';
+import AgentCard from '../../agent-card/agent-card';
 import {
   handleModalAddComponentFormDataAC,
   handleWallboardActiveModalAC,
   resetModalAddComponentFormDataAC,
-} from 'src/store/actions/modal.action';
-import { checkIsAlphanumeric } from 'src/common/utils/alphanumeric-validation';
+} from '../../../store/actions/modal.action';
+import { checkIsAlphanumeric } from '../../../common/utils/alphanumeric-validation';
 
 const ModalAddComponent = ({ ...props }) => {
   const modalRef = useRef(null);
@@ -302,7 +304,7 @@ const ModalAddComponent = ({ ...props }) => {
       const allTitlesForAutocomplete = allSkils.map(({ description }) => description);
 
       return (
-        <div className="c-modal--add-component__input-section">
+        <div className="c-modal--add-component__input-section c-modal--add-component__input-section--skills">
           <div className="c-modal--add-component__input-label">Select Skills to view</div>
 
           <div className="c-modal--add-component__select-checkbox">
@@ -432,7 +434,7 @@ const ModalAddComponent = ({ ...props }) => {
           </select>
         </div>
 
-        <div className="c-modal--add-component__input-section">
+        <div className="c-modal--add-component__input-section c-modal--add-component__input-section--view">
           <div className="c-modal--add-component__input-label">View</div>
           <Radio
             label="Card View"
@@ -469,7 +471,7 @@ const ModalAddComponent = ({ ...props }) => {
         </div>
 
         {!isCardFormat && (
-          <div className="c-modal--add-component__input-section">
+          <div className="c-modal--add-component__input-section c-modal--add-component__input-section--columns">
             <div className="c-modal--add-component__input-label">Select columns to view</div>
 
             <div className="c-modal--add-component__av-state-container">
@@ -501,7 +503,7 @@ const ModalAddComponent = ({ ...props }) => {
 
         {handleAvailabilityStatesToView()}
 
-        <div className="c-modal--add-component__input-section">
+        <div className="c-modal--add-component__input-section c-modal--add-component__input-section--presence-state">
           <div className="c-modal--add-component__input-label">Presence states to view</div>
 
           <div className="c-modal--add-component__select-checkbox">
@@ -535,7 +537,7 @@ const ModalAddComponent = ({ ...props }) => {
           )}
         </div>
 
-        <div className="c-modal--add-component__input-section">
+        <div className="c-modal--add-component__input-section c-modal--add-component__input-section--interactivity">
           <div className="c-modal--add-component__input-label">Interactivity options</div>
           {ADD_COMPONENT_STATE_OPTIONS.interactivityOptions.map((option) => (
             <CheckBox
@@ -579,6 +581,8 @@ const ModalAddComponent = ({ ...props }) => {
               {createArrayFromTo(0, ADD_COMPONENT_COLUMNS_NO_OPTIONS.ONE === formData.columns ? 0 : 1).map((index) => (
                 <AgentTablePreview
                   key={index}
+                  canCallAgents={formData.interactivityOptions.selectedItems.includes(INTERACTIVITY_OPTIONS_KEYS.CALL_AGENTS)}
+                  canListenLive={formData.interactivityOptions.selectedItems.includes(INTERACTIVITY_OPTIONS_KEYS.LISTEN_LIVE)}
                   agentName={formData.columnsToViewOptions.selectedItems.includes(ADD_COMPONENT_COLUMN_OPTIONS.AGENT_NAME)}
                   agentExtNo={formData.columnsToViewOptions.selectedItems.includes(ADD_COMPONENT_COLUMN_OPTIONS.AGENT_EXTENSION)}
                   currAvaiState={formData.columnsToViewOptions.selectedItems.includes(ADD_COMPONENT_COLUMN_OPTIONS.CURRENT_AVAILABILITY)}

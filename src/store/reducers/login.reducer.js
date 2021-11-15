@@ -1,12 +1,12 @@
 import { loginActions } from '../actions/login.action';
 
-const initialState = {
+export const loginInitialState = {
   token: null,
   userInfo: null,
   userTokenInfo: null,
 };
 
-export const loginReducer = (state = initialState, action) => {
+export const loginReducer = (state = loginInitialState, action) => {
   switch (action.type) {
     case loginActions.SET_ACCESS_TOKEN:
       return {

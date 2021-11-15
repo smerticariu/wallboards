@@ -20,6 +20,7 @@
       min-height: 16px;
       font-size: 7px;
       margin-bottom: 4px;
+      width: max-content;
     }
     &-item {
       display: flex;
@@ -29,12 +30,15 @@
       height: 100%;
       margin: 0 2px 0 0;
       background-color: $turquoise-blue;
-      &:first-child {
+      &--status {
+        min-width: 200px;
+      }
+      &--settings {
         min-width: 100px !important;
       }
       &--preview {
         min-width: 80px;
-        &:first-child {
+        &--settings {
           min-width: 50px !important;
         }
       }
@@ -53,7 +57,7 @@
       margin-bottom: 2px;
     }
     &-info {
-      padding: 12px 5px;
+      padding: 10px 5px;
       font-family: $public-sans-regular;
       font-size: 16px;
       color: $natterbox-dark-blue-grey;
@@ -61,7 +65,8 @@
       min-width: 170px;
       margin: 0 2px 0 0;
       text-align: center;
-      &:first-child {
+
+      &--settings {
         background-color: transparent;
         padding: 0;
         min-width: 100px;
@@ -79,8 +84,10 @@
           padding-left: 10px;
           width: 80px;
         }
-        &:first-child {
+        &--settings {
           min-width: 50px;
+          background-color: $white;
+          padding: 0;
         }
       }
       &__skills {
@@ -112,88 +119,68 @@
       &--grey {
         background-color: $pinkish-grey;
       }
-
-      &--circle {
-        padding: 0;
-        background-color: $white;
+      &--status {
         display: flex;
-        justify-content: flex-start;
-        padding-left: 20px;
         align-items: center;
+        background-color: $white;
+        min-width: 200px;
+        padding: 0;
+        height: 100%;
+        padding-left: 10px;
         text-align: start;
         &--preview {
           font-size: 7px;
           padding-left: 10px;
           min-width: 80px;
         }
-        &-container {
-          display: flex;
-          margin-right: 5px;
-          justify-content: center;
-          align-items: center;
-          min-width: 30px;
-          height: 30px;
-          &--preview {
-            min-width: 15px;
-            height: 15px;
-          }
-          border-radius: 50%;
-          &--sun-yellow {
-            background-color: rgba($sun-yellow, 0.58);
-          }
-          &--lighter-red {
-            background-color: rgba($natterbox-lighter-red, 0.58);
-          }
-          &--orange {
-            background-color: rgba($natterbox-orange, 0.58);
-          }
-          &--magenta {
-            background-color: rgba($natterbox-magenta, 0.58);
-          }
-          &--aqua {
-            background-color: rgba($natterbox-aqua, 0.58);
-          }
-          &--sick-green {
-            background-color: rgba($sick-green, 0.58);
-          }
-          &--grey {
-            background-color: rgba($pinkish-grey-two, 0.58);
-          }
+      }
+      &__circle {
+        padding: 0;
+        background-color: $white;
+        display: flex;
+        justify-content: flex-start;
+        margin-right: 5px;
+        box-sizing: content-box;
+        -webkit-background-clip: padding-box;
+        background-clip: padding-box;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        &--sun-yellow {
+          background-color: $sun-yellow;
+          border: 5px solid rgba($sun-yellow, 0.58);
         }
-        &-center {
-          width: 20px;
-          height: 20px;
-          &--preview {
-            width: 10px;
-            height: 10px;
-          }
-          border-radius: 50%;
-          &--sun-yellow {
-            background-color: $sun-yellow;
-          }
-          &--lighter-red {
-            background-color: $natterbox-lighter-red;
-          }
-          &--orange {
-            background-color: $natterbox-orange;
-          }
-          &--magenta {
-            background-color: $natterbox-magenta;
-          }
-          &--aqua {
-            background-color: $natterbox-aqua;
-          }
-          &--sick-green {
-            background-color: $sick-green;
-          }
-          &--grey {
-            background-color: $pinkish-grey-two;
-          }
+        &--lighter-red {
+          background-color: $natterbox-lighter-red;
+          border: 5px solid rgba($natterbox-lighter-red, 0.58);
+        }
+        &--orange {
+          background-color: $natterbox-orange;
+          border: 5px solid rgba($natterbox-orange, 0.58);
+        }
+        &--magenta {
+          background-color: $natterbox-magenta;
+          border: 5px solid rgba($natterbox-magenta, 0.58);
+        }
+        &--aqua {
+          background-color: $natterbox-aqua;
+          border: 5px solid rgba($natterbox-aqua, 0.58);
+        }
+        &--sick-green {
+          background-color: $sick-green;
+          border: 5px solid rgba($sick-green, 0.58);
+        }
+        &--grey {
+          background-color: $pinkish-grey-two;
+          border: 5px solid rgba($pinkish-grey-two, 0.58);
+        }
+        &--preview {
+          width: 10px;
+          height: 10px;
+          border-width: 3px;
         }
       }
     }
-  }
-  &__availability-status {
   }
   &__arrow-container {
     display: flex;
@@ -202,5 +189,8 @@
     justify-content: center;
     cursor: pointer;
     position: relative;
+    &--card {
+      display: block;
+    }
   }
 }
