@@ -4,6 +4,7 @@ import { ArrowDownIcon } from '../../assets/static/icons/arrow-down';
 import { SettingsIcon } from '../../assets/static/icons/settings';
 import { callAgentThunk, listenLiveThunk } from '../../store/thunk/agents.thunk';
 import Dropdown from '../dropdown/dropdown';
+import { MAX_NAME_CHARACTERS } from '../grid/grid.defaults';
 import { ADD_COMPONENT_COLUMN_OPTIONS, PRESENCE_STATE_KEYS_COLOR } from '../modal/add-component/modal.add-component.defaults';
 import TimeInterval from '../time-interval/time-interval';
 const AgentTable = ({
@@ -136,7 +137,19 @@ const AgentTable = ({
             )}
             {activeColumns.isAgentNameColumn && (
               <div className="agent-t__agent-info agent-t__agent-info--name" style={{ width: colWidth }}>
-                {agent.agentName}
+                {agent.agentName.length > MAX_NAME_CHARACTERS ? (
+                  <Dropdown
+                    className="c-dropdown--availability-state"
+                    openOnHover={true}
+                    closeOnHover={true}
+                    containerClassName={'c-dropdown__container--agent-name'}
+                    trigger={<div className="c-dropdown__trigger--agent-name">{agent.agentName}</div>}
+                  >
+                    <div className="c-dropdown--agent-name">{agent.agentName}</div>
+                  </Dropdown>
+                ) : (
+                  agent.agentName
+                )}
               </div>
             )}
             {activeColumns.isCurrAvaiStateColumn && (

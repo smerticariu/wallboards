@@ -64,7 +64,6 @@ const GridAgentList = ({ isEditMode, widget, ...props }) => {
       dispatch(fetchAllAgentsThunk(widget.callQueue.id));
       dispatch(fetchUsersCurrentCallTimeThunk());
     }, 2000);
-    dispatch(fetchOrganisationAgentsThunk());
     dispatch(fetchDevicesSipAgentsThunk());
     dispatch(fetchUserGroupsThunk());
     return () => clearInterval(agentsInterval);
@@ -79,7 +78,10 @@ const GridAgentList = ({ isEditMode, widget, ...props }) => {
     }
     // eslint-disable-next-line
   }, [agentQueues]);
-
+  useEffect(() => {
+    dispatch(fetchOrganisationAgentsThunk());
+    // eslint-disable-next-line
+  }, [agentQueues?.agents?.length]);
   useEffect(() => {
     if (
       agents.agentsQueuesFetchStatus === FetchStatus.SUCCESS &&
@@ -88,17 +90,16 @@ const GridAgentList = ({ isEditMode, widget, ...props }) => {
       agents.userGroupsFetchStatus === FetchStatus.SUCCESS
     ) {
       const agentsWithFullInfo = agentQueues.agents.map((agentQueue) => {
-        const orgUser = agents.organisationUsers.find((orgUser) => orgUser.id === agentQueue.userId);
         const agentSkills = agentsSkill.find((agentSkills) => agentSkills.agentId === agentQueue.userId);
         const lastAvailabilityStateChangeSeconds = moment().diff(moment(agentQueue.lastAvailabilityStateChange), 'seconds');
 
         return {
           ...agentQueue,
           agentSkills: agentSkills?.skills?.map((skill) => ({ description: skill.description, name: skill.name })) ?? [],
-          sipExtension: orgUser.sipExtension,
-          userName: orgUser.userName,
-          firstName: orgUser.firstName,
-          lastName: orgUser.lastName,
+          sipExtension: agentQueue.organisationUserData?.sipExtension,
+          userName: agentQueue.organisationUserData?.userName,
+          firstName: agentQueue.organisationUserData?.firstName,
+          lastName: agentQueue.organisationUserData?.lastName,
           timeInCurrentAvailabilityState: lastAvailabilityStateChangeSeconds ?? 0,
           currentCallTimeSeconds: agentQueue?.userCurrentCall?.answerTime
             ? moment().diff(moment(agentQueue.userCurrentCall.answerTime), 'seconds')
@@ -124,6 +125,7 @@ const GridAgentList = ({ isEditMode, widget, ...props }) => {
           widget.availabilityStates.selectedItems.some((state) => state.availabilityStateId === agent.availabilityState?.id);
         return isSkill && isPresenceState && isAvailabilityState;
       });
+
       const sortedAgents = filtredAgentsWithFullInfo.sort((agent1, agent2) => {
         if (widget.sortBy === SORT_BY_VALUES.AGENT_NAME)
           return `${agent1.firstName} ${agent1.lastName}`
@@ -134,6 +136,7 @@ const GridAgentList = ({ isEditMode, widget, ...props }) => {
         if (widget.sortBy === SORT_BY_VALUES.PRESENCE_STATE) return agent1.status.localeCompare(agent2.status);
         if (widget.sortBy === SORT_BY_VALUES.TIME_CURRENT_AVAILABILITY_STATE)
           return agent2.timeInCurrentAvailabilityState - agent1.timeInCurrentAvailabilityState;
+        if (widget.sortBy === SORT_BY_VALUES.TIME_CURRENT_CALL) return agent2.currentCallTimeSeconds - agent1.currentCallTimeSeconds;
         return 0;
       });
       setAgentsForDisplay(sortedAgents);
