@@ -41,10 +41,14 @@ export const fetchWallboardByIdThunk = ({id, copyWb}) => async (dispatch, getSta
         },
         wallboardId: id,
       });
+
+      dispatch(updateConfig({...wallboardById.data, lastView: currentDate}, DEFAULTS.WALLBOARDS.API.SAVE.WALLBOARD));
+    } else {
+      dispatch(updateConfig(wallboardById.data, DEFAULTS.WALLBOARDS.API.SAVE.WALLBOARD));
     }
 
     dispatch(fetchWallboardByIdSuccessAC({ widgets: [], ...wallboardById.data }));
-    dispatch(updateConfig(wallboardById.data, DEFAULTS.WALLBOARDS.API.SAVE.WALLBOARD));
+    
   } catch (error) {
     dispatch(fetchWallboardByIdFailAC(DEFAULTS.GLOBAL.FAIL));
     console.log(error?.wallboardById?.data);
