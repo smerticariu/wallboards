@@ -1,8 +1,8 @@
 import React from 'react';
 import { ArrowDownIcon } from 'src/assets/static/icons/arrow-down';
 import { SettingsIcon } from 'src/assets/static/icons/settings';
+import { DEFAULTS } from '../../common/defaults/defaults';
 import { PRESENCE_STATE_KEYS_COLOR } from '../modal/add-component/modal.add-component.defaults';
-import { previewAvailabilityStatusColors } from './agent-table.defaults';
 const AgentTablePreview = ({
   agentName,
   agentExtNo,
@@ -47,7 +47,7 @@ const AgentTablePreview = ({
             {currAvaiState && (
               <div
                 className={`agent-t__agent-info agent-t__agent-info--preview agent-t__agent-info--preview--color agent-t__agent-info--${
-                  PRESENCE_STATE_KEYS_COLOR.CARD_AVAILABILITY_STATUS_BACKGROUND[previewAvailabilityStatusColors[index]]
+                  PRESENCE_STATE_KEYS_COLOR.CARD_AVAILABILITY_STATUS_BACKGROUND[DEFAULTS.GRID.TABLE_PREVIEW[index]]
                 }`}
               >
                 {index === 0 && 'I’m available'}
@@ -70,16 +70,16 @@ const AgentTablePreview = ({
               <div className="agent-t__agent-info agent-t__agent-info--circle agent-t__agent-info--circle--preview">
                 <div
                   className={`agent-t__agent-info--circle-container agent-t__agent-info--circle-container--${
-                    PRESENCE_STATE_KEYS_COLOR.CARD_BACKGROUND[previewAvailabilityStatusColors[index]]
+                    PRESENCE_STATE_KEYS_COLOR.CARD_BACKGROUND[DEFAULTS.GRID.TABLE_PREVIEW[index]]
                   } agent-t__agent-info--circle-container--preview`}
                 >
                   <div
                     className={`agent-t__agent-info--circle-center agent-t__agent-info--circle-center--${
-                      PRESENCE_STATE_KEYS_COLOR.CARD_BACKGROUND[previewAvailabilityStatusColors[index]]
+                      PRESENCE_STATE_KEYS_COLOR.CARD_BACKGROUND[DEFAULTS.GRID.TABLE_PREVIEW[index]]
                     } agent-t__agent-info--circle-center--preview`}
                   ></div>
                 </div>
-                {PRESENCE_STATE_KEYS_COLOR.CARD_PRESENCE_STATE_TEXT[previewAvailabilityStatusColors[index]]}{' '}
+                {PRESENCE_STATE_KEYS_COLOR.CARD_PRESENCE_STATE_TEXT[DEFAULTS.GRID.TABLE_PREVIEW[index]]}{' '}
               </div>
             )}
           </div>
