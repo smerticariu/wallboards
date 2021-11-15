@@ -38,7 +38,7 @@ export const WallboardsApi = async props => {
       options.method = 'put';
       options.url = configUrl;
       options.data = [];
-
+      break;
     case DEFAULTS.WALLBOARDS.API.SAVE.SYNC_CONFIG:
       options.method = 'put';
       options.url = configUrl;

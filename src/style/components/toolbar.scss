@@ -6,6 +6,10 @@
   flex: 0 1 auto;
   margin: 0 auto;
   padding: 25px 0;
+  &--error {
+    flex: auto;
+    flex-direction: column;
+  }
   &-right {
     width: 60%;
     display: flex;

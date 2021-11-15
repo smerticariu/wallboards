@@ -248,7 +248,8 @@ const Toolbar = (props) => {
   return (
     <>
       {handleBanner()}
-      <div className="c-toolbar">
+      <div className={`c-toolbar ${props.template === 'error' ? 'c-toolbar--error' : ''}`}>
+        <div>{props.children}</div>
         <div className="c-toolbar-left">{handleLeftToolbar(props.template)}</div>
         <div className="c-toolbar-right">{handleRightToolbar(props.template)}</div>
       </div>

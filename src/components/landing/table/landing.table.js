@@ -2,10 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { FetchStatus } from '../../..//store/reducers/wallboards.reducer';
 import { DEFAULTS } from '../../../common/defaults/defaults';
-import config from '../../../config/auth/index';
 import { handleWallboardActiveModalAC } from '../../../store/actions/modal.action';
 import { setWallboardIdForDeleteAC, setWallboardsByCategoryAC } from '../../../store/actions/wallboards.action';
-import { fetchAllWallboardsThunk, copyWallboardThunk, syncWallboardsWithConfig } from '../../../store/thunk/wallboards.thunk';
+import { fetchAllWallboardsThunk, copyWallboardThunk } from '../../../store/thunk/wallboards.thunk'; // import syncWallboardsWithConfig when needed - do not delete
 
 const LandingTable = () => {
   const dispatch = useDispatch();
@@ -20,7 +19,7 @@ const LandingTable = () => {
   const { category, searchedWallboards } = useSelector((state) => state.landing);
 
   useEffect(() => {
-    // dispatch(syncWallboardsWithConfig()); // do not delete yet
+    // dispatch(syncWallboardsWithConfig()); // import and use it when needed - do not delete
     dispatch(fetchAllWallboardsThunk());
     // eslint-disable-next-line
   }, []);
@@ -85,13 +84,11 @@ const LandingTable = () => {
 
     const filteredWbsByCategory = filterWbsByCategory(category);
 
-    const wallboardsByInput = filteredWbsByCategory.filter((wb) => {
-      if (
+    const wallboardsByInput = filteredWbsByCategory.filter(
+      (wb) =>
         wb?.name?.toLowerCase().includes(searchedWallboards.toLowerCase()) ||
         wb?.createdBy?.toLowerCase().includes(searchedWallboards.toLowerCase())
-      )
-        return wb;
-    });
+    );
 
     setFilteredWbs(wallboardsByInput);
     dispatch(setWallboardsByCategoryAC(wallboardsByInput));
@@ -147,7 +144,6 @@ const LandingTable = () => {
           <tbody>
             {filteredWbs.length > 0 &&
               filteredWbs.map((wb, index) => {
-                const wallboardUrl = `${config.redirectUri}/#/wallboard/${wb.id}`;
                 return (
                   <tr key={index}>
                     <td className="c-landing-table__wb-name">
@@ -165,7 +161,9 @@ const LandingTable = () => {
                       <p>{handleConvertDate(wb.createdOn)}</p>
                     </td>
                     <td className="c-landing-table__wb-actions">
-                      <a target="_blank" rel="noreferrer" href={`/#/wallboard/${wb.id}/edit`} className="c-landing-table__edit-btn" />
+                      <a target="_blank" rel="noreferrer" href={`/#/wallboard/${wb.id}/edit`} className="c-landing-table__edit-btn">
+                        {' '}
+                      </a>
                       <button
                         onClick={() => {
                           handleCopy(wb);
