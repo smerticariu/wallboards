@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { WallboardsApi } from '../../common/api/wallboards.api';
 import { DEFAULTS } from '../../common/defaults/defaults';
 import { checkIsAlphanumeric } from '../../common/utils/alphanumeric-validation';
