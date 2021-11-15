@@ -2,10 +2,10 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { ArrowDownIcon } from '../../assets/static/icons/arrow-down';
 import { SettingsIcon } from '../../assets/static/icons/settings';
+import { DEFAULTS } from '../../common/defaults/defaults';
+import { ADD_COMPONENT_COLUMN_OPTIONS } from '../../common/defaults/modal.defaults';
 import { callAgentThunk, listenLiveThunk } from '../../store/thunk/agents.thunk';
 import Dropdown from '../dropdown/dropdown';
-import { MAX_NAME_CHARACTERS } from '../grid/grid.defaults';
-import { ADD_COMPONENT_COLUMN_OPTIONS, PRESENCE_STATE_KEYS_COLOR } from '../modal/add-component/modal.add-component.defaults';
 import TimeInterval from '../time-interval/time-interval';
 const AgentTable = ({
   canCallAgents,
@@ -137,7 +137,7 @@ const AgentTable = ({
             )}
             {activeColumns.isAgentNameColumn && (
               <div className="agent-t__agent-info agent-t__agent-info--name" style={{ width: colWidth }}>
-                {agent.agentName.length > MAX_NAME_CHARACTERS ? (
+                {agent.agentName.length > DEFAULTS.GRID.MAX_NAME_CHARACTERS ? (
                   <Dropdown
                     className="c-dropdown--availability-state"
                     openOnHover={true}
@@ -155,7 +155,7 @@ const AgentTable = ({
             {activeColumns.isCurrAvaiStateColumn && (
               <div
                 className={`agent-t__agent-info agent-t__agent-info--${
-                  PRESENCE_STATE_KEYS_COLOR.CARD_AVAILABILITY_STATUS_BACKGROUND[agent.callStatusKey]
+                  DEFAULTS.MODAL.ADD_COMPONENT.PRESENCE_STATE_KEYS_COLOR.CARD_AVAILABILITY_STATUS_BACKGROUND[agent.callStatusKey]
                 }`}
                 style={{ width: colWidth }}
               >
@@ -252,10 +252,10 @@ const AgentTable = ({
               <div className="agent-t__agent-info  agent-t__agent-info--status">
                 <div
                   className={`agent-t__agent-info__circle agent-t__agent-info__circle--${
-                    PRESENCE_STATE_KEYS_COLOR.CARD_BACKGROUND[agent.callStatusKey]
+                    DEFAULTS.MODAL.ADD_COMPONENT.PRESENCE_STATE_KEYS_COLOR.CARD_BACKGROUND[agent.callStatusKey]
                   }`}
                 ></div>
-                {PRESENCE_STATE_KEYS_COLOR.CARD_PRESENCE_STATE_TEXT[agent.callStatusKey]}
+                {DEFAULTS.MODAL.ADD_COMPONENT.PRESENCE_STATE_KEYS_COLOR.CARD_PRESENCE_STATE_TEXT[agent.callStatusKey]}
               </div>
             )}
           </div>

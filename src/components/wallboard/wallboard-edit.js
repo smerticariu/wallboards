@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import WallboardComponents from './wallboard-components';
 import Toolbar from '../toolbar/toolbar';
-import { WALLBOARD_MODAL_NAMES } from '../modal/new-wallboard/modal.new-wallboard.defaults';
 import GridPage from '../grid/grid';
 import { fetchWallboardByIdThunk } from 'src/store/thunk/wallboards.thunk';
 import { Redirect, useParams } from 'react-router';
@@ -11,6 +10,7 @@ import { resetWallboardEditPageDataAC } from 'src/store/actions/wallboards.actio
 import { fetchAllSkillsThunk } from 'src/store/thunk/skills.thunk';
 import { fetchAllCallsQueuesThunk } from 'src/store/thunk/callsQueues.thunk';
 import { fetchAvailabilityProfilesThunk, fetchAvailabilityStatesThunk } from 'src/store/thunk/agents.thunk';
+import { DEFAULTS } from '../../common/defaults/defaults';
 
 const WallboardEdit = () => {
   const activeModalName = useSelector((state) => state.modal.activeModalName);
@@ -58,8 +58,8 @@ const WallboardEdit = () => {
     <div className="c-wallboard--new">
       <Toolbar template="new-wallboard" />
 
-      {activeModalName === WALLBOARD_MODAL_NAMES.SELECT_COMPONENT ||
-      activeModalName === WALLBOARD_MODAL_NAMES.ADD_COMPONENT ||
+      {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.SELECT_COMPONENT ||
+      activeModalName === DEFAULTS.MODAL.MODAL_NAMES.ADD_COMPONENT ||
       activeWallboard.widgets?.length ? (
         <GridPage />
       ) : (

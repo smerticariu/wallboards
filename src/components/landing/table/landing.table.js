@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { FetchStatus } from '../../..//store/reducers/wallboards.reducer';
+import { DEFAULTS } from '../../../common/defaults/defaults';
 import config from '../../../config/auth/index';
 import { handleWallboardActiveModalAC } from '../../../store/actions/modal.action';
 import { setWallboardIdForDeleteAC, setWallboardsByCategoryAC } from '../../../store/actions/wallboards.action';
 import { fetchAllWallboardsThunk, copyWallboardThunk, syncWallboardsWithConfig } from '../../../store/thunk/wallboards.thunk';
-import { WALLBOARD_MODAL_NAMES } from '../../modal/new-wallboard/modal.new-wallboard.defaults';
 
 const LandingTable = () => {
   const dispatch = useDispatch();
@@ -100,7 +100,7 @@ const LandingTable = () => {
 
   const handleDelete = (id) => {
     dispatch(setWallboardIdForDeleteAC(id));
-    dispatch(handleWallboardActiveModalAC(WALLBOARD_MODAL_NAMES.DELETE_WALLBOARD));
+    dispatch(handleWallboardActiveModalAC(DEFAULTS.MODAL.MODAL_NAMES.DELETE_WALLBOARD));
   };
 
   const handleCopy = (wb) => {

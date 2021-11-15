@@ -6,6 +6,8 @@ import { MISCELLANEOUS } from './miscellaneous.default';
 import { AVAILABILITY } from './availability.defaults';
 import { CALLS } from './calls.defaults';
 import { GRID } from './grid.defaults';
+import { MODAL } from './modal.defaults';
+import { LANDING } from './landing.defaults';
 
 export const DEFAULTS = {
   GLOBAL: {
@@ -19,4 +21,6 @@ export const DEFAULTS = {
   MISCELLANEOUS,
   CALLS,
   GRID,
+  MODAL,
+  LANDING,
 };

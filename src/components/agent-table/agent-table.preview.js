@@ -2,7 +2,6 @@ import React from 'react';
 import { ArrowDownIcon } from '../../assets/static/icons/arrow-down';
 import { SettingsIcon } from '../../assets/static/icons/settings';
 import { DEFAULTS } from '../../common/defaults/defaults';
-import { PRESENCE_STATE_KEYS_COLOR } from '../modal/add-component/modal.add-component.defaults';
 const AgentTablePreview = ({
   canCallAgents,
   canListenLive,
@@ -52,7 +51,9 @@ const AgentTablePreview = ({
             {currAvaiState && (
               <div
                 className={`agent-t__agent-info agent-t__agent-info--preview agent-t__agent-info--preview--color agent-t__agent-info--${
-                  PRESENCE_STATE_KEYS_COLOR.CARD_AVAILABILITY_STATUS_BACKGROUND[DEFAULTS.GRID.TABLE_PREVIEW.AVAILABILITY_COLORS[index]]
+                  DEFAULTS.MODAL.ADD_COMPONENT.PRESENCE_STATE_KEYS_COLOR.CARD_AVAILABILITY_STATUS_BACKGROUND[
+                    DEFAULTS.GRID.TABLE_PREVIEW.AVAILABILITY_COLORS[index]
+                  ]
                 }`}
               >
                 {index === 0 && 'I’m available'}
@@ -75,10 +76,16 @@ const AgentTablePreview = ({
               <div className="agent-t__agent-info  agent-t__agent-info--status agent-t__agent-info--status--preview">
                 <div
                   className={`agent-t__agent-info__circle agent-t__agent-info__circle--preview agent-t__agent-info__circle--${
-                    PRESENCE_STATE_KEYS_COLOR.CARD_BACKGROUND[DEFAULTS.GRID.TABLE_PREVIEW.AVAILABILITY_COLORS[index]]
+                    DEFAULTS.MODAL.ADD_COMPONENT.PRESENCE_STATE_KEYS_COLOR.CARD_BACKGROUND[
+                      DEFAULTS.GRID.TABLE_PREVIEW.AVAILABILITY_COLORS[index]
+                    ]
                   }`}
                 ></div>
-                {PRESENCE_STATE_KEYS_COLOR.CARD_PRESENCE_STATE_TEXT[DEFAULTS.GRID.TABLE_PREVIEW.AVAILABILITY_COLORS[index]]}
+                {
+                  DEFAULTS.MODAL.ADD_COMPONENT.PRESENCE_STATE_KEYS_COLOR.CARD_PRESENCE_STATE_TEXT[
+                    DEFAULTS.GRID.TABLE_PREVIEW.AVAILABILITY_COLORS[index]
+                  ]
+                }
               </div>
             )}
           </div>

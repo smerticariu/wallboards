@@ -1,14 +1,14 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
+import { DEFAULTS } from '../../common/defaults/defaults';
 import { handleWallboardActiveModalAC } from '../../store/actions/modal.action';
-import { WALLBOARD_MODAL_NAMES } from '../modal/new-wallboard/modal.new-wallboard.defaults';
 
 const WallboardComponents = () => {
   const dispatch = useDispatch();
 
   const handleNewComponentButton = () => {
     const onClickNewComponentModal = () => {
-      dispatch(handleWallboardActiveModalAC(WALLBOARD_MODAL_NAMES.SELECT_COMPONENT));
+      dispatch(handleWallboardActiveModalAC(DEFAULTS.MODAL.MODAL_NAMES.SELECT_COMPONENT));
     };
 
     return (

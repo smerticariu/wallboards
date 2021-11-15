@@ -11,7 +11,6 @@ import { Route, Switch } from 'react-router';
 import { HashRouter } from 'react-router-dom';
 import { handleLogoutAC, setAccessTokenAC, setUserTokenInfoAC } from './store/actions/login.action';
 import { fetchUserDataThunk, fetchUserInfoThunk } from './store/thunk/login.thunk';
-import { WALLBOARD_MODAL_NAMES } from './components/modal/new-wallboard/modal.new-wallboard.defaults';
 import ModalNewWallboard from './components/modal/new-wallboard/modal.new-wallboard';
 import ModalAddComponent from './components/modal/add-component/modal.add-component';
 import ModalSaveWallboard from './components/modal/save-wallboard/modal.save-wallboard';
@@ -21,6 +20,7 @@ import NotificationMessage from './components/agent-card/notification-message/no
 import ModalDeleteWallboardComponent from './components/modal/delete-wallboard-component/modal.delete-wallboard-component';
 import ModalConfirmSaveWallboard from './components/modal/save-wallboard/modal.confirm-save-wallboard';
 import ModalWarning from './components/modal/warning/modal.warning';
+import { DEFAULTS } from './common/defaults/defaults';
 
 function App() {
   const dispatch = useDispatch();
@@ -94,13 +94,13 @@ function App() {
             </Switch>
           </HashRouter>
           <NotificationMessage />
-          {activeModalName === WALLBOARD_MODAL_NAMES.SELECT_COMPONENT && <ModalNewWallboard />}
-          {activeModalName === WALLBOARD_MODAL_NAMES.ADD_COMPONENT && <ModalAddComponent />}
-          {activeModalName === WALLBOARD_MODAL_NAMES.SAVE_WALLBOARD && <ModalSaveWallboard />}
-          {activeModalName === WALLBOARD_MODAL_NAMES.DELETE_WALLBOARD && <ModalDeleteWallboard />}
-          {activeModalName === WALLBOARD_MODAL_NAMES.EDIT_WALLBOARD && <ModalEditWallboard />}
-          {activeModalName === WALLBOARD_MODAL_NAMES.DELETE_WALLBOARD_COMPONENT && <ModalDeleteWallboardComponent />}
-          {activeModalName === WALLBOARD_MODAL_NAMES.CONFIRM_SAVE_WALLBOARD && <ModalConfirmSaveWallboard />}
+          {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.SELECT_COMPONENT && <ModalNewWallboard />}
+          {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.ADD_COMPONENT && <ModalAddComponent />}
+          {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.SAVE_WALLBOARD && <ModalSaveWallboard />}
+          {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.DELETE_WALLBOARD && <ModalDeleteWallboard />}
+          {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.EDIT_WALLBOARD && <ModalEditWallboard />}
+          {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.DELETE_WALLBOARD_COMPONENT && <ModalDeleteWallboardComponent />}
+          {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.CONFIRM_SAVE_WALLBOARD && <ModalConfirmSaveWallboard />}
           {warningMessage && <ModalWarning />}
         </>
       )}
