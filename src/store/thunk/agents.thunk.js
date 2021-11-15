@@ -226,12 +226,12 @@ export const listenLiveThunk = (id) => async (dispatch, getState) => {
 
     const currentCall = calls.data.data.find((call) => {
       return call.channels.find((channel) => {
-        return channel.userId === id;
+        return channel.userId === id || channel.to === agent.data.data.sipExtension;
       });
     });
 
     const currentChannel = currentCall.channels.find((channel) => {
-      return channel.userId === id;
+      return channel.userId === id || channel.to === agent.data.data.sipExtension;
     });
 
     const data = {
