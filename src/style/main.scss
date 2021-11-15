@@ -72,13 +72,19 @@ body {
   font-size: 16px;
 }
 
-.empty-message {
+.empty-message,
+.error-message {
   margin-top: 15px;
   font-family: $public-sans-bold;
   font-weight: 500;
   font-size: 16px;
   text-align: center;
   color: $input-text-colour;
+  &--headline {
+    font-weight: 700;
+    font-size: 22px;
+    color: $input-text-colour;
+  }
   &--agents {
     display: flex;
     width: 100%;
