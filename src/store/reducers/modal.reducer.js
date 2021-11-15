@@ -1,9 +1,5 @@
-import {
-  ADD_COMPONENT_COLUMNS_NO_OPTIONS,
-  ADD_COMPONENT_STATE_OPTIONS,
-  MAIN_VIEWING_OPTIONS,
-  SORT_BY_OPTIONS,
-} from '../../components/modal/add-component/modal.add-component.defaults';
+import { DEFAULTS } from '../../common/defaults/defaults';
+
 import { modalActions } from '../actions/modal.action';
 
 export const modalInitialState = {
@@ -21,9 +17,9 @@ export const modalInitialState = {
       errorMessage: '',
     },
     callQueue: { id: '', name: '', errorMessage: '' },
-    mainViewing: MAIN_VIEWING_OPTIONS.CARD,
-    sortBy: { value: SORT_BY_OPTIONS[0].value, errorMessage: '' },
-    columns: ADD_COMPONENT_COLUMNS_NO_OPTIONS.ONE,
+    mainViewing: DEFAULTS.MODAL.ADD_COMPONENT.MAIN_VIEWING_OPTIONS.CARD,
+    sortBy: { value: DEFAULTS.MODAL.ADD_COMPONENT.SORT_BY_OPTIONS[0].value, errorMessage: '' },
+    columns: DEFAULTS.MODAL.ADD_COMPONENT.ADD_COMPONENT_COLUMNS_NO_OPTIONS.ONE,
     availabilityStates: {
       selectAll: true,
       selectNone: false,
@@ -32,7 +28,7 @@ export const modalInitialState = {
     presenceStates: {
       selectAll: true,
       selectNone: false,
-      selectedItems: ADD_COMPONENT_STATE_OPTIONS.presenceStates.reduce(
+      selectedItems: DEFAULTS.MODAL.ADD_COMPONENT.ADD_COMPONENT_STATE_OPTIONS.PRESENCE_STATE.reduce(
         (strArr, el) => (el.isInitialChecked ? [...strArr, el.value] : strArr),
         []
       ),
@@ -43,13 +39,13 @@ export const modalInitialState = {
       selectedItems: [],
     },
     interactivityOptions: {
-      selectedItems: ADD_COMPONENT_STATE_OPTIONS.interactivityOptions.reduce(
+      selectedItems: DEFAULTS.MODAL.ADD_COMPONENT.ADD_COMPONENT_STATE_OPTIONS.INTERACTIVIRY_OPTIONS.reduce(
         (strArr, el) => (el.isInitialChecked ? [...strArr, el.value] : strArr),
         []
       ),
     },
     columnsToViewOptions: {
-      selectedItems: ADD_COMPONENT_STATE_OPTIONS.columnsToViewOptions.reduce(
+      selectedItems: DEFAULTS.MODAL.ADD_COMPONENT.ADD_COMPONENT_STATE_OPTIONS.COLUMNS_TO_VIEW_OPTIONS.reduce(
         (strArr, el) => (el.isInitialChecked ? [...strArr, el.value] : strArr),
         []
       ),

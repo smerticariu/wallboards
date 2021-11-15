@@ -1,7 +1,7 @@
 import React, { forwardRef, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
+import { DEFAULTS } from '../../../common/defaults/defaults';
 import { handleSelectedWallboardCategoryAC } from '../../../store/actions/wallboards.action';
-import { LANDING_DEFAULTS } from '../landing.defaults';
 
 const LandingSidebar = forwardRef(({ isSidebarOpen, handleIsSidebarOpen, ...props }, ref) => {
   const dispatch = useDispatch();
@@ -27,7 +27,7 @@ const LandingSidebar = forwardRef(({ isSidebarOpen, handleIsSidebarOpen, ...prop
           </div>
         )}
 
-        {LANDING_DEFAULTS.map((categories, index) => {
+        {DEFAULTS.LANDING.NAVBAR.map((categories, index) => {
           return (
             <div key={index} className="c-landing-sidebar-item">
               <ul className="c-landing-sidebar-list">
