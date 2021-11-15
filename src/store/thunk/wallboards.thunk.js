@@ -244,7 +244,7 @@ export const updateConfig = (wallboard, method) => async (dispatch, getState) =>
             createdBy: wallboard.createdBy,
             createdByUserId: userInfo.id,
             createdOn: wallboard.createdOn,
-            lastView: currentDate,
+            lastView: wallboard.lastView,
             description: wallboard.description,
           };
         } else {
