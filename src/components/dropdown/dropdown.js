@@ -1,7 +1,17 @@
 import React, { useRef, useState } from 'react';
 import useOnClickOutside from '../../common/hooks/useOnClickOutside';
 
-const Dropdown = ({ trigger, containerClassName = '', openOnHover, closeOnClick, value, children, ...props }) => {
+const Dropdown = ({
+  trigger,
+  className = '',
+  containerClassName = '',
+  closeOnHover,
+  openOnHover,
+  closeOnClick,
+  value,
+  children,
+  ...props
+}) => {
   const triggerRef = useRef(null);
   const containerRef = useRef(null);
   const [isDropdownShow, handleIsDropdownShow] = useState(false);
@@ -12,7 +22,12 @@ const Dropdown = ({ trigger, containerClassName = '', openOnHover, closeOnClick,
   useOnClickOutside(triggerRef, () => handleOnClickOutside());
 
   return (
-    <span className="c-dropdown" ref={triggerRef} {...props}>
+    <span
+      onMouseLeave={() => (closeOnHover ? handleIsDropdownShow(false) : null)}
+      className={`c-dropdown ${className}`}
+      ref={triggerRef}
+      {...props}
+    >
       <span
         className="c-dropdown__trigger"
         onMouseEnter={() => (openOnHover ? handleIsDropdownShow(true) : null)}
@@ -24,6 +39,7 @@ const Dropdown = ({ trigger, containerClassName = '', openOnHover, closeOnClick,
         <div
           ref={containerRef}
           onClick={() => (closeOnClick ? handleIsDropdownShow(false) : null)}
+          onMouseLeave={() => (closeOnHover ? handleIsDropdownShow(false) : null)}
           className={`c-dropdown__container ${containerClassName}`}
         >
           {children}

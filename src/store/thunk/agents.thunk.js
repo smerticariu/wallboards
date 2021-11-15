@@ -17,6 +17,7 @@ import {
   fetchUserGroupsAC,
   fetchUserGroupsFailAC,
   fetchUserGroupsSuccessAC,
+  fetchUsersCurrentCallTimeSuccessAC,
 } from '../actions/agents.action';
 import { handleIsNotificationShowAC } from '../actions/notification.action';
 import { DEFAULTS } from '../../common/defaults/defaults';
@@ -181,6 +182,23 @@ export const callAgentThunk = (id) => async (dispatch, getState) => {
       agentId: id,
       data,
     });
+  } catch (error) {
+    dispatch(handleIsNotificationShowAC(true, true, DEFAULTS.GLOBAL.FAIL));
+    console.log(error);
+  }
+};
+
+export const fetchUsersCurrentCallTimeThunk = () => async (dispatch, getState) => {
+  try {
+    const { userInfo, token } = getState().login;
+
+    const response = await CallsApi({
+      type: DEFAULTS.CALLS.API.GET.CALLS,
+      organizationId: userInfo.organisationId,
+      token,
+    });
+
+    dispatch(fetchUsersCurrentCallTimeSuccessAC(response.data.data));
   } catch (error) {
     dispatch(handleIsNotificationShowAC(true, true, DEFAULTS.GLOBAL.FAIL));
     console.log(error);

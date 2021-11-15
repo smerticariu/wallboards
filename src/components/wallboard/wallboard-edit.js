@@ -79,7 +79,7 @@ const WallboardEdit = () => {
       }
     }
   }
-  
+
   return (
     <div className="c-wallboard--new">
       {!adminPermissions ? <Toolbar template="error">{handleErrors()}</Toolbar> :

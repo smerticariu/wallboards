@@ -9,7 +9,7 @@ export const RESIZE_GRID_COLUMNS = 24;
 export const GRID_MODIFIER = 200;
 export const WIDGET_INITIAL_HEIGHT = 400;
 export const WIDGET_MARGIN_TOP = 10;
-
+export const MAX_NAME_CHARACTERS = 18;
 export const AGENTS_TABLE = [
   {
     callStatusKey: PRESENCE_STATE_KEYS.AGENT_STATUS_IDLE,

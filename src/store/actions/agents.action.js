@@ -26,6 +26,8 @@ export const agentsActions = {
   CHANGE_AGENT_AVAILABILITY_STATUS: 'CHANGE_AGENT_AVAILABILITY_STATUS',
   CHANGE_AGENT_AVAILABILITY_STATUS_SUCCESS: 'CHANGE_AGENT_AVAILABILITY_STATUS_SUCCESS',
   CHANGE_AGENT_AVAILABILITY_STATUS_FAIL: 'CHANGE_AGENT_AVAILABILITY_STATUS_FAIL',
+
+  FETCH_USERS_CURRENT_CALL_TIME_SUCCESS: 'FETCH_USERS_CURRENT_CALL_TIME_SUCCESS',
 };
 export const fetchAllAgentsAC = () => ({
   type: agentsActions.FETCH_ALL_AGENTS,
@@ -109,4 +111,9 @@ export const changeAgentAvailabilityStateSuccessAC = (userId, name) => ({
 export const changeAgentAvailabilityStateFailAC = (errorMessage) => ({
   type: agentsActions.CHANGE_AGENT_AVAILABILITY_STATUS_FAIL,
   payload: errorMessage,
+});
+
+export const fetchUsersCurrentCallTimeSuccessAC = (calls) => ({
+  type: agentsActions.FETCH_USERS_CURRENT_CALL_TIME_SUCCESS,
+  payload: calls,
 });

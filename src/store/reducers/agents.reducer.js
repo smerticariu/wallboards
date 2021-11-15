@@ -5,7 +5,6 @@ export const agentsInitialState = {
   agentsQueues: [],
   agentsQueuesFetchStatus: FetchStatus.NULL,
 
-  organisationUsers: [],
   organisationUsersFetchStatus: FetchStatus.NULL,
 
   sipDevices: [],
@@ -32,9 +31,23 @@ export const agentsReducer = (state = agentsInitialState, action) => {
     case agentsActions.FETCH_ALL_AGENTS_SUCCESS:
       return {
         ...state,
-        agentsQueues: state.agentsQueues.some((agent) => agent.callQueueId === action.payload.callQueueId)
-          ? state.agentsQueues.map((agent) =>
-              agent.callQueueId !== action.payload.callQueueId ? agent : { ...agent, agents: action.payload.agent }
+        agentsQueues: state.agentsQueues.some((agentQueue) => agentQueue.callQueueId === action.payload.callQueueId)
+          ? state.agentsQueues.map((agentQueue) =>
+              agentQueue.callQueueId !== action.payload.callQueueId
+                ? agentQueue
+                : {
+                    ...agentQueue,
+                    agents: action.payload.agent.map((agent) => {
+                      const agentFromRedux = agentQueue.agents.find((reduxAgent) => reduxAgent.userId === agent.userId);
+                      if (agentFromRedux) {
+                        return {
+                          ...agentFromRedux,
+                          ...agent,
+                        };
+                      }
+                      return agent;
+                    }),
+                  }
             )
           : [
               ...state.agentsQueues,
@@ -58,13 +71,26 @@ export const agentsReducer = (state = agentsInitialState, action) => {
         organisationUsersFetchStatus: FetchStatus.IN_PROGRESS,
       };
 
-    case agentsActions.FETCH_ORGANISATION_USERS_SUCCESS:
+    case agentsActions.FETCH_ORGANISATION_USERS_SUCCESS: {
+      const agents = action.payload;
       return {
         ...state,
-        organisationUsers: [...action.payload],
+        agentsQueues: state.agentsQueues.map((agentQueue) => ({
+          ...agentQueue,
+          agents: agentQueue.agents.map((agent) => {
+            const agentFromRequest = agents.find((agentFromRequest) => agentFromRequest.id === agent.userId);
+            if (agentFromRequest) {
+              return {
+                ...agent,
+                organisationUserData: { ...agentFromRequest },
+              };
+            }
+            return agent;
+          }),
+        })),
         organisationUsersFetchStatus: FetchStatus.SUCCESS,
       };
-
+    }
     case agentsActions.FETCH_ORGANISATION_USERS_FAIL:
       return {
         ...state,
@@ -163,6 +189,33 @@ export const agentsReducer = (state = agentsInitialState, action) => {
               ? agent
               : { ...agent, availabilityState: { ...agent.availabilityState, displayName: action.payload.name, name: action.payload.name } }
           ),
+        })),
+      };
+    case agentsActions.FETCH_USERS_CURRENT_CALL_TIME_SUCCESS:
+      const calls = action.payload;
+      return {
+        ...state,
+        agentsQueues: state.agentsQueues.map((queueWithAgents) => ({
+          ...queueWithAgents,
+          agents: queueWithAgents.agents.map((agent) => {
+            let userCall = null;
+            calls.some((call) =>
+              call.channels.some((channel) => {
+                if (channel.userId === agent.userId || channel.to == agent.organisationUserData?.sipExtension) {
+                  userCall = {
+                    ...channel,
+                    direction: call.direction,
+                  };
+                  return true;
+                }
+                return false;
+              })
+            );
+            return {
+              ...agent,
+              userCurrentCall: userCall,
+            };
+          }),
         })),
       };
 

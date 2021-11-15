@@ -5,6 +5,7 @@ import { SettingsIcon } from '../../assets/static/icons/settings';
 import Dropdown from '../dropdown/dropdown';
 import TimeInterval from '../time-interval/time-interval';
 import { callAgentThunk, listenLiveThunk } from '../../store/thunk/agents.thunk';
+import { MAX_NAME_CHARACTERS } from '../grid/grid.defaults';
 
 const AgentCard = ({
   id,
@@ -44,7 +45,20 @@ const AgentCard = ({
             // }}
           />
           <div className="agent-c__user-name-ext">
-            <div className="agent-c__user-name">{name}</div>
+            <div className="agent-c__user-name">
+              {name.length > MAX_NAME_CHARACTERS ? (
+                <Dropdown
+                  openOnHover={true}
+                  closeOnHover={true}
+                  containerClassName={'c-dropdown__container--agent-name'}
+                  trigger={<div className="c-dropdown__trigger--agent-name">{name}</div>}
+                >
+                  <div className="c-dropdown--agent-name">{name}</div>
+                </Dropdown>
+              ) : (
+                name
+              )}
+            </div>
             <div className="agent-c__user-ext">Ext: {ext}</div>
           </div>
         </div>
@@ -83,6 +97,7 @@ const AgentCard = ({
         >
           {availabilityStatesList.length && canChangeAvailabilityState ? (
             <Dropdown
+              className="c-dropdown--availability-state"
               closeOnClick={true}
               containerClassName="c-dropdown__container--availability"
               trigger={<div className="agent-t__arrow-container agent-t__arrow-container--card">{status}</div>}
