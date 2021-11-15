@@ -1,11 +1,11 @@
 export const WALLBOARDS = {
   NOTIFICATION: {
     SUCCESS: {
-      DELETE: 'The wallboard was successfuly deleted',
-      SAVE: 'The Wallboard was successfuly saved'
+      DELETE: 'The wallboard was successfully deleted',
+      SAVE: 'The Wallboard was successfully saved',
     },
     FAIL: {
-      DELETE: 'The Wallboard was not deleted'
+      DELETE: 'The Wallboard was not deleted',
     },
   },
   MESSAGE: {
@@ -26,6 +26,6 @@ export const WALLBOARDS = {
     DELETE: {
       WALLBOARD: 'delete wallboard',
       ALL_WALLBOARDS: 'delete all wallboards',
-    }
-  }
-}
+    },
+  },
+};
