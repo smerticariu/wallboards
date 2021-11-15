@@ -61,7 +61,7 @@ const WallboardEdit = () => {
       return (
         <div>
           <h3 className="error-message--headline">Error:</h3>
-          <p className="error-message">You are not allowed to edit this wallboard. Please contact your Administrator</p>
+          <p className="error-message">{DEFAULTS.WALLBOARDS.MESSAGE.NOT_ALLOWED_EDIT}</p>
         </div>
       );
     }
@@ -73,7 +73,7 @@ const WallboardEdit = () => {
         return (
           <div>
             <h3 className="error-message--headline">Error:</h3>
-            <p className="error-message">You are not allowed to edit this wallboard. Please contact your Administrator</p>
+            <p className="error-message">{DEFAULTS.WALLBOARDS.MESSAGE.NOT_ALLOWED_EDIT}</p>
           </div>
         );
       }

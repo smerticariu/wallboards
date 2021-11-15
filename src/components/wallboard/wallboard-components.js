@@ -22,8 +22,8 @@ const WallboardComponents = () => {
     <div className="c-panel">
       <div className="c-panel__info">
         <div className="c-panel__info-text">
-          <span>This wallboard has no components.</span>
-          <span>To start adding components, click the button below.</span>
+          <span>{DEFAULTS.WALLBOARDS.MESSAGE.NO_COMPONENTS}</span>
+          <span>{DEFAULTS.WALLBOARDS.MESSAGE.ADD_COMPONENTS}</span>
         </div>
         {handleNewComponentButton()}
       </div>

@@ -5,6 +5,7 @@ import { checkIsAlphanumeric } from 'src/common/utils/alphanumeric-validation';
 import { handleWallboardActiveModalAC, handleWarningMessageAC } from 'src/store/actions/modal.action';
 
 import { saveWallboardThunk } from 'src/store/thunk/wallboards.thunk';
+import { DEFAULTS } from '../../../common/defaults/defaults';
 import useOnClickOutside from '../../../common/hooks/useOnClickOutside';
 
 const ModalSaveWallboard = ({ ...props }) => {
@@ -78,11 +79,12 @@ const ModalSaveWallboard = ({ ...props }) => {
           </div>
           <div className="c-modal__body c-modal__body--save-changes">
             <div className="c-modal__body--save-changes__phrase">
-              There are unsaved changes in your
+              {DEFAULTS.MODAL.SAVE_WALLBOARD.UNSAVED_CHANGES}
               <span className="c-modal__body--save-changes__phrase"> Wallboard. </span>
-              If you close the wallboard, these changes are lost.
+
+              {DEFAULTS.MODAL.SAVE_WALLBOARD.LOST_CHANGES}
             </div>
-            <div className="c-modal__body--save-changes__phrase">To preserve your changes, click Save {`&`} Close</div>
+            <div className="c-modal__body--save-changes__phrase">{DEFAULTS.MODAL.SAVE_WALLBOARD.SAVE_AND_CLOSE}</div>
           </div>
           <div className="c-modal__footer">
             <div className="c-modal__footer-left-side">{handleCancelButton()}</div>

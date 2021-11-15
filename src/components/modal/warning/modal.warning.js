@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { handleWarningMessageAC } from 'src/store/actions/modal.action';
+import { DEFAULTS } from '../../../common/defaults/defaults';
 import useOnClickOutside from '../../../common/hooks/useOnClickOutside';
 
 const ModalWarning = ({ ...props }) => {
@@ -29,7 +30,7 @@ const ModalWarning = ({ ...props }) => {
       <div ref={modalRef} className="c-modal__container c-modal__container--save-changes ">
         <div className="c-modal__content">
           <div className="c-modal__header">
-            <div className="c-modal__title">Warning</div>
+            <div className="c-modal__title">{DEFAULTS.MODAL.WARNING.TITLE}</div>
           </div>
           <div className="c-modal__body c-modal__body--save-changes">
             <div className="c-modal__body--save-changes__phrase">{warningMessage}</div>

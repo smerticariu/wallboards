@@ -182,7 +182,7 @@ const LandingTable = () => {
           </tbody>
         </table>
       ) : (
-        <div className="empty-message">No results</div>
+        <div className="empty-message">{DEFAULTS.MODAL.MESSAGES.NO_RESULTS}</div>
       )}
     </div>
   );

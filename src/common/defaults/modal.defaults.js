@@ -50,20 +50,24 @@ export const MODAL = {
     EDIT_WALLBOARD: 'EDIT_WALLBOARD',
     DELETE_WALLBOARD_COMPONENT: 'DELETE_WALLBOARD_COMPONENT',
   },
-  NEW_WALLBOARD: [
-    {
-      text: 'Queues',
-      value: MODAL_NEW_WALLBOARD_SECITONS.QUEUES,
-    },
-    {
-      text: 'Calls',
-      value: MODAL_NEW_WALLBOARD_SECITONS.CALLS,
-    },
-    {
-      text: 'Users',
-      value: MODAL_NEW_WALLBOARD_SECITONS.USERS,
-    },
-  ],
+  NEW_WALLBOARD: {
+    SELECT_COMPONENT: 'Select a component',
+    CATEGORIES: 'Component Categories',
+    SECTIONS: [
+      {
+        text: 'Queues',
+        value: MODAL_NEW_WALLBOARD_SECITONS.QUEUES,
+      },
+      {
+        text: 'Calls',
+        value: MODAL_NEW_WALLBOARD_SECITONS.CALLS,
+      },
+      {
+        text: 'Users',
+        value: MODAL_NEW_WALLBOARD_SECITONS.USERS,
+      },
+    ],
+  },
   ADD_COMPONENT_OPTIONS: {
     [MODAL_NEW_WALLBOARD_SECITONS.QUEUES]: [
       {
@@ -122,6 +126,28 @@ export const MODAL = {
   },
 
   ADD_COMPONENT: {
+    SECTION_TITLE: {
+      SKILLS: 'Select Skills to view',
+      AVAILABILITY: 'Select availability states to view',
+      TITLE: 'Title/Report Name',
+      CALL_QUEUE: 'Call Queue',
+      VIEW: 'View',
+      COLUMNS: 'Select columns to view',
+      SORT_BY: 'Sort by',
+      PRESENCE_STATE: 'Presence states to view',
+      INTERACTIVITY: 'Interactivity options',
+      PREVIEW: 'Preview',
+    },
+    PLACEHOLDER: {
+      SKILL: 'Search by Skill name',
+      AVAILABILITY: 'Search by name',
+      TITLE: 'Placeholder...',
+      SEARCH_LIST: 'Search list…',
+    },
+    LABEL: {
+      SELECT_ALL: 'Select all',
+      SELECT_NONE: 'Select none',
+    },
     SORT_BY_OPTIONS: [
       {
         text: 'Agent Name (Alphabetical)',
@@ -326,5 +352,37 @@ export const MODAL = {
       CARD: 'CARD',
       TABLE: 'TABLE',
     },
+  },
+  MESSAGES: {
+    ALPHANUMERIC_NAME: 'Component name must be alphanumeric',
+    NO_RESULTS: 'No results',
+  },
+  DELETE_WALLBOARD_MODAL: {
+    TITLE: 'Delete Wallboard',
+    QUESTION: 'Are you sure you want to delete this wallboard?',
+  },
+  DELETE_WALLBOARD_COMPONENT_MODAL: {
+    QUESTION: 'Are you sure you want to delete this component?',
+  },
+  EDIT_WALLBOARD: {
+    SETTINGS: 'Settings',
+    NAME: 'Wallboard Name:',
+    DESCRIPTION: 'Wallboard Description:',
+    DISPLAY_SETTINGS: 'Display Settings:',
+    READ_ONLY_URL: 'Read-Only Wallboard URL',
+    READ_ONLY_URL_INFO:
+      'A read only Wallboard URL allows anyone to access this wallboard with the basic Chatter Free Salesforce licence. This is great for non-Salesforce users or putting wallboards on a TV',
+    COPY: 'Copy Link',
+  },
+  CONFIRM_SAVE_WALLBOARD: {
+    INFO: 'Changes made so far will be lost and this version will be the final version',
+  },
+  SAVE_WALLBOARD: {
+    UNSAVED_CHANGES: 'There are unsaved changes in your',
+    LOST_CHANGES: 'If you close the wallboard, these changes are lost.',
+    SAVE_AND_CLOSE: `To preserve your changes, click Save & Close`,
+  },
+  WARNING: {
+    TITLE: 'Warning',
   },
 };

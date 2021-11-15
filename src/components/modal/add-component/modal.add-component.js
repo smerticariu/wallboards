@@ -99,12 +99,12 @@ const ModalAddComponent = ({ ...props }) => {
             ...formData,
             title: {
               ...formData.title,
-              errorMessage: 'Component name must be alphanumeric',
+              errorMessage: DEFAULTS.MODAL.MESSAGES.ALPHANUMERIC_NAME,
             },
           })
         );
 
-        return alert('Component name must be alphanumeric');
+        return alert(DEFAULTS.MODAL.MESSAGES.ALPHANUMERIC_NAME);
       }
       dispatch(addWallboardComponentAC(userInfo, formData));
       closeModal();
@@ -298,12 +298,17 @@ const ModalAddComponent = ({ ...props }) => {
 
       return (
         <div className="c-modal--add-component__input-section c-modal--add-component__input-section--skills">
-          <div className="c-modal--add-component__input-label">Select Skills to view</div>
+          <div className="c-modal--add-component__input-label">{DEFAULTS.MODAL.ADD_COMPONENT.SECTION_TITLE.SKILLS}</div>
 
           <div className="c-modal--add-component__select-checkbox">
-            <CheckBox label="Select all" checked={formData.skillsToView.selectAll} name={'selectAll'} onChange={handleChangeSkillList} />
             <CheckBox
-              label="Select none"
+              label={DEFAULTS.MODAL.ADD_COMPONENT.LABEL.SELECT_ALL}
+              checked={formData.skillsToView.selectAll}
+              name={'selectAll'}
+              onChange={handleChangeSkillList}
+            />
+            <CheckBox
+              label={DEFAULTS.MODAL.ADD_COMPONENT.LABEL.SELECT_NONE}
               className="c-checkbox--m-left"
               checked={formData.skillsToView.selectNone}
               name="selectNone"
@@ -319,7 +324,7 @@ const ModalAddComponent = ({ ...props }) => {
                 value={searchInputValues.skill}
                 allTitles={allTitlesForAutocomplete}
                 isSmallSize
-                placeholder="Search by Skill name"
+                placeholder={DEFAULTS.MODAL.ADD_COMPONENT.PLACEHOLDER.SKILL}
               />
               <div className="c-modal--add-component__av-state-container">
                 {allSkils
@@ -348,17 +353,17 @@ const ModalAddComponent = ({ ...props }) => {
 
       return (
         <div className="c-modal--add-component__input-section">
-          <div className="c-modal--add-component__input-label">Select availability states to view</div>
+          <div className="c-modal--add-component__input-label">{DEFAULTS.MODAL.ADD_COMPONENT.SECTION_TITLE.AVAILABILITY}</div>
 
           <div className="c-modal--add-component__select-checkbox">
             <CheckBox
-              label="Select all"
+              label={DEFAULTS.MODAL.ADD_COMPONENT.LABEL.SELECT_ALL}
               checked={formData.availabilityStates.selectAll}
               name={'selectAll'}
               onChange={handleChangeAvailabilityList}
             />
             <CheckBox
-              label="Select none"
+              label={DEFAULTS.MODAL.ADD_COMPONENT.LABEL.SELECT_NONE}
               className="c-checkbox--m-left"
               checked={formData.availabilityStates.selectNone}
               name={'selectNone'}
@@ -374,7 +379,7 @@ const ModalAddComponent = ({ ...props }) => {
                 value={searchInputValues.availabilityStates}
                 allTitles={allTitlesForAutocomplete}
                 isSmallSize
-                placeholder="Search by name"
+                placeholder={DEFAULTS.MODAL.ADD_COMPONENT.PLACEHOLDER.AVAILABILITY}
               />
               <div className="c-modal--add-component__av-state-container">
                 {availabilityStatesList
@@ -406,10 +411,10 @@ const ModalAddComponent = ({ ...props }) => {
     return (
       <div className="c-modal--add-component__left-side">
         <div className="c-modal--add-component__input-section">
-          <div className="c-modal--add-component__input-label">Title/Report Name</div>
+          <div className="c-modal--add-component__input-label">{DEFAULTS.MODAL.ADD_COMPONENT.SECTION_TITLE.TITLE}</div>
           <input
             className="c-input c-input--grey"
-            placeholder="Placeholder..."
+            placeholder={DEFAULTS.MODAL.ADD_COMPONENT.PLACEHOLDER.TITLE}
             name="title"
             onChange={handleInputAndSelect}
             value={formData.title.value}
@@ -417,7 +422,7 @@ const ModalAddComponent = ({ ...props }) => {
           {formData.title.errorMessage && <div className="c-input__error-message">{formData.title.errorMessage}</div>}
         </div>
         <div className="c-modal--add-component__input-section">
-          <div className="c-modal--add-component__input-label">Call Queue</div>
+          <div className="c-modal--add-component__input-label">{DEFAULTS.MODAL.ADD_COMPONENT.SECTION_TITLE.CALL_QUEUE}</div>
           <select name="callQueue" className="c-select" onChange={handleInputAndSelect} value={formData.callQueue.id}>
             {allCallsQueues.map((option) => (
               <option key={option.id} value={option.id}>
@@ -428,7 +433,7 @@ const ModalAddComponent = ({ ...props }) => {
         </div>
 
         <div className="c-modal--add-component__input-section c-modal--add-component__input-section--view">
-          <div className="c-modal--add-component__input-label">View</div>
+          <div className="c-modal--add-component__input-label">{DEFAULTS.MODAL.ADD_COMPONENT.SECTION_TITLE.VIEW}</div>
           <Radio
             label="Card View"
             name={DEFAULTS.MODAL.ADD_COMPONENT.MAIN_VIEWING_OPTIONS.CARD}
@@ -465,7 +470,7 @@ const ModalAddComponent = ({ ...props }) => {
 
         {!isCardFormat && (
           <div className="c-modal--add-component__input-section c-modal--add-component__input-section--columns">
-            <div className="c-modal--add-component__input-label">Select columns to view</div>
+            <div className="c-modal--add-component__input-label">{DEFAULTS.MODAL.ADD_COMPONENT.SECTION_TITLE.COLUMNS}</div>
 
             <div className="c-modal--add-component__av-state-container">
               {DEFAULTS.MODAL.ADD_COMPONENT.ADD_COMPONENT_STATE_OPTIONS.COLUMNS_TO_VIEW_OPTIONS.map((option) => (
@@ -483,7 +488,7 @@ const ModalAddComponent = ({ ...props }) => {
         )}
         {!isCardFormat && handleSkillsToView()}
         <div className="c-modal--add-component__input-section">
-          <div className="c-modal--add-component__input-label">Sort by</div>
+          <div className="c-modal--add-component__input-label">{DEFAULTS.MODAL.ADD_COMPONENT.SECTION_TITLE.SORT_BY}</div>
 
           <select name="sortBy" className="c-select" onChange={handleInputAndSelect} value={formData.sortBy.value}>
             {DEFAULTS.MODAL.ADD_COMPONENT.SORT_BY_OPTIONS.map((option) => (
@@ -497,17 +502,17 @@ const ModalAddComponent = ({ ...props }) => {
         {handleAvailabilityStatesToView()}
 
         <div className="c-modal--add-component__input-section c-modal--add-component__input-section--presence-state">
-          <div className="c-modal--add-component__input-label">Presence states to view</div>
+          <div className="c-modal--add-component__input-label">{DEFAULTS.MODAL.ADD_COMPONENT.SECTION_TITLE.SORT_BY}</div>
 
           <div className="c-modal--add-component__select-checkbox">
             <CheckBox
               checked={formData.presenceStates.selectAll}
-              label="Select all"
+              label={DEFAULTS.MODAL.ADD_COMPONENT.LABEL.SELECT_ALL}
               name="selectAll"
               onChange={(event) => handleCheckBoxList(event, 'presenceStates')}
             />
             <CheckBox
-              label="Select none"
+              label={DEFAULTS.MODAL.ADD_COMPONENT.LABEL.SELECT_NONE}
               name="selectNone"
               checked={formData.presenceStates.selectNone}
               className="c-checkbox--m-left"
@@ -531,7 +536,7 @@ const ModalAddComponent = ({ ...props }) => {
         </div>
 
         <div className="c-modal--add-component__input-section c-modal--add-component__input-section--interactivity">
-          <div className="c-modal--add-component__input-label">Interactivity options</div>
+          <div className="c-modal--add-component__input-label">{DEFAULTS.MODAL.ADD_COMPONENT.SECTION_TITLE.INTERACTIVITY}</div>
           {DEFAULTS.MODAL.ADD_COMPONENT.ADD_COMPONENT_STATE_OPTIONS.INTERACTIVIRY_OPTIONS.map((option) => (
             <CheckBox
               key={option.value}
@@ -550,7 +555,9 @@ const ModalAddComponent = ({ ...props }) => {
   const handleModalRightSide = () => {
     return (
       <div className="c-modal--add-component__right-side">
-        <div className="c-modal--add-component__input-label c-modal--add-component__input-label--grey">Preview</div>
+        <div className="c-modal--add-component__input-label c-modal--add-component__input-label--grey">
+          {DEFAULTS.MODAL.ADD_COMPONENT.SECTION_TITLE.PREVIEW}
+        </div>
 
         <div className="c-modal--add-component__preview-container">
           <div className="c-modal--add-component__preview-title">
