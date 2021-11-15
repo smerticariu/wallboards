@@ -13,7 +13,7 @@ Enzyme.configure({ adapter: new Adapter() });
 const mockStore = createMockStore([thunk]);
 describe('Landing Sidebar Load', () => {
   const initialState = {
-    login: { token: 'dawd', userInfo: {} },
+    login: { token: 'dawd', userInfo: { isAdmin: true } },
     wallboards: {
       present: {
         allWallboards: {
