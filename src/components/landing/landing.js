@@ -14,7 +14,12 @@ const Landing = () => {
   const teamleaderPermissions = userInfo.isTeamLeader;
 
   if (!adminPermissions || teamleaderPermissions) {
-    return <div>Access Denied!</div>;
+    return <Toolbar template="error">
+      <div>
+        <h3 className="error-message--headline">Error:</h3>
+        <p className="error-message">Access Denied!</p>
+      </div>
+    </Toolbar> 
   }
 
   return (
