@@ -18,7 +18,7 @@ import {
   saveWallboardSuccessAC,
 } from '../actions/wallboards.action';
 
-export const fetchWallboardByIdThunk = (wbId) => async (dispatch, getState) => {
+export const fetchWallboardByIdThunk = ({id, copyWb}) => async (dispatch, getState) => {
   try {
     dispatch(fetchWallboardByIdAC(DEFAULTS.WALLBOARDS.MESSAGE.LOADING));
     const { userInfo, token } = getState().login;
@@ -27,20 +27,22 @@ export const fetchWallboardByIdThunk = (wbId) => async (dispatch, getState) => {
     const wallboardById = await WallboardsApi({
       type: DEFAULTS.WALLBOARDS.API.GET.BY_ID,
       organizationId: userInfo.organisationId,
-      wallboardId: wbId,
+      wallboardId: id,
       token,
     });
 
-    await WallboardsApi({
-      type: DEFAULTS.WALLBOARDS.API.SAVE.WALLBOARD,
-      organizationId: userInfo.organisationId,
-      token,
-      data: {
-        ...wallboardById.data,
-        lastView: currentDate,
-      },
-      wallboardId: wbId,
-    });
+    if(!copyWb) {
+      await WallboardsApi({
+        type: DEFAULTS.WALLBOARDS.API.SAVE.WALLBOARD,
+        organizationId: userInfo.organisationId,
+        token,
+        data: {
+          ...wallboardById.data,
+          lastView: currentDate,
+        },
+        wallboardId: id,
+      });
+    }
 
     dispatch(fetchWallboardByIdSuccessAC({ widgets: [], ...wallboardById.data }));
     dispatch(updateConfig(wallboardById.data, DEFAULTS.WALLBOARDS.API.SAVE.WALLBOARD));
@@ -144,14 +146,14 @@ export const copyWallboardThunk =
   async (dispatch, getState) => {
     try {
       const { userInfo, token } = getState().login;
-      await dispatch(fetchWallboardByIdThunk(wb.id));
+      await dispatch(fetchWallboardByIdThunk({id: wb.id, copyWb: true}));
       let activeWallboard = getState().wallboards.present.activeWallboard.wallboard;
 
       const currentDate = new Date().getTime();
       const wbId = generateWallboardId(userInfo.organisationId, userInfo.id);
       activeWallboard.id = wbId;
       activeWallboard.name = `${activeWallboard.name} Copy`;
-      activeWallboard.createdOn = currentDate;
+      activeWallboard.createdOn = currentDate + 1000 // add one second to timestamp;
       activeWallboard.lastView = currentDate;
 
       const data = {

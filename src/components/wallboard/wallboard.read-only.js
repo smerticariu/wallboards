@@ -18,7 +18,7 @@ const WallboardReadOnly = () => {
   const adminPermissions = userInfo.isAdmin;
   const teamleaderPermissions = userInfo.isTeamLeader;
   useEffect(() => {
-    dispatch(fetchWallboardByIdThunk(id));
+    dispatch(fetchWallboardByIdThunk({id}));
     // eslint-disable-next-line
   }, [id]);
 

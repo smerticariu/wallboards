@@ -44,7 +44,7 @@ const WallboardEdit = () => {
   }, [availabilityProfiles]);
 
   useEffect(() => {
-    if (!activeWallboard.isNewWallboard) dispatch(fetchWallboardByIdThunk(id));
+    if (!activeWallboard.isNewWallboard) dispatch(fetchWallboardByIdThunk({id}));
     // eslint-disable-next-line
   }, [id]);
 
