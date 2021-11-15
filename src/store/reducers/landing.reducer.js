@@ -1,7 +1,7 @@
 import { wallboardsActions } from '../actions/wallboards.action';
 
 export const landingInitialState = {
-  category: 'Wallboards',
+  category: 'All Wallboards',
   searchedWallboards: '',
   wallboardsByCategory: [],
 };

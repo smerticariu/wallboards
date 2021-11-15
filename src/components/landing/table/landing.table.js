@@ -48,7 +48,6 @@ const LandingTable = () => {
           const wallboardsByAuthor = filteredWbs.sort((a, b) => a.createdBy.localeCompare(b.createdBy)).reverse();
           setFilteredWbs(wallboardsByAuthor);
         }
-        console.log(filteredWbs, filterName);
         break;
 
       case 'date':
@@ -71,7 +70,7 @@ const LandingTable = () => {
   useEffect(() => {
     const filterWbsByCategory = (category) => {
       switch (category) {
-        case 'Wallboards':
+        case 'All Wallboards':
           const wbsByDate = wallboards.sort((a, b) => a.lastView.toString().localeCompare(b.lastView.toString())).reverse();
           return wbsByDate;
         case 'Created By Me':
