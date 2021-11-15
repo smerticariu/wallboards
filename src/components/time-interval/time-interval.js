@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import moment from '../../../node_modules/moment/moment';
 
-const TimeInterval = ({ seconds, ...props }) => {
+const TimeInterval = ({ seconds = 0, ...props }) => {
   const [timeLocal, setTimeLocal] = useState(seconds);
   useEffect(() => {
     let interval;

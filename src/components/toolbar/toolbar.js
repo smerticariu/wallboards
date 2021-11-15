@@ -15,7 +15,6 @@ import CustomAutosuggest from '../autosuggest/autosuggest';
 import { useHistory } from 'react-router';
 import { generateWallboardId } from '../../common/utils/generateId';
 import { handleWallboardActiveModalAC, setSelectedWallboardSettingsAC } from '../../store/actions/modal.action';
-import checkIfExistWallboardChanges from '../../common/utils/checkIfExistWallboardChanges';
 import { SettingsIcon } from '../../assets/static/icons/settings';
 const Toolbar = (props) => {
   const dispatch = useDispatch();
@@ -23,7 +22,7 @@ const Toolbar = (props) => {
   const wallboards = useSelector((state) => state.landing.wallboardsByCategory);
   const { userInfo } = useSelector((state) => state.login);
   const activeWallboard = useSelector((state) => state.wallboards.present.activeWallboard.wallboard);
-  const activeWallboardInitialValues = useSelector((state) => state.wallboards.present.activeWallboard.wallboardInitialValues);
+  const noOfSteptsForUndo = useSelector((state) => state.wallboards.noOfSteptsForUndo);
   const wallboardStates = useSelector((state) => state.wallboards);
   const history = useHistory();
 
@@ -166,8 +165,7 @@ const Toolbar = (props) => {
   };
 
   const onClickCloseButton = () => {
-    if (checkIfExistWallboardChanges(activeWallboard, activeWallboardInitialValues))
-      return dispatch(handleWallboardActiveModalAC(WALLBOARD_MODAL_NAMES.SAVE_WALLBOARD));
+    if (noOfSteptsForUndo) return dispatch(handleWallboardActiveModalAC(WALLBOARD_MODAL_NAMES.SAVE_WALLBOARD));
     return history.push('/');
   };
 

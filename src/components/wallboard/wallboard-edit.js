@@ -46,19 +46,14 @@ const WallboardEdit = () => {
     // eslint-disable-next-line
   }, [id]);
 
-  if (!activeWallboard.isNewWallboard && fetchStatus === FetchStatus.FAIL) {
-    return <Redirect to="/" />;
-  }
   if (!activeWallboard.isNewWallboard && fetchStatus !== FetchStatus.SUCCESS) {
     return <div>{fetchMessage}</div>;
   }
 
-  if(userPermission === "BASIC") {
-    return (
-      <div>You are not allowed to edit this wallboard. Please contact your Administrator</div>
-    )
+  if (userPermission === 'BASIC') {
+    return <div>You are not allowed to edit this wallboard. Please contact your Administrator</div>;
   }
-  
+
   return (
     <div className="c-wallboard--new">
       <Toolbar template="new-wallboard" />
