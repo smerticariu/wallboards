@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import config from '../../../config/auth/index';
 import { FetchStatus } from '../../..//store/reducers/wallboards.reducer';
 import { handleWallboardActiveModalAC } from '../../../store/actions/modal.action';
 import { setWallboardIdForDeleteAC, setWallboardsByCategoryAC } from '../../../store/actions/wallboards.action';
@@ -142,11 +143,12 @@ const LandingTable = () => {
           <tbody>
             {filteredWbs.length > 0 &&
               filteredWbs.map((wb, index) => {
+                const wallboardUrl = `${config.redirectUri}/#/wallboard/${wb.id}`;
                 return (
                   <tr key={index}>
                     <td className="c-landing-table__wb-name">
                       <p>
-                        <a target="_blank" href={`/#/wallboard/${wb.id}`} rel="noreferrer">
+                        <a target="_blank" href={wallboardUrl} rel="noreferrer">
                           {wb.name}
                         </a>
                       </p>
@@ -159,7 +161,7 @@ const LandingTable = () => {
                       <p>{handleConvertDate(wb.createdOn)}</p>
                     </td>
                     <td className="c-landing-table__wb-actions">
-                      <a target="_blank" rel="noreferrer" href={`/#/wallboard/${wb.id}/edit`} className="c-landing-table__edit-btn"> </a>
+                      <a target="_blank" rel="noreferrer" href={`${wallboardUrl}/edit`} className="c-landing-table__edit-btn"> </a>
                       <button
                         onClick={() => {
                           handleCopy(wb);
