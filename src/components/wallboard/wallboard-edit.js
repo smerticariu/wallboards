@@ -53,8 +53,8 @@ const WallboardEdit = () => {
     if (!activeWallboard.isNewWallboard && fetchStatus !== FetchStatus.SUCCESS) {
       return (
         <div>
-          {fetchStatus === FetchStatus.FAIL && <h3>Error:</h3>}
-          <p>{fetchMessage}</p>
+          {fetchStatus === FetchStatus.FAIL && <h3 className="error-message--headline">Error:</h3>}
+          <p className="error-message">{fetchMessage}</p>
         </div>
       )
     }
@@ -62,8 +62,8 @@ const WallboardEdit = () => {
     if(!adminPermissions && !teamleaderPermissions) { // check if it's basic user
       return (
         <div>
-          <h3>Error:</h3>
-          <p>You are not allowed to edit this wallboard. Please contact your Administrator</p>
+          <h3 className="error-message--headline">Error:</h3>
+          <p className="error-message">You are not allowed to edit this wallboard. Please contact your Administrator</p>
         </div>
       )
     }
@@ -72,8 +72,8 @@ const WallboardEdit = () => {
       if(userInfo.id !== activeWallboard.createdByUserId) { // edit the wallboard only if the team leader has access on it
         return (
           <div>
-            <h3>Error:</h3>
-            <p>You are not allowed to edit this wallboard. Please contact your Administrator</p>
+            <h3 className="error-message--headline">Error:</h3>
+            <p className="error-message">You are not allowed to edit this wallboard. Please contact your Administrator</p>
           </div>
         )
       }
@@ -82,7 +82,7 @@ const WallboardEdit = () => {
   
   return (
     <div className="c-wallboard--new">
-      {!adminPermissions ? <Toolbar template="wb-read-only" logout={logout}>{handleErrors()}</Toolbar> :
+      {!adminPermissions ? <Toolbar template="error">{handleErrors()}</Toolbar> :
         <>
           <Toolbar template="new-wallboard" />
 

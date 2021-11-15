@@ -41,8 +41,8 @@ const WallboardReadOnly = () => {
     if (fetchStatus !== FetchStatus.SUCCESS) {
       return (
         <div>
-          {fetchStatus === FetchStatus.FAIL && <h3>Error:</h3>}
-          <p>{fetchMessage}</p>
+          {fetchStatus === FetchStatus.FAIL && <h3 className="error-message--headline">Error:</h3>}
+          <p className="error-message">{fetchMessage}</p>
         </div>
       )
     }
@@ -52,8 +52,8 @@ const WallboardReadOnly = () => {
         if(wallboard.createdByUserId !== userInfo.id) { // check if the team leader created owns the wallboard
           return (
             <div>
-              <h3>Error:</h3>
-              <p>You don't have access to this wallboard! Please contact your Administrator.</p>
+              <h3 className="error-message--headline">Error:</h3>
+              <p className="error-message">You don't have access to this wallboard! Please contact your Administrator.</p>
             </div>
           )
         }
@@ -63,7 +63,7 @@ const WallboardReadOnly = () => {
 
   return (
     <div className="c-wallboard--read-only">
-      {fetchStatus !== FetchStatus.SUCCESS ? <Toolbar template="wb-read-only" logout={logout}>{handleErrors()}</Toolbar> :
+      {fetchStatus !== FetchStatus.SUCCESS ? <Toolbar template="error">{handleErrors()}</Toolbar> :
         <>
           <Toolbar template="wb-read-only" wbName={wallboard.name} logout={logout} />
       
