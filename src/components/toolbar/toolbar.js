@@ -75,7 +75,7 @@ const Toolbar = (props) => {
       <div className="c-toolbar-right__search-input">
         <CustomAutosuggest
           name="skill"
-          placeholder="Search Wallboards..."
+          placeholder={DEFAULTS.WALLBOARDS.PLACEHOLDER.SEARCH_WALLBOARDS}
           onChange={onChangeSearchInput}
           value={wbSearchValue}
           allTitles={allTitlesForAutocomplete}

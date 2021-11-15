@@ -26,8 +26,8 @@ const ModalNewWallboard = ({ ...props }) => {
 
     return (
       <div className="c-modal--new-wallboard__categories">
-        <div className="c-modal--new-wallboard__header">Component Categories</div>
-        {DEFAULTS.MODAL.NEW_WALLBOARD.map((navItem) => (
+        <div className="c-modal--new-wallboard__header">{DEFAULTS.MODAL.NEW_WALLBOARD.CATEGORIES}</div>
+        {DEFAULTS.MODAL.NEW_WALLBOARD.SECTIONS.map((navItem) => (
           <div
             key={navItem.value}
             className={`c-modal--new-wallboard__nav-item ${
@@ -69,7 +69,7 @@ const ModalNewWallboard = ({ ...props }) => {
             </div>
           </div>
         ))}
-        {!filtredOptions.length && <div className="empty-message">No results</div>}
+        {!filtredOptions.length && <div className="empty-message">{DEFAULTS.MODAL.MESSAGES.NO_RESULTS}</div>}
       </div>
     );
   };
@@ -79,7 +79,15 @@ const ModalNewWallboard = ({ ...props }) => {
       setNewWbFilter(e.target.value);
     };
 
-    return <input className="c-input" value={newWbFilter} placeholder="Search list…" type="text" onChange={(e) => updateFilterInput(e)} />;
+    return (
+      <input
+        className="c-input"
+        value={newWbFilter}
+        placeholder={DEFAULTS.MODAL.ADD_COMPONENT.PLACEHOLDER.SEARCH_LIST}
+        type="text"
+        onChange={(e) => updateFilterInput(e)}
+      />
+    );
   };
 
   const handleCancelButton = () => {
@@ -125,7 +133,7 @@ const ModalNewWallboard = ({ ...props }) => {
       <div ref={modalRef} className="c-modal__container c-modal__container--new-wallboard">
         <div className="c-modal__content">
           <div className="c-modal__header">
-            <div className="c-modal__title">Select a component</div>
+            <div className="c-modal__title">{DEFAULTS.MODAL.NEW_WALLBOARD.SELECT_COMPONENT}</div>
           </div>
 
           <div className="c-modal__body c-modal__body--new-wallboard">

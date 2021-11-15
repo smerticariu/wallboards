@@ -1,5 +1,6 @@
 import React, { useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { DEFAULTS } from '../../../common/defaults/defaults';
 import useOnClickOutside from '../../../common/hooks/useOnClickOutside';
 import { handleWallboardActiveModalAC } from '../../../store/actions/modal.action';
 import { deleteWallboardThunk } from '../../../store/thunk/wallboards.thunk';
@@ -48,10 +49,10 @@ const ModalDeleteWallboard = ({ ...props }) => {
       <div ref={modalRef} className="c-modal__container c-modal__container--save-changes ">
         <div className="c-modal__content">
           <div className="c-modal__header">
-            <div className="c-modal__title c-modal__title--bold">Delete Wallboard</div>
+            <div className="c-modal__title c-modal__title--bold">{DEFAULTS.MODAL.DELETE_WALLBOARD_MODAL.TITLE}</div>
           </div>
           <div className="c-modal__body c-modal__body--save-changes">
-            <div className="c-modal__body--save-changes__phrase">Are you sure you want to delete this wallboard?</div>
+            <div className="c-modal__body--save-changes__phrase">{DEFAULTS.MODAL.DELETE_WALLBOARD_MODAL.QUESTION}</div>
           </div>
           <div className="c-modal__footer">
             <div className="c-modal__footer-left-side" />

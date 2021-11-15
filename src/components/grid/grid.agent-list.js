@@ -87,7 +87,9 @@ const GridAgentList = ({ isEditMode, widget, ...props }) => {
     ) {
       const agentsWithFullInfo = agentQueues.agents.map((agentQueue) => {
         const agentSkills = agentsSkill.find((agentSkills) => agentSkills.agentId === agentQueue.userId);
-        const lastAvailabilityStateChangeSeconds = moment().diff(moment(agentQueue.lastAvailabilityStateChange), 'seconds');
+        const lastAvailabilityStateChangeSeconds = agentQueue.lastAvailabilityStateChange
+          ? moment().diff(moment(agentQueue.lastAvailabilityStateChange), 'seconds')
+          : 0;
 
         return {
           ...agentQueue,

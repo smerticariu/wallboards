@@ -9,6 +9,7 @@ import { applyWallboardSettingsAC } from '../../../store/actions/wallboards.acti
 import TextArea from 'src/components/textarea/textarea';
 import { handleIsNotificationShowAC } from 'src/store/actions/notification.action';
 import config from '../../../config/auth';
+import { DEFAULTS } from '../../../common/defaults/defaults';
 
 const ModalEditWallboard = ({ ...props }) => {
   const dispatch = useDispatch();
@@ -110,19 +111,19 @@ const ModalEditWallboard = ({ ...props }) => {
 
   const currentDate = new Date().getTime();
   const wallboardLink = `${config.redirectUri}#/wallboard/${activeWallboardId}?d=${currentDate}`;
-  
+
   return (
     <div className={`c-modal c-modal--open`}>
       <div ref={modalRef} className="c-modal__container c-modal__container--edit-wallboard ">
         <div className="c-modal__content">
           <div className="c-modal__header">
-            <div className="c-modal__title">Settings</div>
+            <div className="c-modal__title">{DEFAULTS.MODAL.EDIT_WALLBOARD.SETTINGS}</div>
           </div>
 
           <div className="c-modal__body--edit-wallboard">
             <form className="c-modal__form">
               <div className="c-modal__section">
-                <label className="c-modal__label">Wallboard Name:</label>
+                <label className="c-modal__label">{DEFAULTS.MODAL.EDIT_WALLBOARD.NAME}</label>
                 <input
                   className="c-input c-input--grey"
                   value={wallboardSettings.name.value}
@@ -133,7 +134,7 @@ const ModalEditWallboard = ({ ...props }) => {
               </div>
 
               <div className="c-modal__section">
-                <label className="c-modal__label">Wallboard Description:</label>
+                <label className="c-modal__label">{DEFAULTS.MODAL.EDIT_WALLBOARD.DESCRIPTION}</label>
                 <TextArea
                   className="c-textarea"
                   value={wallboardSettings.description.value}
@@ -144,7 +145,7 @@ const ModalEditWallboard = ({ ...props }) => {
               </div>
 
               <div className="c-modal__section">
-                <label className="c-modal__label">Display Settings:</label>
+                <label className="c-modal__label">{DEFAULTS.MODAL.EDIT_WALLBOARD.DISPLAY_SETTINGS}</label>
                 <div className="c-modal__subsection  c-modal__subsection--small">
                   <CheckBox
                     className="c-checkbox--grey"
@@ -172,15 +173,12 @@ const ModalEditWallboard = ({ ...props }) => {
                   className={`c-button c-button--blue ${wallboardSettings.link.isReadOnlyEnabled ? 'c-button--grey' : ''}`}
                 >
                   {wallboardSettings.link.isReadOnlyEnabled ? 'Disable ' : 'Create '}
-                  Read-Only Wallboard URL
+                  {DEFAULTS.MODAL.EDIT_WALLBOARD.READ_ONLY_URL}
                 </button>
               </div>
 
               <div className="c-modal__section c-modal__section--read-only">
-                <p className="c-modal__text">
-                  A read only Wallboard URL allows anyone to access this wallboard with the basic Chatter Free Salesforce licence. This is
-                  great for non-Salesforce users or putting wallboards on a TV
-                </p>
+                <p className="c-modal__text">{DEFAULTS.MODAL.EDIT_WALLBOARD.READ_ONLY_URL}</p>
               </div>
 
               <div className="c-modal__section c-modal__section--read-only c-modal__section--read-only__generate-link">
@@ -195,7 +193,7 @@ const ModalEditWallboard = ({ ...props }) => {
                   disabled={!wallboardSettings.link.isReadOnlyEnabled}
                   className={`c-button c-button--blue ${!wallboardSettings.link.isReadOnlyEnabled ? 'c-button--disabled' : ''}`}
                 >
-                  Copy Link
+                  {DEFAULTS.MODAL.EDIT_WALLBOARD.COPY}
                 </button>
               </div>
             </form>
