@@ -232,7 +232,7 @@ const AgentTable = ({
               </div>
             )}
             {activeColumns.isListOfSkillsColumn && (
-              <div className="agent-t__agent-info" style={{ width: colWidth }}>
+              <div className="agent-t__agent-info agent-t__agent-info--overflow" style={{ width: colWidth }}>
                 {agent.listOfSkills.length ? (
                   <Dropdown closeOnClick={true} trigger={<div className="agent-t__agent-info__skills">...</div>}>
                     {agent.listOfSkills.map((skill, index) => (
