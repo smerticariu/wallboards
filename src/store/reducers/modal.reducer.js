@@ -28,7 +28,7 @@ export const modalInitialState = {
     presenceStates: {
       selectAll: true,
       selectNone: false,
-      selectedItems: DEFAULTS.MODAL.ADD_COMPONENT.ADD_COMPONENT_STATE_OPTIONS.PRESENCE_STATE.reduce(
+      selectedItems: DEFAULTS.MODAL.ADD_COMPONENT.ADD_COMPONENT_STATE_OPTIONS.presenceStates.reduce(
         (strArr, el) => (el.isInitialChecked ? [...strArr, el.value] : strArr),
         []
       ),
@@ -39,13 +39,13 @@ export const modalInitialState = {
       selectedItems: [],
     },
     interactivityOptions: {
-      selectedItems: DEFAULTS.MODAL.ADD_COMPONENT.ADD_COMPONENT_STATE_OPTIONS.INTERACTIVIRY_OPTIONS.reduce(
+      selectedItems: DEFAULTS.MODAL.ADD_COMPONENT.ADD_COMPONENT_STATE_OPTIONS.interactivityOptions.reduce(
         (strArr, el) => (el.isInitialChecked ? [...strArr, el.value] : strArr),
         []
       ),
     },
     columnsToViewOptions: {
-      selectedItems: DEFAULTS.MODAL.ADD_COMPONENT.ADD_COMPONENT_STATE_OPTIONS.COLUMNS_TO_VIEW_OPTIONS.reduce(
+      selectedItems: DEFAULTS.MODAL.ADD_COMPONENT.ADD_COMPONENT_STATE_OPTIONS.columnsToViewOptions.reduce(
         (strArr, el) => (el.isInitialChecked ? [...strArr, el.value] : strArr),
         []
       ),
