@@ -17,7 +17,7 @@ const mockStore = createMockStore([thunk]);
 Enzyme.configure({ adapter: new Adapter() });
 
 describe('Modal: Add Component -- presence state', () => {
-  const initialStoraValues = {
+  const initialStoreValues = {
     modal: { ...modalInitialState },
     skills: { ...skillsInitialState },
     callsQueues: { ...callsQueuesInitialState },
@@ -32,7 +32,7 @@ describe('Modal: Add Component -- presence state', () => {
 
   test('Presence State section should be rendered', () => {
     const store = mockStore({
-      ...initialStoraValues,
+      ...initialStoreValues,
     });
     let wrapper = mount(
       <Provider store={store}>
@@ -44,7 +44,7 @@ describe('Modal: Add Component -- presence state', () => {
 
   test('Select all shuld be checked', () => {
     const store = mockStore({
-      ...initialStoraValues,
+      ...initialStoreValues,
     });
     let wrapper = mount(
       <Provider store={store}>
@@ -63,7 +63,7 @@ describe('Modal: Add Component -- presence state', () => {
 
   test('Number of presence states shuld be 7', () => {
     const store = mockStore({
-      ...initialStoraValues,
+      ...initialStoreValues,
       modal: {
         ...modalInitialState,
         modalAddComponent: {
@@ -91,7 +91,7 @@ describe('Modal: Add Component -- presence state', () => {
 
   test('dispatch when presence state checkbox clicked', () => {
     const store = mockStore({
-      ...initialStoraValues,
+      ...initialStoreValues,
       modal: {
         ...modalInitialState,
         modalAddComponent: {

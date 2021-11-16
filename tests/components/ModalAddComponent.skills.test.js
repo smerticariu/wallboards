@@ -17,7 +17,7 @@ const mockStore = createMockStore([thunk]);
 Enzyme.configure({ adapter: new Adapter() });
 
 describe('Modal: Add Component -- skills', () => {
-  const initialStoraValues = {
+  const initialStoreValues = {
     modal: { ...modalInitialState },
     skills: { ...skillsInitialState },
     callsQueues: { ...callsQueuesInitialState },
@@ -32,7 +32,7 @@ describe('Modal: Add Component -- skills', () => {
 
   test('Skills section should be rendered', () => {
     const store = mockStore({
-      ...initialStoraValues,
+      ...initialStoreValues,
       modal: {
         ...modalInitialState,
         modalAddComponent: {
@@ -51,7 +51,7 @@ describe('Modal: Add Component -- skills', () => {
 
   test('Select all shuld be checked', () => {
     const store = mockStore({
-      ...initialStoraValues,
+      ...initialStoreValues,
       modal: {
         ...modalInitialState,
         modalAddComponent: {
@@ -77,7 +77,7 @@ describe('Modal: Add Component -- skills', () => {
 
   test('Number of skills shuld be 2', () => {
     const store = mockStore({
-      ...initialStoraValues,
+      ...initialStoreValues,
       modal: {
         ...modalInitialState,
         modalAddComponent: {
@@ -120,7 +120,7 @@ describe('Modal: Add Component -- skills', () => {
 
   test('dispatch when skill checkbox clicked', () => {
     const store = mockStore({
-      ...initialStoraValues,
+      ...initialStoreValues,
       modal: {
         ...modalInitialState,
         modalAddComponent: {

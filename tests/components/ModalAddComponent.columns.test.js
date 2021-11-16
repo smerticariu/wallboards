@@ -17,7 +17,7 @@ const mockStore = createMockStore([thunk]);
 Enzyme.configure({ adapter: new Adapter() });
 
 describe('Modal: Add Component -- columns to view', () => {
-  const initialStoraValues = {
+  const initialStoreValues = {
     modal: { ...modalInitialState },
     skills: { ...skillsInitialState },
     callsQueues: { ...callsQueuesInitialState },
@@ -32,7 +32,7 @@ describe('Modal: Add Component -- columns to view', () => {
 
   test('Columns to view section should be rendered', () => {
     const store = mockStore({
-      ...initialStoraValues,
+      ...initialStoreValues,
       modal: {
         ...modalInitialState,
         modalAddComponent: {
@@ -51,7 +51,7 @@ describe('Modal: Add Component -- columns to view', () => {
 
   test('Initially 4 options must be checked', () => {
     const store = mockStore({
-      ...initialStoraValues,
+      ...initialStoreValues,
       modal: {
         ...modalInitialState,
         modalAddComponent: {

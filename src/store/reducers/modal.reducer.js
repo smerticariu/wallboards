@@ -72,7 +72,7 @@ export const modalInitialState = {
 
 export const modalReducer = (state = modalInitialState, action) => {
   switch (action.type) {
-    case modalActions.HANDLE_WALLBOARD_ACTIVE_MODAL:
+    case modalActions.HANDLE_ACTIVE_MODAL:
       return {
         ...state,
         activeModalName: action.payload,
