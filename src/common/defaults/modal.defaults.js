@@ -223,7 +223,7 @@ export const MODAL = {
       },
     },
     ADD_COMPONENT_STATE_OPTIONS: {
-      PRESENCE_STATE: [
+      presenceStates: [
         {
           text: 'Inbound Call',
           value: PRESENCE_STATE_KEYS.AGENT_STATUS_INBOUND_CALL_OTHER,
@@ -261,7 +261,7 @@ export const MODAL = {
         },
       ],
 
-      INTERACTIVIRY_OPTIONS: [
+      interactivityOptions: [
         {
           text: 'Can change availability state',
           value: INTERACTIVITY_OPTIONS_KEYS.CHANGE_AVAILABILITY_STATE,
@@ -278,7 +278,7 @@ export const MODAL = {
           isInitialChecked: true,
         },
       ],
-      COLUMNS_TO_VIEW_OPTIONS: [
+      columnsToViewOptions: [
         {
           text: 'Agent Name',
           value: ADD_COMPONENT_COLUMN_OPTIONS.AGENT_NAME,

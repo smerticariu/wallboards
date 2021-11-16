@@ -473,7 +473,7 @@ const ModalAddComponent = ({ ...props }) => {
             <div className="c-modal--add-component__input-label">{DEFAULTS.MODAL.ADD_COMPONENT.SECTION_TITLE.COLUMNS}</div>
 
             <div className="c-modal--add-component__av-state-container">
-              {DEFAULTS.MODAL.ADD_COMPONENT.ADD_COMPONENT_STATE_OPTIONS.COLUMNS_TO_VIEW_OPTIONS.map((option) => (
+              {DEFAULTS.MODAL.ADD_COMPONENT.ADD_COMPONENT_STATE_OPTIONS.columnsToViewOptions.map((option) => (
                 <CheckBox
                   key={option.value}
                   label={option.text}
@@ -502,7 +502,7 @@ const ModalAddComponent = ({ ...props }) => {
         {handleAvailabilityStatesToView()}
 
         <div className="c-modal--add-component__input-section c-modal--add-component__input-section--presence-state">
-          <div className="c-modal--add-component__input-label">{DEFAULTS.MODAL.ADD_COMPONENT.SECTION_TITLE.SORT_BY}</div>
+          <div className="c-modal--add-component__input-label">{DEFAULTS.MODAL.ADD_COMPONENT.SECTION_TITLE.PRESENCE_STATE}</div>
 
           <div className="c-modal--add-component__select-checkbox">
             <CheckBox
@@ -519,9 +519,10 @@ const ModalAddComponent = ({ ...props }) => {
               onChange={(event) => handleCheckBoxList(event, 'presenceStates')}
             />
           </div>
+
           {!(formData.presenceStates.selectAll || formData.presenceStates.selectNone) && (
             <div className="c-modal--add-component__av-state-container">
-              {DEFAULTS.MODAL.ADD_COMPONENT.ADD_COMPONENT_STATE_OPTIONS.PRESENCE_STATE.map((option) => (
+              {DEFAULTS.MODAL.ADD_COMPONENT.ADD_COMPONENT_STATE_OPTIONS.presenceStates.map((option) => (
                 <CheckBox
                   key={option.value}
                   label={option.text}
@@ -537,7 +538,7 @@ const ModalAddComponent = ({ ...props }) => {
 
         <div className="c-modal--add-component__input-section c-modal--add-component__input-section--interactivity">
           <div className="c-modal--add-component__input-label">{DEFAULTS.MODAL.ADD_COMPONENT.SECTION_TITLE.INTERACTIVITY}</div>
-          {DEFAULTS.MODAL.ADD_COMPONENT.ADD_COMPONENT_STATE_OPTIONS.INTERACTIVIRY_OPTIONS.map((option) => (
+          {DEFAULTS.MODAL.ADD_COMPONENT.ADD_COMPONENT_STATE_OPTIONS.interactivityOptions.map((option) => (
             <CheckBox
               key={option.value}
               label={option.text}

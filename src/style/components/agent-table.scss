@@ -66,6 +66,12 @@
       margin: 0 2px 0 0;
       text-align: center;
 
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      &--overflow {
+        overflow: unset;
+      }
       &--settings {
         background-color: transparent;
         padding: 0;

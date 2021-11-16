@@ -82,7 +82,7 @@ const WallboardEdit = () => {
 
   return (
     <div className="c-wallboard--new">
-      {!adminPermissions ? (
+      {!adminPermissions || fetchStatus !== FetchStatus.SUCCESS ? (
         <Toolbar template="error">{handleErrors()}</Toolbar>
       ) : (
         <>

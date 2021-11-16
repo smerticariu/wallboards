@@ -77,6 +77,12 @@
     border-bottom-right-radius: 8px;
     border-top-right-radius: 8px;
     color: $natterbox-dark-blue-grey;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    &--dropdown {
+      overflow: unset;
+    }
     &--lighter-red {
       background-color: $natterbox-lighter-red;
     }

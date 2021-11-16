@@ -92,14 +92,20 @@ const AgentCard = ({
       </div>
       <div className="agent-c__status-time">
         <div
-          className={`agent-c__status agent-c__status--${DEFAULTS.MODAL.ADD_COMPONENT.PRESENCE_STATE_KEYS_COLOR.CARD_AVAILABILITY_STATUS_BACKGROUND[callStatusKey]} agent-c__status--${DEFAULTS.MODAL.ADD_COMPONENT.PRESENCE_STATE_KEYS_COLOR.CARD_AVAILABILITY_STATUS[callStatusKey]}`}
+          className={`agent-c__status ${
+            availabilityStatesList.length && canChangeAvailabilityState ? 'agent-c__status--dropdown' : ''
+          } agent-c__status--${
+            DEFAULTS.MODAL.ADD_COMPONENT.PRESENCE_STATE_KEYS_COLOR.CARD_AVAILABILITY_STATUS_BACKGROUND[callStatusKey]
+          } agent-c__status--${DEFAULTS.MODAL.ADD_COMPONENT.PRESENCE_STATE_KEYS_COLOR.CARD_AVAILABILITY_STATUS[callStatusKey]}`}
         >
           {availabilityStatesList.length && canChangeAvailabilityState ? (
             <Dropdown
               className="c-dropdown--availability-state"
               closeOnClick={true}
               containerClassName="c-dropdown__container--availability"
-              trigger={<div className="agent-t__arrow-container agent-t__arrow-container--card">{status}</div>}
+              trigger={
+                <div className="c-dropdown__trigger--agent-name agent-t__arrow-container agent-t__arrow-container--card">{status}</div>
+              }
             >
               {availabilityStatesList.map((state) => (
                 <div
