@@ -36,13 +36,13 @@ const AgentCard = ({
     <div className={`agent-c agent-c--${DEFAULTS.MODAL.ADD_COMPONENT.PRESENCE_STATE_KEYS_COLOR.CARD_BACKGROUND[callStatusKey]}`}>
       <div className="agent-c__header">
         <div className="agent-c__user">
-          <div
+          {/* <div
             className="agent-c__user-image"
             //do not delete
             // style={{
             //   backgroundImage: `url(${img})`,
             // }}
-          />
+          /> */}
           <div className="agent-c__user-name-ext">
             <div className="agent-c__user-name">
               {name.length > DEFAULTS.GRID.MAX_NAME_CHARACTERS ? (

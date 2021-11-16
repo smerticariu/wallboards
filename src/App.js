@@ -9,7 +9,7 @@ import WallboardEdit from './components/wallboard/wallboard-edit';
 import WallboardReadOnly from 'src/components/wallboard/wallboard.read-only';
 import { Route, Switch } from 'react-router';
 import { HashRouter } from 'react-router-dom';
-import { handleLogoutAC, setAccessTokenAC, setUserTokenInfoAC } from './store/actions/login.action';
+import { setAccessTokenAC, setUserTokenInfoAC } from './store/actions/login.action';
 import { fetchUserDataThunk, fetchUserInfoThunk } from './store/thunk/login.thunk';
 import ModalNewWallboard from './components/modal/new-wallboard/modal.new-wallboard';
 import ModalAddComponent from './components/modal/add-component/modal.add-component';
@@ -25,7 +25,7 @@ import { DEFAULTS } from './common/defaults/defaults';
 function App() {
   const dispatch = useDispatch();
   const { userInfo, userTokenInfo, token } = useSelector((state) => state.login);
-  const { isAuthenticated, getAccessTokenSilently, logout, isLoading } = useAuth0();
+  const { isAuthenticated, getAccessTokenSilently, isLoading } = useAuth0();
   const activeModalName = useSelector((state) => state.modal.activeModalName);
   const { warningMessage } = useSelector((state) => state.modal);
   const sfToken = window?.WbConfig?.sfSessionId;
@@ -68,17 +68,11 @@ function App() {
     if (wbToRedirect) window.location.href = wbToRedirect; //redirect to the link of the read-only wallboard
   };
 
-  const handleLogout = () => {
-    logout();
-    dispatch(handleLogoutAC());
-    localStorage.clear();
-  };
   return (
     <div className="App">
       {!userInfo && isAuthenticated && <p>Loading...</p>}
       {userInfo && userTokenInfo && (
         <>
-          <button onClick={() => handleLogout()}>logout</button>
           {handleRedirect()}
           <HashRouter>
             <Switch>
