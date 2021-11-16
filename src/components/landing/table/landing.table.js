@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { FetchStatus } from '../../..//store/reducers/wallboards.reducer';
 import config from '../../../config/auth/index';
+import { FetchStatus } from '../../..//store/reducers/wallboards.reducer';
+import { DEFAULTS } from '../../../common/defaults/defaults';
 import { handleWallboardActiveModalAC } from '../../../store/actions/modal.action';
 import { setWallboardIdForDeleteAC, setWallboardsByCategoryAC } from '../../../store/actions/wallboards.action';
-import { fetchAllWallboardsThunk, copyWallboardThunk, syncWallboardsWithConfig } from '../../../store/thunk/wallboards.thunk';
-import { WALLBOARD_MODAL_NAMES } from '../../modal/new-wallboard/modal.new-wallboard.defaults';
+import { fetchAllWallboardsThunk, copyWallboardThunk } from '../../../store/thunk/wallboards.thunk'; // import syncWallboardsWithConfig when needed - do not delete
 
 const LandingTable = () => {
   const dispatch = useDispatch();
@@ -20,7 +20,7 @@ const LandingTable = () => {
   const { category, searchedWallboards } = useSelector((state) => state.landing);
 
   useEffect(() => {
-    // dispatch(syncWallboardsWithConfig()); // do not delete yet
+    // dispatch(syncWallboardsWithConfig()); // import and use it when needed - do not delete
     dispatch(fetchAllWallboardsThunk());
     // eslint-disable-next-line
   }, []);
@@ -49,7 +49,6 @@ const LandingTable = () => {
           const wallboardsByAuthor = filteredWbs.sort((a, b) => a.createdBy.localeCompare(b.createdBy)).reverse();
           setFilteredWbs(wallboardsByAuthor);
         }
-        console.log(filteredWbs, filterName);
         break;
 
       case 'date':
@@ -72,7 +71,7 @@ const LandingTable = () => {
   useEffect(() => {
     const filterWbsByCategory = (category) => {
       switch (category) {
-        case 'Wallboards':
+        case 'All Wallboards':
           const wbsByDate = wallboards.sort((a, b) => a.lastView.toString().localeCompare(b.lastView.toString())).reverse();
           return wbsByDate;
         case 'Created By Me':
@@ -85,13 +84,11 @@ const LandingTable = () => {
 
     const filteredWbsByCategory = filterWbsByCategory(category);
 
-    const wallboardsByInput = filteredWbsByCategory.filter((wb) => {
-      if (
+    const wallboardsByInput = filteredWbsByCategory.filter(
+      (wb) =>
         wb?.name?.toLowerCase().includes(searchedWallboards.toLowerCase()) ||
         wb?.createdBy?.toLowerCase().includes(searchedWallboards.toLowerCase())
-      )
-        return wb;
-    });
+    );
 
     setFilteredWbs(wallboardsByInput);
     dispatch(setWallboardsByCategoryAC(wallboardsByInput));
@@ -100,7 +97,7 @@ const LandingTable = () => {
 
   const handleDelete = (id) => {
     dispatch(setWallboardIdForDeleteAC(id));
-    dispatch(handleWallboardActiveModalAC(WALLBOARD_MODAL_NAMES.DELETE_WALLBOARD));
+    dispatch(handleWallboardActiveModalAC(DEFAULTS.MODAL.MODAL_NAMES.DELETE_WALLBOARD));
   };
 
   const handleCopy = (wb) => {
@@ -152,7 +149,7 @@ const LandingTable = () => {
                   <tr key={index}>
                     <td className="c-landing-table__wb-name">
                       <p>
-                        <a target="_blank" href={`/#/wallboard/${wb.id}`} rel="noreferrer">
+                        <a target="_blank" href={wallboardUrl} rel="noreferrer">
                           {wb.name}
                         </a>
                       </p>
@@ -165,7 +162,7 @@ const LandingTable = () => {
                       <p>{handleConvertDate(wb.createdOn)}</p>
                     </td>
                     <td className="c-landing-table__wb-actions">
-                      <a target="_blank" rel="noreferrer" href={`/#/wallboard/${wb.id}/edit`} className="c-landing-table__edit-btn" />
+                      <a target="_blank" rel="noreferrer" href={`${wallboardUrl}/edit`} className="c-landing-table__edit-btn"> </a>
                       <button
                         onClick={() => {
                           handleCopy(wb);
@@ -185,7 +182,7 @@ const LandingTable = () => {
           </tbody>
         </table>
       ) : (
-        <div className="empty-message">No results</div>
+        <div className="empty-message">{DEFAULTS.MODAL.MESSAGES.NO_RESULTS}</div>
       )}
     </div>
   );

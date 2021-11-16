@@ -2,6 +2,7 @@ import React, { useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { handleWallboardActiveModalAC } from 'src/store/actions/modal.action';
 import { saveWallboardThunk } from 'src/store/thunk/wallboards.thunk';
+import { DEFAULTS } from '../../../common/defaults/defaults';
 import useOnClickOutside from '../../../common/hooks/useOnClickOutside';
 
 const ModalConfirmSaveWallboard = ({ ...props }) => {
@@ -53,9 +54,7 @@ const ModalConfirmSaveWallboard = ({ ...props }) => {
             </div>
           </div>
           <div className="c-modal__body c-modal__body--save-changes">
-            <div className="c-modal__body--save-changes__phrase">
-              Changes made so far will be lost and this version will be the final version{' '}
-            </div>
+            <div className="c-modal__body--save-changes__phrase">{DEFAULTS.MODAL.CONFIRM_SAVE_WALLBOARD.INFO} </div>
           </div>
           <div className="c-modal__footer">
             <div className="c-modal__footer-left-side">{handleCancelButton()}</div>

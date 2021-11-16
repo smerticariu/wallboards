@@ -1,13 +1,9 @@
 import React, { useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { handleModalSelectActiveElementAC, handleWallboardActiveModalAC } from 'src/store/actions/modal.action';
+import { DEFAULTS } from '../../../common/defaults/defaults';
+import { MODAL_NEW_WALLBOARD_SECITONS } from '../../../common/defaults/modal.defaults';
 import useOnClickOutside from '../../../common/hooks/useOnClickOutside';
-import {
-  MODAL_NEW_WALLBOARD_DEFAULTS,
-  MODAL_NEW_WALLBOARD_SECITONS,
-  MODAL_ADD_COMPONENT_OPTIONS,
-  WALLBOARD_MODAL_NAMES,
-} from './modal.new-wallboard.defaults';
 
 const ModalNewWallboard = ({ ...props }) => {
   const modalRef = useRef(null);
@@ -30,8 +26,8 @@ const ModalNewWallboard = ({ ...props }) => {
 
     return (
       <div className="c-modal--new-wallboard__categories">
-        <div className="c-modal--new-wallboard__header">Component Categories</div>
-        {MODAL_NEW_WALLBOARD_DEFAULTS.map((navItem) => (
+        <div className="c-modal--new-wallboard__header">{DEFAULTS.MODAL.NEW_WALLBOARD.CATEGORIES}</div>
+        {DEFAULTS.MODAL.NEW_WALLBOARD.SECTIONS.map((navItem) => (
           <div
             key={navItem.value}
             className={`c-modal--new-wallboard__nav-item ${
@@ -50,7 +46,7 @@ const ModalNewWallboard = ({ ...props }) => {
     const handleSelectedItem = (name) => {
       setSelectedListItem(name);
     };
-    const filtredOptions = MODAL_ADD_COMPONENT_OPTIONS[activeSectionValue].filter((option) =>
+    const filtredOptions = DEFAULTS.MODAL.ADD_COMPONENT_OPTIONS[activeSectionValue].filter((option) =>
       option.NAME.toLowerCase().includes(newWbFilter.toLowerCase())
     );
     return (
@@ -73,7 +69,7 @@ const ModalNewWallboard = ({ ...props }) => {
             </div>
           </div>
         ))}
-        {!filtredOptions.length && <div className="empty-message">No results</div>}
+        {!filtredOptions.length && <div className="empty-message">{DEFAULTS.MODAL.MESSAGES.NO_RESULTS}</div>}
       </div>
     );
   };
@@ -83,7 +79,15 @@ const ModalNewWallboard = ({ ...props }) => {
       setNewWbFilter(e.target.value);
     };
 
-    return <input className="c-input" value={newWbFilter} placeholder="Search list…" type="text" onChange={(e) => updateFilterInput(e)} />;
+    return (
+      <input
+        className="c-input"
+        value={newWbFilter}
+        placeholder={DEFAULTS.MODAL.ADD_COMPONENT.PLACEHOLDER.SEARCH_LIST}
+        type="text"
+        onChange={(e) => updateFilterInput(e)}
+      />
+    );
   };
 
   const handleCancelButton = () => {
@@ -105,7 +109,7 @@ const ModalNewWallboard = ({ ...props }) => {
       switch (selectedListItem) {
         case 'Agent list': {
           dispatch(handleModalSelectActiveElementAC(selectedListItem));
-          return dispatch(handleWallboardActiveModalAC(WALLBOARD_MODAL_NAMES.ADD_COMPONENT));
+          return dispatch(handleWallboardActiveModalAC(DEFAULTS.MODAL.MODAL_NAMES.ADD_COMPONENT));
         }
         default:
           return;
@@ -129,7 +133,7 @@ const ModalNewWallboard = ({ ...props }) => {
       <div ref={modalRef} className="c-modal__container c-modal__container--new-wallboard">
         <div className="c-modal__content">
           <div className="c-modal__header">
-            <div className="c-modal__title">Select a component</div>
+            <div className="c-modal__title">{DEFAULTS.MODAL.NEW_WALLBOARD.SELECT_COMPONENT}</div>
           </div>
 
           <div className="c-modal__body c-modal__body--new-wallboard">

@@ -17,7 +17,7 @@ import {
   saveWallboardSuccessAC,
 } from '../actions/wallboards.action';
 
-export const fetchWallboardByIdThunk = (wbId) => async (dispatch, getState) => {
+export const fetchWallboardByIdThunk = ({id, copyWb}) => async (dispatch, getState) => {
   try {
     dispatch(fetchWallboardByIdAC(DEFAULTS.WALLBOARDS.MESSAGE.LOADING));
     const { userInfo, token } = getState().login;
@@ -26,23 +26,29 @@ export const fetchWallboardByIdThunk = (wbId) => async (dispatch, getState) => {
     const wallboardById = await WallboardsApi({
       type: DEFAULTS.WALLBOARDS.API.GET.BY_ID,
       organizationId: userInfo.organisationId,
-      wallboardId: wbId,
+      wallboardId: id,
       token,
     });
 
-    await WallboardsApi({
-      type: DEFAULTS.WALLBOARDS.API.SAVE.WALLBOARD,
-      organizationId: userInfo.organisationId,
-      token,
-      data: {
-        ...wallboardById.data,
-        lastView: currentDate,
-      },
-      wallboardId: wbId,
-    });
+    if(!copyWb) {
+      await WallboardsApi({
+        type: DEFAULTS.WALLBOARDS.API.SAVE.WALLBOARD,
+        organizationId: userInfo.organisationId,
+        token,
+        data: {
+          ...wallboardById.data,
+          lastView: currentDate,
+        },
+        wallboardId: id,
+      });
+
+      dispatch(updateConfig({...wallboardById.data, lastView: currentDate}, DEFAULTS.WALLBOARDS.API.SAVE.WALLBOARD));
+    } else {
+      dispatch(updateConfig(wallboardById.data, DEFAULTS.WALLBOARDS.API.SAVE.WALLBOARD));
+    }
 
     dispatch(fetchWallboardByIdSuccessAC({ widgets: [], ...wallboardById.data }));
-    dispatch(updateConfig(wallboardById.data, DEFAULTS.WALLBOARDS.API.SAVE.WALLBOARD));
+    
   } catch (error) {
     dispatch(fetchWallboardByIdFailAC(DEFAULTS.GLOBAL.FAIL));
     console.log(error?.wallboardById?.data);
@@ -60,7 +66,14 @@ export const fetchAllWallboardsThunk = () => async (dispatch, getState) => {
       token,
     });
 
-    dispatch(fetchAllWallboardsSuccessAC(allWallboards.data));
+    let wallboardsFilteredByPermissions;
+    if(userInfo.isAdmin) {
+      wallboardsFilteredByPermissions = allWallboards.data;
+    } else if (userInfo.isTeamLeader && !userInfo.isAdmin) {
+      wallboardsFilteredByPermissions = allWallboards.data.filter(wb => wb.createdByUserId === userInfo.id);
+    }
+
+    dispatch(fetchAllWallboardsSuccessAC(wallboardsFilteredByPermissions));
   } catch (error) {
     dispatch(fetchAllWallboardsFailAC());
     console.log(error);
@@ -82,6 +95,7 @@ export const saveWallboardThunk = () => async (dispatch, getState) => {
       id: wbId,
       name: activeWallboard.name,
       createdBy: `${userInfo.firstName} ${userInfo.lastName}`,
+      createdByUserId: userInfo.id,
       createdOn: activeWallboard.createdOn ?? currentDate,
       lastView: currentDate,
       description: activeWallboard.description,
@@ -135,14 +149,14 @@ export const copyWallboardThunk =
   async (dispatch, getState) => {
     try {
       const { userInfo, token } = getState().login;
-      await dispatch(fetchWallboardByIdThunk(wb.id));
+      await dispatch(fetchWallboardByIdThunk({id: wb.id, copyWb: true}));
       let activeWallboard = getState().wallboards.present.activeWallboard.wallboard;
 
       const currentDate = new Date().getTime();
       const wbId = generateWallboardId(userInfo.organisationId, userInfo.id);
       activeWallboard.id = wbId;
       activeWallboard.name = `${activeWallboard.name} Copy`;
-      activeWallboard.createdOn = currentDate;
+      activeWallboard.createdOn = currentDate + 1000 // add one second to timestamp;
       activeWallboard.lastView = currentDate;
 
       const data = {
@@ -184,7 +198,6 @@ export const syncWallboardsWithConfig = () => async (dispatch, getState) => {
         wallboardId: wb.key,
       }).then((res) => {
         if (!res.data.name) return;
-
         configWbs.push({
           id: res.data.id,
           key: res.data.key,
@@ -233,12 +246,21 @@ export const updateConfig = (wallboard, method) => async (dispatch, getState) =>
             id: wallboard.id,
             name: wallboard.name,
             createdBy: wallboard.createdBy,
+            createdByUserId: userInfo.id,
             createdOn: wallboard.createdOn,
-            lastView: currentDate,
+            lastView: wallboard.lastView,
             description: wallboard.description,
           };
         } else {
-          allWallboards.push(wallboard);
+          allWallboards.push({
+            id: wallboard.id,
+            name: wallboard.name,
+            createdBy: wallboard.createdBy,
+            createdByUserId: userInfo.id,
+            createdOn: wallboard.createdOn,
+            lastView: currentDate,
+            description: wallboard.description,
+          });
         }
         break;
 

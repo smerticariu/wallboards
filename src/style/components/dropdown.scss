@@ -32,8 +32,9 @@
     display: flex;
     width: 100%;
     justify-content: center;
+    z-index: 2;
     &--agent-name {
-      max-width: 18ch;
+      max-width: 85%;
       white-space: nowrap;
       overflow-x: hidden;
       text-overflow: ellipsis;

@@ -66,7 +66,7 @@ export const wallboardsReducer = (state = { ...wallboardsInitialState }, action)
         ...state,
         activeWallboard: {
           ...state.activeWallboard,
-          wallboard: [],
+          wallboard: { ...wallboardInitialValues },
           fetchStatus: FetchStatus.FAIL,
           fetchMessage: action.payload,
         },

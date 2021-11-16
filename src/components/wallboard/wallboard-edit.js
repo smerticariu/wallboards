@@ -2,15 +2,15 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import WallboardComponents from './wallboard-components';
 import Toolbar from '../toolbar/toolbar';
-import { WALLBOARD_MODAL_NAMES } from '../modal/new-wallboard/modal.new-wallboard.defaults';
 import GridPage from '../grid/grid';
 import { fetchWallboardByIdThunk } from 'src/store/thunk/wallboards.thunk';
-import { Redirect, useParams } from 'react-router';
+import { useParams } from 'react-router';
 import { FetchStatus } from 'src/store/reducers/wallboards.reducer';
 import { resetWallboardEditPageDataAC } from 'src/store/actions/wallboards.action';
 import { fetchAllSkillsThunk } from 'src/store/thunk/skills.thunk';
 import { fetchAllCallsQueuesThunk } from 'src/store/thunk/callsQueues.thunk';
 import { fetchAvailabilityProfilesThunk, fetchAvailabilityStatesThunk } from 'src/store/thunk/agents.thunk';
+import { DEFAULTS } from '../../common/defaults/defaults';
 
 const WallboardEdit = () => {
   const activeModalName = useSelector((state) => state.modal.activeModalName);
@@ -21,8 +21,8 @@ const WallboardEdit = () => {
   const { availabilityProfiles } = useSelector((state) => state.agents);
 
   const { userInfo } = useSelector((state) => state.login);
-  const userPermission = userInfo?.permissionLevel;
-
+  const adminPermissions = userInfo.isAdmin;
+  const teamleaderPermissions = userInfo.isTeamLeader;
   useEffect(() => {
     dispatch(fetchAllSkillsThunk());
     dispatch(fetchAllCallsQueuesThunk());
@@ -42,28 +42,59 @@ const WallboardEdit = () => {
   }, [availabilityProfiles]);
 
   useEffect(() => {
-    if (!activeWallboard.isNewWallboard) dispatch(fetchWallboardByIdThunk(id));
+    if (!activeWallboard.isNewWallboard) dispatch(fetchWallboardByIdThunk({ id }));
     // eslint-disable-next-line
   }, [id]);
 
-  if (!activeWallboard.isNewWallboard && fetchStatus !== FetchStatus.SUCCESS) {
-    return <div>{fetchMessage}</div>;
-  }
+  const handleErrors = () => {
+    if (!activeWallboard.isNewWallboard && fetchStatus !== FetchStatus.SUCCESS) {
+      return (
+        <div>
+          {fetchStatus === FetchStatus.FAIL && <h3 className="error-message--headline">Error:</h3>}
+          <p className="error-message">{fetchMessage}</p>
+        </div>
+      );
+    }
 
-  if (userPermission === 'BASIC') {
-    return <div>You are not allowed to edit this wallboard. Please contact your Administrator</div>;
-  }
+    if (!adminPermissions && !teamleaderPermissions) {
+      // check if it's basic user
+      return (
+        <div>
+          <h3 className="error-message--headline">Error:</h3>
+          <p className="error-message">{DEFAULTS.WALLBOARDS.MESSAGE.NOT_ALLOWED_EDIT}</p>
+        </div>
+      );
+    }
+
+    if (!adminPermissions && teamleaderPermissions && !activeWallboard.isNewWallboard) {
+      // editing a wallboard with team leader permissions
+      if (userInfo.id !== activeWallboard.createdByUserId) {
+        // edit the wallboard only if the team leader has access on it
+        return (
+          <div>
+            <h3 className="error-message--headline">Error:</h3>
+            <p className="error-message">{DEFAULTS.WALLBOARDS.MESSAGE.NOT_ALLOWED_EDIT}</p>
+          </div>
+        );
+      }
+    }
+  };
 
   return (
     <div className="c-wallboard--new">
-      <Toolbar template="new-wallboard" />
-
-      {activeModalName === WALLBOARD_MODAL_NAMES.SELECT_COMPONENT ||
-      activeModalName === WALLBOARD_MODAL_NAMES.ADD_COMPONENT ||
-      activeWallboard.widgets?.length ? (
-        <GridPage />
+      {adminPermissions && (fetchStatus === FetchStatus.SUCCESS || activeWallboard.isNewWallboard) ? (
+        <>
+          <Toolbar template="new-wallboard" />
+          {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.SELECT_COMPONENT ||
+          activeModalName === DEFAULTS.MODAL.MODAL_NAMES.ADD_COMPONENT ||
+          activeWallboard.widgets?.length ? (
+            <GridPage />
+          ) : (
+            <WallboardComponents />
+          )}
+        </>
       ) : (
-        <WallboardComponents />
+        <Toolbar template="error">{handleErrors()}</Toolbar>
       )}
     </div>
   );

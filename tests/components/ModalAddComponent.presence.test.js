@@ -11,7 +11,7 @@ import { skillsInitialState } from '../../src/store/reducers/skills.reducer';
 import { callsQueuesInitialState } from '../../src/store/reducers/callsQueues.reducer';
 import { loginInitialState } from '../../src/store/reducers/login.reducer';
 import { agentsInitialState } from '../../src/store/reducers/agents.reducer';
-import { MAIN_VIEWING_OPTIONS } from '../../src/components/modal/add-component/modal.add-component.defaults';
+import { DEFAULTS } from '../../src/common/defaults/defaults';
 
 const mockStore = createMockStore([thunk]);
 Enzyme.configure({ adapter: new Adapter() });
@@ -68,7 +68,7 @@ describe('Modal: Add Component -- presence state', () => {
         ...modalInitialState,
         modalAddComponent: {
           ...modalInitialState.modalAddComponent,
-          mainViewing: MAIN_VIEWING_OPTIONS.TABLE,
+          mainViewing: DEFAULTS.MODAL.ADD_COMPONENT.MAIN_VIEWING_OPTIONS.TABLE,
           presenceStates: {
             ...modalInitialState.modalAddComponent.presenceStates,
             selectAll: false,
@@ -96,7 +96,7 @@ describe('Modal: Add Component -- presence state', () => {
         ...modalInitialState,
         modalAddComponent: {
           ...modalInitialState.modalAddComponent,
-          mainViewing: MAIN_VIEWING_OPTIONS.TABLE,
+          mainViewing: DEFAULTS.MODAL.ADD_COMPONENT.MAIN_VIEWING_OPTIONS.TABLE,
           presenceStates: {
             ...modalInitialState.modalAddComponent.presenceStates,
             selectAll: false,

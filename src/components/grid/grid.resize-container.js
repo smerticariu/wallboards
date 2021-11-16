@@ -3,9 +3,9 @@ import Draggable from 'react-draggable';
 import { useDispatch, useSelector } from 'react-redux';
 import { ResizableBox } from 'react-resizable';
 import { handleWallboardGridLayoutChangeAC, syncWidgetsSizeForNewScreenAC } from 'src/store/actions/wallboards.action';
+import { DEFAULTS } from '../../common/defaults/defaults';
 import useWindowSize from '../../common/hooks/useWindowSize';
 import GridAgentList from './grid.agent-list';
-import { WIDGET_INITIAL_HEIGHT, WIDGET_MARGIN_TOP } from './grid.defaults';
 
 const GridResizeContainer = ({ isEditMode = true, widgets = [], ...props }) => {
   const dispatch = useDispatch();
@@ -44,11 +44,14 @@ const GridResizeContainer = ({ isEditMode = true, widgets = [], ...props }) => {
 
               endX: containerWidth,
 
-              height: WIDGET_INITIAL_HEIGHT,
+              height: DEFAULTS.GRID.WIDGET_INITIAL_HEIGHT,
 
-              startY: totalHeight === 0 ? 0 : totalHeight + WIDGET_MARGIN_TOP,
+              startY: totalHeight === 0 ? 0 : totalHeight + DEFAULTS.GRID.WIDGET_MARGIN_TOP,
 
-              endY: totalHeight === 0 ? WIDGET_INITIAL_HEIGHT : totalHeight + WIDGET_MARGIN_TOP + WIDGET_INITIAL_HEIGHT,
+              endY:
+                totalHeight === 0
+                  ? DEFAULTS.GRID.WIDGET_INITIAL_HEIGHT
+                  : totalHeight + DEFAULTS.GRID.WIDGET_MARGIN_TOP + DEFAULTS.GRID.WIDGET_INITIAL_HEIGHT,
             };
           }
         })
@@ -296,17 +299,17 @@ const GridResizeContainer = ({ isEditMode = true, widgets = [], ...props }) => {
                 return;
 
               if (gridElement.id === activeGridItem?.id) {
-                if (index > 0 && gridElement.startY - gridCopy[index - 1].endY > gridItem.height + WIDGET_MARGIN_TOP) {
-                  minYPosition = gridCopy[index - 1].endY + WIDGET_MARGIN_TOP;
+                if (index > 0 && gridElement.startY - gridCopy[index - 1].endY > gridItem.height + DEFAULTS.GRID.WIDGET_MARGIN_TOP) {
+                  minYPosition = gridCopy[index - 1].endY + DEFAULTS.GRID.WIDGET_MARGIN_TOP;
                   return;
                 }
-                if (index === 0 && gridElement.startY > gridItem.height + WIDGET_MARGIN_TOP) {
+                if (index === 0 && gridElement.startY > gridItem.height + DEFAULTS.GRID.WIDGET_MARGIN_TOP) {
                   minYPosition = 0;
                   return;
                 }
               }
 
-              minYPosition = gridElement.endY + WIDGET_MARGIN_TOP;
+              minYPosition = gridElement.endY + DEFAULTS.GRID.WIDGET_MARGIN_TOP;
             });
           //check if a new position has been found on the y axis
           if (minYPosition < gridItem.startY) {
@@ -358,13 +361,13 @@ const GridResizeContainer = ({ isEditMode = true, widgets = [], ...props }) => {
       .sort((a, b) => a.startY - b.startY)
       .map((gridItem, _, gridArray) => {
         if (gridItemsToChange.includes(gridItem.id)) {
-          if (gridArray[0].startY + pxToBottom + WIDGET_MARGIN_TOP < activeGridItem.endY) {
-            pxToBottom = activeGridItem.endY + WIDGET_MARGIN_TOP - gridArray[0].startY;
+          if (gridArray[0].startY + pxToBottom + DEFAULTS.GRID.WIDGET_MARGIN_TOP < activeGridItem.endY) {
+            pxToBottom = activeGridItem.endY + DEFAULTS.GRID.WIDGET_MARGIN_TOP - gridArray[0].startY;
           }
           return {
             ...gridItem,
-            startY: gridItem.startY + pxToBottom + WIDGET_MARGIN_TOP,
-            endY: gridItem.endY + pxToBottom + WIDGET_MARGIN_TOP,
+            startY: gridItem.startY + pxToBottom + DEFAULTS.GRID.WIDGET_MARGIN_TOP,
+            endY: gridItem.endY + pxToBottom + DEFAULTS.GRID.WIDGET_MARGIN_TOP,
           };
         }
         return gridItem;

@@ -2,6 +2,7 @@ import React, { useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { handleWallboardActiveModalAC } from 'src/store/actions/modal.action';
 import { deleteWallboardComponentByIdAC } from 'src/store/actions/wallboards.action';
+import { DEFAULTS } from '../../../common/defaults/defaults';
 import useOnClickOutside from '../../../common/hooks/useOnClickOutside';
 
 const ModalDeleteWallboardComponent = ({ ...props }) => {
@@ -51,7 +52,7 @@ const ModalDeleteWallboardComponent = ({ ...props }) => {
             <div className="c-modal__title c-modal__title--bold">Delete {componentForDelete.name}</div>
           </div>
           <div className="c-modal__body c-modal__body--save-changes">
-            <div className="c-modal__body--save-changes__phrase">Are you sure you want to delete this component?</div>
+            <div className="c-modal__body--save-changes__phrase">{DEFAULTS.MODAL.DELETE_WALLBOARD_COMPONENT_MODAL.QUESTION}</div>
           </div>
           <div className="c-modal__footer">
             <div className="c-modal__footer-left-side" />
