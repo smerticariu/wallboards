@@ -82,12 +82,9 @@ const WallboardEdit = () => {
 
   return (
     <div className="c-wallboard--new">
-      {!adminPermissions || fetchStatus !== FetchStatus.SUCCESS ? (
-        <Toolbar template="error">{handleErrors()}</Toolbar>
-      ) : (
+      {adminPermissions && (fetchStatus === FetchStatus.SUCCESS || activeWallboard.isNewWallboard) ? (
         <>
           <Toolbar template="new-wallboard" />
-
           {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.SELECT_COMPONENT ||
           activeModalName === DEFAULTS.MODAL.MODAL_NAMES.ADD_COMPONENT ||
           activeWallboard.widgets?.length ? (
@@ -96,6 +93,8 @@ const WallboardEdit = () => {
             <WallboardComponents />
           )}
         </>
+      ) : (
+        <Toolbar template="error">{handleErrors()}</Toolbar>
       )}
     </div>
   );
