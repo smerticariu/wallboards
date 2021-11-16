@@ -16,7 +16,7 @@ const mockStore = createMockStore([thunk]);
 Enzyme.configure({ adapter: new Adapter() });
 
 describe('Modal: Add Component -- interactivity options', () => {
-  const initialStoraValues = {
+  const initialStoreValues = {
     modal: { ...modalInitialState },
     skills: { ...skillsInitialState },
     callsQueues: { ...callsQueuesInitialState },
@@ -31,7 +31,7 @@ describe('Modal: Add Component -- interactivity options', () => {
 
   test('Interactivity section should be rendered', () => {
     const store = mockStore({
-      ...initialStoraValues,
+      ...initialStoreValues,
     });
     let wrapper = mount(
       <Provider store={store}>
@@ -43,7 +43,7 @@ describe('Modal: Add Component -- interactivity options', () => {
 
   test('All interactivity options shuld be checked', () => {
     const store = mockStore({
-      ...initialStoraValues,
+      ...initialStoreValues,
     });
     let wrapper = mount(
       <Provider store={store}>
@@ -60,7 +60,7 @@ describe('Modal: Add Component -- interactivity options', () => {
 
   test('All interactivity options shuld be unchecked', () => {
     const store = mockStore({
-      ...initialStoraValues,
+      ...initialStoreValues,
       modal: {
         ...modalInitialState,
         modalAddComponent: {

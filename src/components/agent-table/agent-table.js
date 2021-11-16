@@ -60,7 +60,7 @@ const AgentTable = ({
         )}
         {activeColumns.isAgentExtNoColumn && (
           <div className="agent-t__header-item" style={{ width: colWidth }}>
-            Extension No
+            Phone Ext
           </div>
         )}
         {activeColumns.isNoCallsOfferedColumn && (

@@ -17,7 +17,7 @@ const mockStore = createMockStore([thunk]);
 Enzyme.configure({ adapter: new Adapter() });
 
 describe('Modal: Add Component -- view section', () => {
-  const initialStoraValues = {
+  const initialStoreValues = {
     modal: { ...modalInitialState },
     skills: { ...skillsInitialState },
     callsQueues: { ...callsQueuesInitialState },
@@ -32,7 +32,7 @@ describe('Modal: Add Component -- view section', () => {
 
   test('View section should be rendered', () => {
     const store = mockStore({
-      ...initialStoraValues,
+      ...initialStoreValues,
     });
     let wrapper = mount(
       <Provider store={store}>
@@ -44,7 +44,7 @@ describe('Modal: Add Component -- view section', () => {
 
   test('Card View option shuld be selected', () => {
     const store = mockStore({
-      ...initialStoraValues,
+      ...initialStoreValues,
     });
     let wrapper = mount(
       <Provider store={store}>
@@ -56,7 +56,7 @@ describe('Modal: Add Component -- view section', () => {
 
   test('if is card view, show only 2 options', () => {
     const store = mockStore({
-      ...initialStoraValues,
+      ...initialStoreValues,
     });
     let wrapper = mount(
       <Provider store={store}>
@@ -68,7 +68,7 @@ describe('Modal: Add Component -- view section', () => {
 
   test('if is table view, show columns options', () => {
     const store = mockStore({
-      ...initialStoraValues,
+      ...initialStoreValues,
       modal: {
         ...modalInitialState,
         modalAddComponent: {
@@ -87,7 +87,7 @@ describe('Modal: Add Component -- view section', () => {
 
   test('dispatch when radio button is clicked', () => {
     const store = mockStore({
-      ...initialStoraValues,
+      ...initialStoreValues,
       modal: {
         ...modalInitialState,
         modalAddComponent: {

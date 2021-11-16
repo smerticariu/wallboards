@@ -32,7 +32,9 @@ const AgentTablePreview = ({
         {noCallsAnswered && <div className="agent-t__header-item agent-t__header-item--preview">Calls answered</div>}
         {noCallsMissed && <div className="agent-t__header-item agent-t__header-item--preview">Calls missed</div>}
         {timeInCurrentPresenceState && <div className="agent-t__header-item agent-t__header-item--preview">Time in current</div>}
-        {timeInCurrentAvailabilityState && <div className="agent-t__header-item agent-t__header-item--preview">Time availability</div>}
+        {timeInCurrentAvailabilityState && (
+          <div className="agent-t__header-item agent-t__header-item--preview">Time In Current A.State</div>
+        )}
         {timeInCurrentCall && <div className="agent-t__header-item agent-t__header-item--preview">Time on cur. call</div>}
         {timeInCurrentWrapup && <div className="agent-t__header-item agent-t__header-item--preview">Time on cur. wr.</div>}
         {listOfSkills && <div className="agent-t__header-item agent-t__header-item--preview">Skills</div>}

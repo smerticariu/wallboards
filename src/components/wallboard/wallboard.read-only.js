@@ -48,27 +48,20 @@ const WallboardReadOnly = () => {
       );
     }
 
-    if (!wallboard.settings.link.isReadOnlyEnabled) {
-      if (!adminPermissions && teamleaderPermissions) {
-        // team leader only permissions
-        if (wallboard.createdByUserId !== userInfo.id) {
-          // check if the team leader created owns the wallboard
-          return (
-            <div>
-              <h3 className="error-message--headline">Error:</h3>
-              <p className="error-message">{DEFAULTS.WALLBOARDS.MESSAGE.NOT_ALLOWED_VIEW}</p>
-            </div>
-          );
-        }
-      }
-    }
+    return (
+      <div>
+        <h3 className="error-message--headline">Error:</h3>
+        <p className="error-message">{DEFAULTS.WALLBOARDS.MESSAGE.NOT_ALLOWED_VIEW}</p>
+      </div>
+    );
   };
 
   return (
     <div className="c-wallboard--read-only">
-      {fetchStatus !== FetchStatus.SUCCESS ? (
-        <Toolbar template="error">{handleErrors()}</Toolbar>
-      ) : (
+      {fetchStatus === FetchStatus.SUCCESS &&
+      (wallboard.settings.link.isReadOnlyEnabled
+        ? true
+        : adminPermissions || (teamleaderPermissions && wallboard.createdByUserId === userInfo.id)) ? (
         <>
           <Toolbar template="wb-read-only" wbName={wallboard.name} logout={logout} />
 
@@ -78,6 +71,8 @@ const WallboardReadOnly = () => {
             </div>
           </div>
         </>
+      ) : (
+        <Toolbar template="error">{handleErrors()}</Toolbar>
       )}
     </div>
   );
