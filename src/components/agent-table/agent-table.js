@@ -110,8 +110,12 @@ const AgentTable = ({
         {agents?.map((agent, index) => (
           <div key={`${agent.userId} ${index}`} className="agent-t__agent">
             {(canListenLive || canCallAgents) && (
-              <div className="agent-t__agent-info agent-t__agent-info--settings">
-                <Dropdown closeOnClick={true} trigger={<SettingsIcon className="i--settings i--settings--table" />}>
+              <div className="agent-t__agent-info agent-t__agent-info--settings agent-t__agent-info--overflow">
+                <Dropdown
+                  containerClassName={'c-dropdown__container--agent-name'}
+                  closeOnClick={true}
+                  trigger={<SettingsIcon className="i--settings i--settings--table" />}
+                >
                   {canListenLive && (
                     <div
                       className="c-dropdown__item"
