@@ -22,8 +22,8 @@ export const SORT_BY_VALUES = {
 };
 export const PRESENCE_STATE_KEYS = {
   AGENT_STATUS_INBOUND_CALL_QUEUE: 'onQCall',
-  // AGENT_STATUS_INBOUND_CALL_OTHER: 'inboundCall', // do not remove
-  AGENT_STATUS_INBOUND_CALL_OTHER: 'busy',
+  AGENT_STATUS_INBOUND_CALL_OTHER: 'inboundCall', // do not remove
+  // AGENT_STATUS_INBOUND_CALL_OTHER: 'busy',
   AGENT_STATUS_OUTBOUND: 'outboundCall',
   AGENT_STATUS_RINGING: 'ringing',
   AGENT_STATUS_IN_WRAP_UP: 'inWrapUp',

@@ -43,6 +43,7 @@ export const agentsReducer = (state = agentsInitialState, action) => {
                         return {
                           ...agentFromRedux,
                           ...agent,
+                          status: agentFromRedux.userCurrentCall ? agentFromRedux.status : agent.status,
                         };
                       }
                       return agent;
@@ -199,9 +200,15 @@ export const agentsReducer = (state = agentsInitialState, action) => {
           ...queueWithAgents,
           agents: queueWithAgents.agents.map((agent) => {
             let userCall = null;
+            let newStatus = agent.status;
             calls.some((call) =>
               call.channels.some((channel) => {
                 if (channel.userId === agent.userId || channel.to === agent.organisationUserData?.sipExtension) {
+                  if (channel.userId === agent.userId) {
+                    newStatus = 'outboundCall';
+                  } else {
+                    newStatus = 'inboundCall';
+                  }
                   userCall = {
                     ...channel,
                     direction: call.direction,
@@ -214,6 +221,7 @@ export const agentsReducer = (state = agentsInitialState, action) => {
             return {
               ...agent,
               userCurrentCall: userCall,
+              status: newStatus,
             };
           }),
         })),

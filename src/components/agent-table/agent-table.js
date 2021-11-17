@@ -140,7 +140,7 @@ const AgentTable = ({
               </div>
             )}
             {activeColumns.isAgentNameColumn && (
-              <div className="agent-t__agent-info agent-t__agent-info--name" style={{ width: colWidth }}>
+              <div className="agent-t__agent-info agent-t__agent-info--name agent-t__agent-info--overflow" style={{ width: colWidth }}>
                 {agent.agentName.length > DEFAULTS.GRID.MAX_NAME_CHARACTERS ? (
                   <Dropdown
                     className="c-dropdown--availability-state"
