@@ -94,8 +94,8 @@ export const saveWallboardThunk = () => async (dispatch, getState) => {
     const data = {
       id: wbId,
       name: activeWallboard.name,
-      createdBy: `${userInfo.firstName} ${userInfo.lastName}`,
-      createdByUserId: userInfo.id,
+      createdBy: activeWallboard.isNewWallboard ? `${userInfo.firstName} ${userInfo.lastName}` : activeWallboard.createdBy,
+      createdByUserId: activeWallboard.isNewWallboard ? userInfo.id : activeWallboard.createdByUserId,
       createdOn: activeWallboard.createdOn ?? currentDate,
       lastView: currentDate,
       description: activeWallboard.description,
