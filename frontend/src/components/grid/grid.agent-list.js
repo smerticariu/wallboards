@@ -98,6 +98,7 @@ const GridAgentList = ({ isEditMode, widget, ...props }) => {
         if (agentQueue.userCurrentCall?.to === agentQueue.organisationUserData?.sipExtension) {
           agentStatus = PRESENCE_STATE_KEYS.AGENT_STATUS_INBOUND_CALL_OTHER;
         }
+        // do not remove
         // if (agentQueue.status === PRESENCE_STATE_KEYS.AGENT_STATUS_BUSY) {
         //   agentStatus = PRESENCE_STATE_KEYS.AGENT_STATUS_INBOUND_CALL_QUEUE;
         //   if (agentQueue.userCurrentCall?.state === CALL_DIRECTIONS.RINGING) {

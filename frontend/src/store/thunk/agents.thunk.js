@@ -199,30 +199,6 @@ export const fetchUsersCurrentCallTimeThunk = () => async (dispatch, getState) =
     });
 
     dispatch(fetchUsersCurrentCallTimeSuccessAC(response.data.data));
-    // dispatch(
-    //   fetchUsersCurrentCallTimeSuccessAC([
-    //     {
-    //       direction: 'OUTGOING',
-    //       channels: [
-    //         {
-    //           uuid: '4f7b1d78-1ab5-11ec-b254-b5dda23eb784',
-    //           originatorUuid: null,
-    //           deviceId: 187912,
-    //           userId: 5601879,
-    //           from: 12020,
-    //           to: 2002,
-    //           type: 'SOC',
-    //           state: 'ANSWERED',
-    //           createTime: '2021-09-21T08:24:17+00:00',
-    //           answerTime: '2021-09-21T08:24:18+00:00',
-    //           feature: 'CALL',
-    //           policy: 'Default',
-    //           direction: 'INCOMING',
-    //         },
-    //       ],
-    //     },
-    //   ])
-    // );
   } catch (error) {
     dispatch(handleIsNotificationShowAC(true, true, DEFAULTS.GLOBAL.FAIL));
     console.log(error);
