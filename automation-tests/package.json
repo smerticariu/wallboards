@@ -1,0 +1,25 @@
+{
+  "name": "cypress-wallboards-automation",
+  "version": "1.0.0",
+  "description": "cypress with cucumber e2e wallboards testing framework",
+  "main": "index.js",
+  "cypress-multi-reporters": "^1.2.4",
+  "mocha-junit-reporter": "^1.23.3",
+  "scripts": {
+    "test1": "echo \"Error: no test specified\" && exit 1",
+    "scripts": "cypress run",
+    "test": "npm run scripts"
+  },
+  "author": "Emy Iacob",
+  "license": "ISC",
+  "devDependencies": {
+    "@4tw/cypress-drag-drop": "^1.6.0",
+    "cypress": "^8.6.0",
+    "cypress-cucumber-preprocessor": "^4.1.4",
+    "cypress-file-upload": "^5.0.8",
+    "cypress-xpath": "^1.6.2"
+  },
+  "cypress-cucumber-preprocessor": {
+    "nonGlobalStepDefinitions": true
+  }
+}
