@@ -6,10 +6,7 @@
   flex: 0 1 auto;
   margin: 0 auto;
   padding: 25px 0;
-  &--error {
-    flex: auto;
-    flex-direction: column;
-  }
+
   &-right {
     width: 60%;
     display: flex;
@@ -36,7 +33,17 @@
       margin: 0;
     }
   }
-  @media screen and (max-width: $xl) {
+  &--error {
+    flex-direction: column;
+    .c-toolbar-right {
+      margin-top: 10px;
+      justify-content: center;
+    }
+  }
+}
+
+@media screen and (max-width: $tablet) {
+  .c-toolbar:not(.c-toolbar--wb-read-only) {
     flex-direction: column;
     justify-content: space-evenly;
     padding: 20px 0;

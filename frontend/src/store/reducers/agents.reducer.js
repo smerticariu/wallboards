@@ -40,10 +40,11 @@ export const agentsReducer = (state = agentsInitialState, action) => {
                     agents: action.payload.agent.map((agent) => {
                       const agentFromRedux = agentQueue.agents.find((reduxAgent) => reduxAgent.userId === agent.userId);
                       if (agentFromRedux) {
+                        let newStatus = agentFromRedux.userCurrentCall ? agentFromRedux.status : agent.status;
                         return {
                           ...agentFromRedux,
                           ...agent,
-                          status: agentFromRedux.userCurrentCall ? agentFromRedux.status : agent.status,
+                          status: newStatus,
                         };
                       }
                       return agent;
@@ -204,11 +205,6 @@ export const agentsReducer = (state = agentsInitialState, action) => {
             calls.some((call) =>
               call.channels.some((channel) => {
                 if (channel.userId === agent.userId || channel.to === agent.organisationUserData?.sipExtension) {
-                  if (channel.userId === agent.userId) {
-                    newStatus = 'outboundCall';
-                  } else {
-                    newStatus = 'inboundCall';
-                  }
                   userCall = {
                     ...channel,
                     direction: call.direction,

@@ -32,6 +32,7 @@ export const wallboardsInitialState = {
     wallboard: wallboardInitialValues,
     fetchStatus: FetchStatus.NULL,
     fetchMessage: '',
+    statusCode: '',
     saveStatus: FetchStatus.NULL,
   },
   allWallboards: {
@@ -49,6 +50,7 @@ export const wallboardsReducer = (state = { ...wallboardsInitialState }, action)
           ...state.activeWallboard,
           fetchStatus: FetchStatus.IN_PROGRESS,
           fetchMessage: action.payload,
+          statusCode: '',
         },
       };
     case wallboardsActions.FETCH_WALLBOARD_BY_ID_SUCCESS:
@@ -59,6 +61,7 @@ export const wallboardsReducer = (state = { ...wallboardsInitialState }, action)
           wallboard: action.payload,
           wallboardInitialValues: action.payload,
           fetchStatus: FetchStatus.SUCCESS,
+          statusCode: '',
         },
       };
     case wallboardsActions.FETCH_WALLBOARD_BY_ID_FAIL:
@@ -68,7 +71,8 @@ export const wallboardsReducer = (state = { ...wallboardsInitialState }, action)
           ...state.activeWallboard,
           wallboard: { ...wallboardInitialValues },
           fetchStatus: FetchStatus.FAIL,
-          fetchMessage: action.payload,
+          fetchMessage: action.payload.errorMEssage,
+          statusCode: action.payload.statusCode,
         },
       };
 

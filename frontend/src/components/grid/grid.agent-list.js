@@ -21,7 +21,7 @@ import { FetchStatus } from 'src/store/reducers/wallboards.reducer';
 import { fetchAgentSkillThunk } from 'src/store/thunk/skills.thunk';
 import moment from '../../../node_modules/moment/moment';
 import { DEFAULTS } from '../../common/defaults/defaults';
-import { SORT_BY_VALUES } from '../../common/defaults/modal.defaults';
+import { CALL_DIRECTIONS, PRESENCE_STATE_KEYS, SORT_BY_VALUES } from '../../common/defaults/modal.defaults';
 const GridAgentList = ({ isEditMode, widget, ...props }) => {
   const dispatch = useDispatch();
   const agentQueues = useSelector((state) => state.agents.agentsQueues.find((queue) => queue.callQueueId === widget.callQueue.id));
@@ -90,9 +90,38 @@ const GridAgentList = ({ isEditMode, widget, ...props }) => {
         const lastAvailabilityStateChangeSeconds = agentQueue.lastAvailabilityStateChange
           ? moment().diff(moment(agentQueue.lastAvailabilityStateChange), 'seconds')
           : 0;
+        let agentStatus = agentQueue.status;
+
+        if (agentQueue.userCurrentCall?.userId === agentQueue.userId) {
+          agentStatus = PRESENCE_STATE_KEYS.AGENT_STATUS_OUTBOUND;
+        }
+        if (agentQueue.userCurrentCall?.to === agentQueue.organisationUserData?.sipExtension) {
+          agentStatus = PRESENCE_STATE_KEYS.AGENT_STATUS_INBOUND_CALL_OTHER;
+        }
+        // if (agentQueue.status === PRESENCE_STATE_KEYS.AGENT_STATUS_BUSY) {
+        //   agentStatus = PRESENCE_STATE_KEYS.AGENT_STATUS_INBOUND_CALL_QUEUE;
+        //   if (agentQueue.userCurrentCall?.state === CALL_DIRECTIONS.RINGING) {
+        //     agentStatus = PRESENCE_STATE_KEYS.AGENT_STATUS_RINGING;
+        //   }
+        // }
+        // if (agentQueue.status === PRESENCE_STATE_KEYS.AGENT_STATUS_IDLE) {
+        //   if (agentQueue.userCurrentCall) {
+        //     agentStatus =
+        //       [CALL_DIRECTIONS.INBOUND, CALL_DIRECTIONS.INCOMING].indexOf(agentQueue.userCurrentCall.direction) === -1
+        //         ? PRESENCE_STATE_KEYS.AGENT_STATUS_INBOUND_CALL_OTHER
+        //         : PRESENCE_STATE_KEYS.AGENT_STATUS_OUTBOUND;
+        //     if (agentQueue.userCurrentCall.state === CALL_DIRECTIONS.RINGING) {
+        //       agentStatus = PRESENCE_STATE_KEYS.AGENT_STATUS_RINGING;
+        //     }
+        //   }
+        //   if (agentQueue.inWrapUp) {
+        //     agentStatus = PRESENCE_STATE_KEYS.AGENT_STATUS_IN_WRAP_UP;
+        //   }
+        // }
 
         return {
           ...agentQueue,
+          status: agentStatus,
           agentSkills: agentSkills?.skills?.map((skill) => ({ description: skill.description, name: skill.name })) ?? [],
           sipExtension: agentQueue.organisationUserData?.sipExtension,
           userName: agentQueue.organisationUserData?.userName,

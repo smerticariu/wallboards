@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import { useAuth0 } from '@auth0/auth0-react';
 import { useParams } from 'react-router-dom';
 import Toolbar from '../toolbar/toolbar';
 import { useDispatch, useSelector } from 'react-redux';
@@ -11,10 +10,9 @@ import { DEFAULTS } from '../../common/defaults/defaults';
 
 const WallboardReadOnly = () => {
   const { id } = useParams();
-  const { logout } = useAuth0();
   const dispatch = useDispatch();
   const { userInfo } = useSelector((state) => state.login);
-  const { wallboard, fetchStatus, fetchMessage } = useSelector((state) => state.wallboards.present.activeWallboard);
+  const { wallboard, fetchStatus, fetchMessage, statusCode } = useSelector((state) => state.wallboards.present.activeWallboard);
   const { availabilityProfiles } = useSelector((state) => state.agents);
   const adminPermissions = userInfo.isAdmin;
   const teamleaderPermissions = userInfo.isTeamLeader;
@@ -42,7 +40,7 @@ const WallboardReadOnly = () => {
     if (fetchStatus !== FetchStatus.SUCCESS) {
       return (
         <div>
-          {fetchStatus === FetchStatus.FAIL && <h3 className="error-message--headline">Error:</h3>}
+          {fetchStatus === FetchStatus.FAIL && <h3 className="error-message--headline">Error {statusCode}:</h3>}
           <p className="error-message">{fetchMessage}</p>
         </div>
       );
@@ -50,7 +48,7 @@ const WallboardReadOnly = () => {
 
     return (
       <div>
-        <h3 className="error-message--headline">Error:</h3>
+        <h3 className="error-message--headline">Error {statusCode}:</h3>
         <p className="error-message">{DEFAULTS.WALLBOARDS.MESSAGE.NOT_ALLOWED_VIEW}</p>
       </div>
     );
@@ -63,7 +61,7 @@ const WallboardReadOnly = () => {
         ? true
         : adminPermissions || (teamleaderPermissions && wallboard.createdByUserId === userInfo.id)) ? (
         <>
-          <Toolbar template="wb-read-only" wbName={wallboard.name} logout={logout} />
+          <Toolbar template="wb-read-only" wbName={wallboard.name} />
 
           <div className="c-wallboard--read-only__component">
             <div className="c-wallboard--read-only__cards">

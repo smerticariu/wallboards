@@ -16,7 +16,7 @@ import ModalAddComponent from './components/modal/add-component/modal.add-compon
 import ModalSaveWallboard from './components/modal/save-wallboard/modal.save-wallboard';
 import ModalEditWallboard from './components/modal/edit-wallboard/modal.edit-wallboard';
 import ModalDeleteWallboard from './components/modal/delete-wallboard/modal.delete-wallboard';
-import NotificationMessage from './components/agent-card/notification-message/notification-message';
+import NotificationMessage from './components/notification-message/notification-message';
 import ModalDeleteWallboardComponent from './components/modal/delete-wallboard-component/modal.delete-wallboard-component';
 import ModalConfirmSaveWallboard from './components/modal/save-wallboard/modal.confirm-save-wallboard';
 import ModalWarning from './components/modal/warning/modal.warning';
