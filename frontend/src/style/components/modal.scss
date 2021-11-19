@@ -29,6 +29,9 @@
     &--edit-wallboard {
       width: 650px;
     }
+    &--call-status {
+      width: 500px;
+    }
   }
 
   &--open {
@@ -115,6 +118,7 @@
       display: flex;
       width: 100%;
     }
+    &--call-status,
     &--save-changes,
     &--add-component,
     &--edit-wallboard {
