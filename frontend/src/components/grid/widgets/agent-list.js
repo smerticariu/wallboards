@@ -13,15 +13,14 @@ import {
   fetchDevicesSipAgentsThunk,
   fetchOrganisationAgentsThunk,
   fetchUserGroupsThunk,
-  fetchUsersCurrentCallTimeThunk,
 } from 'src/store/thunk/agents.thunk';
-import AgentCard from '../agent-card/agent-card';
-import AgentTable from '../agent-table/agent-table';
+import AgentCard from '../../agent-card/agent-card';
+import AgentTable from '../../agent-table/agent-table';
 import { FetchStatus } from 'src/store/reducers/wallboards.reducer';
 import { fetchAgentSkillThunk } from 'src/store/thunk/skills.thunk';
 import moment from '../../../node_modules/moment/moment';
-import { DEFAULTS } from '../../common/defaults/defaults';
-import { CALL_DIRECTIONS, PRESENCE_STATE_KEYS, SORT_BY_VALUES } from '../../common/defaults/modal.defaults';
+import { PRESENCE_STATE_KEYS, SORT_BY_VALUES } from '../../common/defaults/modal.defaults';
+import { DEFAULTS } from '../../../common/defaults/defaults';
 const GridAgentList = ({ isEditMode, widget, ...props }) => {
   const dispatch = useDispatch();
   const agentQueues = useSelector((state) => state.agents.agentsQueues.find((queue) => queue.callQueueId === widget.callQueue.id));
@@ -58,7 +57,6 @@ const GridAgentList = ({ isEditMode, widget, ...props }) => {
     dispatch(fetchAllAgentsThunk(widget.callQueue.id));
     const agentsInterval = setInterval(() => {
       dispatch(fetchAllAgentsThunk(widget.callQueue.id));
-      dispatch(fetchUsersCurrentCallTimeThunk());
     }, 2000);
     dispatch(fetchDevicesSipAgentsThunk());
     dispatch(fetchUserGroupsThunk());
@@ -179,7 +177,7 @@ const GridAgentList = ({ isEditMode, widget, ...props }) => {
     };
 
     return (
-      <div onClick={onEditClick} className="agent-list__edit-icon">
+      <div onClick={onEditClick} className="widget__edit-icon">
         <EditIcon className="i--edit i--edit--margin-right" />
       </div>
     );
@@ -191,7 +189,7 @@ const GridAgentList = ({ isEditMode, widget, ...props }) => {
       dispatch(handleWallboardActiveModalAC(DEFAULTS.MODAL.MODAL_NAMES.DELETE_WALLBOARD_COMPONENT));
     };
     return (
-      <div onClick={onDeleteClick} className="agent-list__delete-icon">
+      <div onClick={onDeleteClick} className="widget__delete-icon">
         <CloseIcon className="i--close i--close--small" />
       </div>
     );
@@ -200,13 +198,13 @@ const GridAgentList = ({ isEditMode, widget, ...props }) => {
     dispatch(changeAgentAvailabilityStateThunk(agentId, profileId, stateId, availabilityStateName));
   };
   return (
-    <div className="agent-list">
-      <div className="agent-list__header">
-        <div className="agent-list__title">
-          <div className="agent-list__title--bold">{widget.name}:</div>
+    <div className="widget">
+      <div className="widget__header">
+        <div className="widget__title">
+          <div className="widget__title--bold">{widget.name}:</div>
           {widget.callQueue.name}
         </div>
-        <div className="agent-list__icons">
+        <div className="widget__icons">
           {isEditMode && (
             <>
               {handleEditIcon()}
@@ -216,9 +214,7 @@ const GridAgentList = ({ isEditMode, widget, ...props }) => {
         </div>
       </div>
       <div
-        className={`agent-list__body ${
-          widget.view === DEFAULTS.MODAL.ADD_COMPONENT.MAIN_VIEWING_OPTIONS.TABLE ? 'agent-list__body--table' : ''
-        }`}
+        className={`widget__body ${widget.view === DEFAULTS.MODAL.ADD_COMPONENT.MAIN_VIEWING_OPTIONS.TABLE ? 'widget__body--table' : ''}`}
       >
         {!agentsForDisplay.length || widget.columnsToView.selectedItems.length === 0 ? (
           <div className="empty-message empty-message--agents">No agents</div>

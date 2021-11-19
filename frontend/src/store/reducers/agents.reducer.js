@@ -18,6 +18,8 @@ export const agentsInitialState = {
 
   availabilityStates: [],
   availabilityStatesFetchStatus: FetchStatus.NULL,
+
+  calls: [],
 };
 
 export const agentsReducer = (state = agentsInitialState, action) => {
@@ -197,6 +199,7 @@ export const agentsReducer = (state = agentsInitialState, action) => {
       const calls = action.payload;
       return {
         ...state,
+        calls,
         agentsQueues: state.agentsQueues.map((queueWithAgents) => ({
           ...queueWithAgents,
           agents: queueWithAgents.agents.map((agent) => {

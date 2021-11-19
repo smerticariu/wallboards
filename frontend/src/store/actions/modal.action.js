@@ -15,6 +15,8 @@ export const modalActions = {
   HANLE_SELECTED_WALLBOARD_SETTINGS: 'HANLE_SELECTED_WALLBOARD_SETTINGS',
 
   SET_WALLBOARD_SETTINGS: 'SET_WALLBOARD_SETTINGS',
+
+  HANDLE_CALL_STATUS_DATA: 'HANDLE_CALL_STATUS_DATA',
 };
 export const handleWallboardActiveModalAC = (modalName) => ({
   type: modalActions.HANDLE_ACTIVE_MODAL,
@@ -53,4 +55,9 @@ export const handleChangeSelectedWallboardSettingsAC = (settings) => ({
 export const setSelectedWallboardSettingsAC = (activeWallboard) => ({
   type: modalActions.SET_WALLBOARD_SETTINGS,
   payload: activeWallboard,
+});
+
+export const handleCallStatusDataAC = (formData) => ({
+  type: modalActions.HANDLE_CALL_STATUS_DATA,
+  payload: formData,
 });

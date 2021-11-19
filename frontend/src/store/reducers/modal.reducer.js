@@ -68,6 +68,14 @@ export const modalInitialState = {
       isReadOnlyEnabled: false,
     },
   },
+  callStatus: {
+    isEditMode: false,
+    id: null,
+    title: {
+      value: 'Call Status',
+      errorMessage: '',
+    },
+  },
 };
 
 export const modalReducer = (state = modalInitialState, action) => {
@@ -115,31 +123,52 @@ export const modalReducer = (state = modalInitialState, action) => {
 
     case modalActions.SET_WIDGET_FOR_EDIT: {
       const widgetForEdit = action.payload;
-      return {
-        ...state,
-        modalAddComponent: {
-          title: {
-            value: widgetForEdit.name,
-            errorMessage: '',
-          },
-          callQueue: {
-            id: widgetForEdit.callQueue.id,
-            name: widgetForEdit.callQueue.name,
-            errorMessage: '',
-          },
-          mainViewing: widgetForEdit.view,
-          sortBy: { value: widgetForEdit.sortBy, errorMessage: '' },
-          columns: widgetForEdit.columns,
-          availabilityStates: widgetForEdit.availabilityStates,
-          presenceStates: widgetForEdit.presenceStates,
-          skillsToView: widgetForEdit.skills,
-          interactivityOptions: widgetForEdit.interactivity,
-          columnsToViewOptions: widgetForEdit.columnsToView,
-          isEditMode: true,
-          size: widgetForEdit.size,
-          id: widgetForEdit.id,
-        },
-      };
+      switch (widgetForEdit.type) {
+        case DEFAULTS.WALLBOARDS.WIDGET_TYPE.AGENT_LIST: {
+          return {
+            ...state,
+            modalAddComponent: {
+              title: {
+                value: widgetForEdit.name,
+                errorMessage: '',
+              },
+              callQueue: {
+                id: widgetForEdit.callQueue.id,
+                name: widgetForEdit.callQueue.name,
+                errorMessage: '',
+              },
+              mainViewing: widgetForEdit.view,
+              sortBy: { value: widgetForEdit.sortBy, errorMessage: '' },
+              columns: widgetForEdit.columns,
+              availabilityStates: widgetForEdit.availabilityStates,
+              presenceStates: widgetForEdit.presenceStates,
+              skillsToView: widgetForEdit.skills,
+              interactivityOptions: widgetForEdit.interactivity,
+              columnsToViewOptions: widgetForEdit.columnsToView,
+              isEditMode: true,
+              size: widgetForEdit.size,
+              id: widgetForEdit.id,
+            },
+          };
+        }
+        case DEFAULTS.WALLBOARDS.WIDGET_TYPE.CALL_STATUS: {
+          return {
+            ...state,
+            callStatus: {
+              title: {
+                value: widgetForEdit.title,
+                errorMessage: '',
+              },
+
+              isEditMode: true,
+              size: widgetForEdit.size,
+              id: widgetForEdit.id,
+            },
+          };
+        }
+        default:
+          return state;
+      }
     }
 
     case modalActions.SET_WALLBOARD_SETTINGS: {
@@ -172,6 +201,15 @@ export const modalReducer = (state = modalInitialState, action) => {
         ...state,
         wallboardSettings: {
           ...state.wallboardSettings,
+          ...action.payload,
+        },
+      };
+    }
+
+    case modalActions.HANDLE_CALL_STATUS_DATA: {
+      return {
+        ...state,
+        callStatus: {
           ...action.payload,
         },
       };

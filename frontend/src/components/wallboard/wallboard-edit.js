@@ -87,6 +87,7 @@ const WallboardEdit = () => {
           <Toolbar template="new-wallboard" />
           {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.SELECT_COMPONENT ||
           activeModalName === DEFAULTS.MODAL.MODAL_NAMES.ADD_COMPONENT ||
+          activeModalName === DEFAULTS.MODAL.MODAL_NAMES.CALL_STATUS ||
           activeWallboard.widgets?.length ? (
             <GridPage />
           ) : (

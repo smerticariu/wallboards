@@ -35,4 +35,8 @@ export const WALLBOARDS = {
       ALL_WALLBOARDS: 'delete all wallboards',
     },
   },
+  WIDGET_TYPE: {
+    AGENT_LIST: 'AGENT_LIST',
+    CALL_STATUS: 'CALL_STATUS',
+  },
 };

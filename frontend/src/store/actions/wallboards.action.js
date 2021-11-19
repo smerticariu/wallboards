@@ -22,6 +22,8 @@ export const wallboardsActions = {
 
   ADD_WALLBOARD_COMPONENT: 'ADD_WALLBOARD_COMPONENT',
 
+  ADD_WALLBOARD_CALL_STATUS: 'ADD_WALLBOARD_CALL_STATUS',
+
   WALLBOARD_GRID_LAYOUT_CHANGE: 'WALLBOARD_GRID_LAYOUT_CHANGE',
 
   RESET_WALLBOARD_EDIT_PAGE_DATA: 'RESET_WALLBOARD_EDIT_PAGE_DATA',
@@ -111,6 +113,11 @@ export const saveWallboardResetStatusAC = (errorMEssage) => ({
 export const addWallboardComponentAC = (userInfo, modalAddComponent) => ({
   type: wallboardsActions.ADD_WALLBOARD_COMPONENT,
   payload: { user: userInfo, modalAddComponent },
+});
+
+export const addWallboardCallStatusAC = (callStatus, userInfo) => ({
+  type: wallboardsActions.ADD_WALLBOARD_CALL_STATUS,
+  payload: { callStatus, userInfo },
 });
 
 export const handleWallboardGridLayoutChangeAC = (gridLayout) => ({
