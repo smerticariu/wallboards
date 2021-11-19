@@ -18,9 +18,9 @@ import AgentCard from '../../agent-card/agent-card';
 import AgentTable from '../../agent-table/agent-table';
 import { FetchStatus } from 'src/store/reducers/wallboards.reducer';
 import { fetchAgentSkillThunk } from 'src/store/thunk/skills.thunk';
-import moment from '../../../node_modules/moment/moment';
-import { PRESENCE_STATE_KEYS, SORT_BY_VALUES } from '../../common/defaults/modal.defaults';
+import moment from 'moment';
 import { DEFAULTS } from '../../../common/defaults/defaults';
+import { PRESENCE_STATE_KEYS, SORT_BY_VALUES } from '../../../common/defaults/modal.defaults';
 const GridAgentList = ({ isEditMode, widget, ...props }) => {
   const dispatch = useDispatch();
   const agentQueues = useSelector((state) => state.agents.agentsQueues.find((queue) => queue.callQueueId === widget.callQueue.id));
