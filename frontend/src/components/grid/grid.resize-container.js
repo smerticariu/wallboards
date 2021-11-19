@@ -5,7 +5,9 @@ import { ResizableBox } from 'react-resizable';
 import { handleWallboardGridLayoutChangeAC, syncWidgetsSizeForNewScreenAC } from 'src/store/actions/wallboards.action';
 import { DEFAULTS } from '../../common/defaults/defaults';
 import useWindowSize from '../../common/hooks/useWindowSize';
-import GridAgentList from './grid.agent-list';
+import GridAgentList from './widgets/agent-list';
+import GridCallStatus from './widgets/call-status';
+import Widget from './widgets/widget';
 
 const GridResizeContainer = ({ isEditMode = true, widgets = [], ...props }) => {
   const dispatch = useDispatch();
@@ -410,6 +412,7 @@ const GridResizeContainer = ({ isEditMode = true, widgets = [], ...props }) => {
         gridComponents
           .filter((gridComponent) => widgets.some((widget) => widget.id === gridComponent.id))
           .map((gridComponent) => {
+            const widget = widgets.find((widget) => widget.id === gridComponent.id);
             return (
               <Draggable
                 key={gridComponent.id}
@@ -420,7 +423,7 @@ const GridResizeContainer = ({ isEditMode = true, widgets = [], ...props }) => {
                 }}
                 onStop={(e, position) => onStop(e, position, gridComponent.id)}
                 onDrag={(e, position) => onControlledDrag(e, position, gridComponent.id)}
-                handle=".agent-list__title"
+                handle=".widget__title"
                 disabled={!isEditMode}
               >
                 <ResizableBox
@@ -431,7 +434,7 @@ const GridResizeContainer = ({ isEditMode = true, widgets = [], ...props }) => {
                   maxConstraints={[containerRef.current.offsetWidth - gridComponent.startX - 5, Infinity]}
                   resizeHandles={isEditMode ? ['se', 'e', 's'] : []}
                 >
-                  <GridAgentList isEditMode={isEditMode} widget={widgets.find((widget) => widget.id === gridComponent.id)} />
+                  <Widget isEditMode={isEditMode} widget={widget} />
                 </ResizableBox>
               </Draggable>
             );

@@ -1,3 +1,4 @@
+import { DEFAULTS } from '../../common/defaults/defaults';
 import { generateWallboardWidgetId } from '../../common/utils/generateId';
 
 import { wallboardsActions } from '../actions/wallboards.action';
@@ -164,6 +165,7 @@ export const wallboardsReducer = (state = { ...wallboardsInitialState }, action)
         skills: modalAddComponent.skillsToView,
         columns: modalAddComponent.columns,
         size: modalAddComponent.isEditMode ? modalAddComponent.size : null,
+        type: DEFAULTS.WALLBOARDS.WIDGET_TYPE.AGENT_LIST,
       };
       return {
         ...state,
@@ -181,6 +183,35 @@ export const wallboardsReducer = (state = { ...wallboardsInitialState }, action)
                       }
                 )
               : [...widgets, { ...newWidget, id: generateWallboardWidgetId(action.payload.user.organisationId, action.payload.user.id) }],
+          },
+        },
+      };
+    }
+
+    case wallboardsActions.ADD_WALLBOARD_CALL_STATUS: {
+      const { widgets } = state.activeWallboard.wallboard;
+      const { callStatus, userInfo } = action.payload;
+      const newWidget = {
+        title: callStatus.title.value,
+        type: DEFAULTS.WALLBOARDS.WIDGET_TYPE.CALL_STATUS,
+        size: callStatus.isEditMode ? callStatus.size : null,
+      };
+      return {
+        ...state,
+        activeWallboard: {
+          ...state.activeWallboard,
+          wallboard: {
+            ...state.activeWallboard.wallboard,
+            widgets: callStatus.isEditMode
+              ? widgets.map((widget) =>
+                  widget.id !== callStatus.id
+                    ? widget
+                    : {
+                        ...newWidget,
+                        id: callStatus.id,
+                      }
+                )
+              : [...widgets, { ...newWidget, id: generateWallboardWidgetId(userInfo.organisationId, userInfo.id) }],
           },
         },
       };

@@ -111,6 +111,10 @@ const ModalNewWallboard = ({ ...props }) => {
           dispatch(handleModalSelectActiveElementAC(selectedListItem));
           return dispatch(handleWallboardActiveModalAC(DEFAULTS.MODAL.MODAL_NAMES.ADD_COMPONENT));
         }
+        case 'Call status': {
+          dispatch(handleModalSelectActiveElementAC(selectedListItem));
+          return dispatch(handleWallboardActiveModalAC(DEFAULTS.MODAL.MODAL_NAMES.CALL_STATUS));
+        }
         default:
           return;
       }

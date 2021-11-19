@@ -40,6 +40,17 @@ export const MODAL_NEW_WALLBOARD_SECITONS = {
   CALLS: 'CALLS',
   USERS: 'USERS',
 };
+
+export const CALL_DIRECTION = {
+  INBOUND: 'INBOUND',
+  OUTBOUND: 'OUTBOUND',
+  INTERNAL: 'INTERNAL',
+  INCOMING: 'INCOMING',
+  OUTGOING: 'OUTGOING',
+  RELAYED: 'RELAYED',
+  FEATURE: 'FEATURE',
+  UNCATEGORISED: 'UNCATEGORISED',
+};
 export const MODAL = {
   MODAL_NAMES: {
     SELECT_COMPONENT: 'SELECT_COMPONENT',
@@ -49,6 +60,7 @@ export const MODAL = {
     DELETE_WALLBOARD: 'DELETE_WALLBOARD',
     EDIT_WALLBOARD: 'EDIT_WALLBOARD',
     DELETE_WALLBOARD_COMPONENT: 'DELETE_WALLBOARD_COMPONENT',
+    CALL_STATUS: 'CALL_STATUS',
   },
   NEW_WALLBOARD: {
     SELECT_COMPONENT: 'Select a component',
@@ -355,6 +367,7 @@ export const MODAL = {
   },
   MESSAGES: {
     ALPHANUMERIC_NAME: 'Component name must be alphanumeric',
+    ALPHANUMERIC_TITLE: 'Title must be alphanumeric',
     NO_RESULTS: 'No results',
   },
   DELETE_WALLBOARD_MODAL: {
@@ -384,5 +397,10 @@ export const MODAL = {
   },
   WARNING: {
     TITLE: 'Warning',
+  },
+  CALL_STATUS: {
+    MODAL_TITLE: 'Configuration Options',
+    TITLE: 'Title',
+    PLACEHOLDER: 'Call Status',
   },
 };

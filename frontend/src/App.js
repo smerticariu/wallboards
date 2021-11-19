@@ -21,6 +21,7 @@ import ModalDeleteWallboardComponent from './components/modal/delete-wallboard-c
 import ModalConfirmSaveWallboard from './components/modal/save-wallboard/modal.confirm-save-wallboard';
 import ModalWarning from './components/modal/warning/modal.warning';
 import { DEFAULTS } from './common/defaults/defaults';
+import ModalCallStatus from './components/modal/call-status/modal.call-status';
 
 function App() {
   const dispatch = useDispatch();
@@ -95,6 +96,7 @@ function App() {
           {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.EDIT_WALLBOARD && <ModalEditWallboard />}
           {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.DELETE_WALLBOARD_COMPONENT && <ModalDeleteWallboardComponent />}
           {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.CONFIRM_SAVE_WALLBOARD && <ModalConfirmSaveWallboard />}
+          {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.CALL_STATUS && <ModalCallStatus />}
           {warningMessage && <ModalWarning />}
         </>
       )}

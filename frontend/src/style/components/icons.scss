@@ -82,6 +82,12 @@
         height: 10px;
       }
     }
+    &--call-status {
+      width: 18px;
+      height: 18px;
+      fill: $natterbox-dark-blue-grey;
+      margin-right: 10px;
+    }
   }
   &--edit {
     fill: $natterbox-dark-blue-grey;
