@@ -49,7 +49,7 @@ const ModalCallStatus = ({ ...props }) => {
     };
 
     return (
-      <button className={`c-button c-button--white`} onClick={onClickDeleteButton}>
+      <button className="c-button c-button--white" onClick={onClickDeleteButton}>
         Save
       </button>
     );
