@@ -121,7 +121,10 @@ export const saveWallboardThunk = () => async (dispatch, getState) => {
   } catch (error) {
     dispatch(saveWallboardFailAC());
     if (activeWallboard.id !== undefined) {
-      dispatch(handleIsNotificationShowAC(true, true, DEFAULTS.WALLBOARDS.NOTIFICATION.FAIL.SAVE));
+      console.log(error.response);
+      dispatch(
+        handleIsNotificationShowAC(true, true, `Error: ${error.response.status ?? 'unknown'} ${DEFAULTS.WALLBOARDS.NOTIFICATION.FAIL.SAVE}`)
+      );
     }
     console.log(error);
   }
@@ -141,7 +144,13 @@ export const deleteWallboardThunk = (wbId) => async (dispatch, getState) => {
     dispatch(handleIsNotificationShowAC(true, false, DEFAULTS.WALLBOARDS.NOTIFICATION.SUCCESS.DELETE));
   } catch (error) {
     dispatch(fetchAllWallboardsFailAC());
-    dispatch(handleIsNotificationShowAC(true, true, DEFAULTS.WALLBOARDS.NOTIFICATION.FAIL.DELETE));
+    dispatch(
+      handleIsNotificationShowAC(
+        true,
+        true,
+        `Error: ${error.response.status ?? 'unknown'} - ${DEFAULTS.WALLBOARDS.NOTIFICATION.FAIL.DELETE}`
+      )
+    );
     console.log(error);
   }
 };

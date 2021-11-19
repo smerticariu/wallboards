@@ -2,8 +2,7 @@ import axios from 'axios';
 import { DEFAULTS } from '../defaults/defaults';
 import { generateWallboardsApi } from './generateWallboardsApi';
 
-
-export const WallboardsApi = async props => {
+export const WallboardsApi = async (props) => {
   const options = {
     method: 'get',
     headers: {
@@ -18,7 +17,7 @@ export const WallboardsApi = async props => {
   const wallboarIdUrl = `${baseUrl}/key/${props.wallboardId}`;
   const configUrl = `${baseUrl}/key/config.json`;
 
-  switch(props.type) {
+  switch (props.type) {
     case DEFAULTS.WALLBOARDS.API.GET.ALL_WALLBOARDS_VIA_CONFIG:
       options.url = configUrl;
       break;
@@ -52,17 +51,17 @@ export const WallboardsApi = async props => {
 
     case DEFAULTS.WALLBOARDS.API.DELETE.ALL_WALLBOARDS:
       options.method = 'delete';
-      props.data.data.data.forEach(async wallboard => {
-        if(wallboard.key === 'config.json') return; // do not config.json file
+      props.data.data.data.forEach(async (wallboard) => {
+        if (wallboard.key === 'config.json') return; // do not config.json file
         options.url = `${baseUrl}/key/${wallboard.key}`;
         await axios(options);
       });
       break;
 
-      default:
-        return null;
+    default:
+      return null;
   }
 
   const result = await axios(options);
   return result;
-}
+};
