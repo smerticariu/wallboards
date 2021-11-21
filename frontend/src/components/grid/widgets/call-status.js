@@ -99,7 +99,9 @@ const GridCallStatus = ({ isEditMode, widget, ...props }) => {
         {Object.keys(noOfCalls).map((key) => (
           <div key={key} className="widget__call-status-row">
             <div className="widget__call-status-title">{key}</div>
-            <div className="widget__call-status-data widget__call-status-data--two-columns">
+            <div
+              className={`widget__call-status-data ${noOfCalls[key].prevalue !== undefined ? 'widget__call-status-data--two-columns' : ''}`}
+            >
               {Object.keys(noOfCalls[key]).map((valueKey) => (
                 <div key={valueKey} className="widget__call-status-data__column">
                   {noOfCalls[key][valueKey]}

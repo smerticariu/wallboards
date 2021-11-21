@@ -76,6 +76,19 @@ export const modalInitialState = {
       errorMessage: '',
     },
   },
+  queueStatus: {
+    isEditMode: false,
+    id: null,
+    title: {
+      value: 'Call Status',
+      errorMessage: '',
+    },
+    callQueue: {
+      id: '',
+      value: '',
+      errorMessage: '',
+    },
+  },
 };
 
 export const modalReducer = (state = modalInitialState, action) => {
@@ -109,6 +122,8 @@ export const modalReducer = (state = modalInitialState, action) => {
       return {
         ...state,
         modalAddComponent: { ...modalInitialState.modalAddComponent },
+        callStatus: { ...modalInitialState.callStatus },
+        queueStatus: { ...modalInitialState.queueStatus },
       };
     case modalActions.SET_WALLBOARD_COMPONENT_FOR_DELETE:
       return {
@@ -166,6 +181,26 @@ export const modalReducer = (state = modalInitialState, action) => {
             },
           };
         }
+
+        case DEFAULTS.WALLBOARDS.WIDGET_TYPE.QUEUE_STATUS: {
+          return {
+            ...state,
+            queueStatus: {
+              title: {
+                value: widgetForEdit.title,
+                errorMessage: '',
+              },
+              callQueue: {
+                value: widgetForEdit.callQueue.value,
+                id: widgetForEdit.callQueue.id,
+                errorMessage: '',
+              },
+              isEditMode: true,
+              size: widgetForEdit.size,
+              id: widgetForEdit.id,
+            },
+          };
+        }
         default:
           return state;
       }
@@ -210,6 +245,14 @@ export const modalReducer = (state = modalInitialState, action) => {
       return {
         ...state,
         callStatus: {
+          ...action.payload,
+        },
+      };
+    }
+    case modalActions.HANDLE_QUEUE_STATUS_DATA: {
+      return {
+        ...state,
+        queueStatus: {
           ...action.payload,
         },
       };

@@ -216,6 +216,39 @@ export const wallboardsReducer = (state = { ...wallboardsInitialState }, action)
         },
       };
     }
+
+    case wallboardsActions.ADD_WALLBOARD_QUEUE_STATUS: {
+      const { widgets } = state.activeWallboard.wallboard;
+      const { queueStatus, userInfo } = action.payload;
+      const newWidget = {
+        title: queueStatus.title.value,
+        callQueue: {
+          id: queueStatus.callQueue.id,
+          value: queueStatus.callQueue.value,
+        },
+        type: DEFAULTS.WALLBOARDS.WIDGET_TYPE.QUEUE_STATUS,
+        size: queueStatus.isEditMode ? queueStatus.size : null,
+      };
+      return {
+        ...state,
+        activeWallboard: {
+          ...state.activeWallboard,
+          wallboard: {
+            ...state.activeWallboard.wallboard,
+            widgets: queueStatus.isEditMode
+              ? widgets.map((widget) =>
+                  widget.id !== queueStatus.id
+                    ? widget
+                    : {
+                        ...newWidget,
+                        id: queueStatus.id,
+                      }
+                )
+              : [...widgets, { ...newWidget, id: generateWallboardWidgetId(userInfo.organisationId, userInfo.id) }],
+          },
+        },
+      };
+    }
     case wallboardsActions.DELETE_WALLBOARD_COMPONENT_BY_ID: {
       const { widgets } = state.activeWallboard.wallboard;
 

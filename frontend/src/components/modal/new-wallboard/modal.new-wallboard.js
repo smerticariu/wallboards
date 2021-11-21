@@ -115,6 +115,10 @@ const ModalNewWallboard = ({ ...props }) => {
           dispatch(handleModalSelectActiveElementAC(selectedListItem));
           return dispatch(handleWallboardActiveModalAC(DEFAULTS.MODAL.MODAL_NAMES.CALL_STATUS));
         }
+        case 'Queue status': {
+          dispatch(handleModalSelectActiveElementAC(selectedListItem));
+          return dispatch(handleWallboardActiveModalAC(DEFAULTS.MODAL.MODAL_NAMES.QUEUE_STATUS));
+        }
         default:
           return;
       }

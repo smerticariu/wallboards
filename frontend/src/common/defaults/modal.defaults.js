@@ -22,8 +22,8 @@ export const SORT_BY_VALUES = {
 };
 export const PRESENCE_STATE_KEYS = {
   AGENT_STATUS_INBOUND_CALL_QUEUE: 'onQCall',
-  AGENT_STATUS_INBOUND_CALL_OTHER: 'inboundCall', // do not remove
-  // AGENT_STATUS_INBOUND_CALL_OTHER: 'busy',
+  AGENT_STATUS_INBOUND_CALL_OTHER: 'inboundCall',
+  AGENT_STATUS_BUSY: 'busy',
   AGENT_STATUS_OUTBOUND: 'outboundCall',
   AGENT_STATUS_RINGING: 'ringing',
   AGENT_STATUS_IN_WRAP_UP: 'inWrapUp',
@@ -61,6 +61,7 @@ export const MODAL = {
     EDIT_WALLBOARD: 'EDIT_WALLBOARD',
     DELETE_WALLBOARD_COMPONENT: 'DELETE_WALLBOARD_COMPONENT',
     CALL_STATUS: 'CALL_STATUS',
+    QUEUE_STATUS: 'QUEUE_STATUS',
   },
   NEW_WALLBOARD: {
     SELECT_COMPONENT: 'Select a component',
@@ -402,5 +403,14 @@ export const MODAL = {
     MODAL_TITLE: 'Configuration Options',
     TITLE: 'Title',
     PLACEHOLDER: 'Call Status',
+  },
+  QUEUE_STATUS: {
+    MODAL_TITLE: 'Configuration Options',
+    TITLE: 'Title',
+    CALL_QUEUE: 'Call Queue',
+    PLACEHOLDER: {
+      TITLE: 'Queue Status',
+      CALL_QUEUE: 'Call Queue',
+    },
   },
 };
