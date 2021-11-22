@@ -61,6 +61,7 @@ export const MODAL = {
     EDIT_WALLBOARD: 'EDIT_WALLBOARD',
     DELETE_WALLBOARD_COMPONENT: 'DELETE_WALLBOARD_COMPONENT',
     CALL_STATUS: 'CALL_STATUS',
+    QUEUE_TRACKING: 'QUEUE_TRACKING',
   },
   NEW_WALLBOARD: {
     SELECT_COMPONENT: 'Select a component',
@@ -365,6 +366,59 @@ export const MODAL = {
       TABLE: 'TABLE',
     },
   },
+
+  QUEUE_TRACKING_COLUMNS: [
+    {
+      text: 'Total Calls',
+      value: 'Total Calls',
+      isInitialChecked: true,
+    },
+    {
+      text: 'New Calls Queued',
+      value: 'New Calls Queued',
+      isInitialChecked: true,
+    },
+    {
+      text: 'Answered Calls',
+      value: 'Answered Calls',
+      isInitialChecked: true,
+    },
+    {
+      text: 'Caller Abandoned',
+      value: 'Caller Abandoned',
+      isInitialChecked: true,
+    },
+    {
+      text: 'Caller Timed Out',
+      value: 'Caller Timed Out',
+      isInitialChecked: true,
+    },
+    {
+      text: 'Caller Exited Queue',
+      value: 'Caller Exited Queue',
+      isInitialChecked: true,
+    },
+    {
+      text: 'Solid Calls',
+      value: 'Solid Calls',
+      isInitialChecked: true,
+    },
+    {
+      text: 'Average Talk Time',
+      value: 'Average Talk Time',
+      isInitialChecked: true,
+    },
+    {
+      text: 'Average Wait',
+      value: 'Average Wait',
+      isInitialChecked: true,
+    },
+    {
+      text: 'Max Wait',
+      value: 'Max Wait',
+      isInitialChecked: true,
+    },
+  ],
   MESSAGES: {
     ALPHANUMERIC_NAME: 'Component name must be alphanumeric',
     ALPHANUMERIC_TITLE: 'Title must be alphanumeric',
@@ -402,5 +456,13 @@ export const MODAL = {
     MODAL_TITLE: 'Configuration Options',
     TITLE: 'Title',
     PLACEHOLDER: 'Call Status',
+  },
+  QUEUE_TRACKING: {
+    MODAL_TITLE: 'Widget Options',
+    NAMES: {
+      TITLE: 'Title',
+      QUEUE_TO_MONITOR: 'Call Queue to Monitor'
+    },
+    PLACEHOLDER: 'Queue Tracking',
   },
 };

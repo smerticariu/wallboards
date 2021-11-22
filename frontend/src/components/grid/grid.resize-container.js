@@ -19,7 +19,6 @@ const GridResizeContainer = ({ isEditMode = true, widgets = [], ...props }) => {
     //check if there are widget without size
     const needToAddNewComponent = widgets.some((widget) => !widget.size);
     const containerWidth = containerRef.current.offsetWidth;
-
     if (needToAddNewComponent) {
       //calculate the height of all widgets
       const totalHeight = widgets.reduce(

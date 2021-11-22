@@ -115,6 +115,10 @@ const ModalNewWallboard = ({ ...props }) => {
           dispatch(handleModalSelectActiveElementAC(selectedListItem));
           return dispatch(handleWallboardActiveModalAC(DEFAULTS.MODAL.MODAL_NAMES.CALL_STATUS));
         }
+        case 'Queue tracking': {
+          dispatch(handleModalSelectActiveElementAC(selectedListItem));
+          return dispatch(handleWallboardActiveModalAC(DEFAULTS.MODAL.MODAL_NAMES.QUEUE_TRACKING));
+        }
         default:
           return;
       }

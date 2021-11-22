@@ -17,6 +17,8 @@ export const modalActions = {
   SET_WALLBOARD_SETTINGS: 'SET_WALLBOARD_SETTINGS',
 
   HANDLE_CALL_STATUS_DATA: 'HANDLE_CALL_STATUS_DATA',
+
+  HANDLE_QUEUE_TRACKING_DATA: 'HANDLE_QUEUE_TRACKING_DATA',
 };
 export const handleWallboardActiveModalAC = (modalName) => ({
   type: modalActions.HANDLE_ACTIVE_MODAL,
@@ -59,5 +61,10 @@ export const setSelectedWallboardSettingsAC = (activeWallboard) => ({
 
 export const handleCallStatusDataAC = (formData) => ({
   type: modalActions.HANDLE_CALL_STATUS_DATA,
+  payload: formData,
+});
+
+export const handleQueueTrackingDataAC = (formData) => ({
+  type: modalActions.HANDLE_QUEUE_TRACKING_DATA,
   payload: formData,
 });

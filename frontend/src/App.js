@@ -22,6 +22,7 @@ import ModalConfirmSaveWallboard from './components/modal/save-wallboard/modal.c
 import ModalWarning from './components/modal/warning/modal.warning';
 import { DEFAULTS } from './common/defaults/defaults';
 import ModalCallStatus from './components/modal/call-status/modal.call-status';
+import ModalQueueTracking from './components/modal/queue-tracking/modal.queue-tracking';
 
 function App() {
   const dispatch = useDispatch();
@@ -97,6 +98,7 @@ function App() {
           {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.DELETE_WALLBOARD_COMPONENT && <ModalDeleteWallboardComponent />}
           {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.CONFIRM_SAVE_WALLBOARD && <ModalConfirmSaveWallboard />}
           {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.CALL_STATUS && <ModalCallStatus />}
+          {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.QUEUE_TRACKING && <ModalQueueTracking />}
           {warningMessage && <ModalWarning />}
         </>
       )}

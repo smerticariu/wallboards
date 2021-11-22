@@ -76,6 +76,21 @@ export const modalInitialState = {
       errorMessage: '',
     },
   },
+  queueTracking: {
+    isEditMode: false,
+    id: null,
+    title: {
+      value: 'Queue tracking',
+      errorMessage: '',
+    },
+    callQueue: { id: '', name: '', errorMessage: '' },
+    columnsToViewOptions: {
+      selectedItems: DEFAULTS.MODAL.QUEUE_TRACKING_COLUMNS.reduce(
+        (strArr, el) => (el.isInitialChecked ? [...strArr, el.value] : strArr),
+        []
+      ),
+    },
+  },
 };
 
 export const modalReducer = (state = modalInitialState, action) => {
@@ -166,6 +181,26 @@ export const modalReducer = (state = modalInitialState, action) => {
             },
           };
         }
+        case DEFAULTS.WALLBOARDS.WIDGET_TYPE.QUEUE_TRACKING: {
+          return {
+            ...state,
+            queueTracking: {
+              title: {
+                value: widgetForEdit.title,
+                errorMessage: '',
+              },
+              callQueue: {
+                id: widgetForEdit.callQueue.id,
+                name: widgetForEdit.callQueue.name,
+                errorMessage: '',
+              },
+
+              isEditMode: true,
+              size: widgetForEdit.size,
+              id: widgetForEdit.id,
+            },
+          };
+        }
         default:
           return state;
       }
@@ -214,6 +249,14 @@ export const modalReducer = (state = modalInitialState, action) => {
         },
       };
     }
+    case modalActions.HANDLE_QUEUE_TRACKING_DATA:
+      return {
+        ...state,
+        queueTracking: {
+          ...state.queueTracking,
+          ...action.payload,
+        },
+      };
     default:
       return state;
   }
