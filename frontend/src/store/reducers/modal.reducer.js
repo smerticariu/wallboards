@@ -80,13 +80,45 @@ export const modalInitialState = {
     isEditMode: false,
     id: null,
     title: {
-      value: 'Call Status',
+      value: 'Queue Status',
       errorMessage: '',
     },
     callQueue: {
       id: '',
       value: '',
       errorMessage: '',
+    },
+  },
+  callTracking: {
+    isEditMode: false,
+    id: null,
+    title: {
+      value: 'Call Tracking',
+      errorMessage: '',
+    },
+    group: {
+      id: DEFAULTS.MODAL.CALL_TRACKING.USER_GROUP.id,
+      value: DEFAULTS.MODAL.CALL_TRACKING.USER_GROUP.name,
+    },
+    callQueue: {
+      id: '',
+      value: '',
+    },
+    callCategory: {
+      id: DEFAULTS.MODAL.CALL_TRACKING.CALL_CATEGORY[0].id,
+      value: DEFAULTS.MODAL.CALL_TRACKING.CALL_CATEGORY[0].value,
+    },
+    timeZone: {
+      id: DEFAULTS.MODAL.CALL_TRACKING.TIME_ZONE[13].id,
+      value: DEFAULTS.MODAL.CALL_TRACKING.TIME_ZONE[13].value,
+    },
+    period: {
+      id: DEFAULTS.MODAL.CALL_TRACKING.PERIOD[0].id,
+      value: DEFAULTS.MODAL.CALL_TRACKING.PERIOD[0].value,
+    },
+    startOfWeek: {
+      id: DEFAULTS.MODAL.CALL_TRACKING.START_WEEK[0].id,
+      value: DEFAULTS.MODAL.CALL_TRACKING.START_WEEK[0].value,
     },
   },
 };
@@ -124,6 +156,7 @@ export const modalReducer = (state = modalInitialState, action) => {
         modalAddComponent: { ...modalInitialState.modalAddComponent },
         callStatus: { ...modalInitialState.callStatus },
         queueStatus: { ...modalInitialState.queueStatus },
+        callTracking: { ...modalInitialState.callTracking },
       };
     case modalActions.SET_WALLBOARD_COMPONENT_FOR_DELETE:
       return {
@@ -201,6 +234,44 @@ export const modalReducer = (state = modalInitialState, action) => {
             },
           };
         }
+        case DEFAULTS.WALLBOARDS.WIDGET_TYPE.CALL_TRACKING: {
+          return {
+            ...state,
+            callTracking: {
+              title: {
+                value: widgetForEdit.title,
+                errorMessage: '',
+              },
+              group: {
+                id: widgetForEdit.group.id,
+                value: widgetForEdit.group.value,
+              },
+              callQueue: {
+                id: widgetForEdit.callQueue.id,
+                value: widgetForEdit.callQueue.value,
+              },
+              callCategory: {
+                id: widgetForEdit.callCategory.id,
+                value: widgetForEdit.callCategory.value,
+              },
+              timeZone: {
+                id: widgetForEdit.timeZone.id,
+                value: widgetForEdit.timeZone.value,
+              },
+              period: {
+                id: widgetForEdit.period.id,
+                value: widgetForEdit.period.value,
+              },
+              startOfWeek: {
+                id: widgetForEdit.startOfWeek.id,
+                value: widgetForEdit.startOfWeek.value,
+              },
+              isEditMode: true,
+              size: widgetForEdit.size,
+              id: widgetForEdit.id,
+            },
+          };
+        }
         default:
           return state;
       }
@@ -253,6 +324,15 @@ export const modalReducer = (state = modalInitialState, action) => {
       return {
         ...state,
         queueStatus: {
+          ...action.payload,
+        },
+      };
+    }
+    case modalActions.HANDLE_CALL_TRACKING_DATA: {
+      return {
+        ...state,
+        callTracking: {
+          ...state.callTracking,
           ...action.payload,
         },
       };

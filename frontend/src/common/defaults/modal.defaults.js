@@ -1,3 +1,19 @@
+import { createArrayFromTo } from '../utils/generateArray';
+import { WALLBOARDS } from './wallboards.defaults';
+export const CALL_STATISTIC_PERIOD = {
+  HOUR: 'hour',
+  TODAY: 'today',
+  WEEK: 'week',
+  ROLLING_HOUR: 'rolling-hour',
+};
+export const CALL_CATEGORY_OPTIONS = {
+  outbound: 'outbound',
+  inbound: 'inbound',
+  originated: 'originated',
+  received: 'received',
+  service: 'service',
+};
+
 export const ADD_COMPONENT_COLUMN_OPTIONS = {
   AGENT_NAME: 'AGENT_NAME',
   AGENT_EXTENSION: 'AGENT_EXTENSION',
@@ -62,6 +78,7 @@ export const MODAL = {
     DELETE_WALLBOARD_COMPONENT: 'DELETE_WALLBOARD_COMPONENT',
     CALL_STATUS: 'CALL_STATUS',
     QUEUE_STATUS: 'QUEUE_STATUS',
+    CALL_TRACKING: 'CALL_TRACKING',
   },
   NEW_WALLBOARD: {
     SELECT_COMPONENT: 'Select a component',
@@ -88,24 +105,28 @@ export const MODAL = {
         STATUS: 'Natterbox Admin',
         DATE: '19/03/2021 at 14:19',
         SERVICE: 'Customer Service Calls',
+        ID: WALLBOARDS.WIDGET_TYPE.AGENT_LIST,
       },
       {
         NAME: 'Queue list',
         STATUS: 'Natterbox Admin',
         DATE: '19/03/2021 at 14:19',
         SERVICE: 'Customer Service Calls',
+        ID: WALLBOARDS.WIDGET_TYPE.QUEUE_LIST,
       },
       {
         NAME: 'Queue tracking',
         STATUS: 'Natterbox Admin',
         DATE: '19/03/2021 at 14:19',
         SERVICE: 'Customer Service Calls',
+        ID: WALLBOARDS.WIDGET_TYPE.QUEUE_TRACKING,
       },
       {
         NAME: 'Queue status',
         STATUS: 'Natterbox Admin',
         DATE: '19/03/2021 at 14:19',
         SERVICE: 'Customer Service Calls',
+        ID: WALLBOARDS.WIDGET_TYPE.QUEUE_STATUS,
       },
     ],
     [MODAL_NEW_WALLBOARD_SECITONS.CALLS]: [
@@ -114,12 +135,14 @@ export const MODAL = {
         STATUS: 'Natterbox Admin',
         DATE: '19/03/2021 at 14:19',
         SERVICE: 'Customer Service Calls',
+        ID: WALLBOARDS.WIDGET_TYPE.CALL_STATUS,
       },
       {
         NAME: 'Call tracking',
         STATUS: 'Natterbox Admin',
         DATE: '19/03/2021 at 14:19',
         SERVICE: 'Customer Service Calls',
+        ID: WALLBOARDS.WIDGET_TYPE.CALL_TRACKING,
       },
     ],
     [MODAL_NEW_WALLBOARD_SECITONS.USERS]: [
@@ -128,12 +151,14 @@ export const MODAL = {
         STATUS: 'Natterbox Admin',
         DATE: '19/03/2021 at 14:19',
         SERVICE: 'Customer Service Calls',
+        ID: WALLBOARDS.WIDGET_TYPE.AGENT_LOGIN,
       },
       {
         NAME: 'Agent status',
         STATUS: 'Natterbox Admin',
         DATE: '19/03/2021 at 14:19',
         SERVICE: 'Customer Service Calls',
+        ID: WALLBOARDS.WIDGET_TYPE.AGENT_STATUS,
       },
     ],
   },
@@ -366,10 +391,53 @@ export const MODAL = {
       TABLE: 'TABLE',
     },
   },
+  CALL_TRACKING: {
+    SECTION_TITLE: {
+      TITLE: 'Title',
+      PREVIEW: 'Preview',
+      CALL_QUEUE: 'Call Queue',
+      GROUP: 'Group',
+      CALL_CATEGORY: 'Call Category',
+      TIME_ZONE: 'Time Zone',
+      PERIOD: 'Period',
+      START_WEEK: 'Start of Week',
+    },
+    PLACEHOLDER: {
+      TITLE: 'Placeholder...',
+    },
+    CALL_CATEGORY: [
+      { value: 'Outbound Calls', id: CALL_CATEGORY_OPTIONS.outbound },
+      { value: 'Inbound Calls', id: CALL_CATEGORY_OPTIONS.inbound },
+      { value: 'Originated Internal Calls', id: CALL_CATEGORY_OPTIONS.originated },
+      { value: 'Received Internal Calls', id: CALL_CATEGORY_OPTIONS.received },
+      { value: 'Service Calls', id: CALL_CATEGORY_OPTIONS.service },
+    ],
+    TIME_ZONE: createArrayFromTo(-11, 12).map((number) => ({
+      value: 'UTC ' + (number < 0 ? '-' : '+') + ' ' + (Math.abs(number) < 10 ? '0' : '') + Math.abs(number),
+      id: number * 60,
+    })),
+    PERIOD: [
+      { value: 'This Hour', id: CALL_STATISTIC_PERIOD.HOUR },
+      { value: 'Today', id: CALL_STATISTIC_PERIOD.TODAY },
+      { value: 'This Week', id: CALL_STATISTIC_PERIOD.WEEK },
+      { value: 'Rolling Hour', id: CALL_STATISTIC_PERIOD.ROLLING_HOUR },
+    ],
+    START_WEEK: [
+      { value: 'Monday', id: 0 },
+      { value: 'Tuesday', id: 1 },
+      { value: 'Wednesday', id: 2 },
+      { value: 'Thursday', id: 3 },
+      { value: 'Friday', id: 4 },
+      { value: 'Saturday', id: 5 },
+      { value: 'Sunday', id: 6 },
+    ],
+    USER_GROUP: {
+      id: -1,
+      name: 'All Groups*',
+    },
+  },
   MESSAGES: {
-    ALPHANUMERIC_NAME: 'Component name must be alphanumeric',
     ALPHANUMERIC_TITLE: 'Title must be alphanumeric',
-    NO_RESULTS: 'No results',
   },
   DELETE_WALLBOARD_MODAL: {
     TITLE: 'Delete Wallboard',

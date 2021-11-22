@@ -9,7 +9,6 @@ import {
 } from 'src/store/actions/modal.action';
 import {
   changeAgentAvailabilityStateThunk,
-  fetchAllAgentsThunk,
   fetchDevicesSipAgentsThunk,
   fetchOrganisationAgentsThunk,
   fetchUserGroupsThunk,
@@ -54,7 +53,6 @@ const GridAgentList = ({ isEditMode, widget, ...props }) => {
     }
   }, [availabilityProfiles, availabilityStates]);
   useEffect(() => {
-    dispatch(fetchAllAgentsThunk(widget.callQueue.id));
     dispatch(fetchDevicesSipAgentsThunk());
     dispatch(fetchUserGroupsThunk());
     // eslint-disable-next-line

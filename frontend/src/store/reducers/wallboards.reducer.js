@@ -249,6 +249,59 @@ export const wallboardsReducer = (state = { ...wallboardsInitialState }, action)
         },
       };
     }
+
+    case wallboardsActions.ADD_WALLBOARD_CALL_TRACKING: {
+      const { widgets } = state.activeWallboard.wallboard;
+      const { callTracking, userInfo } = action.payload;
+      const newWidget = {
+        title: callTracking.title.value,
+        group: {
+          id: callTracking.group.id,
+          value: callTracking.group.value,
+        },
+        callQueue: {
+          id: callTracking.callQueue.id,
+          value: callTracking.callQueue.value,
+        },
+        callCategory: {
+          id: callTracking.callCategory.id,
+          value: callTracking.callCategory.value,
+        },
+        timeZone: {
+          id: callTracking.timeZone.id,
+          value: callTracking.timeZone.value,
+        },
+        period: {
+          id: callTracking.period.id,
+          value: callTracking.period.value,
+        },
+        startOfWeek: {
+          id: callTracking.startOfWeek.id,
+          value: callTracking.startOfWeek.value,
+        },
+        type: DEFAULTS.WALLBOARDS.WIDGET_TYPE.CALL_TRACKING,
+        size: callTracking.isEditMode ? callTracking.size : null,
+      };
+      return {
+        ...state,
+        activeWallboard: {
+          ...state.activeWallboard,
+          wallboard: {
+            ...state.activeWallboard.wallboard,
+            widgets: callTracking.isEditMode
+              ? widgets.map((widget) =>
+                  widget.id !== callTracking.id
+                    ? widget
+                    : {
+                        ...newWidget,
+                        id: callTracking.id,
+                      }
+                )
+              : [...widgets, { ...newWidget, id: generateWallboardWidgetId(userInfo.organisationId, userInfo.id) }],
+          },
+        },
+      };
+    }
     case wallboardsActions.DELETE_WALLBOARD_COMPONENT_BY_ID: {
       const { widgets } = state.activeWallboard.wallboard;
 

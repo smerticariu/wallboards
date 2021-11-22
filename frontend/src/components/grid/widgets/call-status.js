@@ -7,17 +7,10 @@ import {
   setWidgetComponentForEditAC,
 } from 'src/store/actions/modal.action';
 import { SettingsIcon } from '../../../assets/static/icons/settings';
-
 import { DEFAULTS } from '../../../common/defaults/defaults';
 import { CALL_DIRECTION } from '../../../common/defaults/modal.defaults';
-const getCallsInitialValues = () => ({
-  inbound: { value: 0, prevalue: 0 },
-  outbound: { value: 0, prevalue: 0 },
-  internal: { value: 0 },
-  relayed: { value: 0 },
-  feature: { value: 0 },
-  uncategorised: { value: 0 },
-});
+import { getCallsInitialValues } from '../../../common/defaults/wallboards.defaults';
+
 const GridCallStatus = ({ isEditMode, widget, ...props }) => {
   const dispatch = useDispatch();
   const calls = useSelector((state) => state.agents.calls);

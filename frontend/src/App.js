@@ -23,6 +23,7 @@ import ModalWarning from './components/modal/warning/modal.warning';
 import { DEFAULTS } from './common/defaults/defaults';
 import ModalCallStatus from './components/modal/call-status/modal.call-status';
 import ModalQueueStatus from './components/modal/queue-status/modal.queue-status';
+import ModalCallTracking from './components/modal/call-tracking/modal.call-tracking';
 
 function App() {
   const dispatch = useDispatch();
@@ -99,6 +100,7 @@ function App() {
           {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.CONFIRM_SAVE_WALLBOARD && <ModalConfirmSaveWallboard />}
           {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.CALL_STATUS && <ModalCallStatus />}
           {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.QUEUE_STATUS && <ModalQueueStatus />}
+          {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.CALL_TRACKING && <ModalCallTracking />}
           {warningMessage && <ModalWarning />}
         </>
       )}

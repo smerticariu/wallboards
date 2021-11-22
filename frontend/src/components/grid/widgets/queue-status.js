@@ -11,16 +11,7 @@ import moment from 'moment';
 import { DEFAULTS } from '../../../common/defaults/defaults';
 import { PRESENCE_STATE_KEYS } from '../../../common/defaults/modal.defaults';
 import { fetchQueuedCallThunk } from '../../../store/thunk/callsQueues.thunk';
-const getQueueStatusInitialValues = () => ({
-  available_agents: { title: 'Available Agents', value: 0, color: '#b8c62a' },
-  busy_agents: { title: 'Busy Agents', value: 0, color: '#f8485e' },
-  wrapped_up_agents: { title: 'Wrapped Up Agents', value: 0, color: '#e87722' },
-  logged_off_agents: { title: 'Logged Off Agents', value: 0, color: '#49535c' },
-  total_agents: { title: 'Total Agents', value: 0, color: '#00a9ce' },
-  total_calls_queueing: { title: 'Total Calls Queueing', value: 0, color: '#00a9ce' },
-  longest_time_in_queue: { title: 'Longest Time in Queue', value: '00:00:00', color: '#00a9ce' },
-  most_dial_attempts: { title: 'Most Dial Attempts', value: 0, color: '#00a9ce' },
-});
+import { getQueueStatusInitialValues } from '../../../common/defaults/wallboards.defaults';
 
 const GridQueueStatus = ({ isEditMode, widget, ...props }) => {
   const dispatch = useDispatch();
@@ -34,6 +25,7 @@ const GridQueueStatus = ({ isEditMode, widget, ...props }) => {
       dispatch(fetchQueuedCallThunk(widget.callQueue.id));
     }, [2000]);
     return () => clearInterval(interval);
+    // eslint-disable-next-line
   }, [widget.callQueue.id]);
 
   useEffect(() => {
@@ -76,6 +68,7 @@ const GridQueueStatus = ({ isEditMode, widget, ...props }) => {
       }
     });
     handleQueueStatusValues(queueStatusValuesCopy);
+    // eslint-disable-next-line
   }, [calls, agentsQueues]);
   const handleEditIcon = () => {
     const onEditClick = () => {

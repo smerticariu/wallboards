@@ -19,6 +19,8 @@ export const modalActions = {
   HANDLE_CALL_STATUS_DATA: 'HANDLE_CALL_STATUS_DATA',
 
   HANDLE_QUEUE_STATUS_DATA: 'HANDLE_QUEUE_STATUS_DATA',
+
+  HANDLE_CALL_TRACKING_DATA: 'HANDLE_CALL_TRACKING_DATA',
 };
 export const handleWallboardActiveModalAC = (modalName) => ({
   type: modalActions.HANDLE_ACTIVE_MODAL,
@@ -66,5 +68,10 @@ export const handleCallStatusDataAC = (formData) => ({
 
 export const handleQueueStatusDataAC = (formData) => ({
   type: modalActions.HANDLE_QUEUE_STATUS_DATA,
+  payload: formData,
+});
+
+export const handleCallTrackingDataAC = (formData) => ({
+  type: modalActions.HANDLE_CALL_TRACKING_DATA,
   payload: formData,
 });

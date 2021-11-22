@@ -4,6 +4,7 @@ import { DEFAULTS } from '../../../common/defaults/defaults';
 import { fetchAllAgentsThunk, fetchUsersCurrentCallTimeThunk } from '../../../store/thunk/agents.thunk';
 import GridAgentList from './agent-list';
 import GridCallStatus from './call-status';
+import GridCallTracking from './call-tracking';
 import GridQueueStatus from './queue-status';
 const Widget = ({ widget, isEditMode, ...props }) => {
   const dispatch = useDispatch();
@@ -23,6 +24,7 @@ const Widget = ({ widget, isEditMode, ...props }) => {
       {widget.type === DEFAULTS.WALLBOARDS.WIDGET_TYPE.AGENT_LIST && <GridAgentList isEditMode={isEditMode} widget={widget} />}
       {widget.type === DEFAULTS.WALLBOARDS.WIDGET_TYPE.CALL_STATUS && <GridCallStatus isEditMode={isEditMode} widget={widget} />}
       {widget.type === DEFAULTS.WALLBOARDS.WIDGET_TYPE.QUEUE_STATUS && <GridQueueStatus isEditMode={isEditMode} widget={widget} />}
+      {widget.type === DEFAULTS.WALLBOARDS.WIDGET_TYPE.CALL_TRACKING && <GridCallTracking isEditMode={isEditMode} widget={widget} />}
     </>
   );
 };

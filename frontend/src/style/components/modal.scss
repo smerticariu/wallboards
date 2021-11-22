@@ -361,6 +361,9 @@
       }
     }
   }
+  &__preview-section {
+    transform: scale(0.7);
+  }
 }
 @-webkit-keyframes animatetop {
   from {
