@@ -34,10 +34,10 @@
     }
   }
   &--error {
-    flex-direction: column;
+    flex-wrap: wrap;
     .c-toolbar-right {
       margin-top: 10px;
-      justify-content: center;
+      order: 1;
     }
   }
 }

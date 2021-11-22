@@ -39,7 +39,7 @@ const WallboardReadOnly = () => {
   const handleErrors = () => {
     if (fetchStatus !== FetchStatus.SUCCESS) {
       return (
-        <div>
+        <div className="error-message-container">
           {fetchStatus === FetchStatus.FAIL && <h3 className="error-message--headline">Error {statusCode}:</h3>}
           <p className="error-message">{fetchMessage}</p>
         </div>
@@ -47,7 +47,7 @@ const WallboardReadOnly = () => {
     }
 
     return (
-      <div>
+      <div className="error-message-container">
         <h3 className="error-message--headline">Error {statusCode}:</h3>
         <p className="error-message">{DEFAULTS.WALLBOARDS.MESSAGE.NOT_ALLOWED_VIEW}</p>
       </div>
