@@ -42,10 +42,11 @@ export const agentsReducer = (state = agentsInitialState, action) => {
                     agents: action.payload.agent.map((agent) => {
                       const agentFromRedux = agentQueue.agents.find((reduxAgent) => reduxAgent.userId === agent.userId);
                       if (agentFromRedux) {
+                        let newStatus = agentFromRedux.userCurrentCall ? agentFromRedux.status : agent.status;
                         return {
                           ...agentFromRedux,
                           ...agent,
-                          status: agentFromRedux.userCurrentCall ? agentFromRedux.status : agent.status,
+                          status: newStatus,
                         };
                       }
                       return agent;

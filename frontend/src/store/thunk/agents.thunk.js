@@ -150,7 +150,7 @@ export const changeAgentAvailabilityStateThunk =
         data,
       });
     } catch (error) {
-      dispatch(handleIsNotificationShowAC(true, true, DEFAULTS.GLOBAL.FAIL));
+      dispatch(handleIsNotificationShowAC(true, true, `Error: ${error.response.status ?? 'unknown'} - ${DEFAULTS.GLOBAL.FAIL}`));
       console.log(error);
     }
   };
@@ -183,7 +183,7 @@ export const callAgentThunk = (id) => async (dispatch, getState) => {
       data,
     });
   } catch (error) {
-    dispatch(handleIsNotificationShowAC(true, true, DEFAULTS.GLOBAL.FAIL));
+    dispatch(handleIsNotificationShowAC(true, true, `Error: ${error.response.status ?? 'unknown'} - ${DEFAULTS.GLOBAL.FAIL}`));
     console.log(error);
   }
 };
@@ -200,7 +200,8 @@ export const fetchUsersCurrentCallTimeThunk = () => async (dispatch, getState) =
 
     dispatch(fetchUsersCurrentCallTimeSuccessAC(response.data.data));
   } catch (error) {
-    dispatch(handleIsNotificationShowAC(true, true, DEFAULTS.GLOBAL.FAIL));
+    console.log(error.response);
+    dispatch(handleIsNotificationShowAC(true, true, `Error: ${error.response.status ?? 'unknown'} - ${DEFAULTS.GLOBAL.FAIL}`));
     console.log(error);
   }
 };
@@ -255,7 +256,7 @@ export const listenLiveThunk = (id) => async (dispatch, getState) => {
       data,
     });
   } catch (error) {
-    dispatch(handleIsNotificationShowAC(true, true, DEFAULTS.GLOBAL.FAIL));
+    dispatch(handleIsNotificationShowAC(true, true, `Error: ${error.response.status ?? 'unknown'} - ${DEFAULTS.GLOBAL.FAIL}`));
     console.log(error);
   }
 };

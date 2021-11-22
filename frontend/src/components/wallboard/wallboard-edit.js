@@ -16,7 +16,7 @@ const WallboardEdit = () => {
   const activeModalName = useSelector((state) => state.modal.activeModalName);
   const dispatch = useDispatch();
   const { id } = useParams();
-  const { fetchStatus, fetchMessage } = useSelector((state) => state.wallboards.present.activeWallboard);
+  const { fetchStatus, fetchMessage, statusCode } = useSelector((state) => state.wallboards.present.activeWallboard);
   const activeWallboard = useSelector((state) => state.wallboards.present.activeWallboard.wallboard);
   const { availabilityProfiles } = useSelector((state) => state.agents);
 
@@ -50,7 +50,7 @@ const WallboardEdit = () => {
     if (!activeWallboard.isNewWallboard && fetchStatus !== FetchStatus.SUCCESS) {
       return (
         <div>
-          {fetchStatus === FetchStatus.FAIL && <h3 className="error-message--headline">Error:</h3>}
+          {fetchStatus === FetchStatus.FAIL && <h3 className="error-message--headline">Error {statusCode}:</h3>}
           <p className="error-message">{fetchMessage}</p>
         </div>
       );
@@ -60,7 +60,7 @@ const WallboardEdit = () => {
       // check if it's basic user
       return (
         <div>
-          <h3 className="error-message--headline">Error:</h3>
+          <h3 className="error-message--headline">Error {statusCode}:</h3>
           <p className="error-message">{DEFAULTS.WALLBOARDS.MESSAGE.NOT_ALLOWED_EDIT}</p>
         </div>
       );
@@ -72,7 +72,7 @@ const WallboardEdit = () => {
         // edit the wallboard only if the team leader has access on it
         return (
           <div>
-            <h3 className="error-message--headline">Error:</h3>
+            <h3 className="error-message--headline">Error {statusCode}:</h3>
             <p className="error-message">{DEFAULTS.WALLBOARDS.MESSAGE.NOT_ALLOWED_EDIT}</p>
           </div>
         );

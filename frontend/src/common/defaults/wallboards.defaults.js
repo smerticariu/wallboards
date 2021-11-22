@@ -10,7 +10,7 @@ export const WALLBOARDS = {
   },
   MESSAGE: {
     LOADING: 'Wallboard loading...',
-    NAME_WARNING: 'Wallboar name must contain only alphanumeric characters',
+    NAME_WARNING: 'Wallboard name must contain only alphanumeric characters',
     NO_COMPONENTS: 'This wallboard has no components.',
     ADD_COMPONENTS: 'To start adding components, click the button below.',
     NOT_ALLOWED_EDIT: 'You are not allowed to edit this wallboard. Please contact your Administrator',

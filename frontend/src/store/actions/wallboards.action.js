@@ -77,9 +77,9 @@ export const fetchWallboardByIdSuccessAC = (wallboard) => ({
   type: wallboardsActions.FETCH_WALLBOARD_BY_ID_SUCCESS,
   payload: wallboard,
 });
-export const fetchWallboardByIdFailAC = (errorMEssage) => ({
+export const fetchWallboardByIdFailAC = (errorMEssage, statusCode) => ({
   type: wallboardsActions.FETCH_WALLBOARD_BY_ID_FAIL,
-  payload: errorMEssage,
+  payload: { errorMEssage, statusCode },
 });
 
 export const fetchAllWallboardsAC = () => ({
