@@ -17,43 +17,44 @@ import {
   saveWallboardSuccessAC,
 } from '../actions/wallboards.action';
 
-export const fetchWallboardByIdThunk = ({id, copyWb}) => async (dispatch, getState) => {
-  try {
-    dispatch(fetchWallboardByIdAC(DEFAULTS.WALLBOARDS.MESSAGE.LOADING));
-    const { userInfo, token } = getState().login;
-    const currentDate = new Date().getTime();
+export const fetchWallboardByIdThunk =
+  ({ id, copyWb }) =>
+  async (dispatch, getState) => {
+    try {
+      dispatch(fetchWallboardByIdAC(DEFAULTS.WALLBOARDS.MESSAGE.LOADING));
+      const { userInfo, token } = getState().login;
+      const currentDate = new Date().getTime();
 
-    const wallboardById = await WallboardsApi({
-      type: DEFAULTS.WALLBOARDS.API.GET.BY_ID,
-      organizationId: userInfo.organisationId,
-      wallboardId: id,
-      token,
-    });
-
-    if(!copyWb) {
-      await WallboardsApi({
-        type: DEFAULTS.WALLBOARDS.API.SAVE.WALLBOARD,
+      const wallboardById = await WallboardsApi({
+        type: DEFAULTS.WALLBOARDS.API.GET.BY_ID,
         organizationId: userInfo.organisationId,
-        token,
-        data: {
-          ...wallboardById.data,
-          lastView: currentDate,
-        },
         wallboardId: id,
+        token,
       });
 
-      dispatch(updateConfig({...wallboardById.data, lastView: currentDate}, DEFAULTS.WALLBOARDS.API.SAVE.WALLBOARD));
-    } else {
-      dispatch(updateConfig(wallboardById.data, DEFAULTS.WALLBOARDS.API.SAVE.WALLBOARD));
-    }
+      if (!copyWb) {
+        await WallboardsApi({
+          type: DEFAULTS.WALLBOARDS.API.SAVE.WALLBOARD,
+          organizationId: userInfo.organisationId,
+          token,
+          data: {
+            ...wallboardById.data,
+            lastView: currentDate,
+          },
+          wallboardId: id,
+        });
 
-    dispatch(fetchWallboardByIdSuccessAC({ widgets: [], ...wallboardById.data }));
-    
-  } catch (error) {
-    dispatch(fetchWallboardByIdFailAC(DEFAULTS.GLOBAL.FAIL));
-    console.log(error?.wallboardById?.data);
-  }
-};
+        dispatch(updateConfig({ ...wallboardById.data, lastView: currentDate }, DEFAULTS.WALLBOARDS.API.SAVE.WALLBOARD));
+      } else {
+        dispatch(updateConfig(wallboardById.data, DEFAULTS.WALLBOARDS.API.SAVE.WALLBOARD));
+      }
+
+      dispatch(fetchWallboardByIdSuccessAC({ widgets: [], ...wallboardById.data }));
+    } catch (error) {
+      dispatch(fetchWallboardByIdFailAC(DEFAULTS.GLOBAL.FAIL, error.response.status));
+      console.log(error);
+    }
+  };
 
 export const fetchAllWallboardsThunk = () => async (dispatch, getState) => {
   try {
@@ -67,10 +68,10 @@ export const fetchAllWallboardsThunk = () => async (dispatch, getState) => {
     });
 
     let wallboardsFilteredByPermissions;
-    if(userInfo.isAdmin) {
+    if (userInfo.isAdmin) {
       wallboardsFilteredByPermissions = allWallboards.data;
     } else if (userInfo.isTeamLeader && !userInfo.isAdmin) {
-      wallboardsFilteredByPermissions = allWallboards.data.filter(wb => wb.createdByUserId === userInfo.id);
+      wallboardsFilteredByPermissions = allWallboards.data.filter((wb) => wb.createdByUserId === userInfo.id);
     }
 
     dispatch(fetchAllWallboardsSuccessAC(wallboardsFilteredByPermissions));
@@ -120,7 +121,10 @@ export const saveWallboardThunk = () => async (dispatch, getState) => {
   } catch (error) {
     dispatch(saveWallboardFailAC());
     if (activeWallboard.id !== undefined) {
-      dispatch(handleIsNotificationShowAC(true, true, DEFAULTS.WALLBOARDS.NOTIFICATION.FAIL.SAVE));
+      console.log(error.response);
+      dispatch(
+        handleIsNotificationShowAC(true, true, `Error: ${error.response.status ?? 'unknown'} ${DEFAULTS.WALLBOARDS.NOTIFICATION.FAIL.SAVE}`)
+      );
     }
     console.log(error);
   }
@@ -140,7 +144,13 @@ export const deleteWallboardThunk = (wbId) => async (dispatch, getState) => {
     dispatch(handleIsNotificationShowAC(true, false, DEFAULTS.WALLBOARDS.NOTIFICATION.SUCCESS.DELETE));
   } catch (error) {
     dispatch(fetchAllWallboardsFailAC());
-    dispatch(handleIsNotificationShowAC(true, true, DEFAULTS.WALLBOARDS.NOTIFICATION.FAIL.DELETE));
+    dispatch(
+      handleIsNotificationShowAC(
+        true,
+        true,
+        `Error: ${error.response.status ?? 'unknown'} - ${DEFAULTS.WALLBOARDS.NOTIFICATION.FAIL.DELETE}`
+      )
+    );
     console.log(error);
   }
 };
@@ -150,14 +160,14 @@ export const copyWallboardThunk =
   async (dispatch, getState) => {
     try {
       const { userInfo, token } = getState().login;
-      await dispatch(fetchWallboardByIdThunk({id: wb.id, copyWb: true}));
+      await dispatch(fetchWallboardByIdThunk({ id: wb.id, copyWb: true }));
       let activeWallboard = getState().wallboards.present.activeWallboard.wallboard;
 
       const currentDate = new Date().getTime();
       const wbId = generateWallboardId(userInfo.organisationId, userInfo.id);
       activeWallboard.id = wbId;
       activeWallboard.name = `${activeWallboard.name} Copy`;
-      activeWallboard.createdOn = currentDate + 1000 // add one second to timestamp;
+      activeWallboard.createdOn = currentDate + 1000; // add one second to timestamp;
       activeWallboard.lastView = currentDate;
 
       const data = {

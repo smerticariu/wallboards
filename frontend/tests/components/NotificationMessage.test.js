@@ -5,7 +5,7 @@ import '@testing-library/jest-dom/extend-expect';
 import { Provider } from 'react-redux';
 import createMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import NotificationMessage from '../../src/components/agent-card/notification-message/notification-message';
+import NotificationMessage from '../../src/components/notification-message/notification-message';
 
 const mockStore = createMockStore([thunk]);
 Enzyme.configure({ adapter: new Adapter() });
