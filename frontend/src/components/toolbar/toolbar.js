@@ -16,6 +16,8 @@ import { generateWallboardId } from '../../common/utils/generateId';
 import { handleWallboardActiveModalAC, setSelectedWallboardSettingsAC } from '../../store/actions/modal.action';
 import { SettingsIcon } from '../../assets/static/icons/settings';
 import { DEFAULTS } from '../../common/defaults/defaults';
+import { useAuth0 } from '@auth0/auth0-react';
+
 const Toolbar = (props) => {
   const dispatch = useDispatch();
   const [wbSearchValue, setWbSearchValue] = useState('');
@@ -25,6 +27,7 @@ const Toolbar = (props) => {
   const noOfSteptsForUndo = useSelector((state) => state.wallboards.noOfSteptsForUndo);
   const wallboardStates = useSelector((state) => state.wallboards);
   const history = useHistory();
+  const { logout } = useAuth0();
 
   const heading = () => {
     return (
@@ -218,10 +221,11 @@ const Toolbar = (props) => {
             {handleSettingsIcon()}
           </>
         );
+      case 'error':
       case 'wb-read-only':
         return (
           <>
-            <button className="c-button c-button--m-left" onClick={() => props.logout()}>
+            <button className="c-button c-button--m-left" onClick={() => logout()}>
               Logout
             </button>
           </>
@@ -248,7 +252,11 @@ const Toolbar = (props) => {
   return (
     <>
       {handleBanner()}
-      <div className={`c-toolbar ${props.template === 'error' ? 'c-toolbar--error' : ''}`}>
+      <div
+        className={`c-toolbar ${props.template === 'wb-read-only' ? 'c-toolbar--wb-read-only' : ''} ${
+          props.template === 'error' ? 'c-toolbar--error' : ''
+        }`}
+      >
         {props.children && <div>{props.children}</div>}
         <div className="c-toolbar-left">{handleLeftToolbar(props.template)}</div>
         <div className="c-toolbar-right">{handleRightToolbar(props.template)}</div>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import moment from '../../../node_modules/moment/moment';
+import moment from 'moment';
 
 const TimeInterval = ({ seconds = 0, ...props }) => {
   const [timeLocal, setTimeLocal] = useState(seconds);
