@@ -465,7 +465,7 @@ export const MODAL = {
   QUEUE_TRACKING: {
     MODAL_TITLE: 'Widget Options',
     NAMES: {
-      TITLE: 'Title',
+      TITLE: 'Component Name:',
       QUEUE_TO_MONITOR: 'Call Queue to Monitor'
     },
     PLACEHOLDER: 'Queue Tracking',

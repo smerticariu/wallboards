@@ -14,7 +14,6 @@ const Widget = ({ widget, isEditMode, ...props }) => {
     return () => clearInterval(agentsInterval);
     // eslint-disable-next-line
   }, []);
-console.log(widget)
   return (
     <>
       {widget.type === DEFAULTS.WALLBOARDS.WIDGET_TYPE.AGENT_LIST && <GridAgentList isEditMode={isEditMode} widget={widget} />}

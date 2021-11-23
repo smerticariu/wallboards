@@ -46,58 +46,7 @@ console.log(queueTracking)
     );
   };
 
-  const handleSaveButton = () => {
-    const onClickDeleteButton = () => {
-      if (!checkIsAlphanumeric(queueTracking.title.value)) {
-        dispatch(
-          handleQueueTrackingDataAC({
-            ...queueTracking,
-            title: {
-              ...queueTracking.title,
-              errorMessage: DEFAULTS.MODAL.MESSAGES.ALPHANUMERIC_TITLE,
-            },
-          })
-        );
-        return alert(DEFAULTS.MODAL.MESSAGES.ALPHANUMERIC_TITLE);
-      }
-      dispatch(addWallboardQueueTrackingAC(queueTracking, userInfo));
-      closeModal();
-    };
 
-    return (
-      <button className="c-button c-button--white" onClick={onClickDeleteButton}>
-        Save
-      </button>
-    );
-  };
-  const handleTitleInput = () => {
-    const onInputChange = (e) => {
-      const { name, value } = e.target;
-      dispatch(
-        handleQueueTrackingDataAC({
-          ...queueTracking,
-          [name]: {
-            ...queueTracking[name],
-            value,
-            errorMessage: '',
-          },
-        })
-      );
-    };
-    return (
-      <div className="c-modal--add-component__input-section">
-        <div className="c-modal--add-component__input-label">{DEFAULTS.MODAL.QUEUE_TRACKING.TITLE}</div>
-        <input
-          className="c-input c-input--grey"
-          placeholder={DEFAULTS.MODAL.QUEUE_TRACKING.PLACEHOLDER}
-          name="title"
-          onChange={onInputChange}
-          value={queueTracking.title.value}
-        />
-        {queueTracking.title.errorMessage && <div className="c-input__error-message">{queueTracking.title.errorMessage}</div>}
-      </div>
-    );
-  };
 
   const handleModalLeftSide = () => {
     const handleInputAndSelect = (event) => {
@@ -185,39 +134,16 @@ console.log(queueTracking)
               key={option.value}
               label={option.text}
               name={option.value}
-              className="c-checkbox--margin-top-bottom"
+              className="c-checkbox--queue-tracking"
               checked={checkIsCheckboxChecked(queueTracking.columnsToViewOptions.selectedItems, option.value)}
               onChange={(event) => handleCheckBoxList(event, 'columnsToViewOptions')}
             />
           ))}
         {/* </div> */}
-
-        
-
-        {/* {!isCardFormat && (
-          <div className="c-modal--add-component__input-section c-modal--add-component__input-section--columns">
-            <div className="c-modal--add-component__input-label">{DEFAULTS.MODAL.ADD_COMPONENT.SECTION_TITLE.COLUMNS}</div>
-
-            <div className="c-modal--add-component__av-state-container">
-              {DEFAULTS.MODAL.ADD_COMPONENT.ADD_COMPONENT_STATE_OPTIONS.columnsToViewOptions.map((option) => (
-                <CheckBox
-                  key={option.value}
-                  label={option.text}
-                  name={option.value}
-                  className="c-checkbox--margin-top-bottom"
-                  checked={checkIsCheckboxChecked(queueTracking.columnsToViewOptions.selectedItems, option.value)}
-                  onChange={(event) => handleCheckBoxList(event, 'columnsToViewOptions')}
-                />
-              ))}
-            </div>
-          </div>
-        )} */}
-  
-
-       
       </div>
     );
   };
+
 
 
   return (
