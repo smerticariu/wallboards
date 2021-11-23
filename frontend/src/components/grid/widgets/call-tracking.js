@@ -160,7 +160,7 @@ const GridCallTracking = ({ isPreview, isEditMode, widget, ...props }) => {
       <div className="widget__header">
         <div className="widget__title">
           <div className="widget__title--bold">{widget.title}: </div>
-          {widget.callQueue.value}
+          {widget.period.value}
         </div>
         <div className="widget__icons">
           {isEditMode && (

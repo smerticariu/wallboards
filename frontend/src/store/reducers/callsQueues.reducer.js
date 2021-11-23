@@ -34,7 +34,7 @@ export const callsQueuesReducer = (state = callsQueuesInitialState, action) => {
         ...state,
         queuedCall: action.payload,
       };
-    case callsQueuesActions.FETCH_CALLS_STATISTIC_SUCCESS:
+    case callsQueuesActions.FETCH_CALLS_STATISTIC_SUCCESS: {
       const { widgetId, callsStatistic } = action.payload;
       const callStatisticFromState = state.callsStatistic.find((call) => call.widgetId === widgetId);
       return {
@@ -43,6 +43,7 @@ export const callsQueuesReducer = (state = callsQueuesInitialState, action) => {
           ? state.callsStatistic.map((call) => (call.widgetId !== widgetId ? call : { ...call, callsStatistic }))
           : [...state.callsStatistic, { widgetId, callsStatistic }],
       };
+    }
 
     default:
       return state;

@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 import { DEFAULTS } from '../../../common/defaults/defaults';
 import { fetchAllAgentsThunk, fetchUsersCurrentCallTimeThunk } from '../../../store/thunk/agents.thunk';
 import GridAgentList from './agent-list';
+import GridAgentLogin from './agent-login';
 import GridCallStatus from './call-status';
 import GridCallTracking from './call-tracking';
 import GridQueueStatus from './queue-status';
@@ -10,7 +11,12 @@ const Widget = ({ widget, isEditMode, ...props }) => {
   const dispatch = useDispatch();
   useEffect(() => {
     const agentsInterval = setInterval(() => {
-      dispatch(fetchUsersCurrentCallTimeThunk());
+      if (
+        widget.type === DEFAULTS.WALLBOARDS.WIDGET_TYPE.AGENT_LIST ||
+        widget.type === DEFAULTS.WALLBOARDS.WIDGET_TYPE.CALL_STATUS ||
+        widget.type === DEFAULTS.WALLBOARDS.WIDGET_TYPE.CALL_TRACKING
+      )
+        dispatch(fetchUsersCurrentCallTimeThunk());
       if (widget.type === DEFAULTS.WALLBOARDS.WIDGET_TYPE.QUEUE_STATUS || widget.type === DEFAULTS.WALLBOARDS.WIDGET_TYPE.AGENT_LIST) {
         dispatch(fetchAllAgentsThunk(widget.callQueue.id));
       }
@@ -25,6 +31,7 @@ const Widget = ({ widget, isEditMode, ...props }) => {
       {widget.type === DEFAULTS.WALLBOARDS.WIDGET_TYPE.CALL_STATUS && <GridCallStatus isEditMode={isEditMode} widget={widget} />}
       {widget.type === DEFAULTS.WALLBOARDS.WIDGET_TYPE.QUEUE_STATUS && <GridQueueStatus isEditMode={isEditMode} widget={widget} />}
       {widget.type === DEFAULTS.WALLBOARDS.WIDGET_TYPE.CALL_TRACKING && <GridCallTracking isEditMode={isEditMode} widget={widget} />}
+      {widget.type === DEFAULTS.WALLBOARDS.WIDGET_TYPE.AGENT_LOGIN && <GridAgentLogin isEditMode={isEditMode} widget={widget} />}
     </>
   );
 };

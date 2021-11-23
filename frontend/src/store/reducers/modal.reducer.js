@@ -13,7 +13,7 @@ export const modalInitialState = {
     isEditMode: false,
     id: null,
     title: {
-      value: '',
+      value: 'Agent List',
       errorMessage: '',
     },
     callQueue: { id: '', name: '', errorMessage: '' },
@@ -121,6 +121,43 @@ export const modalInitialState = {
       value: DEFAULTS.MODAL.CALL_TRACKING.START_WEEK[0].value,
     },
   },
+
+  agentLogin: {
+    isEditMode: false,
+    id: null,
+    title: {
+      value: 'Agent Login',
+      errorMessage: '',
+    },
+    group: {
+      id: DEFAULTS.MODAL.CALL_TRACKING.USER_GROUP.id,
+      value: DEFAULTS.MODAL.CALL_TRACKING.USER_GROUP.name,
+    },
+    limitResult: {
+      value: 10,
+      errorMessage: '',
+    },
+    timeZone: {
+      id: DEFAULTS.MODAL.CALL_TRACKING.TIME_ZONE[13].id,
+      value: DEFAULTS.MODAL.CALL_TRACKING.TIME_ZONE[13].value,
+    },
+    period: {
+      id: DEFAULTS.MODAL.CALL_TRACKING.PERIOD[0].id,
+      value: DEFAULTS.MODAL.CALL_TRACKING.PERIOD[0].value,
+    },
+    from: {
+      value: '',
+      errorMessage: '',
+    },
+    to: {
+      value: '',
+      errorMessage: '',
+    },
+    startOfWeek: {
+      id: DEFAULTS.MODAL.CALL_TRACKING.START_WEEK[0].id,
+      value: DEFAULTS.MODAL.CALL_TRACKING.START_WEEK[0].value,
+    },
+  },
 };
 
 export const modalReducer = (state = modalInitialState, action) => {
@@ -136,10 +173,6 @@ export const modalReducer = (state = modalInitialState, action) => {
         modalSelectComponent: {
           ...state.modalSelectComponent,
           selectedElement: action.payload,
-        },
-        modalAddComponent: {
-          ...state.modalAddComponent,
-          title: { value: action.payload, errorMessage: '' },
         },
       };
     case modalActions.HANDLE_ADD_MODAL_COMPONENT_FORM_DATA:
@@ -157,6 +190,7 @@ export const modalReducer = (state = modalInitialState, action) => {
         callStatus: { ...modalInitialState.callStatus },
         queueStatus: { ...modalInitialState.queueStatus },
         callTracking: { ...modalInitialState.callTracking },
+        agentLogin: { ...modalInitialState.agentLogin },
       };
     case modalActions.SET_WALLBOARD_COMPONENT_FOR_DELETE:
       return {
@@ -272,6 +306,48 @@ export const modalReducer = (state = modalInitialState, action) => {
             },
           };
         }
+        case DEFAULTS.WALLBOARDS.WIDGET_TYPE.AGENT_LOGIN: {
+          return {
+            ...state,
+            agentLogin: {
+              title: {
+                value: widgetForEdit.title,
+                errorMessage: '',
+              },
+              group: {
+                id: widgetForEdit.group.id,
+                value: widgetForEdit.group.value,
+              },
+              limitResult: {
+                value: widgetForEdit.limitResult.value,
+                errorMessage: '',
+              },
+              timeZone: {
+                id: widgetForEdit.timeZone.id,
+                value: widgetForEdit.timeZone.value,
+              },
+              period: {
+                id: widgetForEdit.period.id,
+                value: widgetForEdit.period.value,
+              },
+              from: {
+                value: widgetForEdit.from.value,
+                errorMessage: '',
+              },
+              to: {
+                value: widgetForEdit.from.value,
+                errorMessage: '',
+              },
+              startOfWeek: {
+                id: widgetForEdit.startOfWeek.id,
+                value: widgetForEdit.startOfWeek.value,
+              },
+              isEditMode: true,
+              size: widgetForEdit.size,
+              id: widgetForEdit.id,
+            },
+          };
+        }
         default:
           return state;
       }
@@ -333,6 +409,15 @@ export const modalReducer = (state = modalInitialState, action) => {
         ...state,
         callTracking: {
           ...state.callTracking,
+          ...action.payload,
+        },
+      };
+    }
+    case modalActions.HANDLE_AGENT_LOGIN_DATA: {
+      return {
+        ...state,
+        agentLogin: {
+          ...state.agentLogin,
           ...action.payload,
         },
       };

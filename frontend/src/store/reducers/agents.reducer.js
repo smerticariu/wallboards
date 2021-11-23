@@ -5,6 +5,8 @@ export const agentsInitialState = {
   agentsQueues: [],
   agentsQueuesFetchStatus: FetchStatus.NULL,
 
+  allAgents: [],
+
   organisationUsersFetchStatus: FetchStatus.NULL,
 
   sipDevices: [],
@@ -20,6 +22,8 @@ export const agentsInitialState = {
   availabilityStatesFetchStatus: FetchStatus.NULL,
 
   calls: [],
+
+  userLoginData: [],
 };
 
 export const agentsReducer = (state = agentsInitialState, action) => {
@@ -79,6 +83,7 @@ export const agentsReducer = (state = agentsInitialState, action) => {
       const agents = action.payload;
       return {
         ...state,
+        allAgents: agents,
         agentsQueues: state.agentsQueues.map((agentQueue) => ({
           ...agentQueue,
           agents: agentQueue.agents.map((agent) => {
@@ -226,6 +231,16 @@ export const agentsReducer = (state = agentsInitialState, action) => {
         })),
       };
 
+    case agentsActions.FETCH_USER_LOGIN_DATA_SUCCESS: {
+      const { widgetId, userLoginData } = action.payload;
+      const userLoginDataFromState = state.userLoginData.find((call) => call.widgetId === widgetId);
+      return {
+        ...state,
+        userLoginData: userLoginDataFromState
+          ? state.userLoginData.map((call) => (call.widgetId !== widgetId ? call : { ...call, userLoginData }))
+          : [...state.userLoginData, { widgetId, userLoginData }],
+      };
+    }
     default:
       return state;
   }

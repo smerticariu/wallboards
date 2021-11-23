@@ -106,7 +106,7 @@ const ModalNewWallboard = ({ ...props }) => {
 
   const handleSelectButton = () => {
     const onClickSelectButton = (e) => {
-      dispatch(handleModalSelectActiveElementAC(selectedListItem));
+      dispatch(handleModalSelectActiveElementAC());
       switch (selectedListItem) {
         case DEFAULTS.WALLBOARDS.WIDGET_TYPE.AGENT_LIST: {
           return dispatch(handleWallboardActiveModalAC(DEFAULTS.MODAL.MODAL_NAMES.ADD_COMPONENT));
@@ -119,6 +119,9 @@ const ModalNewWallboard = ({ ...props }) => {
         }
         case DEFAULTS.WALLBOARDS.WIDGET_TYPE.CALL_TRACKING: {
           return dispatch(handleWallboardActiveModalAC(DEFAULTS.MODAL.MODAL_NAMES.CALL_TRACKING));
+        }
+        case DEFAULTS.WALLBOARDS.WIDGET_TYPE.AGENT_LOGIN: {
+          return dispatch(handleWallboardActiveModalAC(DEFAULTS.MODAL.MODAL_NAMES.AGENT_LOGIN));
         }
         default:
           return;

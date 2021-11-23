@@ -15,6 +15,9 @@ export const getTimesCallTracking = (widget) => {
         timeStart.subtract(7, 'day');
       }
       break;
+    case 'month':
+      timeStart.utcOffset(Number(widget.timeZone.id)).startOf('month').format();
+      break;
     case 'rolling-hour':
       timeStart = timeStart.subtract(1, 'hour').startOf('minute');
       break;
