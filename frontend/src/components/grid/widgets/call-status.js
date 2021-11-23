@@ -7,17 +7,10 @@ import {
   setWidgetComponentForEditAC,
 } from 'src/store/actions/modal.action';
 import { SettingsIcon } from '../../../assets/static/icons/settings';
-
 import { DEFAULTS } from '../../../common/defaults/defaults';
 import { CALL_DIRECTION } from '../../../common/defaults/modal.defaults';
-const getCallsInitialValues = () => ({
-  inbound: { value: 0, prevalue: 0 },
-  outbound: { value: 0, prevalue: 0 },
-  internal: { value: 0 },
-  relayed: { value: 0 },
-  feature: { value: 0 },
-  uncategorised: { value: 0 },
-});
+import { getCallsInitialValues } from '../../../common/defaults/wallboards.defaults';
+
 const GridCallStatus = ({ isEditMode, widget, ...props }) => {
   const dispatch = useDispatch();
   const calls = useSelector((state) => state.agents.calls);
@@ -99,7 +92,9 @@ const GridCallStatus = ({ isEditMode, widget, ...props }) => {
         {Object.keys(noOfCalls).map((key) => (
           <div key={key} className="widget__call-status-row">
             <div className="widget__call-status-title">{key}</div>
-            <div className="widget__call-status-data widget__call-status-data--two-columns">
+            <div
+              className={`widget__call-status-data ${noOfCalls[key].prevalue !== undefined ? 'widget__call-status-data--two-columns' : ''}`}
+            >
               {Object.keys(noOfCalls[key]).map((valueKey) => (
                 <div key={valueKey} className="widget__call-status-data__column">
                   {noOfCalls[key][valueKey]}

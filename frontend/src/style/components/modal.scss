@@ -361,6 +361,13 @@
       }
     }
   }
+  &__preview-section {
+    transform: scale(0.7);
+    &--agent-login {
+      transform: scale(0.4);
+      margin: -50px -300px 0 -300px;
+    }
+  }
 }
 @-webkit-keyframes animatetop {
   from {

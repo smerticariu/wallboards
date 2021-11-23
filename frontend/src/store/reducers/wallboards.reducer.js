@@ -220,6 +220,39 @@ export const wallboardsReducer = (state = { ...wallboardsInitialState }, action)
         },
       };
     }
+
+    case wallboardsActions.ADD_WALLBOARD_QUEUE_STATUS: {
+      const { widgets } = state.activeWallboard.wallboard;
+      const { queueStatus, userInfo } = action.payload;
+      const newWidget = {
+        title: queueStatus.title.value,
+        callQueue: {
+          id: queueStatus.callQueue.id,
+          value: queueStatus.callQueue.value,
+        },
+        type: DEFAULTS.WALLBOARDS.WIDGET_TYPE.QUEUE_STATUS,
+        size: queueStatus.isEditMode ? queueStatus.size : null,
+      };
+      return {
+        ...state,
+        activeWallboard: {
+          ...state.activeWallboard,
+          wallboard: {
+            ...state.activeWallboard.wallboard,
+            widgets: queueStatus.isEditMode
+              ? widgets.map((widget) =>
+                  widget.id !== queueStatus.id
+                    ? widget
+                    : {
+                        ...newWidget,
+                        id: queueStatus.id,
+                      }
+                )
+              : [...widgets, { ...newWidget, id: generateWallboardWidgetId(userInfo.organisationId, userInfo.id) }],
+          },
+        },
+      };
+    }
     case wallboardsActions.ADD_WALLBOARD_QUEUE_TRACKING: {
       const { widgets } = state.activeWallboard.wallboard;
       const { queueTracking, userInfo } = action.payload;
@@ -246,6 +279,112 @@ export const wallboardsReducer = (state = { ...wallboardsInitialState }, action)
                     : {
                         ...newWidget,
                         id: queueTracking.id,
+                      }
+                )
+              : [...widgets, { ...newWidget, id: generateWallboardWidgetId(userInfo.organisationId, userInfo.id) }],
+          },
+        },
+      };
+    }
+
+    case wallboardsActions.ADD_WALLBOARD_CALL_TRACKING: {
+      const { widgets } = state.activeWallboard.wallboard;
+      const { callTracking, userInfo } = action.payload;
+      const newWidget = {
+        title: callTracking.title.value,
+        group: {
+          id: +callTracking.group.id,
+          value: callTracking.group.value,
+        },
+        callQueue: {
+          id: +callTracking.callQueue.id,
+          value: callTracking.callQueue.value,
+        },
+        callCategory: {
+          id: callTracking.callCategory.id,
+          value: callTracking.callCategory.value,
+        },
+        timeZone: {
+          id: +callTracking.timeZone.id,
+          value: callTracking.timeZone.value,
+        },
+        period: {
+          id: callTracking.period.id,
+          value: callTracking.period.value,
+        },
+        startOfWeek: {
+          id: +callTracking.startOfWeek.id,
+          value: callTracking.startOfWeek.value,
+        },
+        type: DEFAULTS.WALLBOARDS.WIDGET_TYPE.CALL_TRACKING,
+        size: callTracking.isEditMode ? callTracking.size : null,
+      };
+      return {
+        ...state,
+        activeWallboard: {
+          ...state.activeWallboard,
+          wallboard: {
+            ...state.activeWallboard.wallboard,
+            widgets: callTracking.isEditMode
+              ? widgets.map((widget) =>
+                  widget.id !== callTracking.id
+                    ? widget
+                    : {
+                        ...newWidget,
+                        id: callTracking.id,
+                      }
+                )
+              : [...widgets, { ...newWidget, id: generateWallboardWidgetId(userInfo.organisationId, userInfo.id) }],
+          },
+        },
+      };
+    }
+    case wallboardsActions.ADD_WALLBOARD_AGENT_LOGIN: {
+      const { widgets } = state.activeWallboard.wallboard;
+      const { agentLogin, userInfo } = action.payload;
+      const newWidget = {
+        title: agentLogin.title.value,
+        group: {
+          id: +agentLogin.group.id,
+          value: agentLogin.group.value,
+        },
+        limitResult: {
+          value: +agentLogin.limitResult.value,
+        },
+        timeZone: {
+          id: +agentLogin.timeZone.id,
+          value: agentLogin.timeZone.value,
+        },
+        period: {
+          id: agentLogin.period.id,
+          value: agentLogin.period.value,
+        },
+        from: {
+          value: agentLogin.from.value,
+        },
+        to: {
+          value: agentLogin.to.value,
+        },
+        startOfWeek: {
+          id: +agentLogin.startOfWeek.id,
+          value: agentLogin.startOfWeek.value,
+        },
+        type: DEFAULTS.WALLBOARDS.WIDGET_TYPE.AGENT_LOGIN,
+        size: agentLogin.isEditMode ? agentLogin.size : null,
+      };
+      return {
+        ...state,
+        activeWallboard: {
+          ...state.activeWallboard,
+          wallboard: {
+            ...state.activeWallboard.wallboard,
+            widgets: agentLogin.isEditMode
+              ? widgets.map((widget) =>
+                  widget.id !== agentLogin.id
+                    ? widget
+                    : {
+                        ...newWidget,
+                        id: agentLogin.id,
                       }
                 )
               : [...widgets, { ...newWidget, id: generateWallboardWidgetId(userInfo.organisationId, userInfo.id) }],

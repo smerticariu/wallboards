@@ -19,6 +19,7 @@
 @import 'components/resizable.scss';
 @import 'components/dropdown.scss';
 @import 'components/timer.scss';
+@import 'components/agent-login.scss';
 
 *,
 ::before,
@@ -82,6 +83,10 @@ body {
   font-size: 16px;
   text-align: center;
   color: $input-text-colour;
+  &-container {
+    order: 2;
+    width: 100%;
+  }
   &--headline {
     font-weight: 700;
     font-size: 22px;
@@ -92,5 +97,22 @@ body {
     display: flex;
     width: 100%;
     justify-content: center;
+  }
+}
+
+input[type='date'] {
+  padding: 0;
+  padding-left: 9px;
+  &::-webkit-inner-spin-button,
+  &::-webkit-calendar-picker-indicator {
+    color: rgba(0, 0, 0, 0);
+    opacity: 1;
+    display: block;
+    background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAeCAYAAABNChwpAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAFrSURBVFhH7ZTdSwJBFMX7Q3sJgoIiFvoCQ6Ig36QeRAglsrAPk0IieumhfyGQZFmS8hMlCypLlmTiXnbggndjLov00Bw4DGdn5/BjLzsTO+mMmpxx/swWwAKIAe7KFdVqd9TU/NLI3lOtoVzvYeT5bzYCmF5YValMTu3u55XWUbGEWRuyFmR4H85xfdRGAOWKG1TLdO96bB+1EcDXYBBUysX1URsBxBNJtZVMiQ3nuD5qI4DZxTXlxDbEnluOs33UYx2B7/tsH7URQBRxfdSRAE7PL3H/rHSFWc+8+ljDDKI9nCMB7OULuJ87LmJeWU9gdr0qZhDt4RwJAGbcfe7hCnp7/8BMxfVRiwC+h0O8XOrNNubeyytmWMPE9VGLAPTN5sQ2MWcPTjDDKMJEeziLAOrNFv7f2+ks5uubW8ywhonrozYC6Pc/gzqZ4BzXR20EAJ9YehnB+4eFC7aP2ghgnLYAFsAC/HcAR/0A7GWIzbcQyR8AAAAASUVORK5CYII=');
+    background-color: $natterbox-grey-col;
+    background-repeat: no-repeat;
+    width: 28px;
+    height: 24px;
+    border-width: thin;
   }
 }

@@ -17,6 +17,7 @@ import {
   fetchUserGroupsAC,
   fetchUserGroupsFailAC,
   fetchUserGroupsSuccessAC,
+  fetchUserLoginDataSuccessAC,
   fetchUsersCurrentCallTimeSuccessAC,
 } from '../actions/agents.action';
 import { handleIsNotificationShowAC } from '../actions/notification.action';
@@ -26,7 +27,7 @@ import { CallsQueuesApi } from '../../common/api/callsQueues.api';
 import { MiscellaneousApi } from '../../common/api/miscellaneous.api';
 import { AvailabilityApi } from '../../common/api/availability.api';
 import { CallsApi } from '../../common/api/calls.api';
-
+import moment from 'moment';
 export const fetchAllAgentsThunk = (callQueueId) => async (dispatch, getState) => {
   dispatch(fetchAllAgentsAC());
   try {
@@ -260,3 +261,82 @@ export const listenLiveThunk = (id) => async (dispatch, getState) => {
     console.log(error);
   }
 };
+
+export const fetchUserLoginDataThunk =
+  ({ timeStart, timeEnd }, widgetId, groupId) =>
+  async (dispatch, getState) => {
+    try {
+      const { userInfo, token } = getState().login;
+
+      const response = await MiscellaneousApi({
+        type: DEFAULTS.MISCELLANEOUS.API.GET.USER_LOGIN_DATA,
+        organizationId: userInfo.organisationId,
+        token,
+        groupId,
+        timeStart,
+        timeEnd,
+      });
+
+      dispatch(fetchUserLoginDataSuccessAC(response.data.data, widgetId));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+export const exportCSVUserLoginDataThunk =
+  ({ timeStart, timeEnd }, groupId, limitResult) =>
+  async (dispatch, getState) => {
+    try {
+      const { userInfo, token } = getState().login;
+
+      const responseAgentLogin = await MiscellaneousApi({
+        type: DEFAULTS.MISCELLANEOUS.API.GET.USER_LOGIN_DATA,
+        organizationId: userInfo.organisationId,
+        token,
+        groupId,
+        timeStart,
+        timeEnd,
+      });
+      const userLoginData = responseAgentLogin.data.data;
+
+      const responseAgents = await AgentsApi({
+        type: DEFAULTS.AGENTS.API.GET.ALL_AGENTS,
+        organizationId: userInfo.organisationId,
+        token,
+      });
+      const allAgents = responseAgents.data.data;
+
+      const userGroupsResponse = await MiscellaneousApi({
+        type: DEFAULTS.MISCELLANEOUS.API.GET.USER_GROUPS,
+        organizationId: userInfo.organisationId,
+        token,
+      });
+      const userGroups = userGroupsResponse.data.data;
+      let users = ['Name,Group,Event,Date & Time,Elapsed'];
+      userLoginData
+        .sort((user1, user2) => new Date(user2.time).getTime() - new Date(user1.time).getTime())
+        .filter((user) => Number(groupId) === -1 || user.groupId === groupId)
+        .slice(0, +limitResult)
+        .forEach((user) => {
+          const group = userGroups.find((group) => user.groupId === group.id);
+          const agent = allAgents.find((agent) => agent.id === user.userId);
+          const timeInSecconds = moment().diff(moment(user.time), 'seconds');
+          const noOfDays = Math.floor(timeInSecconds / 86400); // 1 day === 86400 seconds
+          const dateString = moment.utc(timeInSecconds * 1000).format('HH:mm:ss');
+          users.push([
+            `${agent.firstName + ' ' + agent.lastName},${group.name},${user.event},${moment(user.time).format('YYYY-DD-MM HH:mm:ss')},${
+              noOfDays ? `${noOfDays} Day${noOfDays === 1 ? '' : 's'}` : dateString
+            }`,
+          ]);
+        });
+      let csvContent = 'data:text/csv;charset=utf-8,' + users.map((user) => user).join('\n');
+      let encodedUri = encodeURI(csvContent);
+      let link = document.createElement('a');
+      link.setAttribute('href', encodedUri);
+      link.setAttribute('download', `${timeStart}_${timeEnd}.csv`);
+      document.body.appendChild(link);
+      link.click();
+    } catch (error) {
+      console.log(error);
+    }
+  };

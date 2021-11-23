@@ -39,5 +39,107 @@ export const WALLBOARDS = {
     AGENT_LIST: 'AGENT_LIST',
     CALL_STATUS: 'CALL_STATUS',
     QUEUE_TRACKING: 'QUEUE_TRACKING',
+    QUEUE_STATUS: 'QUEUE_STATUS',
+    CALL_TRACKING: 'CALL_TRACKING',
+    QUEUE_LIST: 'QUEUE_LIST',
+    QUEUE_TRACKING: 'QUEUE_TRACKING',
+    AGENT_LOGIN: 'AGENT_LOGIN',
+    AGENT_STATUS: 'AGENT_STATUS',
   },
 };
+export const getQueueStatusInitialValues = () => ({
+  available_agents: { title: 'Available Agents', value: 0, color: '#b8c62a' },
+  busy_agents: { title: 'Busy Agents', value: 0, color: '#f8485e' },
+  wrapped_up_agents: { title: 'Wrapped Up Agents', value: 0, color: '#e87722' },
+  logged_off_agents: { title: 'Logged Off Agents', value: 0, color: '#49535c' },
+  total_agents: { title: 'Total Agents', value: 0, color: '#00a9ce' },
+  total_calls_queueing: { title: 'Total Calls Queueing', value: 0, color: '#00a9ce' },
+  longest_time_in_queue: { title: 'Longest Time in Queue', value: '00:00:00', color: '#00a9ce' },
+  most_dial_attempts: { title: 'Most Dial Attempts', value: 0, color: '#00a9ce' },
+});
+export const getCallsInitialValues = () => ({
+  inbound: { value: 0, prevalue: 0 },
+  outbound: { value: 0, prevalue: 0 },
+  internal: { value: 0 },
+  relayed: { value: 0 },
+  feature: { value: 0 },
+  uncategorised: { value: 0 },
+});
+
+export const getCallTrackingInitialValues = () => ({
+  outbound: {
+    outboundUnConnectedCallCount: {
+      name: 'Un-Answered Calls',
+      value: 0,
+      operator: 'sum',
+      field: ['outboundUnansweredCallCount', 'outboundAnsweredCallCount'],
+    },
+    outboundConnectedCallCount: { name: 'Answered Calls', value: 0, operator: 'sum', field: 'outboundConnectedCallCount' },
+    outboundSolidCallCount: { name: 'Solid Calls', value: 0, operator: 'sum', field: 'outboundSolidCallCount' },
+    outboundTotalTalkTime: { name: 'Total Talk', value: 0, operator: 'sum', field: 'outboundTotalTalkTime', format: 'duration' },
+    outboundAverageTalkTime: {
+      name: 'Average Talk',
+      value: [],
+      operator: 'average',
+      field: 'outboundAverageTalkTime',
+      format: 'duration',
+    },
+  },
+  inbound: {
+    inboundUnansweredCallCount: { name: 'Un-Connected Calls', value: 0, operator: 'sum', field: 'inboundUnansweredCallCount' },
+    inboundAnsweredCallCount: { name: 'Connected Calls', value: 0, operator: 'sum', field: 'inboundAnsweredCallCount' },
+    inboundConnectedCallCount: { name: 'Answered Calls', value: 0, operator: 'sum', field: 'inboundConnectedCallCount' },
+    inboundSolidCallCount: { name: 'Solid Calls', value: 0, operator: 'sum', field: 'inboundSolidCallCount' },
+    inboundTotalTalkTime: { name: 'Total Talk', value: 0, operator: 'sum', field: 'inboundTotalTalkTime', format: 'duration' },
+    inboundTotalWaitTime: { name: 'Total Wait', value: 0, operator: 'sum', field: 'inboundTotalWaitTime', format: 'duration' },
+    inboundAverageTalkTime: {
+      name: 'Average Talk',
+      value: [],
+      operator: 'average',
+      field: 'inboundAverageTalkTime',
+      format: 'duration',
+    },
+    inboundAverageWaitTime: {
+      name: 'Average Wait',
+      value: [],
+      operator: 'average',
+      field: 'inboundAverageWaitTime',
+      format: 'duration',
+    },
+  },
+  originated: {
+    originatedConnectedCallCount: { name: 'Answered Calls', value: 0, operator: 'sum', field: 'originatedConnectedCallCount' },
+    originatedSolidCallCount: { name: 'Solid Calls', value: 0, operator: 'sum', field: 'originatedSolidCallCount' },
+    originatedTotalTalkTime: { name: 'Total Talk', value: 0, operator: 'sum', field: 'originatedTotalTalkTime', format: 'duration' },
+    originatedAverageTalkTime: {
+      name: 'Average Talk',
+      value: [],
+      operator: 'average',
+      field: 'originatedAverageTalkTime',
+      format: 'duration',
+    },
+  },
+  received: {
+    receivedConnectedCallCount: { name: 'Answered Calls', value: 0, operator: 'sum', field: 'receivedConnectedCallCount' },
+    receivedSolidCallCount: { name: 'Solid Calls', value: 0, operator: 'sum', field: 'receivedSolidCallCount' },
+    receivedTotalTalkTime: { name: 'Total Talk', value: 0, operator: 'sum', field: 'receivedTotalTalkTime', format: 'duration' },
+    receivedAverageTalkTime: {
+      name: 'Average Talk',
+      value: [],
+      operator: 'average',
+      field: 'receivedAverageTalkTime',
+      format: 'duration',
+    },
+  },
+  service: {
+    serviceConnectedCallCount: { name: 'Answered Calls', value: 0, operator: 'sum', field: 'serviceConnectedCallCount' },
+    serviceTotalTalkTime: { name: 'Total Talk', value: 0, operator: 'sum', field: 'serviceTotalTalkTime', format: 'duration' },
+    serviceAverageTalkTime: {
+      name: 'Average Talk',
+      value: [],
+      operator: 'average',
+      field: 'serviceAverageTalkTime',
+      format: 'duration',
+    },
+  },
+});

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import config from '../../../config/auth/index';
 import { FetchStatus } from '../../..//store/reducers/wallboards.reducer';
 import { DEFAULTS } from '../../../common/defaults/defaults';
 import { handleWallboardActiveModalAC } from '../../../store/actions/modal.action';
@@ -161,7 +160,9 @@ const LandingTable = () => {
                       <p>{handleConvertDate(wb.createdOn)}</p>
                     </td>
                     <td className="c-landing-table__wb-actions">
-                      <a target="_blank" rel="noreferrer" href={`#/wallboard/${wb.id}/edit`} className="c-landing-table__edit-btn"> </a>
+                      <a target="_blank" rel="noreferrer" href={`#/wallboard/${wb.id}/edit`} className="c-landing-table__edit-btn">
+                        {' '}
+                      </a>
                       <button
                         onClick={() => {
                           handleCopy(wb);
