@@ -3,7 +3,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { DEFAULTS } from '../../../common/defaults/defaults';
 import useOnClickOutside from '../../../common/hooks/useOnClickOutside';
 import { checkIsAlphanumeric } from '../../../common/utils/alphanumeric-validation';
-import { handleCallStatusDataAC, handleWallboardActiveModalAC } from '../../../store/actions/modal.action';
+import {
+  handleCallStatusDataAC,
+  handleWallboardActiveModalAC,
+  resetModalAddComponentFormDataAC,
+} from '../../../store/actions/modal.action';
 import { addWallboardCallStatusAC } from '../../../store/actions/wallboards.action';
 
 const ModalCallStatus = ({ ...props }) => {
@@ -14,6 +18,7 @@ const ModalCallStatus = ({ ...props }) => {
 
   const closeModal = () => {
     dispatch(handleWallboardActiveModalAC(null));
+    dispatch(resetModalAddComponentFormDataAC());
   };
 
   useOnClickOutside(modalRef, () => closeModal());

@@ -53,10 +53,10 @@ const ModalNewWallboard = ({ ...props }) => {
       <div className="c-modal--new-wallboard__list">
         {filtredOptions.map((option) => (
           <div
-            key={option.NAME}
-            onClick={() => handleSelectedItem(option.NAME)}
+            key={option.ID}
+            onClick={() => handleSelectedItem(option.ID)}
             className={`c-modal--new-wallboard__list-item ${
-              selectedListItem === option.NAME ? 'c-modal--new-wallboard__list-item--selected' : ''
+              selectedListItem === option.ID ? 'c-modal--new-wallboard__list-item--selected' : ''
             }`}
           >
             <div className="c-modal--new-wallboard__list-title">{option.NAME}</div>
@@ -106,14 +106,22 @@ const ModalNewWallboard = ({ ...props }) => {
 
   const handleSelectButton = () => {
     const onClickSelectButton = (e) => {
+      dispatch(handleModalSelectActiveElementAC());
       switch (selectedListItem) {
-        case 'Agent list': {
-          dispatch(handleModalSelectActiveElementAC(selectedListItem));
+        case DEFAULTS.WALLBOARDS.WIDGET_TYPE.AGENT_LIST: {
           return dispatch(handleWallboardActiveModalAC(DEFAULTS.MODAL.MODAL_NAMES.ADD_COMPONENT));
         }
-        case 'Call status': {
-          dispatch(handleModalSelectActiveElementAC(selectedListItem));
+        case DEFAULTS.WALLBOARDS.WIDGET_TYPE.CALL_STATUS: {
           return dispatch(handleWallboardActiveModalAC(DEFAULTS.MODAL.MODAL_NAMES.CALL_STATUS));
+        }
+        case DEFAULTS.WALLBOARDS.WIDGET_TYPE.QUEUE_STATUS: {
+          return dispatch(handleWallboardActiveModalAC(DEFAULTS.MODAL.MODAL_NAMES.QUEUE_STATUS));
+        }
+        case DEFAULTS.WALLBOARDS.WIDGET_TYPE.CALL_TRACKING: {
+          return dispatch(handleWallboardActiveModalAC(DEFAULTS.MODAL.MODAL_NAMES.CALL_TRACKING));
+        }
+        case DEFAULTS.WALLBOARDS.WIDGET_TYPE.AGENT_LOGIN: {
+          return dispatch(handleWallboardActiveModalAC(DEFAULTS.MODAL.MODAL_NAMES.AGENT_LOGIN));
         }
         default:
           return;

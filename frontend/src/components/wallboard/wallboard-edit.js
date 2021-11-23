@@ -49,7 +49,7 @@ const WallboardEdit = () => {
   const handleErrors = () => {
     if (!activeWallboard.isNewWallboard && fetchStatus !== FetchStatus.SUCCESS) {
       return (
-        <div>
+        <div className="error-message-container">
           {fetchStatus === FetchStatus.FAIL && <h3 className="error-message--headline">Error {statusCode}:</h3>}
           <p className="error-message">{fetchMessage}</p>
         </div>
@@ -59,7 +59,7 @@ const WallboardEdit = () => {
     if (!adminPermissions && !teamleaderPermissions) {
       // check if it's basic user
       return (
-        <div>
+        <div className="error-message-container">
           <h3 className="error-message--headline">Error {statusCode}:</h3>
           <p className="error-message">{DEFAULTS.WALLBOARDS.MESSAGE.NOT_ALLOWED_EDIT}</p>
         </div>
@@ -71,7 +71,7 @@ const WallboardEdit = () => {
       if (userInfo.id !== activeWallboard.createdByUserId) {
         // edit the wallboard only if the team leader has access on it
         return (
-          <div>
+          <div className="error-message-container">
             <h3 className="error-message--headline">Error {statusCode}:</h3>
             <p className="error-message">{DEFAULTS.WALLBOARDS.MESSAGE.NOT_ALLOWED_EDIT}</p>
           </div>
@@ -88,6 +88,7 @@ const WallboardEdit = () => {
           {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.SELECT_COMPONENT ||
           activeModalName === DEFAULTS.MODAL.MODAL_NAMES.ADD_COMPONENT ||
           activeModalName === DEFAULTS.MODAL.MODAL_NAMES.CALL_STATUS ||
+          activeModalName === DEFAULTS.MODAL.MODAL_NAMES.QUEUE_STATUS ||
           activeWallboard.widgets?.length ? (
             <GridPage />
           ) : (

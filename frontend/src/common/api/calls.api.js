@@ -32,6 +32,11 @@ export const CallsApi = async (props) => {
       options.url = baseUrl;
       break;
 
+    case DEFAULTS.CALLS.API.GET.CALLS_STATISTIC:
+      options.method = 'get';
+      options.url = `${baseUrl}/statistic?time-start=${encodeURIComponent(props.timeStart)}&time-end=${encodeURIComponent(props.timeEnd)}`;
+      break;
+
     default:
       return null;
   }

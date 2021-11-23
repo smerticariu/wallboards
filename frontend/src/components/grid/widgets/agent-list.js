@@ -9,7 +9,6 @@ import {
 } from 'src/store/actions/modal.action';
 import {
   changeAgentAvailabilityStateThunk,
-  fetchAllAgentsThunk,
   fetchDevicesSipAgentsThunk,
   fetchOrganisationAgentsThunk,
   fetchUserGroupsThunk,
@@ -54,13 +53,8 @@ const GridAgentList = ({ isEditMode, widget, ...props }) => {
     }
   }, [availabilityProfiles, availabilityStates]);
   useEffect(() => {
-    dispatch(fetchAllAgentsThunk(widget.callQueue.id));
-    const agentsInterval = setInterval(() => {
-      dispatch(fetchAllAgentsThunk(widget.callQueue.id));
-    }, 2000);
     dispatch(fetchDevicesSipAgentsThunk());
     dispatch(fetchUserGroupsThunk());
-    return () => clearInterval(agentsInterval);
     // eslint-disable-next-line
   }, [widget.callQueue.id]);
 

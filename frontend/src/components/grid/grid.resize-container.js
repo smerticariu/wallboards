@@ -5,8 +5,6 @@ import { ResizableBox } from 'react-resizable';
 import { handleWallboardGridLayoutChangeAC, syncWidgetsSizeForNewScreenAC } from 'src/store/actions/wallboards.action';
 import { DEFAULTS } from '../../common/defaults/defaults';
 import useWindowSize from '../../common/hooks/useWindowSize';
-import GridAgentList from './widgets/agent-list';
-import GridCallStatus from './widgets/call-status';
 import Widget from './widgets/widget';
 
 const GridResizeContainer = ({ isEditMode = true, widgets = [], ...props }) => {

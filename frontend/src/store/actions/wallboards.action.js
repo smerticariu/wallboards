@@ -24,6 +24,12 @@ export const wallboardsActions = {
 
   ADD_WALLBOARD_CALL_STATUS: 'ADD_WALLBOARD_CALL_STATUS',
 
+  ADD_WALLBOARD_QUEUE_STATUS: 'ADD_WALLBOARD_QUEUE_STATUS',
+
+  ADD_WALLBOARD_CALL_TRACKING: 'ADD_WALLBOARD_CALL_TRACKING',
+
+  ADD_WALLBOARD_AGENT_LOGIN: 'ADD_WALLBOARD_AGENT_LOGIN',
+
   WALLBOARD_GRID_LAYOUT_CHANGE: 'WALLBOARD_GRID_LAYOUT_CHANGE',
 
   RESET_WALLBOARD_EDIT_PAGE_DATA: 'RESET_WALLBOARD_EDIT_PAGE_DATA',
@@ -118,6 +124,21 @@ export const addWallboardComponentAC = (userInfo, modalAddComponent) => ({
 export const addWallboardCallStatusAC = (callStatus, userInfo) => ({
   type: wallboardsActions.ADD_WALLBOARD_CALL_STATUS,
   payload: { callStatus, userInfo },
+});
+
+export const addWallboardQueueStatusAC = (queueStatus, userInfo) => ({
+  type: wallboardsActions.ADD_WALLBOARD_QUEUE_STATUS,
+  payload: { queueStatus, userInfo },
+});
+
+export const addWallboardCallTrackingAC = (callTracking, userInfo) => ({
+  type: wallboardsActions.ADD_WALLBOARD_CALL_TRACKING,
+  payload: { callTracking, userInfo },
+});
+
+export const addWallboardAgentLoginAC = (agentLogin, userInfo) => ({
+  type: wallboardsActions.ADD_WALLBOARD_AGENT_LOGIN,
+  payload: { agentLogin, userInfo },
 });
 
 export const handleWallboardGridLayoutChangeAC = (gridLayout) => ({

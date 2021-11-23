@@ -99,12 +99,12 @@ const ModalAddComponent = ({ ...props }) => {
             ...formData,
             title: {
               ...formData.title,
-              errorMessage: DEFAULTS.MODAL.MESSAGES.ALPHANUMERIC_NAME,
+              errorMessage: DEFAULTS.MODAL.MESSAGES.ALPHANUMERIC_TITLE,
             },
           })
         );
 
-        return alert(DEFAULTS.MODAL.MESSAGES.ALPHANUMERIC_NAME);
+        return alert(DEFAULTS.MODAL.MESSAGES.ALPHANUMERIC_TITLE);
       }
       dispatch(addWallboardComponentAC(userInfo, formData));
       closeModal();
