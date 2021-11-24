@@ -203,29 +203,6 @@ export const agentsReducer = (state = agentsInitialState, action) => {
       return {
         ...state,
         calls,
-        agentsQueues: state.agentsQueues.map((queueWithAgents) => ({
-          ...queueWithAgents,
-          agents: queueWithAgents.agents.map((agent) => {
-            let userCall = null;
-            calls.some((call) => {
-              if (
-                call.userId === agent.userId ||
-                call.deviceId === agent.deviceId ||
-                call.to === agent.organisationUserData?.sipExtension
-              ) {
-                userCall = {
-                  ...call,
-                };
-                return true;
-              }
-              return false;
-            });
-            return {
-              ...agent,
-              userCurrentCall: userCall,
-            };
-          }),
-        })),
       };
 
     case agentsActions.FETCH_USER_LOGIN_DATA_SUCCESS: {

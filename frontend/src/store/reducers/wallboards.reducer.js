@@ -327,7 +327,7 @@ export const wallboardsReducer = (state = { ...wallboardsInitialState }, action)
           value: callTracking.group.value,
         },
         callQueue: {
-          id: +callTracking.callQueue.id,
+          id: callTracking.callQueue.id,
           value: callTracking.callQueue.value,
         },
         callCategory: {

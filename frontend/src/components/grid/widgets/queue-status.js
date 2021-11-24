@@ -12,6 +12,7 @@ import { DEFAULTS } from '../../../common/defaults/defaults';
 import { PRESENCE_STATE_KEYS } from '../../../common/defaults/modal.defaults';
 import { fetchQueuedCallThunk } from '../../../store/thunk/callsQueues.thunk';
 import { getQueueStatusInitialValues } from '../../../common/defaults/wallboards.defaults';
+import { fetchUsersCurrentCallTimeThunk } from '../../../store/thunk/agents.thunk';
 
 const GridQueueStatus = ({ isEditMode, widget, ...props }) => {
   const dispatch = useDispatch();
@@ -23,6 +24,7 @@ const GridQueueStatus = ({ isEditMode, widget, ...props }) => {
   useEffect(() => {
     const interval = setInterval(() => {
       dispatch(fetchQueuedCallThunk(widget.callQueue.id));
+      dispatch(fetchUsersCurrentCallTimeThunk());
     }, [2000]);
     return () => clearInterval(interval);
     // eslint-disable-next-line
@@ -33,37 +35,39 @@ const GridQueueStatus = ({ isEditMode, widget, ...props }) => {
     if (agentsQueues.length) {
       const agents = agentsQueues.find((agentQueue) => agentQueue.callQueueId === widget.callQueue.id);
       agents?.agents.forEach((agent) => {
-        queueStatusValuesCopy.total_agents.value++;
+        queueStatusValuesCopy.totalAgents.value++;
+        const userCurrentCall = calls.filter((call) => call.userId === agent.userId || call.deviceId === agent.deviceId).pop();
+
         switch (agent.status.toLowerCase()) {
           case PRESENCE_STATE_KEYS.AGENT_STATUS_LOGGED_OFF.toLowerCase():
-            queueStatusValuesCopy.logged_off_agents.value++;
+            queueStatusValuesCopy.loggedOffAgents.value++;
             break;
           case PRESENCE_STATE_KEYS.AGENT_STATUS_IDLE.toLowerCase():
-            if (agent.onCall) {
-              queueStatusValuesCopy.busy_agents.value++;
+            if (userCurrentCall) {
+              queueStatusValuesCopy.busyAgents.value++;
               break;
             }
             if (agent.inWrapUp) {
-              queueStatusValuesCopy.wrapped_up_agents.value++;
+              queueStatusValuesCopy.wrappedUpAgents.value++;
               break;
             }
-            queueStatusValuesCopy.available_agents.value++;
+            queueStatusValuesCopy.availableAgents.value++;
             break;
           case PRESENCE_STATE_KEYS.AGENT_STATUS_BUSY.toLowerCase():
-            queueStatusValuesCopy.busy_agents.value++;
+            queueStatusValuesCopy.busyAgents.value++;
             break;
           default:
-            queueStatusValuesCopy.available_agents.value++;
+            queueStatusValuesCopy.availableAgents.value++;
         }
       });
     }
     queuedCall.forEach((call) => {
       if (call.status.toLowerCase() !== 'connected' && call.status.toLowerCase() !== 'bridged') {
-        queueStatusValues.total_calls_queueing.value++;
-        queueStatusValues.most_dial_attempts.value = Math.max(call.dialAttempts, queueStatusValues.most_dial_attempts.value);
-        queueStatusValues.longest_time_in_queue.value = Math.max(
+        queueStatusValues.totalCallsQueueing.value++;
+        queueStatusValues.mostDialAttempts.value = Math.max(call.dialAttempts, queueStatusValues.mostDialAttempts.value);
+        queueStatusValues.longestTimeInQueue.value = Math.max(
           findEndWait(call).diff(moment.utc(call.created), 'second'),
-          queueStatusValues.longest_time_in_queue.value
+          queueStatusValues.longestTimeInQueue.value
         );
       }
     });
@@ -84,7 +88,7 @@ const GridQueueStatus = ({ isEditMode, widget, ...props }) => {
   };
   const findEndWait = (call) => {
     let end = moment.utc();
-    if (call.status === 'bridged' || call.status === 'connected') {
+    if (call.status.toLowerCase() === 'bridged' || call.status.toLowerCase() === 'connected') {
       const findCall = calls.find((callFromBE) => callFromBE.uuid === call.uuid);
       if (findCall?.answerTime) {
         end = moment.utc(findCall.answerTime);

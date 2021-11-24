@@ -40,14 +40,14 @@ export const WALLBOARDS = {
 };
 
 export const getQueueStatusInitialValues = () => ({
-  available_agents: { title: 'Available Agents', value: 0, color: '#b8c62a' },
-  busy_agents: { title: 'Busy Agents', value: 0, color: '#f8485e' },
-  wrapped_up_agents: { title: 'Wrapped Up Agents', value: 0, color: '#e87722' },
-  logged_off_agents: { title: 'Logged Off Agents', value: 0, color: '#49535c' },
-  total_agents: { title: 'Total Agents', value: 0, color: '#00a9ce' },
-  total_calls_queueing: { title: 'Total Calls Queueing', value: 0, color: '#00a9ce' },
-  longest_time_in_queue: { title: 'Longest Time in Queue', value: '00:00:00', color: '#00a9ce' },
-  most_dial_attempts: { title: 'Most Dial Attempts', value: 0, color: '#00a9ce' },
+  availableAgents: { title: 'Available Agents', value: 0, color: '#b8c62a' },
+  busyAgents: { title: 'Busy Agents', value: 0, color: '#f8485e' },
+  wrappedUpAgents: { title: 'Wrapped Up Agents', value: 0, color: '#e87722' },
+  loggedOffAgents: { title: 'Logged Off Agents', value: 0, color: '#49535c' },
+  totalAgents: { title: 'Total Agents', value: 0, color: '#00a9ce' },
+  totalCallsQueueing: { title: 'Total Calls Queueing', value: 0, color: '#00a9ce' },
+  longestTimeInQueue: { title: 'Longest Time in Queue', value: '00:00:00', color: '#00a9ce' },
+  mostDialAttempts: { title: 'Most Dial Attempts', value: 0, color: '#00a9ce' },
 });
 export const getCallsInitialValues = () => ({
   inbound: { value: 0, prevalue: 0 },

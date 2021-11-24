@@ -19,11 +19,12 @@ import { FetchStatus } from 'src/store/reducers/wallboards.reducer';
 import { fetchAgentSkillThunk } from 'src/store/thunk/skills.thunk';
 import moment from 'moment';
 import { DEFAULTS } from '../../../common/defaults/defaults';
-import { CALL_DIRECTIONS, PRESENCE_STATE_KEYS, SORT_BY_VALUES } from '../../../common/defaults/modal.defaults';
+import { PRESENCE_STATE_KEYS, SORT_BY_VALUES } from '../../../common/defaults/modal.defaults';
 const GridAgentList = ({ isEditMode, widget, ...props }) => {
   const dispatch = useDispatch();
   const agentQueues = useSelector((state) => state.agents.agentsQueues.find((queue) => queue.callQueueId === widget.callQueue.id));
   const agents = useSelector((state) => state.agents);
+  const calls = useSelector((state) => state.agents.calls);
   const { agentsSkill } = useSelector((state) => state.skills);
   const [agentsForDisplay, setAgentsForDisplay] = useState([]);
 
@@ -79,21 +80,22 @@ const GridAgentList = ({ isEditMode, widget, ...props }) => {
     ) {
       const agentsWithFullInfo = agentQueues.agents.map((agentQueue) => {
         const agentSkills = agentsSkill.find((agentSkills) => agentSkills.agentId === agentQueue.userId);
+        const userCurrentCall = calls.filter((call) => call.userId === agentQueue.userId || call.deviceId === agentQueue.deviceId).pop();
+
         const lastAvailabilityStateChangeSeconds = agentQueue.lastAvailabilityStateChange
           ? moment().diff(moment(agentQueue.lastAvailabilityStateChange), 'seconds')
           : 0;
         let agentStatus = agentQueue.status;
         switch (agentQueue.status.toLowerCase()) {
-          case 'loggedoff':
+          case PRESENCE_STATE_KEYS.AGENT_STATUS_LOGGED_OFF:
             agentStatus = PRESENCE_STATE_KEYS.AGENT_STATUS_LOGGED_OFF;
             break;
-          case 'busy':
+          case PRESENCE_STATE_KEYS.AGENT_STATUS_BUSY:
             agentStatus = PRESENCE_STATE_KEYS.AGENT_STATUS_INBOUND_CALL_QUEUE;
             //try to detect RINGING state
             if (agentQueue.userId != null) {
-              if (agentQueue.userCurrentCall) {
-                agentQueue.answerTime = agentQueue.userCurrentCall.answerTime;
-                if (agentQueue.userCurrentCall.state === 'RINGING') {
+              if (userCurrentCall) {
+                if (userCurrentCall.state === 'RINGING') {
                   agentStatus = PRESENCE_STATE_KEYS.AGENT_STATUS_RINGING;
                 }
                 break;
@@ -101,24 +103,24 @@ const GridAgentList = ({ isEditMode, widget, ...props }) => {
             }
             //try to find the device in the active calls
             if (agentQueue.deviceId != null) {
-              if (agentQueue.userCurrentCall) {
-                if (agentQueue.userCurrentCall.state === 'RINGING') {
+              if (userCurrentCall) {
+                if (userCurrentCall.state === 'RINGING') {
                   agentStatus = PRESENCE_STATE_KEYS.AGENT_STATUS_RINGING;
                 }
                 break;
               }
             }
             break;
-          case 'idle':
+          case PRESENCE_STATE_KEYS.AGENT_STATUS_IDLE:
             //try to find the user in the active calls
             if (agentQueue.userId != null) {
-              if (agentQueue.userCurrentCall) {
+              if (userCurrentCall) {
                 agentStatus =
-                  ['INBOUND', 'INCOMING'].indexOf(agentQueue.userCurrentCall.logicalDirection) !== -1
+                  ['INBOUND', 'INCOMING'].indexOf(userCurrentCall.logicalDirection) !== -1
                     ? PRESENCE_STATE_KEYS.AGENT_STATUS_INBOUND_CALL_OTHER
                     : PRESENCE_STATE_KEYS.AGENT_STATUS_OUTBOUND;
-                agentQueue.answerTime = agentQueue.userCurrentCall.answerTime;
-                if (agentQueue.userCurrentCall.state === 'RINGING') {
+                agentQueue.answerTime = userCurrentCall.answerTime;
+                if (userCurrentCall.state === 'RINGING') {
                   agentStatus = PRESENCE_STATE_KEYS.AGENT_STATUS_RINGING;
                 }
                 break;
@@ -126,13 +128,13 @@ const GridAgentList = ({ isEditMode, widget, ...props }) => {
             }
             // try to find the device in the active calls
             if (agentQueue.deviceId != null) {
-              if (agentQueue.userCurrentCall) {
+              if (userCurrentCall) {
                 agentStatus =
-                  ['INBOUND', 'INCOMING'].indexOf(agentQueue.userCurrentCall.logicalDirection) !== -1
+                  ['INBOUND', 'INCOMING'].indexOf(userCurrentCall.logicalDirection) !== -1
                     ? PRESENCE_STATE_KEYS.AGENT_STATUS_INBOUND_CALL_OTHER
                     : PRESENCE_STATE_KEYS.AGENT_STATUS_OUTBOUND;
-                agentQueue.answerTime = agentQueue.userCurrentCall.answerTime;
-                if (agentQueue.userCurrentCall.state === 'RINGING') {
+                agentQueue.answerTime = userCurrentCall.answerTime;
+                if (userCurrentCall.state === 'RINGING') {
                   agentStatus = PRESENCE_STATE_KEYS.AGENT_STATUS_RINGING;
                 }
                 break;
@@ -157,9 +159,10 @@ const GridAgentList = ({ isEditMode, widget, ...props }) => {
           firstName: agentQueue.organisationUserData?.firstName,
           lastName: agentQueue.organisationUserData?.lastName,
           timeInCurrentAvailabilityState: lastAvailabilityStateChangeSeconds ?? 0,
-          currentCallTimeSeconds: agentQueue?.userCurrentCall?.answerTime
-            ? moment().diff(moment(agentQueue.userCurrentCall.answerTime), 'seconds')
-            : 0,
+          currentCallTimeSeconds:
+            userCurrentCall?.answerTime && PRESENCE_STATE_KEYS.AGENT_STATUS_LOGGED_OFF !== agentStatus
+              ? moment().diff(moment(userCurrentCall.answerTime), 'seconds')
+              : 0,
         };
       });
 

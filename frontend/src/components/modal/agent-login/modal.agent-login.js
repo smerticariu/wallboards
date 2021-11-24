@@ -12,7 +12,7 @@ import { checkIsAlphanumeric } from '../../../common/utils/alphanumeric-validati
 import { DEFAULTS } from '../../../common/defaults/defaults';
 import { exportCSVUserLoginDataThunk, fetchUserGroupsThunk } from '../../../store/thunk/agents.thunk';
 import { CALL_STATISTIC_PERIOD } from '../../../common/defaults/modal.defaults';
-import AgentLoginTable from '../../agent-login-table/agent-login';
+import AgentLoginTable from '../../agent-login-table/agent-login-table';
 
 const ModalAgentLogin = ({ ...props }) => {
   const modalRef = useRef(null);
