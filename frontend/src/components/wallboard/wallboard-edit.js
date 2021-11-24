@@ -88,6 +88,7 @@ const WallboardEdit = () => {
           {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.SELECT_COMPONENT ||
           activeModalName === DEFAULTS.MODAL.MODAL_NAMES.ADD_COMPONENT ||
           activeModalName === DEFAULTS.MODAL.MODAL_NAMES.CALL_STATUS ||
+          activeModalName === DEFAULTS.MODAL.MODAL_NAMES.QUEUE_TRACKING ||
           activeModalName === DEFAULTS.MODAL.MODAL_NAMES.QUEUE_STATUS ||
           activeWallboard.widgets?.length ? (
             <GridPage />

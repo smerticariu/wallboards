@@ -1,3 +1,5 @@
+import { QUEUE_TRACKING_COLUMN_OPTIONS } from './modal.defaults';
+
 export const WALLBOARDS = {
   NOTIFICATION: {
     SUCCESS: {
@@ -35,26 +37,17 @@ export const WALLBOARDS = {
       ALL_WALLBOARDS: 'delete all wallboards',
     },
   },
-  WIDGET_TYPE: {
-    AGENT_LIST: 'AGENT_LIST',
-    CALL_STATUS: 'CALL_STATUS',
-    QUEUE_STATUS: 'QUEUE_STATUS',
-    CALL_TRACKING: 'CALL_TRACKING',
-    QUEUE_LIST: 'QUEUE_LIST',
-    QUEUE_TRACKING: 'QUEUE_TRACKING',
-    AGENT_LOGIN: 'AGENT_LOGIN',
-    AGENT_STATUS: 'AGENT_STATUS',
-  },
 };
+
 export const getQueueStatusInitialValues = () => ({
-  available_agents: { title: 'Available Agents', value: 0, color: '#b8c62a' },
-  busy_agents: { title: 'Busy Agents', value: 0, color: '#f8485e' },
-  wrapped_up_agents: { title: 'Wrapped Up Agents', value: 0, color: '#e87722' },
-  logged_off_agents: { title: 'Logged Off Agents', value: 0, color: '#49535c' },
-  total_agents: { title: 'Total Agents', value: 0, color: '#00a9ce' },
-  total_calls_queueing: { title: 'Total Calls Queueing', value: 0, color: '#00a9ce' },
-  longest_time_in_queue: { title: 'Longest Time in Queue', value: '00:00:00', color: '#00a9ce' },
-  most_dial_attempts: { title: 'Most Dial Attempts', value: 0, color: '#00a9ce' },
+  availableAgents: { title: 'Available Agents', value: 0, color: '#b8c62a' },
+  busyAgents: { title: 'Busy Agents', value: 0, color: '#f8485e' },
+  wrappedUpAgents: { title: 'Wrapped Up Agents', value: 0, color: '#e87722' },
+  loggedOffAgents: { title: 'Logged Off Agents', value: 0, color: '#49535c' },
+  totalAgents: { title: 'Total Agents', value: 0, color: '#00a9ce' },
+  totalCallsQueueing: { title: 'Total Calls Queueing', value: 0, color: '#00a9ce' },
+  longestTimeInQueue: { title: 'Longest Time in Queue', value: '00:00:00', color: '#00a9ce' },
+  mostDialAttempts: { title: 'Most Dial Attempts', value: 0, color: '#00a9ce' },
 });
 export const getCallsInitialValues = () => ({
   inbound: { value: 0, prevalue: 0 },
@@ -141,4 +134,68 @@ export const getCallTrackingInitialValues = () => ({
       format: 'duration',
     },
   },
+});
+export const getQueueTrackingInitialValues = () => ({
+  totalCallCount: { id: QUEUE_TRACKING_COLUMN_OPTIONS.TOTAL_CALLS, name: 'Total Calls', value: 0 },
+  newCallCount: { id: QUEUE_TRACKING_COLUMN_OPTIONS.NEW_CALLS_QUEUED, name: 'New Calls Queued', value: 0 },
+  answeredCallCount: {
+    id: QUEUE_TRACKING_COLUMN_OPTIONS.ANSWERED_CALLS,
+    name: 'Answered Calls',
+    value: 0,
+    percent: {
+      value: 0,
+    },
+  },
+  hungUpCallCount: {
+    id: QUEUE_TRACKING_COLUMN_OPTIONS.CALLER_ABANDONATED,
+    name: 'Abandoned Calls',
+    value: 0,
+    isRed: false,
+    percent: { value: 0 },
+  },
+  timedOutCallCount: {
+    id: QUEUE_TRACKING_COLUMN_OPTIONS.CALLER_TIME_OUT,
+    name: 'Caller Timed Out',
+    value: 0,
+
+    percent: { value: 0 },
+  },
+  abortedCallCount: {
+    id: QUEUE_TRACKING_COLUMN_OPTIONS.CALLER_EXITED_QUEUED,
+    name: 'Caller Exited Queue',
+    value: 0,
+
+    percent: { value: 0 },
+  },
+  solidCallCount: {
+    id: QUEUE_TRACKING_COLUMN_OPTIONS.SOLID_CALLS,
+    name: 'Solid Calls',
+    isRed: false,
+    value: 0,
+    percent: { value: 0 },
+  },
+  averageTalkTime: {
+    id: QUEUE_TRACKING_COLUMN_OPTIONS.AVARAGE_TALK_TIME,
+    name: 'Average Talk Time',
+    value: [],
+    operator: 'average',
+    format: 'duration',
+  },
+  averageWaitTime: {
+    id: QUEUE_TRACKING_COLUMN_OPTIONS.AVERAGE_WAIT,
+    name: 'Average Wait',
+    isRed: false,
+    value: [],
+    operator: 'averages',
+
+    format: 'duration',
+  },
+  maxWaitTime: { id: QUEUE_TRACKING_COLUMN_OPTIONS.MAX_WAIT, name: 'Max Wait', value: [], format: 'duration' },
+});
+export const getQueueTrackingUtilityFields = () => ({
+  totalTalkTime: { id: 'totalTalkTime', name: '', value: 0 },
+  answeredCallTotalWaitTime: { id: 'answeredCallTotalWaitTime', name: '', value: 0 },
+  hungUpCallTotalWaitTime: { id: 'hungUpCallTotalWaitTime', name: '', value: 0 },
+  timedOutCallTotalWaitTime: { id: 'timedOutCallTotalWaitTime', name: '', value: 0 },
+  abortedCallTotalWaitTime: { id: 'abortedCallTotalWaitTime', name: '', value: 0 },
 });

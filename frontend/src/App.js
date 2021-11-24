@@ -22,6 +22,7 @@ import ModalConfirmSaveWallboard from './components/modal/save-wallboard/modal.c
 import ModalWarning from './components/modal/warning/modal.warning';
 import { DEFAULTS } from './common/defaults/defaults';
 import ModalCallStatus from './components/modal/call-status/modal.call-status';
+import ModalQueueTracking from './components/modal/queue-tracking/modal.queue-tracking';
 import ModalQueueStatus from './components/modal/queue-status/modal.queue-status';
 import ModalCallTracking from './components/modal/call-tracking/modal.call-tracking';
 import ModalAgentLogin from './components/modal/agent-login/modal.agent-login';
@@ -100,6 +101,7 @@ function App() {
           {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.DELETE_WALLBOARD_COMPONENT && <ModalDeleteWallboardComponent />}
           {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.CONFIRM_SAVE_WALLBOARD && <ModalConfirmSaveWallboard />}
           {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.CALL_STATUS && <ModalCallStatus />}
+          {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.QUEUE_TRACKING && <ModalQueueTracking />}
           {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.QUEUE_STATUS && <ModalQueueStatus />}
           {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.CALL_TRACKING && <ModalCallTracking />}
           {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.AGENT_LOGIN && <ModalAgentLogin />}

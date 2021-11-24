@@ -24,6 +24,7 @@ const GridAgentList = ({ isEditMode, widget, ...props }) => {
   const dispatch = useDispatch();
   const agentQueues = useSelector((state) => state.agents.agentsQueues.find((queue) => queue.callQueueId === widget.callQueue.id));
   const agents = useSelector((state) => state.agents);
+  const calls = useSelector((state) => state.agents.calls);
   const { agentsSkill } = useSelector((state) => state.skills);
   const [agentsForDisplay, setAgentsForDisplay] = useState([]);
 
@@ -79,38 +80,75 @@ const GridAgentList = ({ isEditMode, widget, ...props }) => {
     ) {
       const agentsWithFullInfo = agentQueues.agents.map((agentQueue) => {
         const agentSkills = agentsSkill.find((agentSkills) => agentSkills.agentId === agentQueue.userId);
+        const userCurrentCall = calls.filter((call) => call.userId === agentQueue.userId || call.deviceId === agentQueue.deviceId).pop();
+
         const lastAvailabilityStateChangeSeconds = agentQueue.lastAvailabilityStateChange
           ? moment().diff(moment(agentQueue.lastAvailabilityStateChange), 'seconds')
           : 0;
         let agentStatus = agentQueue.status;
-
-        if (agentQueue.userCurrentCall?.userId === agentQueue.userId) {
-          agentStatus = PRESENCE_STATE_KEYS.AGENT_STATUS_OUTBOUND;
+        switch (agentQueue.status.toLowerCase()) {
+          case PRESENCE_STATE_KEYS.AGENT_STATUS_LOGGED_OFF:
+            agentStatus = PRESENCE_STATE_KEYS.AGENT_STATUS_LOGGED_OFF;
+            break;
+          case PRESENCE_STATE_KEYS.AGENT_STATUS_BUSY:
+            agentStatus = PRESENCE_STATE_KEYS.AGENT_STATUS_INBOUND_CALL_QUEUE;
+            //try to detect RINGING state
+            if (agentQueue.userId != null) {
+              if (userCurrentCall) {
+                if (userCurrentCall.state === 'RINGING') {
+                  agentStatus = PRESENCE_STATE_KEYS.AGENT_STATUS_RINGING;
+                }
+                break;
+              }
+            }
+            //try to find the device in the active calls
+            if (agentQueue.deviceId != null) {
+              if (userCurrentCall) {
+                if (userCurrentCall.state === 'RINGING') {
+                  agentStatus = PRESENCE_STATE_KEYS.AGENT_STATUS_RINGING;
+                }
+                break;
+              }
+            }
+            break;
+          case PRESENCE_STATE_KEYS.AGENT_STATUS_IDLE:
+            //try to find the user in the active calls
+            if (agentQueue.userId != null) {
+              if (userCurrentCall) {
+                agentStatus =
+                  ['INBOUND', 'INCOMING'].indexOf(userCurrentCall.logicalDirection) !== -1
+                    ? PRESENCE_STATE_KEYS.AGENT_STATUS_INBOUND_CALL_OTHER
+                    : PRESENCE_STATE_KEYS.AGENT_STATUS_OUTBOUND;
+                agentQueue.answerTime = userCurrentCall.answerTime;
+                if (userCurrentCall.state === 'RINGING') {
+                  agentStatus = PRESENCE_STATE_KEYS.AGENT_STATUS_RINGING;
+                }
+                break;
+              }
+            }
+            // try to find the device in the active calls
+            if (agentQueue.deviceId != null) {
+              if (userCurrentCall) {
+                agentStatus =
+                  ['INBOUND', 'INCOMING'].indexOf(userCurrentCall.logicalDirection) !== -1
+                    ? PRESENCE_STATE_KEYS.AGENT_STATUS_INBOUND_CALL_OTHER
+                    : PRESENCE_STATE_KEYS.AGENT_STATUS_OUTBOUND;
+                agentQueue.answerTime = userCurrentCall.answerTime;
+                if (userCurrentCall.state === 'RINGING') {
+                  agentStatus = PRESENCE_STATE_KEYS.AGENT_STATUS_RINGING;
+                }
+                break;
+              }
+            }
+            //check is agent is inWrapUp
+            if (agentQueue.inWrapUp === true) {
+              agentStatus = PRESENCE_STATE_KEYS.AGENT_STATUS_IN_WRAP_UP;
+              break;
+            }
+            break;
+          default:
+            agentStatus = PRESENCE_STATE_KEYS.AGENT_STATUS_IDLE;
         }
-        if (agentQueue.userCurrentCall?.to === agentQueue.organisationUserData?.sipExtension) {
-          agentStatus = PRESENCE_STATE_KEYS.AGENT_STATUS_INBOUND_CALL_OTHER;
-        }
-        // do not remove
-        // if (agentQueue.status === PRESENCE_STATE_KEYS.AGENT_STATUS_BUSY) {
-        //   agentStatus = PRESENCE_STATE_KEYS.AGENT_STATUS_INBOUND_CALL_QUEUE;
-        //   if (agentQueue.userCurrentCall?.state === CALL_DIRECTIONS.RINGING) {
-        //     agentStatus = PRESENCE_STATE_KEYS.AGENT_STATUS_RINGING;
-        //   }
-        // }
-        // if (agentQueue.status === PRESENCE_STATE_KEYS.AGENT_STATUS_IDLE) {
-        //   if (agentQueue.userCurrentCall) {
-        //     agentStatus =
-        //       [CALL_DIRECTIONS.INBOUND, CALL_DIRECTIONS.INCOMING].indexOf(agentQueue.userCurrentCall.direction) === -1
-        //         ? PRESENCE_STATE_KEYS.AGENT_STATUS_INBOUND_CALL_OTHER
-        //         : PRESENCE_STATE_KEYS.AGENT_STATUS_OUTBOUND;
-        //     if (agentQueue.userCurrentCall.state === CALL_DIRECTIONS.RINGING) {
-        //       agentStatus = PRESENCE_STATE_KEYS.AGENT_STATUS_RINGING;
-        //     }
-        //   }
-        //   if (agentQueue.inWrapUp) {
-        //     agentStatus = PRESENCE_STATE_KEYS.AGENT_STATUS_IN_WRAP_UP;
-        //   }
-        // }
 
         return {
           ...agentQueue,
@@ -121,9 +159,10 @@ const GridAgentList = ({ isEditMode, widget, ...props }) => {
           firstName: agentQueue.organisationUserData?.firstName,
           lastName: agentQueue.organisationUserData?.lastName,
           timeInCurrentAvailabilityState: lastAvailabilityStateChangeSeconds ?? 0,
-          currentCallTimeSeconds: agentQueue?.userCurrentCall?.answerTime
-            ? moment().diff(moment(agentQueue.userCurrentCall.answerTime), 'seconds')
-            : 0,
+          currentCallTimeSeconds:
+            userCurrentCall?.answerTime && PRESENCE_STATE_KEYS.AGENT_STATUS_LOGGED_OFF !== agentStatus
+              ? moment().diff(moment(userCurrentCall.answerTime), 'seconds')
+              : 0,
         };
       });
 

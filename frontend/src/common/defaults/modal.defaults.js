@@ -1,5 +1,14 @@
 import { createArrayFromTo } from '../utils/generateArray';
-import { WALLBOARDS } from './wallboards.defaults';
+export const WIDGET_TYPE = {
+  AGENT_LIST: 'AGENT_LIST',
+  CALL_STATUS: 'CALL_STATUS',
+  QUEUE_TRACKING: 'QUEUE_TRACKING',
+  QUEUE_STATUS: 'QUEUE_STATUS',
+  CALL_TRACKING: 'CALL_TRACKING',
+  QUEUE_LIST: 'QUEUE_LIST',
+  AGENT_LOGIN: 'AGENT_LOGIN',
+  AGENT_STATUS: 'AGENT_STATUS',
+};
 export const CALL_STATISTIC_PERIOD = {
   HOUR: 'hour',
   TODAY: 'today',
@@ -28,6 +37,18 @@ export const ADD_COMPONENT_COLUMN_OPTIONS = {
   TIME_CURRENT_CALL: 'TIME_CURRENT_CALL',
   TIME_CURRENT_WRAPUP: 'TIME_CURRENT_WRAPUP',
   SKILLS_AGENT_POSSESSES: 'SKILLS_AGENT_POSSESSES',
+};
+export const QUEUE_TRACKING_COLUMN_OPTIONS = {
+  TOTAL_CALLS: 'TOTAL_CALLS',
+  NEW_CALLS_QUEUED: 'NEW_CALLS_QUEUED',
+  ANSWERED_CALLS: 'ANSWERED_CALLS',
+  CALLER_ABANDONATED: 'CALLER_ABANDONATED',
+  CALLER_TIME_OUT: 'CALLER_TIME_OUT',
+  CALLER_EXITED_QUEUED: 'CALLER_EXITED_QUEUED',
+  SOLID_CALLS: 'SOLID_CALLS',
+  AVARAGE_TALK_TIME: 'AVARAGE_TALK_TIME',
+  AVERAGE_WAIT: 'AVERAGE_WAIT',
+  MAX_WAIT: 'MAX_WAIT',
 };
 export const SORT_BY_VALUES = {
   AGENT_NAME: 'AGENT_NAME',
@@ -83,6 +104,7 @@ export const MODAL = {
     EDIT_WALLBOARD: 'EDIT_WALLBOARD',
     DELETE_WALLBOARD_COMPONENT: 'DELETE_WALLBOARD_COMPONENT',
     CALL_STATUS: 'CALL_STATUS',
+    QUEUE_TRACKING: 'QUEUE_TRACKING',
     QUEUE_STATUS: 'QUEUE_STATUS',
     CALL_TRACKING: 'CALL_TRACKING',
     AGENT_LOGIN: 'AGENT_LOGIN',
@@ -112,28 +134,28 @@ export const MODAL = {
         STATUS: 'Natterbox Admin',
         DATE: '19/03/2021 at 14:19',
         SERVICE: 'Customer Service Calls',
-        ID: WALLBOARDS.WIDGET_TYPE.AGENT_LIST,
+        ID: WIDGET_TYPE.AGENT_LIST,
       },
       {
         NAME: 'Queue list',
         STATUS: 'Natterbox Admin',
         DATE: '19/03/2021 at 14:19',
         SERVICE: 'Customer Service Calls',
-        ID: WALLBOARDS.WIDGET_TYPE.QUEUE_LIST,
+        ID: WIDGET_TYPE.QUEUE_LIST,
       },
       {
         NAME: 'Queue tracking',
         STATUS: 'Natterbox Admin',
         DATE: '19/03/2021 at 14:19',
         SERVICE: 'Customer Service Calls',
-        ID: WALLBOARDS.WIDGET_TYPE.QUEUE_TRACKING,
+        ID: WIDGET_TYPE.QUEUE_TRACKING,
       },
       {
         NAME: 'Queue status',
         STATUS: 'Natterbox Admin',
         DATE: '19/03/2021 at 14:19',
         SERVICE: 'Customer Service Calls',
-        ID: WALLBOARDS.WIDGET_TYPE.QUEUE_STATUS,
+        ID: WIDGET_TYPE.QUEUE_STATUS,
       },
     ],
     [MODAL_NEW_WALLBOARD_SECITONS.CALLS]: [
@@ -142,14 +164,14 @@ export const MODAL = {
         STATUS: 'Natterbox Admin',
         DATE: '19/03/2021 at 14:19',
         SERVICE: 'Customer Service Calls',
-        ID: WALLBOARDS.WIDGET_TYPE.CALL_STATUS,
+        ID: WIDGET_TYPE.CALL_STATUS,
       },
       {
         NAME: 'Call tracking',
         STATUS: 'Natterbox Admin',
         DATE: '19/03/2021 at 14:19',
         SERVICE: 'Customer Service Calls',
-        ID: WALLBOARDS.WIDGET_TYPE.CALL_TRACKING,
+        ID: WIDGET_TYPE.CALL_TRACKING,
       },
     ],
     [MODAL_NEW_WALLBOARD_SECITONS.USERS]: [
@@ -158,14 +180,14 @@ export const MODAL = {
         STATUS: 'Natterbox Admin',
         DATE: '19/03/2021 at 14:19',
         SERVICE: 'Customer Service Calls',
-        ID: WALLBOARDS.WIDGET_TYPE.AGENT_LOGIN,
+        ID: WIDGET_TYPE.AGENT_LOGIN,
       },
       {
         NAME: 'Agent status',
         STATUS: 'Natterbox Admin',
         DATE: '19/03/2021 at 14:19',
         SERVICE: 'Customer Service Calls',
-        ID: WALLBOARDS.WIDGET_TYPE.AGENT_STATUS,
+        ID: WIDGET_TYPE.AGENT_STATUS,
       },
     ],
   },
@@ -186,7 +208,7 @@ export const MODAL = {
     PLACEHOLDER: {
       SKILL: 'Search by Skill name',
       AVAILABILITY: 'Search by name',
-      TITLE: 'Placeholder...',
+      TITLE: 'Agent List',
       SEARCH_LIST: 'Search list…',
     },
     LABEL: {
@@ -398,6 +420,58 @@ export const MODAL = {
       TABLE: 'TABLE',
     },
   },
+  QUEUE_TRACKING_COLUMNS: [
+    {
+      text: 'Total Calls',
+      value: QUEUE_TRACKING_COLUMN_OPTIONS.TOTAL_CALLS,
+      isInitialChecked: true,
+    },
+    {
+      text: 'New Calls Queued',
+      value: QUEUE_TRACKING_COLUMN_OPTIONS.NEW_CALLS_QUEUED,
+      isInitialChecked: true,
+    },
+    {
+      text: 'Answered Calls',
+      value: QUEUE_TRACKING_COLUMN_OPTIONS.ANSWERED_CALLS,
+      isInitialChecked: true,
+    },
+    {
+      text: 'Caller Abandoned',
+      value: QUEUE_TRACKING_COLUMN_OPTIONS.CALLER_ABANDONATED,
+      isInitialChecked: true,
+    },
+    {
+      text: 'Caller Timed Out',
+      value: QUEUE_TRACKING_COLUMN_OPTIONS.CALLER_TIME_OUT,
+      isInitialChecked: true,
+    },
+    {
+      text: 'Caller Exited Queue',
+      value: QUEUE_TRACKING_COLUMN_OPTIONS.CALLER_EXITED_QUEUED,
+      isInitialChecked: true,
+    },
+    {
+      text: 'Solid Calls',
+      value: QUEUE_TRACKING_COLUMN_OPTIONS.SOLID_CALLS,
+      isInitialChecked: true,
+    },
+    {
+      text: 'Average Talk Time',
+      value: QUEUE_TRACKING_COLUMN_OPTIONS.AVARAGE_TALK_TIME,
+      isInitialChecked: true,
+    },
+    {
+      text: 'Average Wait',
+      value: QUEUE_TRACKING_COLUMN_OPTIONS.AVERAGE_WAIT,
+      isInitialChecked: true,
+    },
+    {
+      text: 'Max Wait',
+      value: QUEUE_TRACKING_COLUMN_OPTIONS.MAX_WAIT,
+      isInitialChecked: true,
+    },
+  ],
   CALL_TRACKING: {
     SECTION_TITLE: {
       TITLE: 'Title',
@@ -410,7 +484,7 @@ export const MODAL = {
       START_WEEK: 'Start of Week',
     },
     PLACEHOLDER: {
-      TITLE: 'Placeholder...',
+      TITLE: 'Call Tracking',
     },
     CALL_CATEGORY: [
       { value: 'Outbound Calls', id: CALL_CATEGORY_OPTIONS.outbound },
@@ -457,7 +531,7 @@ export const MODAL = {
       TO: 'To',
     },
     PLACEHOLDER: {
-      TITLE: 'Placeholder...',
+      TITLE: 'Agent Login',
     },
     PERIOD: [
       { value: 'Today', id: CALL_STATISTIC_PERIOD.TODAY },
@@ -562,6 +636,7 @@ export const MODAL = {
   MESSAGES: {
     ALPHANUMERIC_TITLE: 'Title must be alphanumeric',
     MIN_VALUE: 'Min value is 1',
+    MAX_VALUE: 'Max value is 100',
   },
   DELETE_WALLBOARD_MODAL: {
     TITLE: 'Delete Wallboard',
@@ -604,5 +679,27 @@ export const MODAL = {
       TITLE: 'Queue Status',
       CALL_QUEUE: 'Call Queue',
     },
+  },
+  QUEUE_TRACKING: {
+    MODAL_TITLE: 'Widget Options',
+    NAMES: {
+      TITLE: 'Component Name:',
+      QUEUE_TO_MONITOR: 'Call Queue to Monitor',
+      PREVIEW: 'Preview',
+      TIME_ZONE: 'Time Zone',
+      PERIOD: 'Period',
+      START_WEEK: 'Start of Week',
+      SHOW_COLUMNS: 'Show Columns:',
+      ABANDONATED_CALL_SLA: 'Abandoned Call SLA:',
+      AVERAGE_WAIT_SLA: 'Average Wait SLA:',
+      TOTAL_CALLS_SLA: 'Total Calls SLA:',
+      SOLID_CALLS_OVERRIDE: 'Solid Calls Override:',
+    },
+    LABEL: {
+      AVERAGE_WAIT_SLA: 'Highlight when Average Wait breaks SLA Max average wait length (HH:MM:SS):',
+      ABANDONATED_CALL_SLA: 'Highlight when Abandoned calls break SLA Max percentage of calls abandoned:',
+      SOLID_CALLS_OVERRIDE: 'Override the solid call threshold set it the call Queue Solid Call time (HH:MM:SS):',
+    },
+    PLACEHOLDER: 'Queue Tracking',
   },
 };
