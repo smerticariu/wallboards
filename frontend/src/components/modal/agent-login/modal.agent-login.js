@@ -78,6 +78,17 @@ const ModalAgentLogin = ({ ...props }) => {
         );
         existErrors = true;
       }
+      if (isNaN(agentLogin.limitResult.value) || agentLogin.limitResult.value > 100) {
+        dispatch(
+          handleAgentLoginDataAC({
+            limitResult: {
+              ...agentLogin.limitResult,
+              errorMessage: DEFAULTS.MODAL.MESSAGES.MAX_VALUE,
+            },
+          })
+        );
+        existErrors = true;
+      }
       if (existErrors) return;
       dispatch(addWallboardAgentLoginAC(agentLogin, userInfo));
       closeModal();
@@ -136,7 +147,7 @@ const ModalAgentLogin = ({ ...props }) => {
           break;
       }
     };
-
+    const dateToday = moment().format('YYYY-MM-DD');
     return (
       <div className="c-modal--add-component__left-side">
         <div className="c-modal--add-component__input-section">
@@ -169,6 +180,7 @@ const ModalAgentLogin = ({ ...props }) => {
             name="limitResult"
             type="number"
             min="1"
+            max="100"
             onChange={(e) => handleInputAndSelect(e, 'input')}
             value={agentLogin.limitResult.value}
           />
@@ -222,7 +234,7 @@ const ModalAgentLogin = ({ ...props }) => {
             className="c-input c-input--grey"
             name="from"
             type="date"
-            max={agentLogin.to.value}
+            max={agentLogin.to.value || dateToday}
             onChange={(e) => handleInputAndSelect(e, 'input')}
             value={agentLogin.from.value}
           />
@@ -236,6 +248,7 @@ const ModalAgentLogin = ({ ...props }) => {
             name="to"
             type="date"
             min={agentLogin.from.value}
+            max={dateToday}
             onChange={(e) => handleInputAndSelect(e, 'input')}
             value={agentLogin.to.value}
           />

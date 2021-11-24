@@ -193,13 +193,70 @@ export const fetchUsersCurrentCallTimeThunk = () => async (dispatch, getState) =
   try {
     const { userInfo, token } = getState().login;
 
-    const response = await CallsApi({
-      type: DEFAULTS.CALLS.API.GET.CALLS,
-      organizationId: userInfo.organisationId,
-      token,
-    });
+    // const response = await CallsApi({
+    //   type: DEFAULTS.CALLS.API.GET.CALLS,
+    //   organizationId: userInfo.organisationId,
+    //   token,
+    // });
+    const response = {
+      data: {
+        data: [
+          {
+            channels: [
+              {
+                answerTime: '2021-11-23T14:52:56+00:00',
+                createTime: '2021-11-23T14:52:56+00:00',
+                deviceId: 189051,
+                direction: 'OUTBOUND',
+                feature: 'CALL',
+                from: '12000',
+                originatorUuid: null,
+                policy: 'Default',
+                state: 'ANSWERED',
+                to: '2005',
+                type: 'SOCR',
+                userId: 5601879,
+                uuid: '0ababa74-4c6d-11ec-b245-5b37a2702327',
+              },
+            ],
+            direction: 'OUTGOING',
+          },
+        ],
 
-    dispatch(fetchUsersCurrentCallTimeSuccessAC(response.data.data));
+        //         answerTime: "2021-11-23T15:15:18+00:00"
+        // createTime: "2021-11-23T15:15:13+00:00"
+        // deviceId: 0
+        // direction: "INBOUND"
+        // feature: "CALL"
+        // from: "447585915882"
+        // originatorUuid: null
+        // policy: "2019 Service Cloud Demo:Create a"
+        // state: "BRIDGED"
+        // to: "441213141413"
+        // type: "COC"
+        // userId: 0
+        // uuid: "2804ee80-4c70-11ec-be33-e9808165317a"
+        // 1: {uuid: "3092a506-4c70-11ec-971f-e9808165317a", originatorUuid: "2804ee80-4c70-11ec-be33-e9808165317a",…}
+        // answerTime: "2021-11-23T15:15:49+00:00"
+        // createTime: "2021-11-23T15:15:28+00:00"
+        // deviceId: 173176
+        // direction: "OUTBOUND"
+        // feature: "CALL"
+        // from: "447585915882"
+        // originatorUuid: "2804ee80-4c70-11ec-be33-e9808165317a"
+        // policy: "Default"
+        // state: "BRIDGED"
+        // to: "12247"
+        // type: "STC"
+        // userId: 238366
+        // uuid: "3092a506-4c70-11ec-971f-e9808165317a"
+        // direction: "INBOUND"
+      },
+    };
+    const callsWithLogicalDirection = response.data.data.reduce((data, callFullType) => {
+      return [...data, ...callFullType.channels.map((call) => ({ ...call, logicalDirection: callFullType.direction }))];
+    }, []);
+    dispatch(fetchUsersCurrentCallTimeSuccessAC(callsWithLogicalDirection));
   } catch (error) {
     console.log(error.response);
     dispatch(handleIsNotificationShowAC(true, true, `Error: ${error.response.status ?? 'unknown'} - ${DEFAULTS.GLOBAL.FAIL}`));

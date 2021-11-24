@@ -17,35 +17,33 @@ const GridCallStatus = ({ isEditMode, widget, ...props }) => {
   const [noOfCalls, handleNoOfCalls] = useState({ ...getCallsInitialValues() });
   useEffect(() => {
     let noOfCallsCopy = { ...getCallsInitialValues() };
-    calls.forEach((callGroup) =>
-      callGroup.channels.forEach((call) => {
-        switch (call.direction) {
-          case CALL_DIRECTION.INBOUND:
-            noOfCallsCopy.inbound.value++;
-            break;
-          case CALL_DIRECTION.OUTBOUND:
-            noOfCallsCopy.outbound.value++;
-            break;
-          case CALL_DIRECTION.INTERNAL:
-            noOfCallsCopy.internal.value++;
-            break;
-          case CALL_DIRECTION.INCOMING:
-            noOfCallsCopy.inbound.prevalue++;
-            break;
-          case CALL_DIRECTION.OUTGOING:
-            noOfCallsCopy.outbound.prevalue++;
-            break;
-          case CALL_DIRECTION.RELAYED:
-            noOfCallsCopy.relayed.value++;
-            break;
-          case CALL_DIRECTION.FEATURE:
-            noOfCallsCopy.feature.value++;
-            break;
-          default:
-            noOfCallsCopy.uncategorised.value++;
-        }
-      })
-    );
+    calls.forEach((call) => {
+      switch (call.direction) {
+        case CALL_DIRECTION.INBOUND:
+          noOfCallsCopy.inbound.value++;
+          break;
+        case CALL_DIRECTION.OUTBOUND:
+          noOfCallsCopy.outbound.value++;
+          break;
+        case CALL_DIRECTION.INTERNAL:
+          noOfCallsCopy.internal.value++;
+          break;
+        case CALL_DIRECTION.INCOMING:
+          noOfCallsCopy.inbound.prevalue++;
+          break;
+        case CALL_DIRECTION.OUTGOING:
+          noOfCallsCopy.outbound.prevalue++;
+          break;
+        case CALL_DIRECTION.RELAYED:
+          noOfCallsCopy.relayed.value++;
+          break;
+        case CALL_DIRECTION.FEATURE:
+          noOfCallsCopy.feature.value++;
+          break;
+        default:
+          noOfCallsCopy.uncategorised.value++;
+      }
+    });
     handleNoOfCalls(noOfCallsCopy);
   }, [calls]);
   const handleEditIcon = () => {
@@ -95,8 +93,11 @@ const GridCallStatus = ({ isEditMode, widget, ...props }) => {
             <div
               className={`widget__call-status-data ${noOfCalls[key].prevalue !== undefined ? 'widget__call-status-data--two-columns' : ''}`}
             >
-              {Object.keys(noOfCalls[key]).map((valueKey) => (
-                <div key={valueKey} className="widget__call-status-data__column">
+              {Object.keys(noOfCalls[key]).map((valueKey, index) => (
+                <div
+                  key={valueKey}
+                  className={`widget__call-status-data__column ${!index ? '' : 'widget__call-status-data__column--grey'}`}
+                >
                   {noOfCalls[key][valueKey]}
                 </div>
               ))}

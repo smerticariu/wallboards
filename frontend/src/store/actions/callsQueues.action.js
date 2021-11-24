@@ -6,6 +6,8 @@ export const callsQueuesActions = {
   FETCH_QUEUED_CALL_SUCCESS: 'FETCH_QUEUED_CALL_SUCCESS',
 
   FETCH_CALLS_STATISTIC_SUCCESS: 'FETCH_CALLS_STATISTIC_SUCCESS',
+
+  FETCH_CALL_QUEUE_STATISTIC_SUCCESS: 'FETCH_CALL_QUEUE_STATISTIC_SUCCESS',
 };
 export const fetchAllCallsQueuesAC = () => ({
   type: callsQueuesActions.FETCH_ALL_CALLS_QUEUES,
@@ -27,4 +29,9 @@ export const fetchQueuedCallSuccess = (queuedCall) => ({
 export const fetchCallStatisticSuccessAC = (callsStatistic, widgetId) => ({
   type: callsQueuesActions.FETCH_CALLS_STATISTIC_SUCCESS,
   payload: { callsStatistic, widgetId },
+});
+
+export const fetchQueueStatisticsSuccessAC = (callQueueStatistic, widgetId) => ({
+  type: callsQueuesActions.FETCH_CALL_QUEUE_STATISTIC_SUCCESS,
+  payload: { callQueueStatistic, widgetId },
 });

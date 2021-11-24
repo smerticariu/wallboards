@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { CloseIcon } from 'src/assets/static/icons/close';
 import {
@@ -7,54 +7,118 @@ import {
   setWidgetComponentForEditAC,
 } from 'src/store/actions/modal.action';
 import { SettingsIcon } from '../../../assets/static/icons/settings';
-
 import { DEFAULTS } from '../../../common/defaults/defaults';
-import { CALL_DIRECTION } from '../../../common/defaults/modal.defaults';
-const getCallsInitialValues = () => ({
-  inbound: { value: 0, prevalue: 0 },
-  outbound: { value: 0, prevalue: 0 },
-  internal: { value: 0 },
-  relayed: { value: 0 },
-  feature: { value: 0 },
-  uncategorised: { value: 0 },
-});
-const GridQueueTracking = ({ isEditMode, widget, ...props }) => {
+import { getQueueTrackingInitialValues, getQueueTrackingUtilityFields } from '../../../common/defaults/wallboards.defaults';
+import { averageValue } from '../../../common/utils/averageValue';
+import { getTimesCallTracking } from '../../../common/utils/getTimesCallTracking';
+import { maxValue } from '../../../common/utils/maxValueValue';
+import { percentValue } from '../../../common/utils/percentValue';
+import { fetchQueueStatisticsThunk } from '../../../store/thunk/callsQueues.thunk';
+import TimeInterval from '../../time-interval/time-interval';
+import moment from 'moment';
+const GridQueueTracking = ({ isEditMode, isPreview, widget, ...props }) => {
   const dispatch = useDispatch();
-  const calls = useSelector((state) => state.agents.calls);
-  const [noOfCalls, handleNoOfCalls] = useState({ ...getCallsInitialValues() });
+  const callQueueStatistic = useSelector((state) => state.callsQueues.callQueueStatistic);
   useEffect(() => {
-    let noOfCallsCopy = { ...getCallsInitialValues() };
-    calls.forEach((callGroup) =>
-      callGroup.channels.forEach((call) => {
-        switch (call.direction) {
-          case CALL_DIRECTION.INBOUND:
-            noOfCallsCopy.inbound.value++;
-            break;
-          case CALL_DIRECTION.OUTBOUND:
-            noOfCallsCopy.outbound.value++;
-            break;
-          case CALL_DIRECTION.INTERNAL:
-            noOfCallsCopy.internal.value++;
-            break;
-          case CALL_DIRECTION.INCOMING:
-            noOfCallsCopy.inbound.prevalue++;
-            break;
-          case CALL_DIRECTION.OUTGOING:
-            noOfCallsCopy.outbound.prevalue++;
-            break;
-          case CALL_DIRECTION.RELAYED:
-            noOfCallsCopy.relayed.value++;
-            break;
-          case CALL_DIRECTION.FEATURE:
-            noOfCallsCopy.feature.value++;
-            break;
-          default:
-            noOfCallsCopy.uncategorised.value++;
+    if (!isPreview) {
+      dispatch(fetchQueueStatisticsThunk(getTimesCallTracking(widget), widget.id, widget.callQueue.id));
+      const interval = setInterval(() => {
+        dispatch(fetchQueueStatisticsThunk(getTimesCallTracking(widget), widget.id, widget.callQueue.id));
+      }, [2000]);
+      return () => clearInterval(interval);
+    }
+    // eslint-disable-next-line
+  }, [widget]);
+
+  const getQueueTrackingStatistic = () => {
+    let queueTrackingInitialValues = { ...getQueueTrackingInitialValues() };
+    let queueTrackingUtilityFields = { ...getQueueTrackingUtilityFields() };
+    const widgetCallQueueStatistic = callQueueStatistic.find((calls) => calls.widgetId === widget.id);
+    if (!widgetCallQueueStatistic) return queueTrackingInitialValues;
+
+    widgetCallQueueStatistic.callQueueStatistic.forEach((value) => {
+      queueTrackingInitialValues.newCallCount.value += value.newCallCount;
+      queueTrackingInitialValues.answeredCallCount.value += value.answeredCallCount;
+      queueTrackingInitialValues.hungUpCallCount.value += value.hungUpCallCount;
+      queueTrackingInitialValues.timedOutCallCount.value += value.timedOutCallCount;
+      queueTrackingInitialValues.abortedCallCount.value += value.abortedCallCount;
+
+      if (widget.solidCallsOverride.isChecked) {
+        if (moment(widget.solidCallsOverride.value, 'HH:mm:ss').diff(moment().startOf('day'), 'seconds') < value.totalTalkTime) {
+          queueTrackingInitialValues.solidCallCount.value += value.solidCallCount;
         }
-      })
+      } else {
+        queueTrackingInitialValues.solidCallCount.value += value.solidCallCount;
+      }
+
+      //utilities
+      queueTrackingUtilityFields.totalTalkTime.value += value.totalTalkTime;
+      queueTrackingUtilityFields.answeredCallTotalWaitTime.value += value.answeredCallTotalWaitTime;
+      queueTrackingUtilityFields.hungUpCallTotalWaitTime.value += value.hungUpCallTotalWaitTime;
+      queueTrackingUtilityFields.timedOutCallTotalWaitTime.value += value.timedOutCallTotalWaitTime;
+      queueTrackingUtilityFields.abortedCallTotalWaitTime.value += value.abortedCallTotalWaitTime;
+
+      queueTrackingInitialValues.maxWaitTime.value.push(value.maxWaitTime);
+    });
+
+    queueTrackingInitialValues.totalCallCount.value =
+      queueTrackingInitialValues.answeredCallCount.value +
+      queueTrackingInitialValues.timedOutCallCount.value +
+      queueTrackingInitialValues.hungUpCallCount.value +
+      queueTrackingInitialValues.abortedCallCount.value;
+
+    //calculate percentages
+    queueTrackingInitialValues.answeredCallCount.percent.value = percentValue(
+      queueTrackingInitialValues.answeredCallCount.value,
+      queueTrackingInitialValues.totalCallCount.value
     );
-    handleNoOfCalls(noOfCallsCopy);
-  }, [calls]);
+    queueTrackingInitialValues.hungUpCallCount.percent.value = percentValue(
+      queueTrackingInitialValues.hungUpCallCount.value,
+      queueTrackingInitialValues.totalCallCount.value
+    );
+    if (widget.abandonedCallSLA.isChecked && queueTrackingInitialValues.hungUpCallCount.percent.value >= widget.abandonedCallSLA.value) {
+      queueTrackingInitialValues.hungUpCallCount.isRed = true;
+    }
+    queueTrackingInitialValues.timedOutCallCount.percent.value = percentValue(
+      queueTrackingInitialValues.timedOutCallCount.value,
+      queueTrackingInitialValues.totalCallCount.value
+    );
+    queueTrackingInitialValues.abortedCallCount.percent.value = percentValue(
+      queueTrackingInitialValues.abortedCallCount.value,
+      queueTrackingInitialValues.totalCallCount.value
+    );
+    queueTrackingInitialValues.solidCallCount.percent.value = percentValue(
+      queueTrackingInitialValues.solidCallCount.value,
+      queueTrackingInitialValues.totalCallCount.value
+    );
+    //calculate max
+    queueTrackingInitialValues.maxWaitTime.value = maxValue(queueTrackingInitialValues.maxWaitTime.value);
+    //calculate averages
+    queueTrackingInitialValues.averageTalkTime.value = averageValue(
+      queueTrackingUtilityFields.totalTalkTime.value,
+      queueTrackingInitialValues.answeredCallCount.value
+    );
+    queueTrackingInitialValues.averageWaitTime.value = averageValue(
+      queueTrackingUtilityFields.answeredCallTotalWaitTime.value +
+        queueTrackingUtilityFields.hungUpCallTotalWaitTime.value +
+        queueTrackingUtilityFields.timedOutCallTotalWaitTime.value +
+        queueTrackingUtilityFields.abortedCallTotalWaitTime.value,
+      queueTrackingInitialValues.answeredCallCount.value +
+        queueTrackingInitialValues.hungUpCallCount.value +
+        queueTrackingInitialValues.timedOutCallCount.value +
+        queueTrackingInitialValues.abortedCallCount.value
+    );
+    if (
+      widget.averageWaitSLA.isChecked &&
+      queueTrackingInitialValues.averageWaitTime.value >=
+        moment(widget.averageWaitSLA.value, 'HH:mm:ss').diff(moment().startOf('day'), 'seconds')
+    ) {
+      queueTrackingInitialValues.averageWaitTime.isRed = true;
+    }
+    return queueTrackingInitialValues;
+  };
+  const queueTrackingStatistic = getQueueTrackingStatistic();
+  console.log(queueTrackingStatistic);
   const handleEditIcon = () => {
     const onEditClick = () => {
       dispatch(setWidgetComponentForEditAC(widget));
@@ -96,18 +160,34 @@ const GridQueueTracking = ({ isEditMode, widget, ...props }) => {
         </div>
       </div>
       <div className={`widget__body widget__body--call-status`}>
-        {Object.keys(noOfCalls).map((key) => (
-          <div key={key} className="widget__call-status-row">
-            <div className="widget__call-status-title">{key}</div>
-            <div className="widget__call-status-data widget__call-status-data--two-columns">
-              {Object.keys(noOfCalls[key]).map((valueKey) => (
-                <div key={valueKey} className="widget__call-status-data__column">
-                  {noOfCalls[key][valueKey]}
+        {Object.keys(queueTrackingStatistic)
+          .filter((key) => widget.columnsToViewOptions.selectedItems.includes(queueTrackingStatistic[key].id))
+          .map((key) => (
+            <div
+              key={key}
+              className={`widget__call-status-row widget__call-status-row--queue-tracking ${
+                queueTrackingStatistic[key].isRed ? 'widget__call-status-row--red' : ''
+              }`}
+            >
+              <div className="widget__call-status-title">{queueTrackingStatistic[key].name}</div>
+              <div
+                className={`widget__call-status-data ${queueTrackingStatistic[key].percent ? 'widget__call-status-data--two-columns' : ''}`}
+              >
+                <div className="widget__call-status-data__column">
+                  {queueTrackingStatistic[key].format === 'duration' ? (
+                    <TimeInterval isStop={true} seconds={queueTrackingStatistic[key].value} />
+                  ) : (
+                    queueTrackingStatistic[key].value
+                  )}
                 </div>
-              ))}
+                {queueTrackingStatistic[key].percent && (
+                  <div className="widget__call-status-data__column widget__call-status-data__column--blue">
+                    {queueTrackingStatistic[key].percent.value}%
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
       </div>
     </div>
   );

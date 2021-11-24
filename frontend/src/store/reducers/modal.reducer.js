@@ -1,4 +1,6 @@
 import { DEFAULTS } from '../../common/defaults/defaults';
+import { WIDGET_TYPE } from '../../common/defaults/modal.defaults';
+import { getCurrentTimezone } from '../../common/utils/getCurrentTimezone';
 
 import { modalActions } from '../actions/modal.action';
 
@@ -83,12 +85,45 @@ export const modalInitialState = {
       value: 'Queue tracking',
       errorMessage: '',
     },
-    callQueue: { id: '', name: '', errorMessage: '' },
+    callQueue: {
+      id: '',
+      value: '',
+    },
+    timeZone: getCurrentTimezone(),
+    period: {
+      id: DEFAULTS.MODAL.CALL_TRACKING.PERIOD[0].id,
+      value: DEFAULTS.MODAL.CALL_TRACKING.PERIOD[0].value,
+    },
+    startOfWeek: {
+      id: DEFAULTS.MODAL.CALL_TRACKING.START_WEEK[0].id,
+      value: DEFAULTS.MODAL.CALL_TRACKING.START_WEEK[0].value,
+    },
     columnsToViewOptions: {
+      errorMessage: '',
       selectedItems: DEFAULTS.MODAL.QUEUE_TRACKING_COLUMNS.reduce(
         (strArr, el) => (el.isInitialChecked ? [...strArr, el.value] : strArr),
         []
       ),
+    },
+    abandonedCallSLA: {
+      value: 4,
+      isChecked: false,
+      errorMessage: '',
+    },
+    averageWaitSLA: {
+      value: '00:01:00',
+      isChecked: false,
+      errorMessage: '',
+    },
+    totalCallsSLA: {
+      value: '00:02:00',
+      isChecked: false,
+      errorMessage: '',
+    },
+    solidCallsOverride: {
+      value: '00:02:00',
+      isChecked: false,
+      errorMessage: '',
     },
   },
   queueStatus: {
@@ -123,10 +158,7 @@ export const modalInitialState = {
       id: DEFAULTS.MODAL.CALL_TRACKING.CALL_CATEGORY[0].id,
       value: DEFAULTS.MODAL.CALL_TRACKING.CALL_CATEGORY[0].value,
     },
-    timeZone: {
-      id: DEFAULTS.MODAL.CALL_TRACKING.TIME_ZONE[13].id,
-      value: DEFAULTS.MODAL.CALL_TRACKING.TIME_ZONE[13].value,
-    },
+    timeZone: getCurrentTimezone(),
     period: {
       id: DEFAULTS.MODAL.CALL_TRACKING.PERIOD[0].id,
       value: DEFAULTS.MODAL.CALL_TRACKING.PERIOD[0].value,
@@ -152,10 +184,7 @@ export const modalInitialState = {
       value: 10,
       errorMessage: '',
     },
-    timeZone: {
-      id: DEFAULTS.MODAL.CALL_TRACKING.TIME_ZONE[13].id,
-      value: DEFAULTS.MODAL.CALL_TRACKING.TIME_ZONE[13].value,
-    },
+    timeZone: getCurrentTimezone(),
     period: {
       id: DEFAULTS.MODAL.CALL_TRACKING.PERIOD[0].id,
       value: DEFAULTS.MODAL.CALL_TRACKING.PERIOD[0].value,
@@ -221,7 +250,7 @@ export const modalReducer = (state = modalInitialState, action) => {
     case modalActions.SET_WIDGET_FOR_EDIT: {
       const widgetForEdit = action.payload;
       switch (widgetForEdit.type) {
-        case DEFAULTS.WALLBOARDS.WIDGET_TYPE.AGENT_LIST: {
+        case WIDGET_TYPE.AGENT_LIST: {
           return {
             ...state,
             modalAddComponent: {
@@ -248,7 +277,7 @@ export const modalReducer = (state = modalInitialState, action) => {
             },
           };
         }
-        case DEFAULTS.WALLBOARDS.WIDGET_TYPE.CALL_STATUS: {
+        case WIDGET_TYPE.CALL_STATUS: {
           return {
             ...state,
             callStatus: {
@@ -264,7 +293,7 @@ export const modalReducer = (state = modalInitialState, action) => {
           };
         }
 
-        case DEFAULTS.WALLBOARDS.WIDGET_TYPE.QUEUE_STATUS: {
+        case WIDGET_TYPE.QUEUE_STATUS: {
           return {
             ...state,
             queueStatus: {
@@ -283,7 +312,7 @@ export const modalReducer = (state = modalInitialState, action) => {
             },
           };
         }
-        case DEFAULTS.WALLBOARDS.WIDGET_TYPE.QUEUE_TRACKING: {
+        case WIDGET_TYPE.QUEUE_TRACKING: {
           return {
             ...state,
             queueTracking: {
@@ -293,17 +322,49 @@ export const modalReducer = (state = modalInitialState, action) => {
               },
               callQueue: {
                 id: widgetForEdit.callQueue.id,
-                name: widgetForEdit.callQueue.name,
-                errorMessage: '',
+                value: widgetForEdit.callQueue.value,
               },
 
+              timeZone: {
+                id: widgetForEdit.timeZone.id,
+                value: widgetForEdit.timeZone.value,
+              },
+              period: {
+                id: widgetForEdit.period.id,
+                value: widgetForEdit.period.value,
+              },
+              startOfWeek: {
+                id: widgetForEdit.startOfWeek.id,
+                value: widgetForEdit.startOfWeek.value,
+              },
+              columnsToViewOptions: {
+                selectedItems: [...widgetForEdit.columnsToViewOptions.selectedItems],
+                errorMessage: '',
+              },
+              abandonedCallSLA: {
+                value: widgetForEdit.abandonedCallSLA.value,
+                isChecked: widgetForEdit.abandonedCallSLA.isChecked,
+                errorMessage: '',
+              },
+              averageWaitSLA: {
+                value: widgetForEdit.averageWaitSLA.value,
+                isChecked: widgetForEdit.averageWaitSLA.isChecked,
+              },
+              totalCallsSLA: {
+                value: widgetForEdit.totalCallsSLA.value,
+                isChecked: widgetForEdit.totalCallsSLA.isChecked,
+              },
+              solidCallsOverride: {
+                value: widgetForEdit.solidCallsOverride.value,
+                isChecked: widgetForEdit.solidCallsOverride.isChecked,
+              },
               isEditMode: true,
               size: widgetForEdit.size,
               id: widgetForEdit.id,
             },
           };
         }
-        case DEFAULTS.WALLBOARDS.WIDGET_TYPE.CALL_TRACKING: {
+        case WIDGET_TYPE.CALL_TRACKING: {
           return {
             ...state,
             callTracking: {
@@ -341,7 +402,7 @@ export const modalReducer = (state = modalInitialState, action) => {
             },
           };
         }
-        case DEFAULTS.WALLBOARDS.WIDGET_TYPE.AGENT_LOGIN: {
+        case WIDGET_TYPE.AGENT_LOGIN: {
           return {
             ...state,
             agentLogin: {
@@ -370,7 +431,7 @@ export const modalReducer = (state = modalInitialState, action) => {
                 errorMessage: '',
               },
               to: {
-                value: widgetForEdit.from.value,
+                value: widgetForEdit.to.value,
                 errorMessage: '',
               },
               startOfWeek: {

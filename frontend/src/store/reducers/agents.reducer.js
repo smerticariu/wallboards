@@ -46,11 +46,9 @@ export const agentsReducer = (state = agentsInitialState, action) => {
                     agents: action.payload.agent.map((agent) => {
                       const agentFromRedux = agentQueue.agents.find((reduxAgent) => reduxAgent.userId === agent.userId);
                       if (agentFromRedux) {
-                        let newStatus = agentFromRedux.userCurrentCall ? agentFromRedux.status : agent.status;
                         return {
                           ...agentFromRedux,
                           ...agent,
-                          status: newStatus,
                         };
                       }
                       return agent;
@@ -209,23 +207,22 @@ export const agentsReducer = (state = agentsInitialState, action) => {
           ...queueWithAgents,
           agents: queueWithAgents.agents.map((agent) => {
             let userCall = null;
-            let newStatus = agent.status;
-            calls.some((call) =>
-              call.channels.some((channel) => {
-                if (channel.userId === agent.userId || channel.to === agent.organisationUserData?.sipExtension) {
-                  userCall = {
-                    ...channel,
-                    direction: call.direction,
-                  };
-                  return true;
-                }
-                return false;
-              })
-            );
+            calls.some((call) => {
+              if (
+                call.userId === agent.userId ||
+                call.deviceId === agent.deviceId ||
+                call.to === agent.organisationUserData?.sipExtension
+              ) {
+                userCall = {
+                  ...call,
+                };
+                return true;
+              }
+              return false;
+            });
             return {
               ...agent,
               userCurrentCall: userCall,
-              status: newStatus,
             };
           }),
         })),

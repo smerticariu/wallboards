@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { handleModalSelectActiveElementAC, handleWallboardActiveModalAC } from 'src/store/actions/modal.action';
 import { DEFAULTS } from '../../../common/defaults/defaults';
-import { MODAL_NEW_WALLBOARD_SECITONS } from '../../../common/defaults/modal.defaults';
+import { MODAL_NEW_WALLBOARD_SECITONS, WIDGET_TYPE } from '../../../common/defaults/modal.defaults';
 import useOnClickOutside from '../../../common/hooks/useOnClickOutside';
 
 const ModalNewWallboard = ({ ...props }) => {
@@ -108,23 +108,23 @@ const ModalNewWallboard = ({ ...props }) => {
     const onClickSelectButton = (e) => {
       dispatch(handleModalSelectActiveElementAC());
       switch (selectedListItem) {
-        case DEFAULTS.WALLBOARDS.WIDGET_TYPE.AGENT_LIST: {
+        case WIDGET_TYPE.AGENT_LIST: {
           return dispatch(handleWallboardActiveModalAC(DEFAULTS.MODAL.MODAL_NAMES.ADD_COMPONENT));
         }
-        case DEFAULTS.WALLBOARDS.WIDGET_TYPE.CALL_STATUS: {
+        case WIDGET_TYPE.CALL_STATUS: {
           return dispatch(handleWallboardActiveModalAC(DEFAULTS.MODAL.MODAL_NAMES.CALL_STATUS));
         }
-        case DEFAULTS.WALLBOARDS.WIDGET_TYPE.QUEUE_TRACKING: {
+        case WIDGET_TYPE.QUEUE_TRACKING: {
           dispatch(handleModalSelectActiveElementAC(selectedListItem));
           return dispatch(handleWallboardActiveModalAC(DEFAULTS.MODAL.MODAL_NAMES.QUEUE_TRACKING));
         }
-        case DEFAULTS.WALLBOARDS.WIDGET_TYPE.QUEUE_STATUS: {
+        case WIDGET_TYPE.QUEUE_STATUS: {
           return dispatch(handleWallboardActiveModalAC(DEFAULTS.MODAL.MODAL_NAMES.QUEUE_STATUS));
         }
-        case DEFAULTS.WALLBOARDS.WIDGET_TYPE.CALL_TRACKING: {
+        case WIDGET_TYPE.CALL_TRACKING: {
           return dispatch(handleWallboardActiveModalAC(DEFAULTS.MODAL.MODAL_NAMES.CALL_TRACKING));
         }
-        case DEFAULTS.WALLBOARDS.WIDGET_TYPE.AGENT_LOGIN: {
+        case WIDGET_TYPE.AGENT_LOGIN: {
           return dispatch(handleWallboardActiveModalAC(DEFAULTS.MODAL.MODAL_NAMES.AGENT_LOGIN));
         }
         default:

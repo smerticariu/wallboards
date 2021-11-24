@@ -17,6 +17,9 @@
   &--margin-top-bottom {
     margin: 1px 0;
   }
+  &--margin-bottom {
+    margin-bottom: 10px;
+  }
   &--queue-tracking {
     margin-bottom: 8px;
   }
@@ -30,7 +33,7 @@
 
   &__checkmark {
     position: absolute;
-    top: 50%;
+    top: 9px;
     left: 0;
     transform: translateY(-50%);
     height: 13px;

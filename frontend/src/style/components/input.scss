@@ -35,6 +35,15 @@
       border: solid 1px $pinkish-grey;
     }
   }
+  &--small-size {
+    width: 60px;
+    &::-webkit-inner-spin-button {
+      opacity: 1;
+    }
+  }
+  &--margin-top {
+    margin-top: 10px;
+  }
 
   &::placeholder {
     font-family: $public-sans-thin;
@@ -70,4 +79,11 @@
     font-family: $public-sans-thin;
     color: $input-text-colour;
   }
+}
+.input-percent {
+  font-size: 14px;
+  font-family: $public-sans-regular;
+  color: $slate-gray;
+  margin-left: 3px;
+  margin-bottom: 2px;
 }

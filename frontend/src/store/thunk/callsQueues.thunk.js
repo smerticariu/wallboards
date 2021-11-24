@@ -4,6 +4,7 @@ import {
   fetchAllCallsQueuesSuccessAC,
   fetchCallStatisticSuccessAC,
   fetchQueuedCallSuccess,
+  fetchQueueStatisticsSuccessAC,
 } from '../actions/callsQueues.action';
 import { DEFAULTS } from '../../common/defaults/defaults';
 
@@ -56,10 +57,32 @@ export const fetchCallStatisticThunk =
         organizationId: userInfo.organisationId,
         token,
         timeStart,
+
         timeEnd,
       });
 
       dispatch(fetchCallStatisticSuccessAC(response.data.data, widgetId));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+export const fetchQueueStatisticsThunk =
+  ({ timeStart, timeEnd }, widgetId, callQueueId) =>
+  async (dispatch, getState) => {
+    try {
+      const { userInfo, token } = getState().login;
+
+      const response = await CallsQueuesApi({
+        type: DEFAULTS.CALLS_QUEUES.API.GET.CALL_QUEUE_STATISTICS,
+        organizationId: userInfo.organisationId,
+        token,
+        timeStart,
+        callQueueId,
+        timeEnd,
+      });
+
+      dispatch(fetchQueueStatisticsSuccessAC(response.data.data, widgetId));
     } catch (error) {
       console.log(error);
     }
