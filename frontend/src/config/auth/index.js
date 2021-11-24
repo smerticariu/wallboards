@@ -6,6 +6,7 @@ const config = {
   scope:"wallboards:admin",
   responseType:"id_token",
   cacheLocation:"localstorage",
+  clientSecret: "GbTbH12LMb-9RgPrk3XzyMkAcnyCt7CCOJ-Vrxev0G2Ps42kiueProMoVh0h3N7J"
 }
 
 export default config;

@@ -9,7 +9,7 @@ import WallboardEdit from './components/wallboard/wallboard-edit';
 import WallboardReadOnly from 'src/components/wallboard/wallboard.read-only';
 import { Route, Switch } from 'react-router';
 import { HashRouter } from 'react-router-dom';
-import { setAccessTokenAC, setUserTokenInfoAC } from './store/actions/login.action';
+import { setAccessTokenAC, setUserTokenInfoAC, setUsersAvatarsAC } from './store/actions/login.action';
 import { fetchUserDataThunk, fetchUserInfoThunk } from './store/thunk/login.thunk';
 import ModalNewWallboard from './components/modal/new-wallboard/modal.new-wallboard';
 import ModalAddComponent from './components/modal/add-component/modal.add-component';
@@ -25,6 +25,7 @@ import ModalCallStatus from './components/modal/call-status/modal.call-status';
 import ModalQueueStatus from './components/modal/queue-status/modal.queue-status';
 import ModalCallTracking from './components/modal/call-tracking/modal.call-tracking';
 import ModalAgentLogin from './components/modal/agent-login/modal.agent-login';
+import jsforce from 'jsforce';
 
 function App() {
   const dispatch = useDispatch();
@@ -37,6 +38,7 @@ function App() {
     if (!token) {
       fetchData();
     }
+    
     // eslint-disable-next-line
   }, [isAuthenticated, token]);
   useEffect(() => {
@@ -57,6 +59,19 @@ function App() {
           dispatch(setAccessTokenAC(res));
           dispatch(setUserTokenInfoAC(jwtExtractor(res)));
           dispatch(fetchUserInfoThunk(res));
+          var conn = new jsforce.Connection({
+            instanceUrl: 'https://natterbox-3c-dev-ed--c.visualforce.com',
+            accessToken : jwtExtractor(res).salesforceAccessToken,
+          });
+      
+          conn.query("Select id, name, SmallPhotoUrl, FullPhotoUrl From User", function(err, result) {
+            if (err) { return console.error(err); }
+            console.log(result);
+            dispatch(setUsersAvatarsAC(result.records))
+            if (!result.done) {
+              console.log("next records URL : " + result.nextRecordsUrl);
+            }
+          });
         });
       } else if (sfToken) {
         dispatch(fetchUserDataThunk(sfToken));
