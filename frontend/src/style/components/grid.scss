@@ -113,6 +113,17 @@
       justify-content: space-between;
       margin-right: 4px;
       overflow: hidden;
+      &--queue-tracking {
+        width: 24%;
+      }
+      &--red {
+        background-color: $natterbox-lighter-red;
+        color: $white;
+        .widget__call-status-data__column {
+          background-color: $natterbox-lighter-red;
+          color: $white;
+        }
+      }
     }
     &-title {
       width: 60%;
@@ -134,8 +145,11 @@
         align-items: center;
         justify-content: center;
         color: $white;
-        &:nth-child(2) {
+        &--grey {
           background-color: $natterbox-grey-col;
+        }
+        &--blue {
+          background-color: $turquoise-blue;
         }
       }
     }

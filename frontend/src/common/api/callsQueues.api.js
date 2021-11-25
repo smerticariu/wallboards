@@ -26,6 +26,11 @@ export const CallsQueuesApi = async (props) => {
     case DEFAULTS.CALLS_QUEUES.API.GET.CALL_QUEUE:
       options.url = `${baseUrl}/${props.callQueueId}/call`;
       break;
+    case DEFAULTS.CALLS_QUEUES.API.GET.CALL_QUEUE_STATISTICS:
+      options.url = `${baseUrl}/${props.callQueueId}/statistic?time-start=${encodeURIComponent(
+        props.timeStart
+      )}&time-end=${encodeURIComponent(props.timeEnd)}`;
+      break;
 
     default:
       return null;

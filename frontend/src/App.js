@@ -11,7 +11,7 @@ import { Route, Switch } from 'react-router';
 import { HashRouter } from 'react-router-dom';
 import { setAccessTokenAC, setUserTokenInfoAC, setUsersAvatarsAC } from './store/actions/login.action';
 import { fetchUserDataThunk, fetchUserInfoThunk } from './store/thunk/login.thunk';
-import ModalNewWallboard from './components/modal/new-wallboard/modal.new-wallboard';
+import ModalNewWidget from './components/modal/new-widget/modal.new-widget.';
 import ModalAddComponent from './components/modal/add-component/modal.add-component';
 import ModalSaveWallboard from './components/modal/save-wallboard/modal.save-wallboard';
 import ModalEditWallboard from './components/modal/edit-wallboard/modal.edit-wallboard';
@@ -22,6 +22,7 @@ import ModalConfirmSaveWallboard from './components/modal/save-wallboard/modal.c
 import ModalWarning from './components/modal/warning/modal.warning';
 import { DEFAULTS } from './common/defaults/defaults';
 import ModalCallStatus from './components/modal/call-status/modal.call-status';
+import ModalQueueTracking from './components/modal/queue-tracking/modal.queue-tracking';
 import ModalQueueStatus from './components/modal/queue-status/modal.queue-status';
 import ModalCallTracking from './components/modal/call-tracking/modal.call-tracking';
 import ModalAgentLogin from './components/modal/agent-login/modal.agent-login';
@@ -107,7 +108,7 @@ function App() {
             </Switch>
           </HashRouter>
           <NotificationMessage />
-          {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.SELECT_COMPONENT && <ModalNewWallboard />}
+          {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.SELECT_COMPONENT && <ModalNewWidget />}
           {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.ADD_COMPONENT && <ModalAddComponent />}
           {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.SAVE_WALLBOARD && <ModalSaveWallboard />}
           {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.DELETE_WALLBOARD && <ModalDeleteWallboard />}
@@ -115,6 +116,7 @@ function App() {
           {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.DELETE_WALLBOARD_COMPONENT && <ModalDeleteWallboardComponent />}
           {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.CONFIRM_SAVE_WALLBOARD && <ModalConfirmSaveWallboard />}
           {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.CALL_STATUS && <ModalCallStatus />}
+          {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.QUEUE_TRACKING && <ModalQueueTracking />}
           {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.QUEUE_STATUS && <ModalQueueStatus />}
           {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.CALL_TRACKING && <ModalCallTracking />}
           {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.AGENT_LOGIN && <ModalAgentLogin />}

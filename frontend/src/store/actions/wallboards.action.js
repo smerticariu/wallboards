@@ -24,6 +24,7 @@ export const wallboardsActions = {
 
   ADD_WALLBOARD_CALL_STATUS: 'ADD_WALLBOARD_CALL_STATUS',
 
+  ADD_WALLBOARD_QUEUE_TRACKING: 'ADD_WALLBOARD_QUEUE_TRACKING',
   ADD_WALLBOARD_QUEUE_STATUS: 'ADD_WALLBOARD_QUEUE_STATUS',
 
   ADD_WALLBOARD_CALL_TRACKING: 'ADD_WALLBOARD_CALL_TRACKING',
@@ -126,6 +127,10 @@ export const addWallboardCallStatusAC = (callStatus, userInfo) => ({
   payload: { callStatus, userInfo },
 });
 
+export const addWallboardQueueTrackingAC = (queueTracking, userInfo) => ({
+  type: wallboardsActions.ADD_WALLBOARD_QUEUE_TRACKING,
+  payload: { queueTracking, userInfo },
+});
 export const addWallboardQueueStatusAC = (queueStatus, userInfo) => ({
   type: wallboardsActions.ADD_WALLBOARD_QUEUE_STATUS,
   payload: { queueStatus, userInfo },

@@ -199,7 +199,10 @@ export const fetchUsersCurrentCallTimeThunk = () => async (dispatch, getState) =
       token,
     });
 
-    dispatch(fetchUsersCurrentCallTimeSuccessAC(response.data.data));
+    const callsWithLogicalDirection = response.data.data.reduce((data, callFullType) => {
+      return [...data, ...callFullType.channels.map((call) => ({ ...call, logicalDirection: callFullType.direction }))];
+    }, []);
+    dispatch(fetchUsersCurrentCallTimeSuccessAC(callsWithLogicalDirection));
   } catch (error) {
     console.log(error.response);
     dispatch(handleIsNotificationShowAC(true, true, `Error: ${error.response.status ?? 'unknown'} - ${DEFAULTS.GLOBAL.FAIL}`));
@@ -298,7 +301,9 @@ export const exportCSVUserLoginDataThunk =
         timeEnd,
       });
       const userLoginData = responseAgentLogin.data.data;
-
+      if (!userLoginData.length) {
+        return dispatch(handleIsNotificationShowAC(true, true, DEFAULTS.AGENTS.API.ERROR.NO_AGENTS));
+      }
       const responseAgents = await AgentsApi({
         type: DEFAULTS.AGENTS.API.GET.ALL_AGENTS,
         organizationId: userInfo.organisationId,

@@ -361,11 +361,18 @@
       }
     }
   }
+  &__preview-container {
+    max-height: 350px;
+    overflow: auto;
+    margin-bottom: 10px;
+  }
   &__preview-section {
     transform: scale(0.7);
+    transform-origin: top;
+    max-height: 500px;
     &--agent-login {
       transform: scale(0.4);
-      margin: -50px -300px 0 -300px;
+      margin: 0 -300px;
     }
   }
 }

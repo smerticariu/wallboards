@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
 import { fetchOrganisationAgentsThunk, fetchUserGroupsThunk, fetchUserLoginDataThunk } from '../../../store/thunk/agents.thunk';
 import { getTimesCallTracking } from '../../../common/utils/getTimesCallTracking';
-import AgentLoginTable from '../../agent-login-table/agent-login';
+import AgentLoginTable from '../../agent-login-table/agent-login-table';
 
 const GridAgentLogin = ({ widget, ...props }) => {
   const userLoginData = useSelector((state) => state.agents.userLoginData);
@@ -40,8 +40,8 @@ const GridAgentLogin = ({ widget, ...props }) => {
             event: user.event,
             userId: user.userId,
             isLogin: user.event.toLowerCase() === 'login',
-            time: moment(user.time).format('YYYY-DD-MM HH:mm:ss'),
-            elapsed: moment().diff(moment(user.time), 'seconds'),
+            time: moment(user.time).utcOffset(widget.timeZone.id).format('YYYY-DD-MM HH:mm:ss'),
+            elapsed: moment().utcOffset(widget.timeZone.id).diff(moment(user.time), 'seconds'),
           });
         });
       setTableData(users);

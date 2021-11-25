@@ -6,6 +6,7 @@ export const callsQueuesInitialState = {
   allCallsQueuesFetchStatus: FetchStatus.NULL,
   queuedCall: [],
   callsStatistic: [],
+  callQueueStatistic: [],
 };
 
 export const callsQueuesReducer = (state = callsQueuesInitialState, action) => {
@@ -34,6 +35,16 @@ export const callsQueuesReducer = (state = callsQueuesInitialState, action) => {
         ...state,
         queuedCall: action.payload,
       };
+    case callsQueuesActions.FETCH_CALL_QUEUE_STATISTIC_SUCCESS: {
+      const { widgetId, callQueueStatistic } = action.payload;
+      const callStatisticFromState = state.callQueueStatistic.find((call) => call.widgetId === widgetId);
+      return {
+        ...state,
+        callQueueStatistic: callStatisticFromState
+          ? state.callQueueStatistic.map((call) => (call.widgetId !== widgetId ? call : { ...call, callQueueStatistic }))
+          : [...state.callQueueStatistic, { widgetId, callQueueStatistic }],
+      };
+    }
     case callsQueuesActions.FETCH_CALLS_STATISTIC_SUCCESS: {
       const { widgetId, callsStatistic } = action.payload;
       const callStatisticFromState = state.callsStatistic.find((call) => call.widgetId === widgetId);

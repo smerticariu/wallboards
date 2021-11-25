@@ -18,6 +18,7 @@ export const modalActions = {
 
   HANDLE_CALL_STATUS_DATA: 'HANDLE_CALL_STATUS_DATA',
 
+  HANDLE_QUEUE_TRACKING_DATA: 'HANDLE_QUEUE_TRACKING_DATA',
   HANDLE_QUEUE_STATUS_DATA: 'HANDLE_QUEUE_STATUS_DATA',
 
   HANDLE_CALL_TRACKING_DATA: 'HANDLE_CALL_TRACKING_DATA',
@@ -79,5 +80,10 @@ export const handleCallTrackingDataAC = (formData) => ({
 
 export const handleAgentLoginDataAC = (formData) => ({
   type: modalActions.HANDLE_AGENT_LOGIN_DATA,
+  payload: formData,
+});
+
+export const handleQueueTrackingDataAC = (formData) => ({
+  type: modalActions.HANDLE_QUEUE_TRACKING_DATA,
   payload: formData,
 });
