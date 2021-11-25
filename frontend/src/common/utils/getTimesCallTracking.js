@@ -1,28 +1,35 @@
 import moment from 'moment';
 export const getTimesCallTracking = (widget) => {
-  let timeStart = moment().utcOffset(Number(widget.timeZone.id));
-  let timeEnd = moment().utcOffset(Number(widget.timeZone.id)).endOf('day');
+  var period = { timeStart: 0, timeEnd: 0 };
+  const timeNow = moment.utc();
+  var start = moment.utc(timeNow);
+  var end = moment.utc(timeNow).utcOffset(widget.timeZone.id).endOf('day');
   switch (widget.period.id) {
     case 'hour':
-      timeStart.startOf('hour').format();
+      start.startOf('hour').format();
       break;
     case 'today':
-      timeStart.startOf('day').format();
+      start.utcOffset(widget.timeZone.id).startOf('day').format();
       break;
     case 'week':
-      timeStart.startOf('isoWeek').add(Number(widget.startOfWeek.id), 'day');
-      if (timeStart.isAfter(moment().utcOffset(Number(widget.timeZone.id)))) {
-        timeStart.subtract(7, 'day');
+      start.utcOffset(widget.timeZone.id).startOf('isoWeek').add(widget.startOfWeek.id, 'day');
+      if (start.isAfter(moment.utc(timeNow).utcOffset(widget.timeZone.id))) {
+        start.subtract(7, 'day');
       }
       break;
     case 'month':
-      timeStart.utcOffset(Number(widget.timeZone.id)).startOf('month').format();
+      start.utcOffset(widget.timeZone.id).startOf('month').format();
+      break;
+    case 'year':
+      start.utcOffset(widget.timeZone.id).startOf('year').format();
       break;
     case 'rolling-hour':
-      timeStart = timeStart.subtract(1, 'hour').startOf('minute');
+      start = start.subtract(1, 'hour').startOf('minute');
       break;
     default:
-      return null;
+      break;
   }
-  return { timeEnd: timeEnd.format(), timeStart: timeStart.format() };
+  period.timeStart = start.format();
+  period.timeEnd = end.format();
+  return period;
 };
