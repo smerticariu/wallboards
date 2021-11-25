@@ -11,7 +11,7 @@ import { Route, Switch } from 'react-router';
 import { HashRouter } from 'react-router-dom';
 import { setAccessTokenAC, setUserTokenInfoAC } from './store/actions/login.action';
 import { fetchUserDataThunk, fetchUserInfoThunk } from './store/thunk/login.thunk';
-import ModalNewWallboard from './components/modal/new-wallboard/modal.new-wallboard';
+import ModalNewWidget from './components/modal/new-widget/modal.new-widget.';
 import ModalAddComponent from './components/modal/add-component/modal.add-component';
 import ModalSaveWallboard from './components/modal/save-wallboard/modal.save-wallboard';
 import ModalEditWallboard from './components/modal/edit-wallboard/modal.edit-wallboard';
@@ -93,7 +93,7 @@ function App() {
             </Switch>
           </HashRouter>
           <NotificationMessage />
-          {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.SELECT_COMPONENT && <ModalNewWallboard />}
+          {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.SELECT_COMPONENT && <ModalNewWidget />}
           {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.ADD_COMPONENT && <ModalAddComponent />}
           {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.SAVE_WALLBOARD && <ModalSaveWallboard />}
           {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.DELETE_WALLBOARD && <ModalDeleteWallboard />}

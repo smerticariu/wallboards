@@ -301,7 +301,9 @@ export const exportCSVUserLoginDataThunk =
         timeEnd,
       });
       const userLoginData = responseAgentLogin.data.data;
-
+      if (!userLoginData.length) {
+        return dispatch(handleIsNotificationShowAC(true, true, DEFAULTS.AGENTS.API.ERROR.NO_AGENTS));
+      }
       const responseAgents = await AgentsApi({
         type: DEFAULTS.AGENTS.API.GET.ALL_AGENTS,
         organizationId: userInfo.organisationId,
