@@ -5,7 +5,7 @@ import { DEFAULTS } from '../../../common/defaults/defaults';
 import { MODAL_NEW_WALLBOARD_SECITONS, WIDGET_TYPE } from '../../../common/defaults/modal.defaults';
 import useOnClickOutside from '../../../common/hooks/useOnClickOutside';
 
-const ModalNewWallboard = ({ ...props }) => {
+const ModalNewWidget = ({ ...props }) => {
   const modalRef = useRef(null);
   const [newWbFilter, setNewWbFilter] = useState('');
 
@@ -115,7 +115,6 @@ const ModalNewWallboard = ({ ...props }) => {
           return dispatch(handleWallboardActiveModalAC(DEFAULTS.MODAL.MODAL_NAMES.CALL_STATUS));
         }
         case WIDGET_TYPE.QUEUE_TRACKING: {
-          dispatch(handleModalSelectActiveElementAC(selectedListItem));
           return dispatch(handleWallboardActiveModalAC(DEFAULTS.MODAL.MODAL_NAMES.QUEUE_TRACKING));
         }
         case WIDGET_TYPE.QUEUE_STATUS: {
@@ -126,6 +125,9 @@ const ModalNewWallboard = ({ ...props }) => {
         }
         case WIDGET_TYPE.AGENT_LOGIN: {
           return dispatch(handleWallboardActiveModalAC(DEFAULTS.MODAL.MODAL_NAMES.AGENT_LOGIN));
+        }
+        case WIDGET_TYPE.AGENT_STATUS: {
+          return dispatch(handleWallboardActiveModalAC(DEFAULTS.MODAL.MODAL_NAMES.AGENT_STATUS));
         }
         default:
           return;
@@ -168,4 +170,4 @@ const ModalNewWallboard = ({ ...props }) => {
     </div>
   );
 };
-export default ModalNewWallboard;
+export default ModalNewWidget;

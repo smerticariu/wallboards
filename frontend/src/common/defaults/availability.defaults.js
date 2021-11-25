@@ -3,6 +3,7 @@ export const AVAILABILITY = {
     GET: {
       PROFILES: 'profiles',
       STATES: 'states',
+      HISTORY: 'history',
     },
-  }
-}
+  },
+};

@@ -202,6 +202,41 @@ export const modalInitialState = {
       value: DEFAULTS.MODAL.CALL_TRACKING.START_WEEK[0].value,
     },
   },
+  agentStatus: {
+    isEditMode: false,
+    id: null,
+    title: {
+      value: 'Agent Status',
+      errorMessage: '',
+    },
+    profile: {
+      id: DEFAULTS.MODAL.CALL_TRACKING.USER_PROFILE.id,
+      value: DEFAULTS.MODAL.CALL_TRACKING.USER_PROFILE.name,
+    },
+    limitResult: {
+      value: 10,
+      errorMessage: '',
+    },
+    timeZone: getCurrentTimezone(),
+    period: {
+      id: DEFAULTS.MODAL.CALL_TRACKING.PERIOD[0].id,
+      value: DEFAULTS.MODAL.CALL_TRACKING.PERIOD[0].value,
+    },
+    isShowStateName: true,
+    isShowDisplayName: true,
+    from: {
+      value: '',
+      errorMessage: '',
+    },
+    to: {
+      value: '',
+      errorMessage: '',
+    },
+    startOfWeek: {
+      id: DEFAULTS.MODAL.CALL_TRACKING.START_WEEK[0].id,
+      value: DEFAULTS.MODAL.CALL_TRACKING.START_WEEK[0].value,
+    },
+  },
 };
 
 export const modalReducer = (state = modalInitialState, action) => {
@@ -444,6 +479,50 @@ export const modalReducer = (state = modalInitialState, action) => {
             },
           };
         }
+        case WIDGET_TYPE.AGENT_STATUS: {
+          return {
+            ...state,
+            agentStatus: {
+              title: {
+                value: widgetForEdit.title,
+                errorMessage: '',
+              },
+              profile: {
+                id: widgetForEdit.profile.id,
+                value: widgetForEdit.profile.value,
+              },
+              limitResult: {
+                value: widgetForEdit.limitResult.value,
+                errorMessage: '',
+              },
+              timeZone: {
+                id: widgetForEdit.timeZone.id,
+                value: widgetForEdit.timeZone.value,
+              },
+              period: {
+                id: widgetForEdit.period.id,
+                value: widgetForEdit.period.value,
+              },
+              isShowStateName: widgetForEdit.isShowStateName,
+              isShowDisplayName: widgetForEdit.isShowDisplayName,
+              from: {
+                value: widgetForEdit.from.value,
+                errorMessage: '',
+              },
+              to: {
+                value: widgetForEdit.to.value,
+                errorMessage: '',
+              },
+              startOfWeek: {
+                id: widgetForEdit.startOfWeek.id,
+                value: widgetForEdit.startOfWeek.value,
+              },
+              isEditMode: true,
+              size: widgetForEdit.size,
+              id: widgetForEdit.id,
+            },
+          };
+        }
         default:
           return state;
       }
@@ -514,6 +593,15 @@ export const modalReducer = (state = modalInitialState, action) => {
         ...state,
         agentLogin: {
           ...state.agentLogin,
+          ...action.payload,
+        },
+      };
+    }
+    case modalActions.HANDLE_AGENT_STATUS_DATA: {
+      return {
+        ...state,
+        agentStatus: {
+          ...state.agentStatus,
           ...action.payload,
         },
       };

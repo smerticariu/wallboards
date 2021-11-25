@@ -11,7 +11,7 @@ import { Route, Switch } from 'react-router';
 import { HashRouter } from 'react-router-dom';
 import { setAccessTokenAC, setUserTokenInfoAC } from './store/actions/login.action';
 import { fetchUserDataThunk, fetchUserInfoThunk } from './store/thunk/login.thunk';
-import ModalNewWallboard from './components/modal/new-wallboard/modal.new-wallboard';
+import ModalNewWallboard from './components/modal/new-widget/modal.new-widget';
 import ModalAddComponent from './components/modal/add-component/modal.add-component';
 import ModalSaveWallboard from './components/modal/save-wallboard/modal.save-wallboard';
 import ModalEditWallboard from './components/modal/edit-wallboard/modal.edit-wallboard';
@@ -26,6 +26,7 @@ import ModalQueueTracking from './components/modal/queue-tracking/modal.queue-tr
 import ModalQueueStatus from './components/modal/queue-status/modal.queue-status';
 import ModalCallTracking from './components/modal/call-tracking/modal.call-tracking';
 import ModalAgentLogin from './components/modal/agent-login/modal.agent-login';
+import ModalAgentStatus from './components/modal/agent-status/modal.agent-status';
 
 function App() {
   const dispatch = useDispatch();
@@ -105,6 +106,7 @@ function App() {
           {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.QUEUE_STATUS && <ModalQueueStatus />}
           {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.CALL_TRACKING && <ModalCallTracking />}
           {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.AGENT_LOGIN && <ModalAgentLogin />}
+          {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.AGENT_STATUS && <ModalAgentStatus />}
           {warningMessage && <ModalWarning />}
         </>
       )}

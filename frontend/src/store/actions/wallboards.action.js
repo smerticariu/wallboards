@@ -31,6 +31,8 @@ export const wallboardsActions = {
 
   ADD_WALLBOARD_AGENT_LOGIN: 'ADD_WALLBOARD_AGENT_LOGIN',
 
+  ADD_WALLBOARD_AGENT_STATUS: 'ADD_WALLBOARD_AGENT_STATUS',
+
   WALLBOARD_GRID_LAYOUT_CHANGE: 'WALLBOARD_GRID_LAYOUT_CHANGE',
 
   RESET_WALLBOARD_EDIT_PAGE_DATA: 'RESET_WALLBOARD_EDIT_PAGE_DATA',
@@ -144,6 +146,11 @@ export const addWallboardCallTrackingAC = (callTracking, userInfo) => ({
 export const addWallboardAgentLoginAC = (agentLogin, userInfo) => ({
   type: wallboardsActions.ADD_WALLBOARD_AGENT_LOGIN,
   payload: { agentLogin, userInfo },
+});
+
+export const addWallboardAgentStatusAC = (agentStatus, userInfo) => ({
+  type: wallboardsActions.ADD_WALLBOARD_AGENT_STATUS,
+  payload: { agentStatus, userInfo },
 });
 
 export const handleWallboardGridLayoutChangeAC = (gridLayout) => ({
