@@ -1,0 +1,63 @@
+.agent-login {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  min-width: 900px;
+
+  &__header {
+    display: grid;
+    width: 100%;
+    min-height: 32px;
+    background-color: $turquoise-blue;
+    justify-content: space-between;
+    align-items: center;
+    grid-template-columns: 23% 23% 17% 23% 14%;
+    &-item {
+      font-family: $public-sans-regular;
+      font-size: 14px;
+      font-weight: 500;
+      color: $white;
+      margin-left: 10px;
+    }
+  }
+  &__body {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+  }
+  &__row {
+    display: grid;
+    width: 100%;
+    min-height: 24px;
+    align-items: center;
+    justify-content: space-between;
+    grid-template-columns: 23% 23% 17% 23% 14%;
+    background-color: $dark-grey;
+    font-weight: 700;
+    &:nth-child(2n + 1) {
+      background-color: #eaeaea;
+      font-weight: normal;
+    }
+    &-item {
+      font-family: $public-sans-regular;
+      font-size: 14px;
+      color: $slate-gray;
+      margin-left: 10px;
+      &--login {
+        color: $jungle-green;
+        font-weight: 700;
+      }
+      &--logout {
+        color: $natterbox-red;
+        font-weight: normal;
+      }
+      &--login,
+      &--logout {
+        text-transform: lowercase;
+        &:first-letter {
+          text-transform: uppercase;
+        }
+      }
+    }
+  }
+}
