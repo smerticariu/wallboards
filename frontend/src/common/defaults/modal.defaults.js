@@ -534,9 +534,9 @@ export const MODAL = {
       TITLE: 'Agent Login',
     },
     PERIOD: [
-      { value: 'Today', id: CALL_STATISTIC_PERIOD.TODAY },
-      { value: 'This Hour', id: CALL_STATISTIC_PERIOD.HOUR },
       { value: 'Rolling Hour', id: CALL_STATISTIC_PERIOD.ROLLING_HOUR },
+      { value: 'This Hour', id: CALL_STATISTIC_PERIOD.HOUR },
+      { value: 'Today', id: CALL_STATISTIC_PERIOD.TODAY },
       { value: 'This Week', id: CALL_STATISTIC_PERIOD.WEEK },
       { value: 'This Month', id: CALL_STATISTIC_PERIOD.MONTH },
     ],

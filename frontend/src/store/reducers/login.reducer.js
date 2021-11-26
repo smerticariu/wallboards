@@ -33,14 +33,12 @@ export const loginReducer = (state = loginInitialState, action) => {
         userInfo: null,
       };
 
-    // case types.SET_SIGN_OUT:
-    //   return state;
-
-    // case types.AUTH_TOKEN:
-    //   return state;
-
-    // case types.AUTH_TOKEN_EXPIRY:
-    //   return state;
+    case loginActions.SET_USERS_AVATARS: {
+      return {
+        ...state,
+        usersAvatars: action.payload,
+      };
+    }
 
     default:
       return state;

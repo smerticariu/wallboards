@@ -10,5 +10,8 @@ export const AGENTS = {
     SAVE: {
       AGENT: 'agent',
     },
+    ERROR: {
+      NO_AGENTS: 'No agents',
+    },
   },
 };

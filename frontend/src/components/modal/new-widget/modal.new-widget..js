@@ -5,7 +5,7 @@ import { DEFAULTS } from '../../../common/defaults/defaults';
 import { MODAL_NEW_WALLBOARD_SECITONS, WIDGET_TYPE } from '../../../common/defaults/modal.defaults';
 import useOnClickOutside from '../../../common/hooks/useOnClickOutside';
 
-const ModalNewWallboard = ({ ...props }) => {
+const ModalNewWidget = ({ ...props }) => {
   const modalRef = useRef(null);
   const [newWbFilter, setNewWbFilter] = useState('');
 
@@ -168,4 +168,4 @@ const ModalNewWallboard = ({ ...props }) => {
     </div>
   );
 };
-export default ModalNewWallboard;
+export default ModalNewWidget;
