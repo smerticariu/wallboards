@@ -65,6 +65,7 @@ function App() {
         });
       } else if (sfToken) {
         dispatch(fetchUserDataThunk(sfToken));
+        dispatch(setUsersAvatarsAC(window.WbConfig.usersAvatars));
       }
     } catch (err) {
       console.log(err);
@@ -76,30 +77,24 @@ function App() {
     
     
     var conn = new jsforce.Connection({
-      instanceUrl: 'https://natterbox-3c-dev-ed--c.visualforce.com',
-      accessToken : accessToken,
+      instanceUrl: config.instanceUrl,
+      accessToken,
     });
      
-    conn.query("Select id, name, SmallPhotoUrl, FullPhotoUrl From User", (err, sfUsers) => {
-      // if (err) { return console.error(err); }
-      if (!sfUsers.done) {
-        console.log("next records URL : " + sfUsers.nextRecordsUrl);
-      }
-      console.log('sfUsers')
-      conn.query("Select name, nbavs__User__c,nbavs__Id__c, id From nbavs__User__c", function(err, avsUsers) {
-        // if (err) { return console.error(err); }
-        console.log('avsUsers')
-        const userPhotos = sfUsers.records;
-        const userIds = avsUsers.records;
-        let userAvatars = [];
+    conn.query(DEFAULTS.SOQL.GET_USERS_PHOTOS, (err, sfUsers) => {
+      if (err) { return console.error(err); }
+
+      conn.query(DEFAULTS.SOQL.GET_USERS_IDS, (err, avsUsers) => {
+        if (err) { return console.error(err); }
+
+        const usersPhotos = sfUsers.records;
+        const usersIds = avsUsers.records;
+        let usersAvatars = [];
         
-        if (!avsUsers.done) {
-          console.log("next records URL : " + avsUsers.nextRecordsUrl);
-        }
-        userPhotos.forEach(userPhoto => {
-          userIds.forEach(userId => {
+        usersPhotos.forEach(userPhoto => {
+          usersIds.forEach(userId => {
             if(userPhoto.Id === userId.nbavs__User__c) {
-              userAvatars.push({
+              usersAvatars.push({
                 id: userId.nbavs__Id__c,
                 smallPhoto: userPhoto.SmallPhotoUrl,
                 largePhoto: userPhoto.FullPhotoUrl,
@@ -108,7 +103,7 @@ function App() {
             }
           })
         })
-        dispatch(setUsersAvatarsAC(userAvatars));
+        dispatch(setUsersAvatarsAC(usersAvatars));
       });
     });
   }
