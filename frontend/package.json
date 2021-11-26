@@ -49,6 +49,7 @@
     "jest-resolve": "26.6.0",
     "jest-watch-typeahead": "0.6.1",
     "js-base64": "^3.7.2",
+    "jsforce": "^1.10.1",
     "json-server": "^0.16.3",
     "mini-css-extract-plugin": "0.11.3",
     "moment": "^2.29.1",
