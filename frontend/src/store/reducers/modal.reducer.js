@@ -7,9 +7,6 @@ import { modalActions } from '../actions/modal.action';
 export const modalInitialState = {
   activeModalName: null,
   warningMessage: '',
-  modalSelectComponent: {
-    selectedElement: '',
-  },
   wallboardComponentForDelete: null,
   modalAddComponent: {
     isEditMode: false,
@@ -245,14 +242,6 @@ export const modalReducer = (state = modalInitialState, action) => {
       return {
         ...state,
         activeModalName: action.payload,
-      };
-    case modalActions.HANDLE_MODAL_SELECT_COMPONENT_ACTIVE_ELEMENT:
-      return {
-        ...state,
-        modalSelectComponent: {
-          ...state.modalSelectComponent,
-          selectedElement: action.payload,
-        },
       };
     case modalActions.HANDLE_ADD_MODAL_COMPONENT_FORM_DATA:
       return {

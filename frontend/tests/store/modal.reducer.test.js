@@ -1,8 +1,4 @@
-import {
-  handleModalAddComponentFormDataAC,
-  handleModalSelectActiveElementAC,
-  handleWallboardActiveModalAC,
-} from '../../src/store/actions/modal.action';
+import { handleModalAddComponentFormDataAC, handleWallboardActiveModalAC } from '../../src/store/actions/modal.action';
 import { modalInitialState, modalReducer } from '../../src/store/reducers/modal.reducer';
 import '@testing-library/jest-dom/extend-expect';
 import createMockStore from 'redux-mock-store';
@@ -29,13 +25,6 @@ describe('modal reducer', () => {
   it('should change active modal name', () => {
     const action = handleWallboardActiveModalAC(DEFAULTS.MODAL.MODAL_NAMES.ADD_COMPONENT);
     expect(modalReducer(modalInitialState, action).activeModalName).toBe(DEFAULTS.MODAL.MODAL_NAMES.ADD_COMPONENT);
-  });
-
-  it('should change active selected element and new wallboard title', () => {
-    const action = handleModalSelectActiveElementAC('testElement');
-    const newState = modalReducer(modalInitialState, action);
-    expect(newState.modalSelectComponent.selectedElement).toBe('testElement');
-    expect(newState.modalAddComponent.title.value).toBe('testElement');
   });
 
   it('should change widget form data', () => {

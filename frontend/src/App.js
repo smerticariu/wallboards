@@ -11,11 +11,6 @@ import { Route, Switch } from 'react-router';
 import { HashRouter } from 'react-router-dom';
 import { setAccessTokenAC, setUserTokenInfoAC } from './store/actions/login.action';
 import { fetchUserDataThunk, fetchUserInfoThunk } from './store/thunk/login.thunk';
-<<<<<<< HEAD
-import ModalNewWallboard from './components/modal/new-widget/modal.new-widget';
-=======
-import ModalNewWidget from './components/modal/new-widget/modal.new-widget.';
->>>>>>> 54ef22b24a69fa7c85bcdb4c71eac2aac98ce741
 import ModalAddComponent from './components/modal/add-component/modal.add-component';
 import ModalSaveWallboard from './components/modal/save-wallboard/modal.save-wallboard';
 import ModalEditWallboard from './components/modal/edit-wallboard/modal.edit-wallboard';
@@ -31,6 +26,7 @@ import ModalQueueStatus from './components/modal/queue-status/modal.queue-status
 import ModalCallTracking from './components/modal/call-tracking/modal.call-tracking';
 import ModalAgentLogin from './components/modal/agent-login/modal.agent-login';
 import ModalAgentStatus from './components/modal/agent-status/modal.agent-status';
+import ModalNewWidget from './components/modal/new-widget/modal.new-widget';
 
 function App() {
   const dispatch = useDispatch();
