@@ -30,7 +30,7 @@ import jsforce from 'jsforce';
 
 function App() {
   const dispatch = useDispatch();
-  const { userInfo, userTokenInfo, token } = useSelector((state) => state.login);
+  const { userInfo, userTokenInfo, token, userAvatars } = useSelector((state) => state.login);
   const { isAuthenticated, getAccessTokenSilently, isLoading } = useAuth0();
   const activeModalName = useSelector((state) => state.modal.activeModalName);
   const { warningMessage } = useSelector((state) => state.modal);
@@ -47,6 +47,7 @@ function App() {
     if (userTokenInfo?.expiry) {
       tokenExpiryTimeout = setTimeout(() => {
         fetchData();
+        
       }, new Date(userTokenInfo?.expiry * 1000) - new Date() + 2000);
     }
     return () => clearTimeout(tokenExpiryTimeout);
@@ -60,19 +61,7 @@ function App() {
           dispatch(setAccessTokenAC(res));
           dispatch(setUserTokenInfoAC(jwtExtractor(res)));
           dispatch(fetchUserInfoThunk(res));
-          var conn = new jsforce.Connection({
-            instanceUrl: 'https://natterbox-3c-dev-ed--c.visualforce.com',
-            accessToken : jwtExtractor(res).salesforceAccessToken,
-          });
-      
-          conn.query("Select id, name, SmallPhotoUrl, FullPhotoUrl From User", function(err, result) {
-            if (err) { return console.error(err); }
-            console.log(result);
-            dispatch(setUsersAvatarsAC(result.records))
-            if (!result.done) {
-              console.log("next records URL : " + result.nextRecordsUrl);
-            }
-          });
+          getUsersAvatars(jwtExtractor(res).salesforceAccessToken)
         });
       } else if (sfToken) {
         dispatch(fetchUserDataThunk(sfToken));
@@ -81,6 +70,48 @@ function App() {
       console.log(err);
     }
   };
+
+  const getUsersAvatars = async accessToken => {
+    
+    
+    
+    var conn = new jsforce.Connection({
+      instanceUrl: 'https://natterbox-3c-dev-ed--c.visualforce.com',
+      accessToken : accessToken,
+    });
+     
+    conn.query("Select id, name, SmallPhotoUrl, FullPhotoUrl From User", (err, sfUsers) => {
+      // if (err) { return console.error(err); }
+      if (!sfUsers.done) {
+        console.log("next records URL : " + sfUsers.nextRecordsUrl);
+      }
+      console.log('sfUsers')
+      conn.query("Select name, nbavs__User__c,nbavs__Id__c, id From nbavs__User__c", function(err, avsUsers) {
+        // if (err) { return console.error(err); }
+        console.log('avsUsers')
+        const userPhotos = sfUsers.records;
+        const userIds = avsUsers.records;
+        let userAvatars = [];
+        
+        if (!avsUsers.done) {
+          console.log("next records URL : " + avsUsers.nextRecordsUrl);
+        }
+        userPhotos.forEach(userPhoto => {
+          userIds.forEach(userId => {
+            if(userPhoto.Id === userId.nbavs__User__c) {
+              userAvatars.push({
+                id: userId.nbavs__Id__c,
+                smallPhoto: userPhoto.SmallPhotoUrl,
+                largePhoto: userPhoto.FullPhotoUrl,
+                name: userPhoto.Name
+              })
+            }
+          })
+        })
+        dispatch(setUsersAvatarsAC(userAvatars));
+      });
+    });
+  }
 
   const handleRedirect = () => {
     const wbToRedirect = localStorage.getItem('wallboard'); //store the link of the read-only wallboard

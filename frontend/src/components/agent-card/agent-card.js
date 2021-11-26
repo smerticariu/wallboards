@@ -1,5 +1,5 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { SettingsIcon } from '../../assets/static/icons/settings';
 import Dropdown from '../dropdown/dropdown';
 import TimeInterval from '../time-interval/time-interval';
@@ -23,11 +23,13 @@ const AgentCard = ({
   ...props
 }) => {
   const dispatch = useDispatch();
-
+  const { usersAvatars } = useSelector((state) => state.login);
   const handleCallAgent = () => {
     dispatch(callAgentThunk(id));
   };
 
+  const agentAvatarPhoto = usersAvatars.find(user => user.id === id)?.smallPhoto;
+  
   const handleListenLive = () => {
     dispatch(listenLiveThunk(id));
   };
@@ -36,13 +38,13 @@ const AgentCard = ({
     <div className={`agent-c agent-c--${DEFAULTS.MODAL.ADD_COMPONENT.PRESENCE_STATE_KEYS_COLOR.CARD_BACKGROUND[callStatusKey]}`}>
       <div className="agent-c__header">
         <div className="agent-c__user">
-          {/* <div
+          <div
             className="agent-c__user-image"
             //do not delete
-            // style={{
-            //   backgroundImage: `url(${img})`,
-            // }}
-          /> */}
+            style={{
+              backgroundImage: `url(${agentAvatarPhoto})`,
+            }}
+          />
           <div className="agent-c__user-name-ext">
             <div className="agent-c__user-name">
               {name.length > DEFAULTS.GRID.MAX_NAME_CHARACTERS ? (
