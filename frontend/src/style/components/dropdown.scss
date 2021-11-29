@@ -27,6 +27,10 @@
       left: 0;
       transform: none;
     }
+    &--left {
+      left: 0;
+      transform: translateX(-100%);
+    }
   }
   &__trigger {
     display: flex;

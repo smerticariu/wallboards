@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { DEFAULTS } from '../../../common/defaults/defaults';
 import { QUEUE_LIST_COLUMN_OPTIONS } from '../../../common/defaults/modal.defaults';
 import { callsToObject } from '../../../common/utils/callsToObject';
 import { findTimeAtHeadOfQueue } from '../../../common/utils/findTimeAtHeadOfQueue';
@@ -71,36 +72,13 @@ const GridQueueList = ({ widget, ...props }) => {
         [QUEUE_LIST_COLUMN_OPTIONS.CALLBACK_REQUESTED]: call.callbackRequested,
         [QUEUE_LIST_COLUMN_OPTIONS.CALLBACK_ATTEMPTS]: call.callbackAttempts,
         [QUEUE_LIST_COLUMN_OPTIONS.FLAGS]: 'uncknow',
-        [QUEUE_LIST_COLUMN_OPTIONS.ID]: call.uuid,
+        uuid: call.uuid,
+        agentId: call.userId,
       }))
     );
     console.log(queuedCallCopy);
   }, [allAgents, calls, queuedCall]);
 
-  return (
-    <QueueListTable
-      {...props}
-      widget={widget}
-      tableData={[
-        {
-          [QUEUE_LIST_COLUMN_OPTIONS.CALLER_NUMBER]: 'callerIdNumber',
-          [QUEUE_LIST_COLUMN_OPTIONS.CALLER_NAME]: 'callerIdName',
-          [QUEUE_LIST_COLUMN_OPTIONS.POSITION_IN_QUEUE]: 'position',
-          [QUEUE_LIST_COLUMN_OPTIONS.PRIORITY]: 'priority',
-          [QUEUE_LIST_COLUMN_OPTIONS.TIME_WAITING_IN_QUEUE]: 'timeInQueue',
-          [QUEUE_LIST_COLUMN_OPTIONS.DIAL_ATTEMPTS]: 'dialAttempts',
-          [QUEUE_LIST_COLUMN_OPTIONS.STATUS]: 'status',
-          [QUEUE_LIST_COLUMN_OPTIONS.AGENT_CONNECTED_TO]: 'uncknow',
-          [QUEUE_LIST_COLUMN_OPTIONS.SKILLS_REQUESTED]: 'uncknow',
-          [QUEUE_LIST_COLUMN_OPTIONS.SKILLS_SHORTAGE]: 'uncknow',
-          [QUEUE_LIST_COLUMN_OPTIONS.TIME_AT_HEAD_OF_QUEUE]: 'timeAtHeadOfQueue',
-          [QUEUE_LIST_COLUMN_OPTIONS.CALLBACK_REQUESTED]: 'callbackRequested',
-          [QUEUE_LIST_COLUMN_OPTIONS.CALLBACK_ATTEMPTS]: 'callbackAttempts',
-          [QUEUE_LIST_COLUMN_OPTIONS.FLAGS]: 'uncknow',
-          [QUEUE_LIST_COLUMN_OPTIONS.ID]: 'call.uuid',
-        },
-      ]}
-    />
-  );
+  return <QueueListTable {...props} widget={widget} tableData={DEFAULTS.MODAL.QUEUE_LIST.MOCK_DATA} />;
 };
 export default GridQueueList;

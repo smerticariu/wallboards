@@ -274,8 +274,8 @@ const ModalQueueList = ({ ...props }) => {
               label={option.text}
               name={option.value}
               className="c-checkbox--queue-tracking"
-              checked={queueList.columnsToViewOptions.selectedItems.includes(option.value)}
-              onChange={(event) => handleInputAndSelect(event, 'multimple-checkbox', 'columnsToViewOptions')}
+              checked={queueList.interactivityOptions.selectedItems.includes(option.value)}
+              onChange={(event) => handleInputAndSelect(event, 'multimple-checkbox', 'interactivityOptions')}
             />
           ))}
         </div>

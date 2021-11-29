@@ -332,6 +332,9 @@ export const wallboardsReducer = (state = { ...wallboardsInitialState }, action)
         columnsToViewOptions: {
           selectedItems: [...queueList.columnsToViewOptions.selectedItems],
         },
+        interactivityOptions: {
+          selectedItems: [...queueList.interactivityOptions.selectedItems],
+        },
         timeInQueueSLATime: queueList.timeInQueueSLATime.value,
         timeAtHeadOfQueueSLATime: queueList.timeAtHeadOfQueueSLATime.value,
         sortBy: queueList.sortBy.value,

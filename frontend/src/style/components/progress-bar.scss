@@ -1,0 +1,14 @@
+.progress-bar {
+  display: flex;
+  height: 16px;
+  width: 90px;
+  background-color: $dark-white;
+  border-radius: 12px;
+  overflow: hidden;
+  &__progress {
+    display: flex;
+    height: 100%;
+    background-color: $natterbox-red;
+    border-radius: 12px;
+  }
+}
