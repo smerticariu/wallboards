@@ -95,7 +95,7 @@ function App() {
           </HashRouter>
           <NotificationMessage />
           {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.SELECT_COMPONENT && <ModalNewWidget />}
-          {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.ADD_COMPONENT && <ModalAddComponent />}
+          {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.AGENT_LIST && <ModalAddComponent />}
           {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.SAVE_WALLBOARD && <ModalSaveWallboard />}
           {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.DELETE_WALLBOARD && <ModalDeleteWallboard />}
           {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.EDIT_WALLBOARD && <ModalEditWallboard />}
