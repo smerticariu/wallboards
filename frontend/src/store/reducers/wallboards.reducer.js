@@ -290,10 +290,11 @@ export const wallboardsReducer = (state = { ...wallboardsInitialState }, action)
           value: queueTracking.totalCallsSLA.value,
           isChecked: queueTracking.totalCallsSLA.isChecked,
         },
-        solidCallsOverride: {
-          value: queueTracking.solidCallsOverride.value,
-          isChecked: queueTracking.solidCallsOverride.isChecked,
-        },
+        //do not remove
+        // solidCallsOverride: {
+        //   value: queueTracking.solidCallsOverride.value,
+        //   isChecked: queueTracking.solidCallsOverride.isChecked,
+        // },
         size: queueTracking.isEditMode ? queueTracking.size : null,
       };
       return {

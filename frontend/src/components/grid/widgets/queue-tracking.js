@@ -43,13 +43,14 @@ const GridQueueTracking = ({ isEditMode, isPreview, widget, ...props }) => {
       queueTrackingInitialValues.timedOutCallCount.value += value.timedOutCallCount;
       queueTrackingInitialValues.abortedCallCount.value += value.abortedCallCount;
 
-      if (widget.solidCallsOverride.isChecked) {
-        if (moment(widget.solidCallsOverride.value, 'HH:mm:ss').diff(moment().startOf('day'), 'seconds') < value.totalTalkTime) {
-          queueTrackingInitialValues.solidCallCount.value += value.solidCallCount;
-        }
-      } else {
-        queueTrackingInitialValues.solidCallCount.value += value.solidCallCount;
-      }
+      //do not remove
+      // if (widget.solidCallsOverride.isChecked) {
+      //   if (moment(widget.solidCallsOverride.value, 'HH:mm:ss').diff(moment().startOf('day'), 'seconds') < value.totalTalkTime) {
+      //     queueTrackingInitialValues.solidCallCount.value += value.solidCallCount;
+      //   }
+      // } else {
+      //   queueTrackingInitialValues.solidCallCount.value += value.solidCallCount;
+      // }
 
       //utilities
       queueTrackingUtilityFields.totalTalkTime.value += value.totalTalkTime;

@@ -117,11 +117,12 @@ export const modalInitialState = {
       isChecked: false,
       errorMessage: '',
     },
-    solidCallsOverride: {
-      value: '00:02:00',
-      isChecked: false,
-      errorMessage: '',
-    },
+    //do not remove
+    // solidCallsOverride: {
+    //   value: '00:02:00',
+    //   isChecked: false,
+    //   errorMessage: '',
+    // },
   },
   queueStatus: {
     isEditMode: false,
@@ -378,10 +379,11 @@ export const modalReducer = (state = modalInitialState, action) => {
                 value: widgetForEdit.totalCallsSLA.value,
                 isChecked: widgetForEdit.totalCallsSLA.isChecked,
               },
-              solidCallsOverride: {
-                value: widgetForEdit.solidCallsOverride.value,
-                isChecked: widgetForEdit.solidCallsOverride.isChecked,
-              },
+              //do not remove
+              // solidCallsOverride: {
+              //   value: widgetForEdit.solidCallsOverride.value,
+              //   isChecked: widgetForEdit.solidCallsOverride.isChecked,
+              // },
               isEditMode: true,
               size: widgetForEdit.size,
               id: widgetForEdit.id,
