@@ -150,25 +150,25 @@ export const wallboardsReducer = (state = { ...wallboardsInitialState }, action)
         },
       };
 
-    case wallboardsActions.ADD_WALLBOARD_COMPONENT: {
+    case wallboardsActions.ADD_WALLBOARD_AGENT_LIST: {
       const { widgets } = state.activeWallboard.wallboard;
-      const modalAddComponent = action.payload.modalAddComponent;
+      const { agentList, userInfo } = action.payload;
 
       const newWidget = {
-        name: modalAddComponent.title.value,
+        name: agentList.title.value,
         callQueue: {
-          id: modalAddComponent.callQueue.id,
-          name: modalAddComponent.callQueue.name,
+          id: agentList.callQueue.id,
+          name: agentList.callQueue.name,
         },
-        view: modalAddComponent.mainViewing,
-        sortBy: modalAddComponent.sortBy.value,
-        availabilityStates: modalAddComponent.availabilityStates,
-        presenceStates: modalAddComponent.presenceStates,
-        interactivity: modalAddComponent.interactivityOptions,
-        columnsToView: modalAddComponent.columnsToViewOptions,
-        skills: modalAddComponent.skillsToView,
-        columns: modalAddComponent.columns,
-        size: modalAddComponent.isEditMode ? modalAddComponent.size : null,
+        view: agentList.mainViewing,
+        sortBy: agentList.sortBy.value,
+        availabilityStates: agentList.availabilityStates,
+        presenceStates: agentList.presenceStates,
+        interactivity: agentList.interactivityOptions,
+        columnsToView: agentList.columnsToViewOptions,
+        skills: agentList.skillsToView,
+        columns: agentList.columns,
+        size: agentList.isEditMode ? agentList.size : null,
         type: WIDGET_TYPE.AGENT_LIST,
       };
       return {
@@ -177,16 +177,16 @@ export const wallboardsReducer = (state = { ...wallboardsInitialState }, action)
           ...state.activeWallboard,
           wallboard: {
             ...state.activeWallboard.wallboard,
-            widgets: modalAddComponent.isEditMode
+            widgets: agentList.isEditMode
               ? widgets.map((widget) =>
-                  widget.id !== modalAddComponent.id
+                  widget.id !== agentList.id
                     ? widget
                     : {
                         ...newWidget,
-                        id: modalAddComponent.id,
+                        id: agentList.id,
                       }
                 )
-              : [...widgets, { ...newWidget, id: generateWallboardWidgetId(action.payload.user.organisationId, action.payload.user.id) }],
+              : [...widgets, { ...newWidget, id: generateWallboardWidgetId(userInfo.organisationId, userInfo.id) }],
           },
         },
       };
@@ -309,6 +309,50 @@ export const wallboardsReducer = (state = { ...wallboardsInitialState }, action)
                     : {
                         ...newWidget,
                         id: queueTracking.id,
+                      }
+                )
+              : [...widgets, { ...newWidget, id: generateWallboardWidgetId(userInfo.organisationId, userInfo.id) }],
+          },
+        },
+      };
+    }
+
+    case wallboardsActions.ADD_WALLBOARD_QUEUE_LIST: {
+      const { widgets } = state.activeWallboard.wallboard;
+      const { queueList, userInfo } = action.payload;
+      const newWidget = {
+        title: queueList.title.value,
+        type: WIDGET_TYPE.QUEUE_LIST,
+        callQueue: {
+          id: queueList.callQueue.id,
+          value: queueList.callQueue.value,
+        },
+        isCallStatusConnected: queueList.isCallStatusConnected,
+        isCallStatusWaiting: queueList.isCallStatusWaiting,
+        columnsToViewOptions: {
+          selectedItems: [...queueList.columnsToViewOptions.selectedItems],
+        },
+        timeInQueueSLATime: queueList.timeInQueueSLATime.value,
+        timeAtHeadOfQueueSLATime: queueList.timeAtHeadOfQueueSLATime.value,
+        sortBy: queueList.sortBy.value,
+        isShowOnlyOnHover: queueList.isShowOnlyOnHover,
+        isShowShortageOnlyOnHover: queueList.isShowShortageOnlyOnHover,
+        interactivity: queueList.interactivityOptions,
+        size: queueList.isEditMode ? queueList.size : null,
+      };
+      return {
+        ...state,
+        activeWallboard: {
+          ...state.activeWallboard,
+          wallboard: {
+            ...state.activeWallboard.wallboard,
+            widgets: queueList.isEditMode
+              ? widgets.map((widget) =>
+                  widget.id !== queueList.id
+                    ? widget
+                    : {
+                        ...newWidget,
+                        id: queueList.id,
                       }
                 )
               : [...widgets, { ...newWidget, id: generateWallboardWidgetId(userInfo.organisationId, userInfo.id) }],

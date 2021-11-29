@@ -10,12 +10,12 @@ import { SettingsIcon } from '../../../assets/static/icons/settings';
 import { DEFAULTS } from '../../../common/defaults/defaults';
 import { getQueueTrackingInitialValues, getQueueTrackingUtilityFields } from '../../../common/defaults/wallboards.defaults';
 import { averageValue } from '../../../common/utils/averageValue';
-import { getTimesCallTracking } from '../../../common/utils/getTimesCallTracking';
 import { maxValue } from '../../../common/utils/maxValueValue';
 import { percentValue } from '../../../common/utils/percentValue';
 import { fetchQueueStatisticsThunk } from '../../../store/thunk/callsQueues.thunk';
 import TimeInterval from '../../time-interval/time-interval';
 import moment from 'moment';
+import { getTimesCallTracking } from '../../../common/utils/getTimesCallTracking';
 const GridQueueTracking = ({ isEditMode, isPreview, widget, ...props }) => {
   const dispatch = useDispatch();
   const callQueueStatistic = useSelector((state) => state.callsQueues.callQueueStatistic);
@@ -118,7 +118,6 @@ const GridQueueTracking = ({ isEditMode, isPreview, widget, ...props }) => {
     return queueTrackingInitialValues;
   };
   const queueTrackingStatistic = getQueueTrackingStatistic();
-  console.log(queueTrackingStatistic);
   const handleEditIcon = () => {
     const onEditClick = () => {
       dispatch(setWidgetComponentForEditAC(widget));

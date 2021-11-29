@@ -87,3 +87,13 @@
   margin-left: 3px;
   margin-bottom: 2px;
 }
+.input-seconds {
+  display: grid;
+  grid-template-columns: calc(100% - 70px) 70px;
+  column-gap: 10px;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  font-family: $public-sans-regular;
+  color: $slate-gray;
+}

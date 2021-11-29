@@ -12,7 +12,7 @@ import { HashRouter } from 'react-router-dom';
 import { setAccessTokenAC, setUserTokenInfoAC } from './store/actions/login.action';
 import { fetchUserDataThunk, fetchUserInfoThunk } from './store/thunk/login.thunk';
 import ModalNewWidget from './components/modal/new-widget/modal.new-widget.';
-import ModalAddComponent from './components/modal/add-component/modal.add-component';
+import ModalAgentList from './components/modal/agent-list/modal.agent-list';
 import ModalSaveWallboard from './components/modal/save-wallboard/modal.save-wallboard';
 import ModalEditWallboard from './components/modal/edit-wallboard/modal.edit-wallboard';
 import ModalDeleteWallboard from './components/modal/delete-wallboard/modal.delete-wallboard';
@@ -26,6 +26,7 @@ import ModalQueueTracking from './components/modal/queue-tracking/modal.queue-tr
 import ModalQueueStatus from './components/modal/queue-status/modal.queue-status';
 import ModalCallTracking from './components/modal/call-tracking/modal.call-tracking';
 import ModalAgentLogin from './components/modal/agent-login/modal.agent-login';
+import ModalQueueList from './components/modal/queue-list/modal.queue-list';
 
 function App() {
   const dispatch = useDispatch();
@@ -94,7 +95,7 @@ function App() {
           </HashRouter>
           <NotificationMessage />
           {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.SELECT_COMPONENT && <ModalNewWidget />}
-          {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.ADD_COMPONENT && <ModalAddComponent />}
+          {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.ADD_COMPONENT && <ModalAgentList />}
           {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.SAVE_WALLBOARD && <ModalSaveWallboard />}
           {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.DELETE_WALLBOARD && <ModalDeleteWallboard />}
           {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.EDIT_WALLBOARD && <ModalEditWallboard />}
@@ -105,6 +106,7 @@ function App() {
           {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.QUEUE_STATUS && <ModalQueueStatus />}
           {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.CALL_TRACKING && <ModalCallTracking />}
           {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.AGENT_LOGIN && <ModalAgentLogin />}
+          {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.QUEUE_LIST && <ModalQueueList />}
           {warningMessage && <ModalWarning />}
         </>
       )}

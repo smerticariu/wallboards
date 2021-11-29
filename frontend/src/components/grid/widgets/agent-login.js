@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
 import { fetchOrganisationAgentsThunk, fetchUserGroupsThunk, fetchUserLoginDataThunk } from '../../../store/thunk/agents.thunk';
-import { getTimesCallTracking } from '../../../common/utils/getTimesCallTracking';
-import AgentLoginTable from '../../agent-login-table/agent-login-table';
+import { getTimes } from '../../../common/utils/getTimes';
+import AgentLoginTable from '../../tables/table.agent-login';
 
 const GridAgentLogin = ({ widget, ...props }) => {
   const userLoginData = useSelector((state) => state.agents.userLoginData);
@@ -12,9 +12,9 @@ const GridAgentLogin = ({ widget, ...props }) => {
   const dispatch = useDispatch();
   const [tableData, setTableData] = useState([]);
   useEffect(() => {
-    dispatch(fetchUserLoginDataThunk(getTimesCallTracking(widget), widget.id, widget.group.id));
+    dispatch(fetchUserLoginDataThunk(getTimes(widget), widget.id, widget.group.id));
     const interval = setInterval(() => {
-      dispatch(fetchUserLoginDataThunk(getTimesCallTracking(widget), widget.id, widget.group.id));
+      dispatch(fetchUserLoginDataThunk(getTimes(widget), widget.id, widget.group.id));
     }, [2000]);
     return () => clearInterval(interval);
     // eslint-disable-next-line

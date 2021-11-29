@@ -6,18 +6,27 @@
 
   &__header {
     display: grid;
-    width: 100%;
-    min-height: 32px;
+    min-width: 100%;
+    height: 32px;
     background-color: $turquoise-blue;
     justify-content: space-between;
     align-items: center;
     grid-template-columns: 23% 23% 17% 23% 14%;
+    &--queue-list {
+      display: flex;
+      flex-wrap: nowrap;
+      min-width: 100%;
+    }
     &-item {
+      display: flex;
+      background-color: $turquoise-blue;
       font-family: $public-sans-regular;
       font-size: 14px;
       font-weight: 500;
       color: $white;
-      margin-left: 10px;
+      align-items: center;
+      padding-left: 10px;
+      height: 100%;
     }
   }
   &__body {
@@ -35,14 +44,32 @@
     background-color: $dark-grey;
     font-weight: 700;
     &:nth-child(2n + 1) {
-      background-color: #eaeaea;
+      background-color: $dark-white;
       font-weight: normal;
+    }
+
+    &--queue-list {
+      display: flex;
+      flex-wrap: nowrap;
+      min-height: 52px;
+      font-weight: normal;
+      background-color: $white;
+      &:nth-child(2n + 1) {
+        background-color: white;
+      }
     }
     &-item {
       font-family: $public-sans-regular;
       font-size: 14px;
       color: $slate-gray;
-      margin-left: 10px;
+      padding-left: 10px;
+
+      &--queue-list {
+        display: flex;
+        height: 100%;
+        align-items: center;
+        outline: solid 1px $dark-grey;
+      }
       &--login {
         color: $jungle-green;
         font-weight: 700;
