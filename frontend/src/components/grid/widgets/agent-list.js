@@ -78,7 +78,7 @@ const GridAgentList = ({ isEditMode, widget, ...props }) => {
       agents.sipDevicesFetchStatus === FetchStatus.SUCCESS &&
       agents.userGroupsFetchStatus === FetchStatus.SUCCESS
     ) {
-      const agentsWithFullInfo = agentQueues.agents.map((agentQueue) => {
+      const agentsWithFullInfo = agentQueues?.agents?.map((agentQueue) => {
         const agentSkills = agentsSkill.find((agentSkills) => agentSkills.agentId === agentQueue.userId);
         const userCurrentCall = calls.filter((call) => call.userId === agentQueue.userId || call.deviceId === agentQueue.deviceId).pop();
 
@@ -165,6 +165,7 @@ const GridAgentList = ({ isEditMode, widget, ...props }) => {
               : 0,
         };
       });
+      if (!agentsWithFullInfo) return;
 
       const filtredAgentsWithFullInfo = agentsWithFullInfo.filter((agent) => {
         let isSkill =
