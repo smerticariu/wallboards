@@ -8,13 +8,17 @@ import {
 } from 'src/store/actions/modal.action';
 import { SettingsIcon } from '../../assets/static/icons/settings';
 import { DEFAULTS } from '../../common/defaults/defaults';
-import { QUEUE_LIST_COLUMN_OPTIONS, QUEUE_LIST_INTERACTIVITY_OPTIONS_KEYS } from '../../common/defaults/modal.defaults';
+import {
+  QUEUE_LIST_COLUMN_OPTIONS,
+  QUEUE_LIST_INTERACTIVITY_OPTIONS_KEYS,
+  QUEUE_LIST_SORT_BY_VALUES,
+} from '../../common/defaults/modal.defaults';
 import { listenLiveThunk } from '../../store/thunk/agents.thunk';
 import Dropdown from '../dropdown/dropdown';
 import { ProgressBar } from '../progress-bar/progress-bar';
 import TimeInterval from '../time-interval/time-interval';
 
-const QueueListTable = ({ isEditMode, tableData, widget, ...props }) => {
+const QueueListTable = ({ isPreviewMode, isEditMode, tableData, widget, ...props }) => {
   const dispatch = useDispatch();
   let filtredTableColumns = [
     ...DEFAULTS.MODAL.QUEUE_LIST.COLUMNS.filter((column) => widget.columnsToViewOptions.selectedItems.includes(column.value)),
@@ -25,6 +29,7 @@ const QueueListTable = ({ isEditMode, tableData, widget, ...props }) => {
   const totalWidth = filtredTableColumns.reduce((width, column) => width + column.minWidth, 0);
   const handleDeleteIcon = () => {
     const onDeleteClick = () => {
+      if (isPreviewMode) return;
       dispatch(setWallboardComponentForDeleteAC(widget));
       dispatch(handleWallboardActiveModalAC(DEFAULTS.MODAL.MODAL_NAMES.DELETE_WALLBOARD_COMPONENT));
     };
@@ -36,6 +41,7 @@ const QueueListTable = ({ isEditMode, tableData, widget, ...props }) => {
   };
 
   const handleEditIcon = () => {
+    if (isPreviewMode) return;
     const onEditClick = () => {
       dispatch(setWidgetComponentForEditAC(widget));
       dispatch(handleWallboardActiveModalAC(DEFAULTS.MODAL.MODAL_NAMES.QUEUE_LIST));
@@ -48,14 +54,53 @@ const QueueListTable = ({ isEditMode, tableData, widget, ...props }) => {
   };
 
   const handleListenLive = (agentId) => {
+    if (isPreviewMode) return;
     dispatch(listenLiveThunk(agentId));
   };
+
+  const sortedTableData = [...tableData].sort((call1, call2) => {
+    switch (widget.sortBy) {
+      case QUEUE_LIST_SORT_BY_VALUES.POSITION_IN_QUEUE:
+        return call1[QUEUE_LIST_COLUMN_OPTIONS.POSITION_IN_QUEUE] - call2[QUEUE_LIST_COLUMN_OPTIONS.POSITION_IN_QUEUE];
+      case QUEUE_LIST_SORT_BY_VALUES.CALLER_NAME:
+        return call1[QUEUE_LIST_COLUMN_OPTIONS.CALLER_NAME]
+          .toUpperCase()
+          .localeCompare(call2[QUEUE_LIST_COLUMN_OPTIONS.CALLER_NAME].toUpperCase());
+      case QUEUE_LIST_SORT_BY_VALUES.PRIORITY:
+        return call2[QUEUE_LIST_COLUMN_OPTIONS.PRIORITY] - call1[QUEUE_LIST_COLUMN_OPTIONS.PRIORITY];
+      case QUEUE_LIST_SORT_BY_VALUES.TIME_WAITING_IN_QUEUE:
+        return call2[QUEUE_LIST_COLUMN_OPTIONS.TIME_WAITING_IN_QUEUE] - call1[QUEUE_LIST_COLUMN_OPTIONS.TIME_WAITING_IN_QUEUE];
+      case QUEUE_LIST_SORT_BY_VALUES.DIAL_ATTEMPTS:
+        return call2[QUEUE_LIST_COLUMN_OPTIONS.DIAL_ATTEMPTS] - call1[QUEUE_LIST_COLUMN_OPTIONS.DIAL_ATTEMPTS];
+      case QUEUE_LIST_SORT_BY_VALUES.STATUS:
+        return call1[QUEUE_LIST_COLUMN_OPTIONS.STATUS].toUpperCase().localeCompare(call2[QUEUE_LIST_COLUMN_OPTIONS.STATUS].toUpperCase());
+      case QUEUE_LIST_SORT_BY_VALUES.AGENT_CONNECTED_TO:
+        if (!call1[QUEUE_LIST_COLUMN_OPTIONS.AGENT_CONNECTED_TO]) return 1;
+        if (!call2[QUEUE_LIST_COLUMN_OPTIONS.AGENT_CONNECTED_TO]) return -1;
+        return call1[QUEUE_LIST_COLUMN_OPTIONS.AGENT_CONNECTED_TO]
+          .toUpperCase()
+          .localeCompare(call2[QUEUE_LIST_COLUMN_OPTIONS.AGENT_CONNECTED_TO].toUpperCase());
+      case QUEUE_LIST_SORT_BY_VALUES.TIME_AT_HEAD_OF_QUEUE:
+        return call2[QUEUE_LIST_COLUMN_OPTIONS.TIME_AT_HEAD_OF_QUEUE] - call1[QUEUE_LIST_COLUMN_OPTIONS.TIME_AT_HEAD_OF_QUEUE];
+      case QUEUE_LIST_SORT_BY_VALUES.CALLBACK_REQUESTED:
+        if (call1[QUEUE_LIST_COLUMN_OPTIONS.CALLBACK_REQUESTED]) return -1;
+        return 1;
+      case QUEUE_LIST_SORT_BY_VALUES.CALLBACK_ATTEMPTS:
+        if (!call1[QUEUE_LIST_COLUMN_OPTIONS.CALLBACK_ATTEMPTS]) return 1;
+        if (!call2[QUEUE_LIST_COLUMN_OPTIONS.CALLBACK_ATTEMPTS]) return -1;
+        return call2[QUEUE_LIST_COLUMN_OPTIONS.CALLBACK_ATTEMPTS] - call1[QUEUE_LIST_COLUMN_OPTIONS.CALLBACK_ATTEMPTS];
+      default:
+        return 0;
+    }
+  });
   return (
     <div className="widget">
       <div className="widget__header">
         <div className="widget__title">
           <div className="widget__title--bold">{widget.title}: </div>
-          {widget.callQueue.value}
+          {widget.callQueue.value} - {widget.isCallStatusConnected && widget.isCallStatusWaiting && 'All Cals'}
+          {widget.isCallStatusConnected && !widget.isCallStatusWaiting && 'Connected'}
+          {!widget.isCallStatusConnected && widget.isCallStatusWaiting && 'Waiting'}
         </div>
         <div className="widget__icons">
           {isEditMode && (
@@ -66,13 +111,13 @@ const QueueListTable = ({ isEditMode, tableData, widget, ...props }) => {
           )}
         </div>
       </div>
-      {tableData.length ? (
+      {tableData.length && widget.columnsToViewOptions.selectedItems.length ? (
         <div className="widget__body widget__body--table">
           <div className="agent-login">
             <div className="agent-login__header agent-login__header--queue-list">
               {filtredTableColumns.map((item) => (
                 <div
-                  key={item.text}
+                  key={item.value}
                   className="agent-login__header-item"
                   style={{
                     width: (item.minWidth * 100) / totalWidth + '%',
@@ -84,7 +129,7 @@ const QueueListTable = ({ isEditMode, tableData, widget, ...props }) => {
               ))}
             </div>
             <div className="agent-login__body">
-              {tableData.map((call) => (
+              {sortedTableData.map((call) => (
                 <div key={call.uuid} className="agent-login__row agent-login__row--queue-list">
                   {filtredTableColumns.map((column) => {
                     let style = {
@@ -142,6 +187,7 @@ const QueueListTable = ({ isEditMode, tableData, widget, ...props }) => {
                         if (isCallbackRequests) {
                           style.backgroundColor = DEFAULTS.MODAL.QUEUE_LIST.QUEUE_POSITION_COLORS.blue;
                           style.color = DEFAULTS.MODAL.QUEUE_LIST.QUEUE_POSITION_COLORS.textColorWhite;
+                          style.opacity = 0.68;
                           content = 'Yes';
                         } else content = '';
                         break;
@@ -151,6 +197,7 @@ const QueueListTable = ({ isEditMode, tableData, widget, ...props }) => {
                         if (!isNaN(callbackAttempts)) {
                           style.backgroundColor = DEFAULTS.MODAL.QUEUE_LIST.QUEUE_POSITION_COLORS.green;
                           style.color = DEFAULTS.MODAL.QUEUE_LIST.QUEUE_POSITION_COLORS.textColorWhite;
+                          style.opacity = 0.68;
                           content = callbackAttempts;
                         } else {
                           content = '';
@@ -194,7 +241,7 @@ const QueueListTable = ({ isEditMode, tableData, widget, ...props }) => {
           </div>
         </div>
       ) : (
-        <div className="empty-message empty-message--agents">No agents</div>
+        <div className="empty-message empty-message--agents">No Calls</div>
       )}
     </div>
   );

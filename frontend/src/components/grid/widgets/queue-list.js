@@ -37,16 +37,10 @@ const GridQueueList = ({ widget, ...props }) => {
     queuedCallCopy = queuedCallCopy.filter((call) => {
       const status = call.status.toLowerCase();
       if (status === 'ringing' || status === 'waiting') {
-        if (widget.isCallStatusWaiting) {
-          return true;
-        }
-        return false;
+        return widget.isCallStatusWaiting;
       }
       if (status === 'bridged' || status === 'connected') {
-        if (widget.isCallStatusConnected) {
-          return true;
-        }
-        return false;
+        return widget.isCallStatusConnected;
       }
       return true;
     });
@@ -79,6 +73,6 @@ const GridQueueList = ({ widget, ...props }) => {
     console.log(queuedCallCopy);
   }, [allAgents, calls, queuedCall]);
 
-  return <QueueListTable {...props} widget={widget} tableData={DEFAULTS.MODAL.QUEUE_LIST.MOCK_DATA} />;
+  return <QueueListTable {...props} isPreviewMode={false} widget={widget} tableData={tableData} />;
 };
 export default GridQueueList;

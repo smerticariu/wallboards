@@ -59,12 +59,12 @@ export const QUEUE_LIST_COLUMN_OPTIONS = {
   DIAL_ATTEMPTS: 'DIAL_ATTEMPTS',
   STATUS: 'STATUS',
   AGENT_CONNECTED_TO: 'AGENT_CONNECTED_TO',
-  SKILLS_REQUESTED: 'SKILLS_REQUESTED',
-  SKILLS_SHORTAGE: 'SKILLS_SHORTAGE',
+  // SKILLS_REQUESTED: 'SKILLS_REQUESTED',
+  // SKILLS_SHORTAGE: 'SKILLS_SHORTAGE',
   TIME_AT_HEAD_OF_QUEUE: 'TIME_AT_HEAD_OF_QUEUE',
   CALLBACK_REQUESTED: 'CALLBACK_REQUESTED',
   CALLBACK_ATTEMPTS: 'CALLBACK_ATTEMPTS',
-  FLAGS: 'FLAGS',
+  // FLAGS: 'FLAGS',
   OPTIONS: 'OPTIONS',
   ID: 'ID',
 };
@@ -111,11 +111,11 @@ export const INTERACTIVITY_OPTIONS_KEYS = {
   CALL_AGENTS: 'CALL_AGENTS',
 };
 export const QUEUE_LIST_INTERACTIVITY_OPTIONS_KEYS = {
-  ALLOW_RE_SORTING: 'ALLOW_RE_SORTING',
-  MOVE_CALL_TO_TOP: 'MOVE_CALL_TO_TOP',
-  MOVE_CALL_TO_BOTTOM: 'MOVE_CALL_TO_BOTTOM',
-  MOVE_CALL_TO_ANOTHER_QUEUE: 'MOVE_CALL_TO_ANOTHER_QUEUE',
-  DISCONNECT: 'DISCONNECT',
+  // ALLOW_RE_SORTING: 'ALLOW_RE_SORTING',
+  // MOVE_CALL_TO_TOP: 'MOVE_CALL_TO_TOP',
+  // MOVE_CALL_TO_BOTTOM: 'MOVE_CALL_TO_BOTTOM',
+  // MOVE_CALL_TO_ANOTHER_QUEUE: 'MOVE_CALL_TO_ANOTHER_QUEUE',
+  // DISCONNECT: 'DISCONNECT',
   LISTEN_LIVE: 'LISTEN_LIVE',
 };
 export const MODAL_NEW_WALLBOARD_SECITONS = {
@@ -585,18 +585,18 @@ export const MODAL = {
         minWidth: 160,
         isInitialChecked: true,
       },
-      {
-        text: 'Skills requested',
-        value: QUEUE_LIST_COLUMN_OPTIONS.SKILLS_REQUESTED,
-        minWidth: 160,
-        isInitialChecked: false,
-      },
-      {
-        text: 'Skills shortage',
-        value: QUEUE_LIST_COLUMN_OPTIONS.SKILLS_SHORTAGE,
-        minWidth: 160,
-        isInitialChecked: false,
-      },
+      // {
+      //   text: 'Skills requested',
+      //   value: QUEUE_LIST_COLUMN_OPTIONS.SKILLS_REQUESTED,
+      //   minWidth: 160,
+      //   isInitialChecked: false,
+      // },
+      // {
+      //   text: 'Skills shortage',
+      //   value: QUEUE_LIST_COLUMN_OPTIONS.SKILLS_SHORTAGE,
+      //   minWidth: 160,
+      //   isInitialChecked: false,
+      // },
       {
         text: 'Time at Head of Queue',
         value: QUEUE_LIST_COLUMN_OPTIONS.TIME_AT_HEAD_OF_QUEUE,
@@ -615,12 +615,12 @@ export const MODAL = {
         minWidth: 160,
         isInitialChecked: false,
       },
-      {
-        text: 'Flags',
-        value: QUEUE_LIST_COLUMN_OPTIONS.FLAGS,
-        minWidth: 70,
-        isInitialChecked: false,
-      },
+      // {
+      //   text: 'Flags',
+      //   value: QUEUE_LIST_COLUMN_OPTIONS.FLAGS,
+      //   minWidth: 70,
+      //   isInitialChecked: false,
+      // },
     ],
     PRIORITY_COLORS: {
       1: '#f8485e',
@@ -658,13 +658,13 @@ export const MODAL = {
     },
 
     MOCK_DATA: createArrayFromTo(1, 10).map((number) => ({
-      [QUEUE_LIST_COLUMN_OPTIONS.CALLER_NUMBER]: 'callerIdNumber',
-      [QUEUE_LIST_COLUMN_OPTIONS.CALLER_NAME]: 'callerIdName',
+      [QUEUE_LIST_COLUMN_OPTIONS.CALLER_NUMBER]: '+44 0203 436 3092 ' + (number % 3 ? '(UK)' : '(USA)'),
+      [QUEUE_LIST_COLUMN_OPTIONS.CALLER_NAME]: 'Agent Name ' + (number + 11),
       [QUEUE_LIST_COLUMN_OPTIONS.POSITION_IN_QUEUE]: number,
       [QUEUE_LIST_COLUMN_OPTIONS.PRIORITY]: number,
       [QUEUE_LIST_COLUMN_OPTIONS.TIME_WAITING_IN_QUEUE]: number * 10,
       [QUEUE_LIST_COLUMN_OPTIONS.DIAL_ATTEMPTS]: number,
-      [QUEUE_LIST_COLUMN_OPTIONS.STATUS]: 'status',
+      [QUEUE_LIST_COLUMN_OPTIONS.STATUS]: number % 2 ? 'Connected' : 'Waiting',
       [QUEUE_LIST_COLUMN_OPTIONS.AGENT_CONNECTED_TO]: number % 2 ? 'Agent Name ' + number : '',
       [QUEUE_LIST_COLUMN_OPTIONS.SKILLS_REQUESTED]: 'uncknow',
       [QUEUE_LIST_COLUMN_OPTIONS.SKILLS_SHORTAGE]: 'uncknow',
@@ -672,34 +672,34 @@ export const MODAL = {
       [QUEUE_LIST_COLUMN_OPTIONS.CALLBACK_REQUESTED]: number % 3,
       [QUEUE_LIST_COLUMN_OPTIONS.CALLBACK_ATTEMPTS]: number % 4 ? undefined : number,
       [QUEUE_LIST_COLUMN_OPTIONS.FLAGS]: 'uncknow',
-      [QUEUE_LIST_COLUMN_OPTIONS.ID]: number,
+      uuid: number,
     })),
     INTERACTIVIRY_OPTIONS: [
-      {
-        text: 'Allow re-sorting of columns',
-        value: QUEUE_LIST_INTERACTIVITY_OPTIONS_KEYS.ALLOW_RE_SORTING,
-        isInitialChecked: false,
-      },
-      {
-        text: 'Move call to top of Queue',
-        value: QUEUE_LIST_INTERACTIVITY_OPTIONS_KEYS.MOVE_CALL_TO_TOP,
-        isInitialChecked: false,
-      },
-      {
-        text: 'Move call to the bottom of Queue',
-        value: QUEUE_LIST_INTERACTIVITY_OPTIONS_KEYS.MOVE_CALL_TO_BOTTOM,
-        isInitialChecked: false,
-      },
-      {
-        text: 'Move call to another Queue',
-        value: QUEUE_LIST_INTERACTIVITY_OPTIONS_KEYS.MOVE_CALL_TO_ANOTHER_QUEUE,
-        isInitialChecked: false,
-      },
-      {
-        text: 'Disconnect Call',
-        value: QUEUE_LIST_INTERACTIVITY_OPTIONS_KEYS.DISCONNECT,
-        isInitialChecked: false,
-      },
+      // {
+      //   text: 'Allow re-sorting of columns',
+      //   value: QUEUE_LIST_INTERACTIVITY_OPTIONS_KEYS.ALLOW_RE_SORTING,
+      //   isInitialChecked: false,
+      // },
+      // {
+      //   text: 'Move call to top of Queue',
+      //   value: QUEUE_LIST_INTERACTIVITY_OPTIONS_KEYS.MOVE_CALL_TO_TOP,
+      //   isInitialChecked: false,
+      // },
+      // {
+      //   text: 'Move call to the bottom of Queue',
+      //   value: QUEUE_LIST_INTERACTIVITY_OPTIONS_KEYS.MOVE_CALL_TO_BOTTOM,
+      //   isInitialChecked: false,
+      // },
+      // {
+      //   text: 'Move call to another Queue',
+      //   value: QUEUE_LIST_INTERACTIVITY_OPTIONS_KEYS.MOVE_CALL_TO_ANOTHER_QUEUE,
+      //   isInitialChecked: false,
+      // },
+      // {
+      //   text: 'Disconnect Call',
+      //   value: QUEUE_LIST_INTERACTIVITY_OPTIONS_KEYS.DISCONNECT,
+      //   isInitialChecked: false,
+      // },
       {
         text: 'Listen Live to Call',
         value: QUEUE_LIST_INTERACTIVITY_OPTIONS_KEYS.LISTEN_LIVE,

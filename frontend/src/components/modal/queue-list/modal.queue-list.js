@@ -8,6 +8,7 @@ import { checkIsAlphanumeric } from '../../../common/utils/alphanumeric-validati
 import { DEFAULTS } from '../../../common/defaults/defaults';
 import { fetchUserGroupsThunk } from '../../../store/thunk/agents.thunk';
 import CheckBox from '../../checkbox/checkbox';
+import QueueListTable from '../../tables/table.queue-list';
 
 const ModalQueueList = ({ ...props }) => {
   const modalRef = useRef(null);
@@ -291,8 +292,21 @@ const ModalQueueList = ({ ...props }) => {
         </div>
         <div>
           <div className="c-modal__preview-section">
-            {/* <GridQueueTracking isPreview={true} widget={{ ...queueTracking, title: queueTracking.title.value }} /> */}
-            Component
+            <QueueListTable
+              isPreviewMode={true}
+              tableData={DEFAULTS.MODAL.QUEUE_LIST.MOCK_DATA}
+              widget={{
+                title: queueList.title.value,
+                sortBy: queueList.sortBy.value,
+                columnsToViewOptions: queueList.columnsToViewOptions,
+                interactivityOptions: queueList.interactivityOptions,
+                callQueue: queueList.callQueue,
+                timeAtHeadOfQueueSLATime: queueList.timeAtHeadOfQueueSLATime.value,
+                timeInQueueSLATime: queueList.timeInQueueSLATime.value,
+                isCallStatusWaiting: queueList.isCallStatusWaiting,
+                isCallStatusConnected: queueList.isCallStatusConnected,
+              }}
+            />
           </div>
         </div>
         <div className="c-modal__buttons">

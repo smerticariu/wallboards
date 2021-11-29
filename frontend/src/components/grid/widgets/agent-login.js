@@ -28,7 +28,7 @@ const GridAgentLogin = ({ widget, ...props }) => {
     const userLoginDataForWidget = userLoginData.find((loginData) => loginData.widgetId === widget.id);
     if (userLoginDataForWidget && allAgents.length && userGroups.length) {
       let users = [];
-      userLoginDataForWidget.userLoginData
+      [...userLoginDataForWidget.userLoginData]
         .sort((user1, user2) => new Date(user2.time).getTime() - new Date(user1.time).getTime())
         .filter((user) => Number(widget.group.id) === -1 || user.groupId === widget.group.id)
         .forEach((user) => {

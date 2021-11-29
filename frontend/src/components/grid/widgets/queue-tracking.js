@@ -147,7 +147,8 @@ const GridQueueTracking = ({ isEditMode, isPreview, widget, ...props }) => {
     <div className="widget">
       <div className="widget__header">
         <div className="widget__title">
-          <div className="widget__title--bold">{widget.title}</div>
+          <div className="widget__title--bold">{widget.title}:</div>
+          {widget.callQueue.value}
         </div>
         <div className="widget__icons">
           {isEditMode && (

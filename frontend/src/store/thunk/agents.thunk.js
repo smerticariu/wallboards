@@ -260,7 +260,8 @@ export const listenLiveThunk = (id) => async (dispatch, getState) => {
       data,
     });
   } catch (error) {
-    dispatch(handleIsNotificationShowAC(true, true, `Error: ${error.response.status ?? 'unknown'} - ${DEFAULTS.GLOBAL.FAIL}`));
+    console.log(error.data);
+    dispatch(handleIsNotificationShowAC(true, true, `Error: 400 - ${DEFAULTS.GLOBAL.FAIL}`));
     console.log(error);
   }
 };
