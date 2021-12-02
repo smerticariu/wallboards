@@ -14,12 +14,7 @@ const Widget = ({ widget, isEditMode, ...props }) => {
   const dispatch = useDispatch();
   useEffect(() => {
     const agentsInterval = setInterval(() => {
-      if (
-        widget.type === WIDGET_TYPE.AGENT_LIST ||
-        widget.type === WIDGET_TYPE.CALL_STATUS ||
-        widget.type === WIDGET_TYPE.CALL_TRACKING ||
-        widget.type === WIDGET_TYPE.QUEUE_LIST
-      )
+      if (widget.type === WIDGET_TYPE.AGENT_LIST || widget.type === WIDGET_TYPE.CALL_STATUS || widget.type === WIDGET_TYPE.QUEUE_LIST)
         dispatch(fetchUsersCurrentCallTimeThunk());
       if (widget.type === WIDGET_TYPE.QUEUE_STATUS || widget.type === WIDGET_TYPE.AGENT_LIST || widget.type === WIDGET_TYPE.QUEUE_LIST) {
         dispatch(fetchAllAgentsThunk(widget.callQueue.id));
