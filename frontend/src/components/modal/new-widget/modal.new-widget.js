@@ -128,6 +128,9 @@ const ModalNewWidget = ({ ...props }) => {
         case WIDGET_TYPE.AGENT_STATUS: {
           return dispatch(handleWallboardActiveModalAC(DEFAULTS.MODAL.MODAL_NAMES.AGENT_STATUS));
         }
+        case WIDGET_TYPE.QUEUE_LIST: {
+          return dispatch(handleWallboardActiveModalAC(DEFAULTS.MODAL.MODAL_NAMES.QUEUE_LIST));
+        }
         default:
           return;
       }

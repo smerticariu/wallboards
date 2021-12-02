@@ -2,17 +2,13 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import useOnClickOutside from '../../../common/hooks/useOnClickOutside';
 import { addWallboardAgentLoginAC } from '../../../store/actions/wallboards.action';
-import {
-  handleAgentLoginDataAC,
-  handleWallboardActiveModalAC,
-  resetModalAddComponentFormDataAC,
-} from '../../../store/actions/modal.action';
+import { handleAgentLoginDataAC, handleWallboardActiveModalAC, resetNewWidgetModalFormDataAC } from '../../../store/actions/modal.action';
 import moment from 'moment';
 import { checkIsAlphanumeric } from '../../../common/utils/alphanumeric-validation';
 import { DEFAULTS } from '../../../common/defaults/defaults';
 import { exportCSVUserLoginDataThunk, fetchUserGroupsThunk } from '../../../store/thunk/agents.thunk';
 import { CALL_STATISTIC_PERIOD } from '../../../common/defaults/modal.defaults';
-import AgentLoginTable from '../../agent-login-table/agent-login-table';
+import AgentLoginTable from '../../tables/table.agent-login';
 
 const ModalAgentLogin = ({ ...props }) => {
   const modalRef = useRef(null);
@@ -34,7 +30,7 @@ const ModalAgentLogin = ({ ...props }) => {
   }, []);
   const closeModal = () => {
     dispatch(handleWallboardActiveModalAC(null));
-    dispatch(resetModalAddComponentFormDataAC());
+    dispatch(resetNewWidgetModalFormDataAC());
   };
 
   useOnClickOutside(modalRef, () => {

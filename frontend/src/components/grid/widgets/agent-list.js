@@ -14,7 +14,7 @@ import {
   fetchUserGroupsThunk,
 } from 'src/store/thunk/agents.thunk';
 import AgentCard from '../../agent-card/agent-card';
-import AgentTable from '../../agent-table/agent-table';
+import AgentListTable from '../../tables/agent-list';
 import { FetchStatus } from 'src/store/reducers/wallboards.reducer';
 import { fetchAgentSkillThunk } from 'src/store/thunk/skills.thunk';
 import moment from 'moment';
@@ -292,7 +292,7 @@ const GridAgentList = ({ isEditMode, widget, ...props }) => {
                       : agentsForDisplay.length
                     : agentsForDisplay.length;
                 return (
-                  <AgentTable
+                  <AgentListTable
                     key={index}
                     canChangeAvailabilityState={widget.interactivity.selectedItems.includes('CHANGE_AVAILABILITY_STATE')}
                     canListenLive={widget.interactivity.selectedItems.includes('LISTEN_LIVE')}

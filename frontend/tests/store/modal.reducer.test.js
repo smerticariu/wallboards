@@ -1,4 +1,4 @@
-import { handleModalAddComponentFormDataAC, handleWallboardActiveModalAC } from '../../src/store/actions/modal.action';
+import { handleModalAgentListDataAC, handleWallboardActiveModalAC } from '../../src/store/actions/modal.action';
 import { modalInitialState, modalReducer } from '../../src/store/reducers/modal.reducer';
 import '@testing-library/jest-dom/extend-expect';
 import createMockStore from 'redux-mock-store';
@@ -23,17 +23,17 @@ describe('modal reducer', () => {
   });
 
   it('should change active modal name', () => {
-    const action = handleWallboardActiveModalAC(DEFAULTS.MODAL.MODAL_NAMES.AGENT_LIST);
-    expect(modalReducer(modalInitialState, action).activeModalName).toBe(DEFAULTS.MODAL.MODAL_NAMES.AGENT_LIST);
+    const action = handleWallboardActiveModalAC(DEFAULTS.MODAL.MODAL_NAMES.ADD_COMPONENT);
+    expect(modalReducer(modalInitialState, action).activeModalName).toBe(DEFAULTS.MODAL.MODAL_NAMES.ADD_COMPONENT);
   });
 
   it('should change widget form data', () => {
     const changedFormData = {
-      ...modalInitialState.modalAddComponent,
+      ...modalInitialState.agentList,
       mainViewing: DEFAULTS.MODAL.ADD_COMPONENT.MAIN_VIEWING_OPTIONS.TABLE,
     };
-    const action = handleModalAddComponentFormDataAC(changedFormData);
+    const action = handleModalAgentListDataAC(changedFormData);
     const newState = modalReducer(modalInitialState, action);
-    expect(newState.modalAddComponent.mainViewing).toEqual(DEFAULTS.MODAL.ADD_COMPONENT.MAIN_VIEWING_OPTIONS.TABLE);
+    expect(newState.agentList.mainViewing).toEqual(DEFAULTS.MODAL.ADD_COMPONENT.MAIN_VIEWING_OPTIONS.TABLE);
   });
 });

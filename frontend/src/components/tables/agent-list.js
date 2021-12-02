@@ -7,7 +7,7 @@ import { ADD_COMPONENT_COLUMN_OPTIONS } from '../../common/defaults/modal.defaul
 import { callAgentThunk, listenLiveThunk } from '../../store/thunk/agents.thunk';
 import Dropdown from '../dropdown/dropdown';
 import TimeInterval from '../time-interval/time-interval';
-const AgentTable = ({
+const AgentListTable = ({
   canCallAgents,
   canListenLive,
   canChangeAvailabilityState,
@@ -45,72 +45,74 @@ const AgentTable = ({
   };
 
   return (
-    <div className="agent-t">
-      <div className="agent-t__header">
-        {(canListenLive || canCallAgents) && <div className="agent-t__header-item agent-t__header-item--settings"></div>}
+    <div className="agent-list-table">
+      <div className="agent-list-table__header">
+        {(canListenLive || canCallAgents) && <div className="agent-list-table__header-item agent-list-table__header-item--settings"></div>}
         {activeColumns.isAgentNameColumn && (
-          <div className="agent-t__header-item" style={{ width: colWidth }}>
+          <div className="agent-list-table__header-item" style={{ width: colWidth }}>
             Name
           </div>
         )}
         {activeColumns.isCurrAvaiStateColumn && (
-          <div className="agent-t__header-item" style={{ width: colWidth }}>
+          <div className="agent-list-table__header-item" style={{ width: colWidth }}>
             Availability Status
           </div>
         )}
         {activeColumns.isAgentExtNoColumn && (
-          <div className="agent-t__header-item" style={{ width: colWidth }}>
+          <div className="agent-list-table__header-item" style={{ width: colWidth }}>
             Phone Ext
           </div>
         )}
         {activeColumns.isNoCallsOfferedColumn && (
-          <div className="agent-t__header-item" style={{ width: colWidth }}>
+          <div className="agent-list-table__header-item" style={{ width: colWidth }}>
             Calls offered
           </div>
         )}
         {activeColumns.isNoCallsAnsweredColumn && (
-          <div className="agent-t__header-item" style={{ width: colWidth }}>
+          <div className="agent-list-table__header-item" style={{ width: colWidth }}>
             Calls answered
           </div>
         )}
         {activeColumns.isNoCallsMissedColumn && (
-          <div className="agent-t__header-item" style={{ width: colWidth }}>
+          <div className="agent-list-table__header-item" style={{ width: colWidth }}>
             Calls missed
           </div>
         )}
         {activeColumns.isTimeInCurrentPresenceStateColumn && (
-          <div className="agent-t__header-item" style={{ width: colWidth }}>
+          <div className="agent-list-table__header-item" style={{ width: colWidth }}>
             Time in current p.state
           </div>
         )}
         {activeColumns.isTimeInCurrentAvailabilityStateColumn && (
-          <div className="agent-t__header-item" style={{ width: colWidth }}>
+          <div className="agent-list-table__header-item" style={{ width: colWidth }}>
             Time in current a.state
           </div>
         )}
         {activeColumns.isTimeInCurrentCallColumn && (
-          <div className="agent-t__header-item" style={{ width: colWidth }}>
+          <div className="agent-list-table__header-item" style={{ width: colWidth }}>
             Time on cur. call
           </div>
         )}
         {activeColumns.isTimeInCurrentWrapupColumn && (
-          <div className="agent-t__header-item" style={{ width: colWidth }}>
+          <div className="agent-list-table__header-item" style={{ width: colWidth }}>
             Time on cur. wr.
           </div>
         )}
         {activeColumns.isListOfSkillsColumn && (
-          <div className="agent-t__header-item" style={{ width: colWidth }}>
+          <div className="agent-list-table__header-item" style={{ width: colWidth }}>
             Skills
           </div>
         )}
-        {activeColumns.isCurrPresStateColumn && <div className="agent-t__header-item agent-t__header-item--status">Status</div>}
+        {activeColumns.isCurrPresStateColumn && (
+          <div className="agent-list-table__header-item agent-list-table__header-item--status">Status</div>
+        )}
       </div>
 
-      <div className="agent-t__body">
+      <div className="agent-list-table__body">
         {agents?.map((agent, index) => (
-          <div key={`${agent.userId} ${index}`} className="agent-t__agent">
+          <div key={`${agent.userId} ${index}`} className="agent-list-table__agent">
             {(canListenLive || canCallAgents) && (
-              <div className="agent-t__agent-info agent-t__agent-info--settings agent-t__agent-info--overflow">
+              <div className="agent-list-table__agent-info agent-list-table__agent-info--settings agent-list-table__agent-info--overflow">
                 <Dropdown
                   containerClassName={'c-dropdown__container--agent-name'}
                   closeOnClick={true}
@@ -140,7 +142,10 @@ const AgentTable = ({
               </div>
             )}
             {activeColumns.isAgentNameColumn && (
-              <div className="agent-t__agent-info agent-t__agent-info--name agent-t__agent-info--overflow" style={{ width: colWidth }}>
+              <div
+                className="agent-list-table__agent-info agent-list-table__agent-info--name agent-list-table__agent-info--overflow"
+                style={{ width: colWidth }}
+              >
                 {agent.agentName.length > DEFAULTS.GRID.MAX_NAME_CHARACTERS ? (
                   <Dropdown
                     className="c-dropdown--availability-state"
@@ -158,7 +163,9 @@ const AgentTable = ({
             )}
             {activeColumns.isCurrAvaiStateColumn && (
               <div
-                className={`agent-t__agent-info ${canChangeAvailabilityState ? 'agent-t__agent-info--overflow' : ''} agent-t__agent-info--${
+                className={`agent-list-table__agent-info ${
+                  canChangeAvailabilityState ? 'agent-list-table__agent-info--overflow' : ''
+                } agent-list-table__agent-info--${
                   DEFAULTS.MODAL.ADD_COMPONENT.PRESENCE_STATE_KEYS_COLOR.CARD_AVAILABILITY_STATUS_BACKGROUND[agent.callStatusKey]
                 }`}
                 style={{ width: colWidth }}
@@ -196,49 +203,49 @@ const AgentTable = ({
               </div>
             )}
             {activeColumns.isAgentExtNoColumn && (
-              <div className="agent-t__agent-info" style={{ width: colWidth }}>
+              <div className="agent-list-table__agent-info" style={{ width: colWidth }}>
                 {agent.agentExtNo}
               </div>
             )}
             {activeColumns.isNoCallsOfferedColumn && (
-              <div className="agent-t__agent-info" style={{ width: colWidth }}>
+              <div className="agent-list-table__agent-info" style={{ width: colWidth }}>
                 {agent.noCallsOffered}
               </div>
             )}
             {activeColumns.isNoCallsAnsweredColumn && (
-              <div className="agent-t__agent-info" style={{ width: colWidth }}>
+              <div className="agent-list-table__agent-info" style={{ width: colWidth }}>
                 {agent.noCallsAnswered}
               </div>
             )}
             {activeColumns.isNoCallsMissedColumn && (
-              <div className="agent-t__agent-info" style={{ width: colWidth }}>
+              <div className="agent-list-table__agent-info" style={{ width: colWidth }}>
                 {agent.noCallsMissed}
               </div>
             )}
             {activeColumns.isTimeInCurrentPresenceStateColumn && (
-              <div className="agent-t__agent-info" style={{ width: colWidth }}>
+              <div className="agent-list-table__agent-info" style={{ width: colWidth }}>
                 <TimeInterval seconds={agent.timeInCurrentPresenceState} />
               </div>
             )}
             {activeColumns.isTimeInCurrentAvailabilityStateColumn && (
-              <div className="agent-t__agent-info" style={{ width: colWidth }}>
+              <div className="agent-list-table__agent-info" style={{ width: colWidth }}>
                 <TimeInterval seconds={agent.timeInCurrentAvailabilityState} />
               </div>
             )}
             {activeColumns.isTimeInCurrentCallColumn && (
-              <div className="agent-t__agent-info" style={{ width: colWidth }}>
+              <div className="agent-list-table__agent-info" style={{ width: colWidth }}>
                 <TimeInterval seconds={agent.timeInCurrentCall} />
               </div>
             )}
             {activeColumns.isTimeInCurrentWrapupColumn && (
-              <div className="agent-t__agent-info" style={{ width: colWidth }}>
+              <div className="agent-list-table__agent-info" style={{ width: colWidth }}>
                 <TimeInterval seconds={agent.timeInCurrentWrapup} />
               </div>
             )}
             {activeColumns.isListOfSkillsColumn && (
-              <div className="agent-t__agent-info agent-t__agent-info--overflow" style={{ width: colWidth }}>
+              <div className="agent-list-table__agent-info agent-list-table__agent-info--overflow" style={{ width: colWidth }}>
                 {agent.listOfSkills.length ? (
-                  <Dropdown closeOnClick={true} trigger={<div className="agent-t__agent-info__skills">...</div>}>
+                  <Dropdown closeOnClick={true} trigger={<div className="agent-list-table__agent-info__skills">...</div>}>
                     {agent.listOfSkills.map((skill, index) => (
                       <div key={index} className="c-dropdown__item">
                         {skill.description}
@@ -251,9 +258,9 @@ const AgentTable = ({
               </div>
             )}
             {activeColumns.isCurrPresStateColumn && (
-              <div className="agent-t__agent-info  agent-t__agent-info--status">
+              <div className="agent-list-table__agent-info  agent-list-table__agent-info--status">
                 <div
-                  className={`agent-t__agent-info__circle agent-t__agent-info__circle--${
+                  className={`agent-list-table__agent-info__circle agent-list-table__agent-info__circle--${
                     DEFAULTS.MODAL.ADD_COMPONENT.PRESENCE_STATE_KEYS_COLOR.CARD_BACKGROUND[agent.callStatusKey]
                   }`}
                 ></div>
@@ -266,4 +273,4 @@ const AgentTable = ({
     </div>
   );
 };
-export default AgentTable;
+export default AgentListTable;

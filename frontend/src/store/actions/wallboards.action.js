@@ -20,11 +20,14 @@ export const wallboardsActions = {
   SAVE_WALLBOARD_FAIL: 'SAVE_WALLBOARD_FAIL',
   SAVE_WALLBOARD_RESET_STATUS: 'SAVE_WALLBOARD_RESET_STATUS',
 
-  ADD_WALLBOARD_COMPONENT: 'ADD_WALLBOARD_COMPONENT',
+  ADD_WALLBOARD_AGENT_LIST: 'ADD_WALLBOARD_AGENT_LIST',
 
   ADD_WALLBOARD_CALL_STATUS: 'ADD_WALLBOARD_CALL_STATUS',
 
   ADD_WALLBOARD_QUEUE_TRACKING: 'ADD_WALLBOARD_QUEUE_TRACKING',
+
+  ADD_WALLBOARD_QUEUE_LIST: 'ADD_WALLBOARD_QUEUE_LIST',
+
   ADD_WALLBOARD_QUEUE_STATUS: 'ADD_WALLBOARD_QUEUE_STATUS',
 
   ADD_WALLBOARD_CALL_TRACKING: 'ADD_WALLBOARD_CALL_TRACKING',
@@ -119,9 +122,9 @@ export const saveWallboardResetStatusAC = (errorMEssage) => ({
   type: wallboardsActions.SAVE_WALLBOARD_RESET_STATUS,
 });
 
-export const addWallboardComponentAC = (userInfo, modalAddComponent) => ({
-  type: wallboardsActions.ADD_WALLBOARD_COMPONENT,
-  payload: { user: userInfo, modalAddComponent },
+export const addWallboardAgentListAC = (userInfo, agentList) => ({
+  type: wallboardsActions.ADD_WALLBOARD_AGENT_LIST,
+  payload: { userInfo, agentList },
 });
 
 export const addWallboardCallStatusAC = (callStatus, userInfo) => ({
@@ -132,6 +135,11 @@ export const addWallboardCallStatusAC = (callStatus, userInfo) => ({
 export const addWallboardQueueTrackingAC = (queueTracking, userInfo) => ({
   type: wallboardsActions.ADD_WALLBOARD_QUEUE_TRACKING,
   payload: { queueTracking, userInfo },
+});
+
+export const addWallboardQueueListAC = (queueList, userInfo) => ({
+  type: wallboardsActions.ADD_WALLBOARD_QUEUE_LIST,
+  payload: { queueList, userInfo },
 });
 export const addWallboardQueueStatusAC = (queueStatus, userInfo) => ({
   type: wallboardsActions.ADD_WALLBOARD_QUEUE_STATUS,

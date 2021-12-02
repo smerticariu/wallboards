@@ -6,7 +6,7 @@ import { addWallboardQueueTrackingAC } from '../../../store/actions/wallboards.a
 import {
   handleQueueTrackingDataAC,
   handleWallboardActiveModalAC,
-  resetModalAddComponentFormDataAC,
+  resetNewWidgetModalFormDataAC,
 } from '../../../store/actions/modal.action';
 import { checkIsAlphanumeric } from '../../../common/utils/alphanumeric-validation';
 import { DEFAULTS } from '../../../common/defaults/defaults';
@@ -43,7 +43,7 @@ const ModalqueueTracking = ({ ...props }) => {
   }, []);
   const closeModal = () => {
     dispatch(handleWallboardActiveModalAC(null));
-    dispatch(resetModalAddComponentFormDataAC());
+    dispatch(resetNewWidgetModalFormDataAC());
   };
 
   useOnClickOutside(modalRef, () => {

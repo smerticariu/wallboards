@@ -8,7 +8,7 @@ export const modalInitialState = {
   activeModalName: null,
   warningMessage: '',
   wallboardComponentForDelete: null,
-  modalAddComponent: {
+  agentList: {
     isEditMode: false,
     id: null,
     title: {
@@ -235,6 +235,42 @@ export const modalInitialState = {
       value: DEFAULTS.MODAL.CALL_TRACKING.START_WEEK[0].value,
     },
   },
+  queueList: {
+    isEditMode: false,
+    id: null,
+    title: {
+      value: 'New Queue List',
+      errorMessage: '',
+    },
+    callQueue: {
+      id: '',
+      value: '',
+    },
+    isCallStatusConnected: true,
+    isCallStatusWaiting: true,
+
+    timeInQueueSLATime: {
+      value: 30,
+      errorMessage: '',
+    },
+    timeAtHeadOfQueueSLATime: {
+      value: 30,
+      errorMessage: '',
+    },
+    columnsToViewOptions: {
+      errorMessage: '',
+      selectedItems: DEFAULTS.MODAL.QUEUE_LIST.COLUMNS.reduce((strArr, el) => (el.isInitialChecked ? [...strArr, el.value] : strArr), []),
+    },
+    sortBy: { value: DEFAULTS.MODAL.QUEUE_LIST.SORT_BY[0].value, errorMessage: '' },
+    isShowOnlyOnHover: false,
+    isShowShortageOnlyOnHover: false,
+    interactivityOptions: {
+      selectedItems: DEFAULTS.MODAL.QUEUE_LIST.INTERACTIVIRY_OPTIONS.reduce(
+        (strArr, el) => (el.isInitialChecked ? [...strArr, el.value] : strArr),
+        []
+      ),
+    },
+  },
 };
 
 export const modalReducer = (state = modalInitialState, action) => {
@@ -247,20 +283,21 @@ export const modalReducer = (state = modalInitialState, action) => {
     case modalActions.HANDLE_ADD_MODAL_COMPONENT_FORM_DATA:
       return {
         ...state,
-        modalAddComponent: {
-          ...state.modalAddComponent,
+        agentList: {
+          ...state.agentList,
           ...action.payload,
         },
       };
     case modalActions.RESET_ADD_MODAL_COMPONENT_FORM_DATA:
       return {
         ...state,
-        modalAddComponent: { ...modalInitialState.modalAddComponent },
+        agentList: { ...modalInitialState.agentList },
         callStatus: { ...modalInitialState.callStatus },
         callTracking: { ...modalInitialState.callTracking },
         queueStatus: { ...modalInitialState.queueStatus },
         queueTracking: { ...modalInitialState.queueTracking },
         agentLogin: { ...modalInitialState.agentLogin },
+        queueList: { ...modalInitialState.queueList },
       };
     case modalActions.SET_WALLBOARD_COMPONENT_FOR_DELETE:
       return {
@@ -279,7 +316,7 @@ export const modalReducer = (state = modalInitialState, action) => {
         case WIDGET_TYPE.AGENT_LIST: {
           return {
             ...state,
-            modalAddComponent: {
+            agentList: {
               title: {
                 value: widgetForEdit.name,
                 errorMessage: '',
@@ -515,6 +552,44 @@ export const modalReducer = (state = modalInitialState, action) => {
             },
           };
         }
+        case WIDGET_TYPE.QUEUE_LIST: {
+          return {
+            ...state,
+            queueList: {
+              title: {
+                value: widgetForEdit.title,
+                errorMessage: '',
+              },
+              callQueue: {
+                id: widgetForEdit.callQueue.id,
+                value: widgetForEdit.callQueue.value,
+              },
+              isCallStatusConnected: widgetForEdit.isCallStatusConnected,
+              isCallStatusWaiting: widgetForEdit.isCallStatusWaiting,
+
+              timeInQueueSLATime: {
+                value: widgetForEdit.timeInQueueSLATime,
+                errorMessage: '',
+              },
+              timeAtHeadOfQueueSLATime: {
+                value: widgetForEdit.timeAtHeadOfQueueSLATime,
+                errorMessage: '',
+              },
+              columnsToViewOptions: widgetForEdit.columnsToViewOptions,
+              sortBy: {
+                value: widgetForEdit.sortBy,
+              },
+              isShowOnlyOnHover: widgetForEdit.isShowOnlyOnHover,
+              isShowShortageOnlyOnHover: widgetForEdit.isShowShortageOnlyOnHover,
+              interactivityOptions: widgetForEdit.interactivityOptions,
+
+              isEditMode: true,
+              size: widgetForEdit.size,
+              id: widgetForEdit.id,
+            },
+          };
+        }
+
         default:
           return state;
       }
@@ -603,6 +678,14 @@ export const modalReducer = (state = modalInitialState, action) => {
         ...state,
         queueTracking: {
           ...state.queueTracking,
+          ...action.payload,
+        },
+      };
+    case modalActions.HANDLE_QUEUE_LIST_DATA:
+      return {
+        ...state,
+        queueList: {
+          ...state.queueList,
           ...action.payload,
         },
       };

@@ -2,11 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import useOnClickOutside from '../../../common/hooks/useOnClickOutside';
 import { addWallboardAgentStatusAC } from '../../../store/actions/wallboards.action';
-import {
-  handleAgentStatusDataAC,
-  handleWallboardActiveModalAC,
-  resetModalAddComponentFormDataAC,
-} from '../../../store/actions/modal.action';
+import { handleAgentStatusDataAC, handleWallboardActiveModalAC, resetNewWidgetModalFormDataAC } from '../../../store/actions/modal.action';
 import moment from 'moment';
 import { checkIsAlphanumeric } from '../../../common/utils/alphanumeric-validation';
 import { DEFAULTS } from '../../../common/defaults/defaults';
@@ -35,7 +31,7 @@ const ModalAgentStatus = ({ ...props }) => {
   }, []);
   const closeModal = () => {
     dispatch(handleWallboardActiveModalAC(null));
-    dispatch(resetModalAddComponentFormDataAC());
+    dispatch(resetNewWidgetModalFormDataAC());
   };
 
   useOnClickOutside(modalRef, () => {

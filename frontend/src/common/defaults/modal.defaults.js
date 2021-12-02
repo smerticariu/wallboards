@@ -50,6 +50,26 @@ export const QUEUE_TRACKING_COLUMN_OPTIONS = {
   AVERAGE_WAIT: 'AVERAGE_WAIT',
   MAX_WAIT: 'MAX_WAIT',
 };
+export const QUEUE_LIST_COLUMN_OPTIONS = {
+  CALLER_NUMBER: 'CALLER_NUMBER',
+  CALLER_NAME: 'CALLER_NAME',
+  POSITION_IN_QUEUE: 'POSITION_IN_QUEUE',
+  PRIORITY: 'PRIORITY',
+  TIME_WAITING_IN_QUEUE: 'TIME_WAITING_IN_QUEUE',
+  DIAL_ATTEMPTS: 'DIAL_ATTEMPTS',
+  STATUS: 'STATUS',
+  AGENT_CONNECTED_TO: 'AGENT_CONNECTED_TO',
+  //do not remove
+  // SKILLS_REQUESTED: 'SKILLS_REQUESTED',
+  // SKILLS_SHORTAGE: 'SKILLS_SHORTAGE',
+  TIME_AT_HEAD_OF_QUEUE: 'TIME_AT_HEAD_OF_QUEUE',
+  CALLBACK_REQUESTED: 'CALLBACK_REQUESTED',
+  CALLBACK_ATTEMPTS: 'CALLBACK_ATTEMPTS',
+  //do not remove
+  // FLAGS: 'FLAGS',
+  OPTIONS: 'OPTIONS',
+  ID: 'ID',
+};
 export const SORT_BY_VALUES = {
   AGENT_NAME: 'AGENT_NAME',
   AVAILABILITY_STATE: 'AVAILABILITY_STATE',
@@ -57,6 +77,20 @@ export const SORT_BY_VALUES = {
   TIME_CURRENT_CALL: 'TIME_CURRENT_CALL',
   TIME_CURRENT_AVAILABILITY_STATE: 'TIME_CURRENT_AVAILABILITY_STATE',
   TIME_PHONE_TODAY: 'TIME_PHONE_TODAY',
+};
+export const QUEUE_LIST_SORT_BY_VALUES = {
+  POSITION_IN_QUEUE: 'POSITION_IN_QUEUE',
+  CALLER_NAME: 'CALLER_NAME',
+  PRIORITY: 'PRIORITY',
+  TIME_WAITING_IN_QUEUE: 'TIME_WAITING_IN_QUEUE',
+  DIAL_ATTEMPTS: 'DIAL_ATTEMPTS',
+  STATUS: 'STATUS',
+  AGENT_CONNECTED_TO: 'AGENT_CONNECTED_TO',
+  SKILLS_REQUESTED: 'SKILLS_REQUESTED',
+  SKILLS_SHORTAGE: 'SKILLS_SHORTAGE',
+  TIME_AT_HEAD_OF_QUEUE: 'TIME_AT_HEAD_OF_QUEUE',
+  CALLBACK_REQUESTED: 'CALLBACK_REQUESTED',
+  CALLBACK_ATTEMPTS: 'CALLBACK_ATTEMPTS',
 };
 export const PRESENCE_STATE_KEYS = {
   AGENT_STATUS_INBOUND_CALL_QUEUE: 'onQCall',
@@ -77,6 +111,14 @@ export const INTERACTIVITY_OPTIONS_KEYS = {
   CHANGE_AVAILABILITY_STATE: 'CHANGE_AVAILABILITY_STATE',
   LISTEN_LIVE: 'LISTEN_LIVE',
   CALL_AGENTS: 'CALL_AGENTS',
+};
+export const QUEUE_LIST_INTERACTIVITY_OPTIONS_KEYS = {
+  // ALLOW_RE_SORTING: 'ALLOW_RE_SORTING',
+  // MOVE_CALL_TO_TOP: 'MOVE_CALL_TO_TOP',
+  // MOVE_CALL_TO_BOTTOM: 'MOVE_CALL_TO_BOTTOM',
+  // MOVE_CALL_TO_ANOTHER_QUEUE: 'MOVE_CALL_TO_ANOTHER_QUEUE',
+  // DISCONNECT: 'DISCONNECT',
+  LISTEN_LIVE: 'LISTEN_LIVE',
 };
 export const MODAL_NEW_WALLBOARD_SECITONS = {
   QUEUES: 'QUEUES',
@@ -467,6 +509,217 @@ export const MODAL = {
       isInitialChecked: true,
     },
   ],
+  QUEUE_LIST: {
+    MODAL_TITLE: 'Widget Options',
+    NAMES: {
+      COMPONENT_NAME: 'Component Name',
+      CALL_QUEUE: 'Call Queue to Monitor',
+      DISPLAY_CALL_STATUS: 'Displayed call Statuses',
+      TIME_IN_QUEUE: 'Time in Queue SLA Time:',
+      TIME_AT_HEAD: 'Time at Head of Queue SLA Time:',
+      SHOW_COLUMNS: 'Show Columns:',
+      SORT_BY: 'Default Sort By:',
+      DISPLAY_OPTIONS: 'Display Options:',
+      INTERACTIVITY_OPTIONS: 'Interactivity Options:',
+      PREVIEW: 'Preview',
+    },
+    PLACEHOLDER: {
+      COMPONENT_NAME: 'New Queue List',
+    },
+    LABEL: {
+      CONNECTED: 'Connected',
+      WAITING: 'Waiting',
+      SHOW_SKILLS_ONLY_ON_HOVER: 'Show Skills only on Hover',
+      SHOW_SKILLS_SHORTAGE_ONLY_ON_HOVER: 'Show Skills Shortage only on Hover',
+    },
+    COLUMNS: [
+      {
+        text: 'Caller number',
+        value: QUEUE_LIST_COLUMN_OPTIONS.CALLER_NUMBER,
+        minWidth: 170,
+        isInitialChecked: true,
+      },
+      {
+        text: 'Caller name',
+        value: QUEUE_LIST_COLUMN_OPTIONS.CALLER_NAME,
+        minWidth: 110,
+        isInitialChecked: true,
+      },
+      {
+        text: 'Priority',
+        value: QUEUE_LIST_COLUMN_OPTIONS.PRIORITY,
+        minWidth: 130,
+        isInitialChecked: true,
+      },
+      {
+        text: 'Position in Queue',
+        value: QUEUE_LIST_COLUMN_OPTIONS.POSITION_IN_QUEUE,
+        minWidth: 130,
+        isInitialChecked: true,
+      },
+      {
+        text: 'Time waiting in queue',
+        value: QUEUE_LIST_COLUMN_OPTIONS.TIME_WAITING_IN_QUEUE,
+        minWidth: 170,
+        isInitialChecked: true,
+      },
+      {
+        text: 'Dial Attempts',
+        value: QUEUE_LIST_COLUMN_OPTIONS.DIAL_ATTEMPTS,
+        minWidth: 110,
+        isInitialChecked: false,
+      },
+      {
+        text: 'Status',
+        value: QUEUE_LIST_COLUMN_OPTIONS.STATUS,
+        minWidth: 90,
+        isInitialChecked: false,
+      },
+      {
+        text: 'Agent Connected to',
+        value: QUEUE_LIST_COLUMN_OPTIONS.AGENT_CONNECTED_TO,
+        minWidth: 160,
+        isInitialChecked: true,
+      },
+      //do not remove
+      // {
+      //   text: 'Skills requested',
+      //   value: QUEUE_LIST_COLUMN_OPTIONS.SKILLS_REQUESTED,
+      //   minWidth: 160,
+      //   isInitialChecked: false,
+      // },
+      // {
+      //   text: 'Skills shortage',
+      //   value: QUEUE_LIST_COLUMN_OPTIONS.SKILLS_SHORTAGE,
+      //   minWidth: 160,
+      //   isInitialChecked: false,
+      // },
+      {
+        text: 'Time at Head of Queue',
+        value: QUEUE_LIST_COLUMN_OPTIONS.TIME_AT_HEAD_OF_QUEUE,
+        minWidth: 160,
+        isInitialChecked: false,
+      },
+      {
+        text: 'Callback requested',
+        value: QUEUE_LIST_COLUMN_OPTIONS.CALLBACK_REQUESTED,
+        minWidth: 160,
+        isInitialChecked: false,
+      },
+      {
+        text: 'Callback attempts',
+        value: QUEUE_LIST_COLUMN_OPTIONS.CALLBACK_ATTEMPTS,
+        minWidth: 160,
+        isInitialChecked: false,
+      },
+      //do not remove
+      // {
+      //   text: 'Flags',
+      //   value: QUEUE_LIST_COLUMN_OPTIONS.FLAGS,
+      //   minWidth: 70,
+      //   isInitialChecked: false,
+      // },
+    ],
+    PRIORITY_COLORS: {
+      1: '#f8485e',
+      2: '#f96d7e',
+      3: '#fb919e',
+      4: '#ffe9ab',
+      5: '#fff4d5',
+      6: '#f3f7cc',
+      7: '#e7ef99',
+      8: '#dce666',
+      9: '#d0de33',
+      10: '#c4d600',
+      default: '#ccc',
+      textColorWhite: '#fff',
+      textColorDark: '#49535c',
+    },
+
+    QUEUE_POSITION_COLORS: {
+      1: '#c4d600',
+      2: '#d0de33',
+      3: '#dce666',
+      4: '#e7ef99',
+      5: '#f3f7cc',
+      6: '#fff4d5',
+      7: '#ffe9ab',
+      8: '#fb919e',
+      9: '#f96d7e',
+      10: '#f8485e',
+      default: '#f8485e',
+      red: '#eb0c28',
+      blue: '#0b5cab',
+      green: '#059f5a',
+      textColorWhite: '#fff',
+      textColorDark: '#49535c',
+    },
+
+    MOCK_DATA: createArrayFromTo(1, 10).map((number) => ({
+      [QUEUE_LIST_COLUMN_OPTIONS.CALLER_NUMBER]: '+44 0203 436 3092 ' + (number % 3 ? '(UK)' : '(USA)'),
+      [QUEUE_LIST_COLUMN_OPTIONS.CALLER_NAME]: 'Agent Name ' + (number + 11),
+      [QUEUE_LIST_COLUMN_OPTIONS.POSITION_IN_QUEUE]: number,
+      [QUEUE_LIST_COLUMN_OPTIONS.PRIORITY]: number,
+      [QUEUE_LIST_COLUMN_OPTIONS.TIME_WAITING_IN_QUEUE]: number * 10,
+      [QUEUE_LIST_COLUMN_OPTIONS.DIAL_ATTEMPTS]: number,
+      [QUEUE_LIST_COLUMN_OPTIONS.STATUS]: number % 2 ? 'Connected' : 'Waiting',
+      [QUEUE_LIST_COLUMN_OPTIONS.AGENT_CONNECTED_TO]: number % 2 ? 'Agent Name ' + number : '',
+      [QUEUE_LIST_COLUMN_OPTIONS.SKILLS_REQUESTED]: 'uncknow',
+      [QUEUE_LIST_COLUMN_OPTIONS.SKILLS_SHORTAGE]: 'uncknow',
+      [QUEUE_LIST_COLUMN_OPTIONS.TIME_AT_HEAD_OF_QUEUE]: 100 - number * 10,
+      [QUEUE_LIST_COLUMN_OPTIONS.CALLBACK_REQUESTED]: number % 3,
+      [QUEUE_LIST_COLUMN_OPTIONS.CALLBACK_ATTEMPTS]: number % 4 ? undefined : number,
+      [QUEUE_LIST_COLUMN_OPTIONS.FLAGS]: 'uncknow',
+      uuid: number,
+    })),
+    INTERACTIVIRY_OPTIONS: [
+      // do not remove
+      // {
+      //   text: 'Allow re-sorting of columns',
+      //   value: QUEUE_LIST_INTERACTIVITY_OPTIONS_KEYS.ALLOW_RE_SORTING,
+      //   isInitialChecked: false,
+      // },
+      // {
+      //   text: 'Move call to top of Queue',
+      //   value: QUEUE_LIST_INTERACTIVITY_OPTIONS_KEYS.MOVE_CALL_TO_TOP,
+      //   isInitialChecked: false,
+      // },
+      // {
+      //   text: 'Move call to the bottom of Queue',
+      //   value: QUEUE_LIST_INTERACTIVITY_OPTIONS_KEYS.MOVE_CALL_TO_BOTTOM,
+      //   isInitialChecked: false,
+      // },
+      // {
+      //   text: 'Move call to another Queue',
+      //   value: QUEUE_LIST_INTERACTIVITY_OPTIONS_KEYS.MOVE_CALL_TO_ANOTHER_QUEUE,
+      //   isInitialChecked: false,
+      // },
+      // {
+      //   text: 'Disconnect Call',
+      //   value: QUEUE_LIST_INTERACTIVITY_OPTIONS_KEYS.DISCONNECT,
+      //   isInitialChecked: false,
+      // },
+      {
+        text: 'Listen Live to Call',
+        value: QUEUE_LIST_INTERACTIVITY_OPTIONS_KEYS.LISTEN_LIVE,
+        isInitialChecked: false,
+      },
+    ],
+    SORT_BY: [
+      { text: 'Position in Queue', value: QUEUE_LIST_SORT_BY_VALUES.POSITION_IN_QUEUE },
+      { text: 'Caller Name (alphabetically)', value: QUEUE_LIST_SORT_BY_VALUES.CALLER_NAME },
+      { text: 'Priority (Highest First)', value: QUEUE_LIST_SORT_BY_VALUES.PRIORITY },
+      { text: 'Time waiting in Queue (Longest First)', value: QUEUE_LIST_SORT_BY_VALUES.TIME_WAITING_IN_QUEUE },
+      { text: 'Dial Attempts (Highest First)', value: QUEUE_LIST_SORT_BY_VALUES.DIAL_ATTEMPTS },
+      { text: 'Status (Connected,Waiting)', value: QUEUE_LIST_SORT_BY_VALUES.STATUS },
+      { text: 'Agent Connected to (alphabetically)', value: QUEUE_LIST_SORT_BY_VALUES.AGENT_CONNECTED_TO },
+      { text: 'Skills Requested (Calls with skills first)', value: QUEUE_LIST_SORT_BY_VALUES.SKILLS_REQUESTED },
+      { text: 'Skills shortage (Calls with shortages first)', value: QUEUE_LIST_SORT_BY_VALUES.SKILLS_SHORTAGE },
+      { text: 'Time at head of Queue (Longest first)', value: QUEUE_LIST_SORT_BY_VALUES.TIME_AT_HEAD_OF_QUEUE },
+      { text: 'Callback requested (Callback calls first)', value: QUEUE_LIST_SORT_BY_VALUES.CALLBACK_REQUESTED },
+      { text: 'Callback attempts (Highest first)', value: QUEUE_LIST_SORT_BY_VALUES.CALLBACK_ATTEMPTS },
+    ],
+  },
   CALL_TRACKING: {
     SECTION_TITLE: {
       TITLE: 'Title',
@@ -674,6 +927,7 @@ export const MODAL = {
     ALPHANUMERIC_TITLE: 'Title must be alphanumeric',
     MIN_VALUE: 'Min value is 1',
     MAX_VALUE: 'Max value is 100',
+    MIN_SLA_TIME: 'Min value is 1',
   },
   DELETE_WALLBOARD_MODAL: {
     TITLE: 'Delete Wallboard',

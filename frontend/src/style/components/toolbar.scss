@@ -47,6 +47,7 @@
     flex-direction: column;
     justify-content: space-evenly;
     padding: 20px 0;
+
     &-left,
     &-right {
       margin-top: 10px;
@@ -68,5 +69,8 @@
         text-align: center;
       }
     }
+  }
+  .c-toolbar.c-toolbar--error {
+    flex-direction: row;
   }
 }

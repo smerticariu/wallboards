@@ -9,13 +9,19 @@ import GridCallTracking from './call-tracking';
 import GridQueueStatus from './queue-status';
 import { WIDGET_TYPE } from '../../../common/defaults/modal.defaults';
 import GridAgentStatus from './agent-status';
+import GridQueueList from './queue-list';
 const Widget = ({ widget, isEditMode, ...props }) => {
   const dispatch = useDispatch();
   useEffect(() => {
     const agentsInterval = setInterval(() => {
-      if (widget.type === WIDGET_TYPE.AGENT_LIST || widget.type === WIDGET_TYPE.CALL_STATUS || widget.type === WIDGET_TYPE.CALL_TRACKING)
+      if (
+        widget.type === WIDGET_TYPE.AGENT_LIST ||
+        widget.type === WIDGET_TYPE.CALL_STATUS ||
+        widget.type === WIDGET_TYPE.CALL_TRACKING ||
+        widget.type === WIDGET_TYPE.QUEUE_LIST
+      )
         dispatch(fetchUsersCurrentCallTimeThunk());
-      if (widget.type === WIDGET_TYPE.QUEUE_STATUS || widget.type === WIDGET_TYPE.AGENT_LIST) {
+      if (widget.type === WIDGET_TYPE.QUEUE_STATUS || widget.type === WIDGET_TYPE.AGENT_LIST || widget.type === WIDGET_TYPE.QUEUE_LIST) {
         dispatch(fetchAllAgentsThunk(widget.callQueue.id));
       }
     }, 2000);
@@ -31,6 +37,7 @@ const Widget = ({ widget, isEditMode, ...props }) => {
       {widget.type === WIDGET_TYPE.CALL_TRACKING && <GridCallTracking isEditMode={isEditMode} widget={widget} />}
       {widget.type === WIDGET_TYPE.AGENT_LOGIN && <GridAgentLogin isEditMode={isEditMode} widget={widget} />}
       {widget.type === WIDGET_TYPE.AGENT_STATUS && <GridAgentStatus isEditMode={isEditMode} widget={widget} />}
+      {widget.type === WIDGET_TYPE.QUEUE_LIST && <GridQueueList isEditMode={isEditMode} widget={widget} />}
     </>
   );
 };

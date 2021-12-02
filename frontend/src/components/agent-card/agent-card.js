@@ -28,8 +28,8 @@ const AgentCard = ({
     dispatch(callAgentThunk(id));
   };
 
-  const agentAvatarPhoto = usersAvatars.find(user => user.id === id)?.smallPhoto;
-  
+  const agentAvatarPhoto = usersAvatars?.find((user) => user.id === id)?.smallPhoto;
+
   const handleListenLive = () => {
     dispatch(listenLiveThunk(id));
   };
@@ -106,7 +106,7 @@ const AgentCard = ({
               closeOnClick={true}
               containerClassName="c-dropdown__container--availability"
               trigger={
-                <button className="c-button c-button--empty c-dropdown__trigger--agent-name agent-t__arrow-container agent-t__arrow-container--card">
+                <button className="c-button c-button--empty c-dropdown__trigger--agent-name agent-list-table__arrow-container agent-list-table__arrow-container--card">
                   {status}
                 </button>
               }
