@@ -1,4 +1,3 @@
-/* pretty radio */
 .c-radio {
   &__label {
     font-family: $public-sans-regular;
@@ -10,7 +9,7 @@
     display: none;
   }
   &__input + *::before {
-    content: "";
+    content: '';
     display: inline-block;
     vertical-align: bottom;
     width: 16px;
@@ -22,12 +21,7 @@
     border-color: $slate-gray;
   }
   &__input:checked + *::before {
-    background: radial-gradient(
-      $slate-gray 27%,
-      $slate-gray 55%,
-      transparent 0%,
-      transparent
-    );
+    background: radial-gradient($slate-gray 27%, $slate-gray 55%, transparent 0%, transparent);
     border-color: $slate-gray;
   }
   &__input + * {

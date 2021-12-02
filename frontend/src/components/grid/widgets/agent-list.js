@@ -14,7 +14,7 @@ import {
   fetchUserGroupsThunk,
 } from 'src/store/thunk/agents.thunk';
 import AgentCard from '../../agent-card/agent-card';
-import AgentTable from '../../agent-table/agent-table';
+import AgentListTable from '../../tables/agent-list';
 import { FetchStatus } from 'src/store/reducers/wallboards.reducer';
 import { fetchAgentSkillThunk } from 'src/store/thunk/skills.thunk';
 import moment from 'moment';
@@ -78,7 +78,7 @@ const GridAgentList = ({ isEditMode, widget, ...props }) => {
       agents.sipDevicesFetchStatus === FetchStatus.SUCCESS &&
       agents.userGroupsFetchStatus === FetchStatus.SUCCESS
     ) {
-      const agentsWithFullInfo = agentQueues.agents.map((agentQueue) => {
+      const agentsWithFullInfo = agentQueues?.agents?.map((agentQueue) => {
         const agentSkills = agentsSkill.find((agentSkills) => agentSkills.agentId === agentQueue.userId);
         const userCurrentCall = calls.filter((call) => call.userId === agentQueue.userId || call.deviceId === agentQueue.deviceId).pop();
 
@@ -165,6 +165,7 @@ const GridAgentList = ({ isEditMode, widget, ...props }) => {
               : 0,
         };
       });
+      if (!agentsWithFullInfo) return;
 
       const filtredAgentsWithFullInfo = agentsWithFullInfo.filter((agent) => {
         let isSkill =
@@ -206,7 +207,7 @@ const GridAgentList = ({ isEditMode, widget, ...props }) => {
   const handleEditIcon = () => {
     const onEditClick = () => {
       dispatch(setWidgetComponentForEditAC(widget));
-      dispatch(handleWallboardActiveModalAC(DEFAULTS.MODAL.MODAL_NAMES.ADD_COMPONENT));
+      dispatch(handleWallboardActiveModalAC(DEFAULTS.MODAL.MODAL_NAMES.AGENT_LIST));
     };
 
     return (
@@ -291,7 +292,7 @@ const GridAgentList = ({ isEditMode, widget, ...props }) => {
                       : agentsForDisplay.length
                     : agentsForDisplay.length;
                 return (
-                  <AgentTable
+                  <AgentListTable
                     key={index}
                     canChangeAvailabilityState={widget.interactivity.selectedItems.includes('CHANGE_AVAILABILITY_STATE')}
                     canListenLive={widget.interactivity.selectedItems.includes('LISTEN_LIVE')}

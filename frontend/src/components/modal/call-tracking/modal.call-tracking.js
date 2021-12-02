@@ -3,11 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import useOnClickOutside from '../../../common/hooks/useOnClickOutside';
 
 import { addWallboardCallTrackingAC } from '../../../store/actions/wallboards.action';
-import {
-  handleCallTrackingDataAC,
-  handleWallboardActiveModalAC,
-  resetModalAddComponentFormDataAC,
-} from '../../../store/actions/modal.action';
+import { handleCallTrackingDataAC, handleWallboardActiveModalAC, resetNewWidgetModalFormDataAC } from '../../../store/actions/modal.action';
 import { checkIsAlphanumeric } from '../../../common/utils/alphanumeric-validation';
 import { DEFAULTS } from '../../../common/defaults/defaults';
 import { fetchUserGroupsThunk } from '../../../store/thunk/agents.thunk';
@@ -49,7 +45,7 @@ const ModalCallTracking = ({ ...props }) => {
   }, []);
   const closeModal = () => {
     dispatch(handleWallboardActiveModalAC(null));
-    dispatch(resetModalAddComponentFormDataAC());
+    dispatch(resetNewWidgetModalFormDataAC());
   };
 
   useOnClickOutside(modalRef, () => {

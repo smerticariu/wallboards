@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { handleModalSelectActiveElementAC, handleWallboardActiveModalAC } from 'src/store/actions/modal.action';
+import { handleWallboardActiveModalAC } from 'src/store/actions/modal.action';
 import { DEFAULTS } from '../../../common/defaults/defaults';
 import { MODAL_NEW_WALLBOARD_SECITONS, WIDGET_TYPE } from '../../../common/defaults/modal.defaults';
 import useOnClickOutside from '../../../common/hooks/useOnClickOutside';
@@ -106,16 +106,14 @@ const ModalNewWidget = ({ ...props }) => {
 
   const handleSelectButton = () => {
     const onClickSelectButton = (e) => {
-      dispatch(handleModalSelectActiveElementAC());
       switch (selectedListItem) {
         case WIDGET_TYPE.AGENT_LIST: {
-          return dispatch(handleWallboardActiveModalAC(DEFAULTS.MODAL.MODAL_NAMES.ADD_COMPONENT));
+          return dispatch(handleWallboardActiveModalAC(DEFAULTS.MODAL.MODAL_NAMES.AGENT_LIST));
         }
         case WIDGET_TYPE.CALL_STATUS: {
           return dispatch(handleWallboardActiveModalAC(DEFAULTS.MODAL.MODAL_NAMES.CALL_STATUS));
         }
         case WIDGET_TYPE.QUEUE_TRACKING: {
-          dispatch(handleModalSelectActiveElementAC(selectedListItem));
           return dispatch(handleWallboardActiveModalAC(DEFAULTS.MODAL.MODAL_NAMES.QUEUE_TRACKING));
         }
         case WIDGET_TYPE.QUEUE_STATUS: {
@@ -126,6 +124,12 @@ const ModalNewWidget = ({ ...props }) => {
         }
         case WIDGET_TYPE.AGENT_LOGIN: {
           return dispatch(handleWallboardActiveModalAC(DEFAULTS.MODAL.MODAL_NAMES.AGENT_LOGIN));
+        }
+        case WIDGET_TYPE.AGENT_STATUS: {
+          return dispatch(handleWallboardActiveModalAC(DEFAULTS.MODAL.MODAL_NAMES.AGENT_STATUS));
+        }
+        case WIDGET_TYPE.QUEUE_LIST: {
+          return dispatch(handleWallboardActiveModalAC(DEFAULTS.MODAL.MODAL_NAMES.QUEUE_LIST));
         }
         default:
           return;
