@@ -46,6 +46,7 @@ const GridAgentLogin = ({ widget, ...props }) => {
         });
       setTableData(users);
     }
+    // eslint-disable-next-line
   }, [allAgents, userGroups, userLoginData]);
 
   return <AgentLoginTable {...props} widget={widget} tableData={tableData} />;

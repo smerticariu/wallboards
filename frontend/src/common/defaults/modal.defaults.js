@@ -59,11 +59,13 @@ export const QUEUE_LIST_COLUMN_OPTIONS = {
   DIAL_ATTEMPTS: 'DIAL_ATTEMPTS',
   STATUS: 'STATUS',
   AGENT_CONNECTED_TO: 'AGENT_CONNECTED_TO',
+  //do not remove
   // SKILLS_REQUESTED: 'SKILLS_REQUESTED',
   // SKILLS_SHORTAGE: 'SKILLS_SHORTAGE',
   TIME_AT_HEAD_OF_QUEUE: 'TIME_AT_HEAD_OF_QUEUE',
   CALLBACK_REQUESTED: 'CALLBACK_REQUESTED',
   CALLBACK_ATTEMPTS: 'CALLBACK_ATTEMPTS',
+  //do not remove
   // FLAGS: 'FLAGS',
   OPTIONS: 'OPTIONS',
   ID: 'ID',
@@ -585,6 +587,7 @@ export const MODAL = {
         minWidth: 160,
         isInitialChecked: true,
       },
+      //do not remove
       // {
       //   text: 'Skills requested',
       //   value: QUEUE_LIST_COLUMN_OPTIONS.SKILLS_REQUESTED,
@@ -615,6 +618,7 @@ export const MODAL = {
         minWidth: 160,
         isInitialChecked: false,
       },
+      //do not remove
       // {
       //   text: 'Flags',
       //   value: QUEUE_LIST_COLUMN_OPTIONS.FLAGS,
@@ -675,6 +679,7 @@ export const MODAL = {
       uuid: number,
     })),
     INTERACTIVIRY_OPTIONS: [
+      // do not remove
       // {
       //   text: 'Allow re-sorting of columns',
       //   value: QUEUE_LIST_INTERACTIVITY_OPTIONS_KEYS.ALLOW_RE_SORTING,

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { DEFAULTS } from '../../../common/defaults/defaults';
 import { QUEUE_LIST_COLUMN_OPTIONS } from '../../../common/defaults/modal.defaults';
 import { callsToObject } from '../../../common/utils/callsToObject';
 import { findTimeAtHeadOfQueue } from '../../../common/utils/findTimeAtHeadOfQueue';
@@ -71,6 +70,7 @@ const GridQueueList = ({ widget, ...props }) => {
       }))
     );
     console.log(queuedCallCopy);
+    // eslint-disable-next-line
   }, [allAgents, calls, queuedCall]);
 
   return <QueueListTable {...props} isPreviewMode={false} widget={widget} tableData={tableData} />;

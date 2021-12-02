@@ -12,10 +12,11 @@
     left: 10px;
     top: 100%;
     z-index: 10;
-    padding: 8px 6px;
+    padding: 8px 16px;
     border-radius: 6px;
     background-color: $white;
-    border: 1px solid $pinkish-grey;
+    box-shadow: 0 3px 6px 0 rgba($black, 0.16);
+    border: solid 1px $dark-white;
     width: max-content;
     &--agent-name {
       left: 50%;
