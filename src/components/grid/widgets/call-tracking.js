@@ -6,7 +6,6 @@ import {
   setWallboardComponentForDeleteAC,
   setWidgetComponentForEditAC,
 } from 'src/store/actions/modal.action';
-import { SettingsIcon } from '../../../assets/static/icons/settings';
 import { DEFAULTS } from '../../../common/defaults/defaults';
 import { fetchCallStatisticThunk } from '../../../store/thunk/callsQueues.thunk';
 import { CALL_CATEGORY_OPTIONS } from '../../../common/defaults/modal.defaults';
@@ -14,6 +13,7 @@ import { averageValue } from '../../../common/utils/averageValue';
 import TimeInterval from '../../time-interval/time-interval';
 import { getCallTrackingInitialValues } from '../../../common/defaults/wallboards.defaults';
 import { getTimesCallTracking } from '../../../common/utils/getTimesCallTracking';
+import { EditIcon } from '../../../assets/static/icons/edit';
 const GridCallTracking = ({ isPreview, isEditMode, widget, ...props }) => {
   const dispatch = useDispatch();
 
@@ -139,7 +139,7 @@ const GridCallTracking = ({ isPreview, isEditMode, widget, ...props }) => {
 
     return (
       <div onClick={onEditClick} className="widget__edit-icon">
-        <SettingsIcon className="i--settings i--settings--call-status" />
+        <EditIcon className="i--edit i--edit--margin-right" />
       </div>
     );
   };

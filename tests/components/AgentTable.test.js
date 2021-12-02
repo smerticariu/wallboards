@@ -2,7 +2,7 @@ import React from 'react';
 import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import '@testing-library/jest-dom/extend-expect';
-import AgentTable from '../../src/components/agent-table/agent-table';
+import AgentListTable from '../../src/components/tables/agent-list';
 import { Provider } from 'react-redux';
 import store from '../../src/store/store';
 import { ADD_COMPONENT_COLUMN_OPTIONS, PRESENCE_STATE_KEYS } from '../../src/common/defaults/modal.defaults';
@@ -13,7 +13,7 @@ describe('Agent table', () => {
   test('Agent table should be rendered', () => {
     let agentTable = mount(
       <Provider store={store}>
-        <AgentTable
+        <AgentListTable
           columnsToView={Object.keys(ADD_COMPONENT_COLUMN_OPTIONS)}
           agents={[
             {
@@ -36,23 +36,23 @@ describe('Agent table', () => {
       </Provider>,
     );
 
-    expect(agentTable.find('.agent-t')).not.toHaveLength(0);
+    expect(agentTable.find('.agent-list-table')).not.toHaveLength(0);
   });
 
   test('The number of agents should be the same as AGENTS_TABLE length', () => {
     const agentTable = mount(
       <Provider store={store}>
-        <AgentTable columnsToView={Object.keys(ADD_COMPONENT_COLUMN_OPTIONS)} agents={DEFAULTS.GRID.AGENTS_TABLE_MOCK} />
+        <AgentListTable columnsToView={Object.keys(ADD_COMPONENT_COLUMN_OPTIONS)} agents={DEFAULTS.GRID.AGENTS_TABLE_MOCK} />
       </Provider>,
     );
-    const agents = agentTable.find('.agent-t__agent');
+    const agents = agentTable.find('.agent-list-table__agent');
     expect(agents.length).toBe(DEFAULTS.GRID.AGENTS_TABLE_MOCK.length);
   });
 
   test('Agent Table card should render the agent name', () => {
     let agentTable = mount(
       <Provider store={store}>
-        <AgentTable
+        <AgentListTable
           columnsToView={Object.keys(ADD_COMPONENT_COLUMN_OPTIONS)}
           agents={[
             {
@@ -80,7 +80,7 @@ describe('Agent table', () => {
   test('Agent Table should have 0 columns', () => {
     let agentTable = mount(
       <Provider store={store}>
-        <AgentTable
+        <AgentListTable
           columnsToView={[]}
           agents={[
             {
@@ -102,13 +102,13 @@ describe('Agent table', () => {
         />
       </Provider>,
     );
-    expect(agentTable.find('.agent-t__agent-info').length).toBe(0);
+    expect(agentTable.find('.agent-list-table__agent-info').length).toBe(0);
   });
 
   test('Agent Table should have 1 column (agent name)', () => {
     let agentTable = mount(
       <Provider store={store}>
-        <AgentTable
+        <AgentListTable
           columnsToView={[ADD_COMPONENT_COLUMN_OPTIONS.AGENT_NAME]}
           agents={[
             {
@@ -130,22 +130,22 @@ describe('Agent table', () => {
         />
       </Provider>,
     );
-    expect(agentTable.find('.agent-t__agent-info').length).toBe(1);
+    expect(agentTable.find('.agent-list-table__agent-info').length).toBe(1);
   });
 
   test('Agent Table column width should be 100% / noOfColumns', () => {
     let agentTable = mount(
       <Provider store={store}>
-        <AgentTable columnsToView={[ADD_COMPONENT_COLUMN_OPTIONS.AGENT_NAME]} agents={[DEFAULTS.GRID.AGENTS_TABLE_MOCK[0]]} />
+        <AgentListTable columnsToView={[ADD_COMPONENT_COLUMN_OPTIONS.AGENT_NAME]} agents={[DEFAULTS.GRID.AGENTS_TABLE_MOCK[0]]} />
       </Provider>,
     );
-    expect(agentTable.find('.agent-t__agent-info').prop('style')).toHaveProperty('width', '100%');
+    expect(agentTable.find('.agent-list-table__agent-info').prop('style')).toHaveProperty('width', '100%');
   });
 
   test('User can see only one interactivity option', () => {
     const agentTable = mount(
       <Provider store={store}>
-        <AgentTable
+        <AgentListTable
           columnsToView={Object.keys(ADD_COMPONENT_COLUMN_OPTIONS)}
           canListenLive={true}
           agents={[

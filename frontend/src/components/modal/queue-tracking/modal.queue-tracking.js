@@ -6,7 +6,7 @@ import { addWallboardQueueTrackingAC } from '../../../store/actions/wallboards.a
 import {
   handleQueueTrackingDataAC,
   handleWallboardActiveModalAC,
-  resetModalAddComponentFormDataAC,
+  resetNewWidgetModalFormDataAC,
 } from '../../../store/actions/modal.action';
 import { checkIsAlphanumeric } from '../../../common/utils/alphanumeric-validation';
 import { DEFAULTS } from '../../../common/defaults/defaults';
@@ -43,7 +43,7 @@ const ModalqueueTracking = ({ ...props }) => {
   }, []);
   const closeModal = () => {
     dispatch(handleWallboardActiveModalAC(null));
-    dispatch(resetModalAddComponentFormDataAC());
+    dispatch(resetNewWidgetModalFormDataAC());
   };
 
   useOnClickOutside(modalRef, () => {
@@ -267,8 +267,8 @@ const ModalqueueTracking = ({ ...props }) => {
             <div className="c-input__error-message">{queueTracking.averageWaitSLA.errorMessage}</div>
           )}
         </div>
-
-        <div className="c-modal--add-component__input-section">
+        {/* do not remove */}
+        {/* <div className="c-modal--add-component__input-section">
           <div className="c-modal--add-component__input-label">{DEFAULTS.MODAL.QUEUE_TRACKING.NAMES.SOLID_CALLS_OVERRIDE}</div>
           <CheckBox
             className="c-checkbox--margin-bottom"
@@ -286,7 +286,7 @@ const ModalqueueTracking = ({ ...props }) => {
           {queueTracking.solidCallsOverride.errorMessage && (
             <div className="c-input__error-message">{queueTracking.solidCallsOverride.errorMessage}</div>
           )}
-        </div>
+        </div> */}
       </div>
     );
   };

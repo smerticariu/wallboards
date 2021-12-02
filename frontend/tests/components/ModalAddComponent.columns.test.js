@@ -5,7 +5,7 @@ import '@testing-library/jest-dom/extend-expect';
 import { Provider } from 'react-redux';
 import createMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import ModalAddComponent from '../../src/components/modal/add-component/modal.add-component';
+import ModalAgentList from '../../src/components/modal/agent-list/modal.agent-list';
 import { modalInitialState } from '../../src/store/reducers/modal.reducer';
 import { skillsInitialState } from '../../src/store/reducers/skills.reducer';
 import { callsQueuesInitialState } from '../../src/store/reducers/callsQueues.reducer';
@@ -35,15 +35,15 @@ describe('Modal: Add Component -- columns to view', () => {
       ...initialStoreValues,
       modal: {
         ...modalInitialState,
-        modalAddComponent: {
-          ...modalInitialState.modalAddComponent,
+        agentList: {
+          ...modalInitialState.agentList,
           mainViewing: DEFAULTS.MODAL.ADD_COMPONENT.MAIN_VIEWING_OPTIONS.TABLE,
         },
       },
     });
     let wrapper = mount(
       <Provider store={store}>
-        <ModalAddComponent />
+        <ModalAgentList />
       </Provider>,
     );
     expect(wrapper.find('.c-modal--add-component__input-section--columns').length).toBe(1);
@@ -54,15 +54,15 @@ describe('Modal: Add Component -- columns to view', () => {
       ...initialStoreValues,
       modal: {
         ...modalInitialState,
-        modalAddComponent: {
-          ...modalInitialState.modalAddComponent,
+        agentList: {
+          ...modalInitialState.agentList,
           mainViewing: DEFAULTS.MODAL.ADD_COMPONENT.MAIN_VIEWING_OPTIONS.TABLE,
         },
       },
     });
     let wrapper = mount(
       <Provider store={store}>
-        <ModalAddComponent />
+        <ModalAgentList />
       </Provider>,
     );
     let noOfcolumns = 0;

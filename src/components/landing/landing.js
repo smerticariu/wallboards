@@ -17,7 +17,7 @@ const Landing = () => {
     return (
       <Toolbar template="error">
         <div className="error-message-container">
-          <h3 className="error-message--headline">Error 403:</h3>
+          <h3 className="error-message--headline">Error 401:</h3>
           <p className="error-message">Access Denied!</p>
         </div>
       </Toolbar>

@@ -16,7 +16,7 @@ export const WALLBOARDS = {
     NO_COMPONENTS: 'This wallboard has no components.',
     ADD_COMPONENTS: 'To start adding components, click the button below.',
     NOT_ALLOWED_EDIT: 'You are not allowed to edit this wallboard. Please contact your Administrator',
-    NOT_ALLOWED_VIEW: "You don't have access to this wallboard! Please contact your Administrator.",
+    NOT_ALLOWED_VIEW: "You don't have acces s to this wallboard! Please contact your Administrator.",
   },
   PLACEHOLDER: {
     SEARCH_WALLBOARDS: 'Search Wallboards...',

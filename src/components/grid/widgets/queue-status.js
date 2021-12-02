@@ -6,13 +6,13 @@ import {
   setWallboardComponentForDeleteAC,
   setWidgetComponentForEditAC,
 } from 'src/store/actions/modal.action';
-import { SettingsIcon } from '../../../assets/static/icons/settings';
 import moment from 'moment';
 import { DEFAULTS } from '../../../common/defaults/defaults';
 import { PRESENCE_STATE_KEYS } from '../../../common/defaults/modal.defaults';
 import { fetchQueuedCallThunk } from '../../../store/thunk/callsQueues.thunk';
 import { getQueueStatusInitialValues } from '../../../common/defaults/wallboards.defaults';
 import { fetchUsersCurrentCallTimeThunk } from '../../../store/thunk/agents.thunk';
+import { EditIcon } from '../../../assets/static/icons/edit';
 
 const GridQueueStatus = ({ isEditMode, widget, ...props }) => {
   const dispatch = useDispatch();
@@ -82,7 +82,7 @@ const GridQueueStatus = ({ isEditMode, widget, ...props }) => {
 
     return (
       <div onClick={onEditClick} className="widget__edit-icon">
-        <SettingsIcon className="i--settings i--settings--call-status" />
+        <EditIcon className="i--edit i--edit--margin-right" />
       </div>
     );
   };

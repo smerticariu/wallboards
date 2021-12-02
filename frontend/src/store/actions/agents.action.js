@@ -30,6 +30,8 @@ export const agentsActions = {
   FETCH_USERS_CURRENT_CALL_TIME_SUCCESS: 'FETCH_USERS_CURRENT_CALL_TIME_SUCCESS',
 
   FETCH_USER_LOGIN_DATA_SUCCESS: 'FETCH_USER_LOGIN_DATA_SUCCESS',
+
+  FETCH_USER_STATUS_DATA_SUCCESS: 'FETCH_USER_STATUS_DATA_SUCCESS',
 };
 export const fetchAllAgentsAC = () => ({
   type: agentsActions.FETCH_ALL_AGENTS,
@@ -122,4 +124,9 @@ export const fetchUsersCurrentCallTimeSuccessAC = (calls) => ({
 export const fetchUserLoginDataSuccessAC = (userLoginData, widgetId) => ({
   type: agentsActions.FETCH_USER_LOGIN_DATA_SUCCESS,
   payload: { userLoginData, widgetId },
+});
+
+export const fetchUserStatusDataSuccessAC = (userStatusData, widgetId) => ({
+  type: agentsActions.FETCH_USER_STATUS_DATA_SUCCESS,
+  payload: { userStatusData, widgetId },
 });

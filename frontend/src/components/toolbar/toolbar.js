@@ -17,6 +17,7 @@ import { handleWallboardActiveModalAC, setSelectedWallboardSettingsAC } from '..
 import { SettingsIcon } from '../../assets/static/icons/settings';
 import { DEFAULTS } from '../../common/defaults/defaults';
 import { useAuth0 } from '@auth0/auth0-react';
+import AutoWidthInput from '../input/AutoWidthInput';
 
 const Toolbar = (props) => {
   const dispatch = useDispatch();
@@ -43,7 +44,7 @@ const Toolbar = (props) => {
     };
     return (
       <div className="c-toolbar-left__wrapper">
-        <input onChange={handleChangeTitle} className="c-input c-input--new-walboard-title" value={activeWallboard.name} />
+        <AutoWidthInput onChange={handleChangeTitle} className="c-input c-input--new-walboard-title" value={activeWallboard.name} />
 
         <p className="c-toolbar-left__wb-no">
           Viewing as {userInfo.firstName} {userInfo.lastName}
