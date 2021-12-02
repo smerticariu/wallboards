@@ -44,6 +44,7 @@ const GridAgentStatus = ({ widget, ...props }) => {
       });
       setTableData(users);
     }
+    // eslint-disable-next-line
   }, [allAgents, userStatusData]);
 
   return <AgentStatusTable {...props} widget={widget} tableData={tableData} />;
