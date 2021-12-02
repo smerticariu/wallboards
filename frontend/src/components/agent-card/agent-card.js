@@ -28,7 +28,7 @@ const AgentCard = ({
     dispatch(callAgentThunk(id));
   };
 
-  const agentAvatarPhoto = usersAvatars.find(user => user.id === id)?.smallPhoto;
+  const agentAvatarPhoto = usersAvatars ? usersAvatars.find(user => user.id === id)?.smallPhoto : '';
   
   const handleListenLive = () => {
     dispatch(listenLiveThunk(id));

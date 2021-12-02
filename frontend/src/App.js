@@ -30,7 +30,7 @@ import jsforce from 'jsforce';
 
 function App() {
   const dispatch = useDispatch();
-  const { userInfo, userTokenInfo, token, userAvatars } = useSelector((state) => state.login);
+  const { userInfo, userTokenInfo, token } = useSelector((state) => state.login);
   const { isAuthenticated, getAccessTokenSilently, isLoading } = useAuth0();
   const activeModalName = useSelector((state) => state.modal.activeModalName);
   const { warningMessage } = useSelector((state) => state.modal);
@@ -53,7 +53,7 @@ function App() {
     return () => clearTimeout(tokenExpiryTimeout);
     // eslint-disable-next-line
   }, [userTokenInfo]);
-
+console.log(userInfo, userTokenInfo)
   const fetchData = async () => {
     try {
       if (!sfToken && isAuthenticated) {
@@ -61,7 +61,8 @@ function App() {
           dispatch(setAccessTokenAC(res));
           dispatch(setUserTokenInfoAC(jwtExtractor(res)));
           dispatch(fetchUserInfoThunk(res));
-          getUsersAvatars(jwtExtractor(res).salesforceAccessToken)
+          // console.log(jwtExtractor(res))
+          getUsersAvatars(jwtExtractor(res))
         });
       } else if (sfToken) {
         dispatch(fetchUserDataThunk(sfToken));
@@ -72,13 +73,13 @@ function App() {
     }
   };
 
-  const getUsersAvatars = async accessToken => {
+  const getUsersAvatars = async jwtDecoded => {
     
     
     
     var conn = new jsforce.Connection({
-      instanceUrl: config.instanceUrl,
-      accessToken,
+      instanceUrl: jwtDecoded.salesforceRestUrl.split('/services')[0],
+      accessToken: jwtDecoded.salesforceAccessToken
     });
      
     conn.query(DEFAULTS.SOQL.GET_USERS_PHOTOS, (err, sfUsers) => {
