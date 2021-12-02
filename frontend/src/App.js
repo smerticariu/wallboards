@@ -54,7 +54,6 @@ function App() {
     return () => clearTimeout(tokenExpiryTimeout);
     // eslint-disable-next-line
   }, [userTokenInfo]);
-console.log(userInfo, userTokenInfo)
   const fetchData = async () => {
     try {
       if (!sfToken && isAuthenticated) {
