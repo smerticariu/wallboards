@@ -31,6 +31,7 @@
       font-family: $public-sans-regular;
       color: $grey;
       margin: 0;
+      text-align: left;
     }
   }
   &--error {
@@ -43,7 +44,7 @@
 }
 
 @media screen and (max-width: $tablet) {
-  .c-toolbar:not(.c-toolbar--wb-read-only) {
+  .c-toolbar {
     flex-direction: column;
     justify-content: space-evenly;
     padding: 20px 0;
@@ -52,9 +53,12 @@
     &-right {
       margin-top: 10px;
       width: 100%;
+      max-width: 100%;
       align-items: center;
       justify-content: center;
       flex-wrap: wrap;
+      text-align: center;
+      overflow: auto;
     }
     &-right {
       &__search-input {
@@ -66,6 +70,9 @@
     }
     &-left {
       &__wrapper {
+        text-align: center;
+      }
+      &__wb-no {
         text-align: center;
       }
     }

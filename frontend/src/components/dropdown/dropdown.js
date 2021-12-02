@@ -8,6 +8,7 @@ const Dropdown = ({
   closeOnHover,
   openOnHover,
   closeOnClick,
+  isDisable,
   value,
   children,
   ...props
@@ -35,7 +36,7 @@ const Dropdown = ({
       >
         {trigger}
       </span>
-      {isDropdownShow && (
+      {isDropdownShow && !isDisable && (
         <div
           ref={containerRef}
           onClick={() => (closeOnClick ? handleIsDropdownShow(false) : null)}

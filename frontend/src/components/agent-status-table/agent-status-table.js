@@ -6,7 +6,7 @@ import {
   setWallboardComponentForDeleteAC,
   setWidgetComponentForEditAC,
 } from 'src/store/actions/modal.action';
-import { SettingsIcon } from '../../assets/static/icons/settings';
+import { EditIcon } from '../../assets/static/icons/edit';
 import { DEFAULTS } from '../../common/defaults/defaults';
 import TimeInterval from '../time-interval/time-interval';
 
@@ -32,7 +32,7 @@ const AgentStatusTable = ({ isEditMode, tableData, widget, ...props }) => {
     };
     return (
       <div onClick={onEditClick} className="widget__edit-icon">
-        <SettingsIcon className="i--settings i--settings--call-status" />
+        <EditIcon className="i--edit i--edit--margin-right" />
       </div>
     );
   };

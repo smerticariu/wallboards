@@ -6,6 +6,7 @@ import {
   setWallboardComponentForDeleteAC,
   setWidgetComponentForEditAC,
 } from 'src/store/actions/modal.action';
+import { EditIcon } from '../../assets/static/icons/edit';
 import { SettingsIcon } from '../../assets/static/icons/settings';
 import { DEFAULTS } from '../../common/defaults/defaults';
 import {
@@ -48,7 +49,7 @@ const QueueListTable = ({ isPreviewMode, isEditMode, tableData, widget, ...props
     };
     return (
       <div onClick={onEditClick} className="widget__edit-icon">
-        <SettingsIcon className="i--settings i--settings--call-status" />
+        <EditIcon className="i--edit i--edit--margin-right" />
       </div>
     );
   };
