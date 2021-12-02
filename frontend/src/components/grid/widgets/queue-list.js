@@ -69,7 +69,6 @@ const GridQueueList = ({ widget, ...props }) => {
         agentId: call.userId,
       }))
     );
-    console.log(queuedCallCopy);
     // eslint-disable-next-line
   }, [allAgents, calls, queuedCall]);
 
