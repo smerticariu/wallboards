@@ -11,7 +11,6 @@ import { Route, Switch } from 'react-router';
 import { HashRouter } from 'react-router-dom';
 import { setAccessTokenAC, setUserTokenInfoAC, setUsersAvatarsAC } from './store/actions/login.action';
 import { fetchUserDataThunk, fetchUserInfoThunk } from './store/thunk/login.thunk';
-import ModalNewWidget from './components/modal/new-widget/modal.new-widget.';
 import ModalAddComponent from './components/modal/add-component/modal.add-component';
 import ModalSaveWallboard from './components/modal/save-wallboard/modal.save-wallboard';
 import ModalEditWallboard from './components/modal/edit-wallboard/modal.edit-wallboard';
@@ -27,6 +26,8 @@ import ModalQueueStatus from './components/modal/queue-status/modal.queue-status
 import ModalCallTracking from './components/modal/call-tracking/modal.call-tracking';
 import ModalAgentLogin from './components/modal/agent-login/modal.agent-login';
 import jsforce from 'jsforce';
+import ModalAgentStatus from './components/modal/agent-status/modal.agent-status';
+import ModalNewWidget from './components/modal/new-widget/modal.new-widget';
 
 function App() {
   const dispatch = useDispatch();
@@ -39,7 +40,7 @@ function App() {
     if (!token) {
       fetchData();
     }
-    
+
     // eslint-disable-next-line
   }, [isAuthenticated, token]);
   useEffect(() => {
@@ -47,7 +48,6 @@ function App() {
     if (userTokenInfo?.expiry) {
       tokenExpiryTimeout = setTimeout(() => {
         fetchData();
-        
       }, new Date(userTokenInfo?.expiry * 1000) - new Date() + 2000);
     }
     return () => clearTimeout(tokenExpiryTimeout);
@@ -61,7 +61,7 @@ function App() {
           dispatch(setAccessTokenAC(res));
           dispatch(setUserTokenInfoAC(jwtExtractor(res)));
           dispatch(fetchUserInfoThunk(res));
-          getUsersAvatars(jwtExtractor(res).salesforceAccessToken)
+          getUsersAvatars(jwtExtractor(res).salesforceAccessToken);
         });
       } else if (sfToken) {
         dispatch(fetchUserDataThunk(sfToken));
@@ -72,41 +72,42 @@ function App() {
     }
   };
 
-  const getUsersAvatars = async accessToken => {
-    
-    
-    
+  const getUsersAvatars = async (accessToken) => {
     var conn = new jsforce.Connection({
       instanceUrl: config.instanceUrl,
       accessToken,
     });
-     
+
     conn.query(DEFAULTS.SOQL.GET_USERS_PHOTOS, (err, sfUsers) => {
-      if (err) { return console.error(err); }
+      if (err) {
+        return console.error(err);
+      }
 
       conn.query(DEFAULTS.SOQL.GET_USERS_IDS, (err, avsUsers) => {
-        if (err) { return console.error(err); }
+        if (err) {
+          return console.error(err);
+        }
 
         const usersPhotos = sfUsers.records;
         const usersIds = avsUsers.records;
         let usersAvatars = [];
-        
-        usersPhotos.forEach(userPhoto => {
-          usersIds.forEach(userId => {
-            if(userPhoto.Id === userId.nbavs__User__c) {
+
+        usersPhotos.forEach((userPhoto) => {
+          usersIds.forEach((userId) => {
+            if (userPhoto.Id === userId.nbavs__User__c) {
               usersAvatars.push({
                 id: userId.nbavs__Id__c,
                 smallPhoto: userPhoto.SmallPhotoUrl,
                 largePhoto: userPhoto.FullPhotoUrl,
-                name: userPhoto.Name
-              })
+                name: userPhoto.Name,
+              });
             }
-          })
-        })
+          });
+        });
         dispatch(setUsersAvatarsAC(usersAvatars));
       });
     });
-  }
+  };
 
   const handleRedirect = () => {
     const wbToRedirect = localStorage.getItem('wallboard'); //store the link of the read-only wallboard
@@ -135,7 +136,7 @@ function App() {
           </HashRouter>
           <NotificationMessage />
           {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.SELECT_COMPONENT && <ModalNewWidget />}
-          {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.ADD_COMPONENT && <ModalAddComponent />}
+          {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.AGENT_LIST && <ModalAddComponent />}
           {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.SAVE_WALLBOARD && <ModalSaveWallboard />}
           {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.DELETE_WALLBOARD && <ModalDeleteWallboard />}
           {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.EDIT_WALLBOARD && <ModalEditWallboard />}
@@ -146,6 +147,7 @@ function App() {
           {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.QUEUE_STATUS && <ModalQueueStatus />}
           {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.CALL_TRACKING && <ModalCallTracking />}
           {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.AGENT_LOGIN && <ModalAgentLogin />}
+          {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.AGENT_STATUS && <ModalAgentStatus />}
           {warningMessage && <ModalWarning />}
         </>
       )}

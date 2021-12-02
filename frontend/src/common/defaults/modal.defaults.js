@@ -97,17 +97,12 @@ export const CALL_DIRECTION = {
 export const MODAL = {
   MODAL_NAMES: {
     SELECT_COMPONENT: 'SELECT_COMPONENT',
-    ADD_COMPONENT: 'ADD_COMPONENT',
     SAVE_WALLBOARD: 'SAVE_WALLBOARD',
     CONFIRM_SAVE_WALLBOARD: 'CONFIRM_SAVE_WALLBOARD',
     DELETE_WALLBOARD: 'DELETE_WALLBOARD',
     EDIT_WALLBOARD: 'EDIT_WALLBOARD',
     DELETE_WALLBOARD_COMPONENT: 'DELETE_WALLBOARD_COMPONENT',
-    CALL_STATUS: 'CALL_STATUS',
-    QUEUE_TRACKING: 'QUEUE_TRACKING',
-    QUEUE_STATUS: 'QUEUE_STATUS',
-    CALL_TRACKING: 'CALL_TRACKING',
-    AGENT_LOGIN: 'AGENT_LOGIN',
+    ...WIDGET_TYPE,
   },
   NEW_WALLBOARD: {
     SELECT_COMPONENT: 'Select a component',
@@ -516,6 +511,10 @@ export const MODAL = {
       id: -1,
       name: 'All Groups*',
     },
+    USER_PROFILE: {
+      id: -1,
+      name: 'All Profiles*',
+    },
   },
   AGENT_LOGIN: {
     SECTION_TITLE: {
@@ -632,6 +631,44 @@ export const MODAL = {
         userId: 11,
       },
     ],
+  },
+  AGENT_STATUS: {
+    SECTION_TITLE: {
+      TITLE: 'Title',
+      PREVIEW: 'Preview',
+      PROFILE: 'Profile',
+      TIME_ZONE: 'Time Zone',
+      PERIOD: 'Period',
+      LIMIT_RESULTS: 'Limit Results',
+      START_WEEK: 'Start of Week',
+      SHOW: 'Show',
+      INTERVAL_EXPORT: 'Interval Export',
+      FROM: 'From',
+      TO: 'To',
+    },
+    LABEL: {
+      STATE_NAME: 'State Name',
+      STATE_DISPLAY_NAME: 'State Display Name',
+    },
+    PLACEHOLDER: {
+      TITLE: 'Agent Status',
+    },
+    PERIOD: [
+      { value: 'Rolling Hour', id: CALL_STATISTIC_PERIOD.ROLLING_HOUR },
+      { value: 'This Hour', id: CALL_STATISTIC_PERIOD.HOUR },
+      { value: 'Today', id: CALL_STATISTIC_PERIOD.TODAY },
+      { value: 'This Week', id: CALL_STATISTIC_PERIOD.WEEK },
+      { value: 'This Month', id: CALL_STATISTIC_PERIOD.MONTH },
+    ],
+    TABLE_MOCK_DATA: createArrayFromTo(0, 15).map((el) => ({
+      elapsed: 4000 + el,
+      profile: 'Profile ' + (el % 4) + 1,
+      stateName: 'State Name ' + (el % 4) + 1,
+      stateDisplayName: 'State Display Name ' + (el % 4) + 1,
+      name: 'User Name ' + el,
+      time: '2020-20-02 14:50:52',
+      userId: 0,
+    })),
   },
   MESSAGES: {
     ALPHANUMERIC_TITLE: 'Title must be alphanumeric',

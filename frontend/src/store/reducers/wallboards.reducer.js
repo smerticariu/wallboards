@@ -290,10 +290,11 @@ export const wallboardsReducer = (state = { ...wallboardsInitialState }, action)
           value: queueTracking.totalCallsSLA.value,
           isChecked: queueTracking.totalCallsSLA.isChecked,
         },
-        solidCallsOverride: {
-          value: queueTracking.solidCallsOverride.value,
-          isChecked: queueTracking.solidCallsOverride.isChecked,
-        },
+        //do not remove
+        // solidCallsOverride: {
+        //   value: queueTracking.solidCallsOverride.value,
+        //   isChecked: queueTracking.solidCallsOverride.isChecked,
+        // },
         size: queueTracking.isEditMode ? queueTracking.size : null,
       };
       return {
@@ -415,6 +416,61 @@ export const wallboardsReducer = (state = { ...wallboardsInitialState }, action)
                     : {
                         ...newWidget,
                         id: agentLogin.id,
+                      }
+                )
+              : [...widgets, { ...newWidget, id: generateWallboardWidgetId(userInfo.organisationId, userInfo.id) }],
+          },
+        },
+      };
+    }
+    case wallboardsActions.ADD_WALLBOARD_AGENT_STATUS: {
+      const { widgets } = state.activeWallboard.wallboard;
+      const { agentStatus, userInfo } = action.payload;
+      const newWidget = {
+        title: agentStatus.title.value,
+        profile: {
+          id: +agentStatus.profile.id,
+          value: agentStatus.profile.value,
+        },
+        limitResult: {
+          value: +agentStatus.limitResult.value,
+        },
+        timeZone: {
+          id: +agentStatus.timeZone.id,
+          value: agentStatus.timeZone.value,
+        },
+        period: {
+          id: agentStatus.period.id,
+          value: agentStatus.period.value,
+        },
+        isShowStateName: agentStatus.isShowStateName,
+        isShowDisplayName: agentStatus.isShowDisplayName,
+        from: {
+          value: agentStatus.from.value,
+        },
+        to: {
+          value: agentStatus.to.value,
+        },
+        startOfWeek: {
+          id: +agentStatus.startOfWeek.id,
+          value: agentStatus.startOfWeek.value,
+        },
+        type: WIDGET_TYPE.AGENT_STATUS,
+        size: agentStatus.isEditMode ? agentStatus.size : null,
+      };
+      return {
+        ...state,
+        activeWallboard: {
+          ...state.activeWallboard,
+          wallboard: {
+            ...state.activeWallboard.wallboard,
+            widgets: agentStatus.isEditMode
+              ? widgets.map((widget) =>
+                  widget.id !== agentStatus.id
+                    ? widget
+                    : {
+                        ...newWidget,
+                        id: agentStatus.id,
                       }
                 )
               : [...widgets, { ...newWidget, id: generateWallboardWidgetId(userInfo.organisationId, userInfo.id) }],

@@ -8,6 +8,7 @@ import GridQueueTracking from './queue-tracking';
 import GridCallTracking from './call-tracking';
 import GridQueueStatus from './queue-status';
 import { WIDGET_TYPE } from '../../../common/defaults/modal.defaults';
+import GridAgentStatus from './agent-status';
 const Widget = ({ widget, isEditMode, ...props }) => {
   const dispatch = useDispatch();
   useEffect(() => {
@@ -21,7 +22,6 @@ const Widget = ({ widget, isEditMode, ...props }) => {
     return () => clearInterval(agentsInterval);
     // eslint-disable-next-line
   }, [widget]);
-
   return (
     <>
       {widget.type === WIDGET_TYPE.AGENT_LIST && <GridAgentList isEditMode={isEditMode} widget={widget} />}
@@ -30,6 +30,7 @@ const Widget = ({ widget, isEditMode, ...props }) => {
       {widget.type === WIDGET_TYPE.QUEUE_STATUS && <GridQueueStatus isEditMode={isEditMode} widget={widget} />}
       {widget.type === WIDGET_TYPE.CALL_TRACKING && <GridCallTracking isEditMode={isEditMode} widget={widget} />}
       {widget.type === WIDGET_TYPE.AGENT_LOGIN && <GridAgentLogin isEditMode={isEditMode} widget={widget} />}
+      {widget.type === WIDGET_TYPE.AGENT_STATUS && <GridAgentStatus isEditMode={isEditMode} widget={widget} />}
     </>
   );
 };

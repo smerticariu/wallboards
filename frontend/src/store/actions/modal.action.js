@@ -4,8 +4,6 @@ export const modalActions = {
   HANDLE_ADD_MODAL_COMPONENT_FORM_DATA: 'HANDLE_ADD_MODAL_COMPONENT_FORM_DATA',
   RESET_ADD_MODAL_COMPONENT_FORM_DATA: 'RESET_ADD_MODAL_COMPONENT_FORM_DATA',
 
-  HANDLE_MODAL_SELECT_COMPONENT_ACTIVE_ELEMENT: 'HANDLE_MODAL_SELECT_COMPONENT_ACTIVE_ELEMENT',
-
   SET_WIDGET_FOR_EDIT: 'SET_WIDGET_FOR_EDIT',
 
   SET_WALLBOARD_COMPONENT_FOR_DELETE: 'SET_WALLBOARD_COMPONENT_FOR_DELETE',
@@ -24,6 +22,8 @@ export const modalActions = {
   HANDLE_CALL_TRACKING_DATA: 'HANDLE_CALL_TRACKING_DATA',
 
   HANDLE_AGENT_LOGIN_DATA: 'HANDLE_AGENT_LOGIN_DATA',
+
+  HANDLE_AGENT_STATUS_DATA: 'HANDLE_AGENT_STATUS_DATA',
 };
 export const handleWallboardActiveModalAC = (modalName) => ({
   type: modalActions.HANDLE_ACTIVE_MODAL,
@@ -35,9 +35,6 @@ export const handleModalAddComponentFormDataAC = (formData) => ({
 });
 export const resetModalAddComponentFormDataAC = () => ({
   type: modalActions.RESET_ADD_MODAL_COMPONENT_FORM_DATA,
-});
-export const handleModalSelectActiveElementAC = () => ({
-  type: modalActions.HANDLE_MODAL_SELECT_COMPONENT_ACTIVE_ELEMENT,
 });
 export const setWidgetComponentForEditAC = (widget) => ({
   type: modalActions.SET_WIDGET_FOR_EDIT,
@@ -80,6 +77,10 @@ export const handleCallTrackingDataAC = (formData) => ({
 
 export const handleAgentLoginDataAC = (formData) => ({
   type: modalActions.HANDLE_AGENT_LOGIN_DATA,
+  payload: formData,
+});
+export const handleAgentStatusDataAC = (formData) => ({
+  type: modalActions.HANDLE_AGENT_STATUS_DATA,
   payload: formData,
 });
 
