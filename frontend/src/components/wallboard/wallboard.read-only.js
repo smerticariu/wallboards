@@ -48,7 +48,7 @@ const WallboardReadOnly = () => {
 
     return (
       <div className="error-message-container">
-        <h3 className="error-message--headline">Error {statusCode}:</h3>
+        <h3 className="error-message--headline">Error 401:</h3>
         <p className="error-message">{DEFAULTS.WALLBOARDS.MESSAGE.NOT_ALLOWED_VIEW}</p>
       </div>
     );

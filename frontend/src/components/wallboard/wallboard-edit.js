@@ -60,7 +60,7 @@ const WallboardEdit = () => {
       // check if it's basic user
       return (
         <div className="error-message-container">
-          <h3 className="error-message--headline">Error {statusCode}:</h3>
+          <h3 className="error-message--headline">Error 401:</h3>
           <p className="error-message">{DEFAULTS.WALLBOARDS.MESSAGE.NOT_ALLOWED_EDIT}</p>
         </div>
       );
@@ -72,7 +72,7 @@ const WallboardEdit = () => {
         // edit the wallboard only if the team leader has access on it
         return (
           <div className="error-message-container">
-            <h3 className="error-message--headline">Error {statusCode}:</h3>
+            <h3 className="error-message--headline">Error 401:</h3>
             <p className="error-message">{DEFAULTS.WALLBOARDS.MESSAGE.NOT_ALLOWED_EDIT}</p>
           </div>
         );
@@ -86,7 +86,7 @@ const WallboardEdit = () => {
         <>
           <Toolbar template="new-wallboard" />
           {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.SELECT_COMPONENT ||
-          activeModalName === DEFAULTS.MODAL.MODAL_NAMES.ADD_COMPONENT ||
+          activeModalName === DEFAULTS.MODAL.MODAL_NAMES.AGENT_LIST ||
           activeModalName === DEFAULTS.MODAL.MODAL_NAMES.CALL_STATUS ||
           activeModalName === DEFAULTS.MODAL.MODAL_NAMES.QUEUE_TRACKING ||
           activeModalName === DEFAULTS.MODAL.MODAL_NAMES.QUEUE_STATUS ||

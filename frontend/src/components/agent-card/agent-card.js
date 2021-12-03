@@ -1,10 +1,11 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { SettingsIcon } from '../../assets/static/icons/settings';
 import Dropdown from '../dropdown/dropdown';
 import TimeInterval from '../time-interval/time-interval';
 import { callAgentThunk, listenLiveThunk } from '../../store/thunk/agents.thunk';
 import { DEFAULTS } from '../../common/defaults/defaults';
+import { ArrowDownIcon } from '../../assets/static/icons/arrow-down';
 
 const AgentCard = ({
   id,
@@ -23,10 +24,12 @@ const AgentCard = ({
   ...props
 }) => {
   const dispatch = useDispatch();
-
+  const { usersAvatars } = useSelector((state) => state.login);
   const handleCallAgent = () => {
     dispatch(callAgentThunk(id));
   };
+
+  const agentAvatarPhoto = usersAvatars ? usersAvatars.find((user) => user.id === id)?.smallPhoto : '';
 
   const handleListenLive = () => {
     dispatch(listenLiveThunk(id));
@@ -36,13 +39,12 @@ const AgentCard = ({
     <div className={`agent-c agent-c--${DEFAULTS.MODAL.ADD_COMPONENT.PRESENCE_STATE_KEYS_COLOR.CARD_BACKGROUND[callStatusKey]}`}>
       <div className="agent-c__header">
         <div className="agent-c__user">
-          {/* <div
+          <div
             className="agent-c__user-image"
-            //do not delete
-            // style={{
-            //   backgroundImage: `url(${img})`,
-            // }}
-          /> */}
+            style={{
+              backgroundImage: `url(${agentAvatarPhoto})`,
+            }}
+          />
           <div className="agent-c__user-name-ext">
             <div className="agent-c__user-name">
               {name.length > DEFAULTS.GRID.MAX_NAME_CHARACTERS ? (
@@ -98,15 +100,21 @@ const AgentCard = ({
             DEFAULTS.MODAL.ADD_COMPONENT.PRESENCE_STATE_KEYS_COLOR.CARD_AVAILABILITY_STATUS_BACKGROUND[callStatusKey]
           } agent-c__status--${DEFAULTS.MODAL.ADD_COMPONENT.PRESENCE_STATE_KEYS_COLOR.CARD_AVAILABILITY_STATUS[callStatusKey]}`}
         >
-          {availabilityStatesList.length && canChangeAvailabilityState ? (
+          {
             <Dropdown
               className="c-dropdown--availability-state"
               closeOnClick={true}
+              isDisable={!(availabilityStatesList.length && canChangeAvailabilityState)}
               containerClassName="c-dropdown__container--availability"
               trigger={
-                <button className="c-button c-button--empty c-dropdown__trigger--agent-name agent-t__arrow-container agent-t__arrow-container--card">
-                  {status}
-                </button>
+                <>
+                  <button className="c-button c-button--empty c-dropdown__trigger--agent-name agent-list-table__arrow-container agent-list-table__arrow-container--card">
+                    {status}
+                  </button>
+                  {availabilityStatesList.length && canChangeAvailabilityState && (
+                    <ArrowDownIcon className="i--arrow--down i--arrow--down--table i--arrow--down--small" />
+                  )}
+                </>
               }
             >
               {availabilityStatesList.map((state) => (
@@ -121,9 +129,7 @@ const AgentCard = ({
                 </div>
               ))}
             </Dropdown>
-          ) : (
-            status
-          )}
+          }
         </div>
         <div
           className={`agent-c__time agent-c__time--${DEFAULTS.MODAL.ADD_COMPONENT.PRESENCE_STATE_KEYS_COLOR.CARD_TOTAL_TIME[callStatusKey]}`}

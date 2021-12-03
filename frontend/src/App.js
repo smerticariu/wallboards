@@ -9,10 +9,9 @@ import WallboardEdit from './components/wallboard/wallboard-edit';
 import WallboardReadOnly from 'src/components/wallboard/wallboard.read-only';
 import { Route, Switch } from 'react-router';
 import { HashRouter } from 'react-router-dom';
-import { setAccessTokenAC, setUserTokenInfoAC } from './store/actions/login.action';
+import { setAccessTokenAC, setUserTokenInfoAC, setUsersAvatarsAC } from './store/actions/login.action';
 import { fetchUserDataThunk, fetchUserInfoThunk } from './store/thunk/login.thunk';
-import ModalNewWidget from './components/modal/new-widget/modal.new-widget.';
-import ModalAddComponent from './components/modal/add-component/modal.add-component';
+import ModalAgentList from './components/modal/agent-list/modal.agent-list';
 import ModalSaveWallboard from './components/modal/save-wallboard/modal.save-wallboard';
 import ModalEditWallboard from './components/modal/edit-wallboard/modal.edit-wallboard';
 import ModalDeleteWallboard from './components/modal/delete-wallboard/modal.delete-wallboard';
@@ -26,6 +25,10 @@ import ModalQueueTracking from './components/modal/queue-tracking/modal.queue-tr
 import ModalQueueStatus from './components/modal/queue-status/modal.queue-status';
 import ModalCallTracking from './components/modal/call-tracking/modal.call-tracking';
 import ModalAgentLogin from './components/modal/agent-login/modal.agent-login';
+import jsforce from 'jsforce';
+import ModalAgentStatus from './components/modal/agent-status/modal.agent-status';
+import ModalQueueList from './components/modal/queue-list/modal.queue-list';
+import ModalNewWidget from './components/modal/new-widget/modal.new-widget';
 
 function App() {
   const dispatch = useDispatch();
@@ -38,6 +41,7 @@ function App() {
     if (!token) {
       fetchData();
     }
+
     // eslint-disable-next-line
   }, [isAuthenticated, token]);
   useEffect(() => {
@@ -50,7 +54,6 @@ function App() {
     return () => clearTimeout(tokenExpiryTimeout);
     // eslint-disable-next-line
   }, [userTokenInfo]);
-
   const fetchData = async () => {
     try {
       if (!sfToken && isAuthenticated) {
@@ -58,13 +61,52 @@ function App() {
           dispatch(setAccessTokenAC(res));
           dispatch(setUserTokenInfoAC(jwtExtractor(res)));
           dispatch(fetchUserInfoThunk(res));
+          getUsersAvatars(jwtExtractor(res));
         });
       } else if (sfToken) {
         dispatch(fetchUserDataThunk(sfToken));
+        dispatch(setUsersAvatarsAC(window.WbConfig.usersAvatars));
       }
     } catch (err) {
       console.log(err);
     }
+  };
+
+  const getUsersAvatars = async jwtDecoded => {
+    var conn = new jsforce.Connection({
+      instanceUrl: jwtDecoded.salesforceRestUrl.split('/services')[0],
+      accessToken: jwtDecoded.salesforceAccessToken
+    });
+
+    conn.query(DEFAULTS.SOQL.GET_USERS_PHOTOS, (err, sfUsers) => {
+      if (err) {
+        return console.error(err);
+      }
+
+      conn.query(DEFAULTS.SOQL.GET_USERS_IDS, (err, avsUsers) => {
+        if (err) {
+          return console.error(err);
+        }
+
+        const usersPhotos = sfUsers.records;
+        const usersIds = avsUsers.records;
+        let usersAvatars = [];
+
+        usersPhotos.forEach((userPhoto) => {
+          usersIds.forEach((userId) => {
+            if (userPhoto.Id === userId.nbavs__User__c) {
+              usersAvatars.push({
+                id: userId.nbavs__Id__c,
+                smallPhoto: userPhoto.SmallPhotoUrl,
+                largePhoto: userPhoto.FullPhotoUrl,
+                name: userPhoto.Name,
+              });
+            }
+          });
+        });
+        dispatch(setUsersAvatarsAC(usersAvatars));
+      });
+    });
   };
 
   const handleRedirect = () => {
@@ -94,7 +136,7 @@ function App() {
           </HashRouter>
           <NotificationMessage />
           {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.SELECT_COMPONENT && <ModalNewWidget />}
-          {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.ADD_COMPONENT && <ModalAddComponent />}
+          {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.AGENT_LIST && <ModalAgentList />}
           {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.SAVE_WALLBOARD && <ModalSaveWallboard />}
           {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.DELETE_WALLBOARD && <ModalDeleteWallboard />}
           {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.EDIT_WALLBOARD && <ModalEditWallboard />}
@@ -105,6 +147,8 @@ function App() {
           {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.QUEUE_STATUS && <ModalQueueStatus />}
           {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.CALL_TRACKING && <ModalCallTracking />}
           {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.AGENT_LOGIN && <ModalAgentLogin />}
+          {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.AGENT_STATUS && <ModalAgentStatus />}
+          {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.QUEUE_LIST && <ModalQueueList />}
           {warningMessage && <ModalWarning />}
         </>
       )}

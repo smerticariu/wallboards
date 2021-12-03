@@ -19,6 +19,7 @@ import {
   fetchUserGroupsSuccessAC,
   fetchUserLoginDataSuccessAC,
   fetchUsersCurrentCallTimeSuccessAC,
+  fetchUserStatusDataSuccessAC,
 } from '../actions/agents.action';
 import { handleIsNotificationShowAC } from '../actions/notification.action';
 import { DEFAULTS } from '../../common/defaults/defaults';
@@ -260,7 +261,8 @@ export const listenLiveThunk = (id) => async (dispatch, getState) => {
       data,
     });
   } catch (error) {
-    dispatch(handleIsNotificationShowAC(true, true, `Error: ${error.response.status ?? 'unknown'} - ${DEFAULTS.GLOBAL.FAIL}`));
+    console.log(error.data);
+    dispatch(handleIsNotificationShowAC(true, true, `Error: 400 - ${DEFAULTS.GLOBAL.FAIL}`));
     console.log(error);
   }
 };
@@ -281,6 +283,27 @@ export const fetchUserLoginDataThunk =
       });
 
       dispatch(fetchUserLoginDataSuccessAC(response.data.data, widgetId));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+export const fetchUserStatusDataThunk =
+  ({ timeStart, timeEnd }, profileId, limitResult, widgetId) =>
+  async (dispatch, getState) => {
+    try {
+      const { userInfo, token } = getState().login;
+
+      const responseAgentStatus = await AvailabilityApi({
+        type: DEFAULTS.AVAILABILITY.API.GET.HISTORY,
+        organizationId: userInfo.organisationId,
+        token,
+        profileId,
+        limitResult,
+        timeStart,
+        timeEnd,
+      });
+
+      dispatch(fetchUserStatusDataSuccessAC(responseAgentStatus.data.data, widgetId));
     } catch (error) {
       console.log(error);
     }
@@ -338,7 +361,66 @@ export const exportCSVUserLoginDataThunk =
       let encodedUri = encodeURI(csvContent);
       let link = document.createElement('a');
       link.setAttribute('href', encodedUri);
-      link.setAttribute('download', `${timeStart}_${timeEnd}.csv`);
+      link.setAttribute(
+        'download',
+        `Export_Agent_Login_Report_${moment(timeStart).format('YYYY-MM-DD')}-${moment(timeEnd).format('YYYY-MM-DD')}.csv`
+      );
+      document.body.appendChild(link);
+      link.click();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+export const exportCSVUserStatusDataThunk =
+  ({ timeStart, timeEnd }, profileId, limitResult, timezone) =>
+  async (dispatch, getState) => {
+    try {
+      const { userInfo, token } = getState().login;
+
+      const responseAgentStatus = await AvailabilityApi({
+        type: DEFAULTS.AVAILABILITY.API.GET.HISTORY,
+        organizationId: userInfo.organisationId,
+        token,
+        profileId,
+        limitResult,
+        timeStart,
+        timeEnd,
+      });
+      const agentStatusData = responseAgentStatus.data.data;
+      if (!agentStatusData.length) {
+        return dispatch(handleIsNotificationShowAC(true, true, DEFAULTS.AGENTS.API.ERROR.NO_AGENTS_STATUS));
+      }
+      const responseAgents = await AgentsApi({
+        type: DEFAULTS.AGENTS.API.GET.ALL_AGENTS,
+        organizationId: userInfo.organisationId,
+        token,
+      });
+      const allAgents = responseAgents.data.data;
+      let users = ['Name,Profile,State Name,State Display Name,Date & Time,Elapsed'];
+      agentStatusData.forEach((user) => {
+        const agent = allAgents.find((agent) => agent.id === user.userId);
+        const timeInSecconds = moment().diff(moment(user.time), 'seconds');
+        const noOfDays = Math.floor(timeInSecconds / 86400); // 1 day === 86400 seconds
+        const dateString = moment.utc(timeInSecconds * 1000).format('HH:mm:ss');
+        users.push([
+          `${agent.firstName + ' ' + agent.lastName},${user.availabilityProfileName},${user.availabilityStateDisplayName},${moment(
+            user.time
+          )
+            .utcOffset(timezone)
+            .format('YYYY-MM-DD HH:mm:ss')},${moment(user.time).format('YYYY-DD-MM HH:mm:ss')},${
+            noOfDays ? `${noOfDays} Day${noOfDays === 1 ? '' : 's'}` : dateString
+          }`,
+        ]);
+      });
+      let csvContent = 'data:text/csv;charset=utf-8,' + users.map((user) => user).join('\n');
+      let encodedUri = encodeURI(csvContent);
+      let link = document.createElement('a');
+      link.setAttribute('href', encodedUri);
+      link.setAttribute(
+        'download',
+        `Export_Agent_Availability_State_Report_${moment(timeStart).format('YYYY-MM-DD')}-${moment(timeEnd).format('YYYY-MM-DD')}.csv`
+      );
       document.body.appendChild(link);
       link.click();
     } catch (error) {

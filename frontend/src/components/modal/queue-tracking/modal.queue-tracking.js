@@ -6,7 +6,7 @@ import { addWallboardQueueTrackingAC } from '../../../store/actions/wallboards.a
 import {
   handleQueueTrackingDataAC,
   handleWallboardActiveModalAC,
-  resetModalAddComponentFormDataAC,
+  resetNewWidgetModalFormDataAC,
 } from '../../../store/actions/modal.action';
 import { checkIsAlphanumeric } from '../../../common/utils/alphanumeric-validation';
 import { DEFAULTS } from '../../../common/defaults/defaults';
@@ -43,7 +43,7 @@ const ModalqueueTracking = ({ ...props }) => {
   }, []);
   const closeModal = () => {
     dispatch(handleWallboardActiveModalAC(null));
-    dispatch(resetModalAddComponentFormDataAC());
+    dispatch(resetNewWidgetModalFormDataAC());
   };
 
   useOnClickOutside(modalRef, () => {
@@ -61,21 +61,32 @@ const ModalqueueTracking = ({ ...props }) => {
       </button>
     );
   };
+  const checkIfExistErrors = () => {
+    let isError = false;
+    let queueTrackingCopy = {
+      ...queueTracking,
+    };
+    if (!checkIsAlphanumeric(queueTrackingCopy.title.value)) {
+      queueTrackingCopy.title.errorMessage = DEFAULTS.MODAL.MESSAGES.ALPHANUMERIC_TITLE;
+      isError = true;
+    }
+    if (
+      isNaN(queueTrackingCopy.abandonedCallSLA.value) ||
+      +queueTrackingCopy.abandonedCallSLA.value < 1 ||
+      +queueTrackingCopy.abandonedCallSLA.value > 100
+    ) {
+      queueTrackingCopy.abandonedCallSLA.errorMessage = DEFAULTS.MODAL.MESSAGES.MIN_SLA_TIME + ', ' + DEFAULTS.MODAL.MESSAGES.MAX_VALUE;
+      isError = true;
+    }
+    if (isError) {
+      dispatch(handleQueueTrackingDataAC(queueTrackingCopy));
+    }
+    return isError;
+  };
 
   const handleAddButton = () => {
     const onClickAddButton = (e) => {
-      if (!checkIsAlphanumeric(queueTracking.title.value)) {
-        dispatch(
-          handleQueueTrackingDataAC({
-            title: {
-              ...queueTracking.title,
-              errorMessage: DEFAULTS.MODAL.MESSAGES.ALPHANUMERIC_TITLE,
-            },
-          })
-        );
-
-        return alert(DEFAULTS.MODAL.MESSAGES.ALPHANUMERIC_TITLE);
-      }
+      if (checkIfExistErrors()) return;
       dispatch(addWallboardQueueTrackingAC(queueTracking, userInfo));
       closeModal();
     };
@@ -267,8 +278,8 @@ const ModalqueueTracking = ({ ...props }) => {
             <div className="c-input__error-message">{queueTracking.averageWaitSLA.errorMessage}</div>
           )}
         </div>
-
-        <div className="c-modal--add-component__input-section">
+        {/* do not remove */}
+        {/* <div className="c-modal--add-component__input-section">
           <div className="c-modal--add-component__input-label">{DEFAULTS.MODAL.QUEUE_TRACKING.NAMES.SOLID_CALLS_OVERRIDE}</div>
           <CheckBox
             className="c-checkbox--margin-bottom"
@@ -286,7 +297,7 @@ const ModalqueueTracking = ({ ...props }) => {
           {queueTracking.solidCallsOverride.errorMessage && (
             <div className="c-input__error-message">{queueTracking.solidCallsOverride.errorMessage}</div>
           )}
-        </div>
+        </div> */}
       </div>
     );
   };

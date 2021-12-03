@@ -60,3 +60,7 @@ E.g.:
 - Read-only wallboard: https://wbapp.natterbox.com/#/wallboard/id-of-the-wallboard
 
 If the user does not have access to the wallboard, a notification will be displayed with **Access Denied**
+
+## Extra
+The code that will be added to the Visualforce page can be find in the **salesforce.html** file.
+The host url of the **bundle.min.js** script depends on where the **Wallboards** app was deployed.

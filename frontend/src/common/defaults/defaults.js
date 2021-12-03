@@ -8,6 +8,7 @@ import { CALLS } from './calls.defaults';
 import { GRID } from './grid.defaults';
 import { MODAL } from './modal.defaults';
 import { LANDING } from './landing.defaults';
+import { SOQL } from './soql.defaults';
 
 export const DEFAULTS = {
   GLOBAL: {
@@ -23,4 +24,5 @@ export const DEFAULTS = {
   GRID,
   MODAL,
   LANDING,
+  SOQL,
 };

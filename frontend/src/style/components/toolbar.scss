@@ -31,6 +31,8 @@
       font-family: $public-sans-regular;
       color: $grey;
       margin: 0;
+      margin-top: 10px;
+      text-align: left;
     }
   }
   &--error {
@@ -43,19 +45,23 @@
 }
 
 @media screen and (max-width: $tablet) {
-  .c-toolbar:not(.c-toolbar--wb-read-only) {
+  .c-toolbar {
     flex-direction: column;
     justify-content: space-evenly;
-    padding: 20px 0;
+    padding: 15px 0;
+
     &-left,
     &-right {
-      margin-top: 10px;
       width: 100%;
+      max-width: 100%;
       align-items: center;
       justify-content: center;
       flex-wrap: wrap;
+      text-align: center;
+      overflow: auto;
     }
     &-right {
+      margin-top: 15px;
       &__search-input {
         max-width: 100%;
         margin-bottom: 10px;
@@ -67,6 +73,34 @@
       &__wrapper {
         text-align: center;
       }
+      &__wb-no {
+        text-align: center;
+      }
+    }
+  }
+  .c-toolbar.c-toolbar--error {
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    .c-toolbar-left {
+      display: none;
+    }
+    .c-toolbar-left {
+      text-align: start;
+    }
+
+    .c-toolbar-right {
+      justify-content: end;
+    }
+  }
+  .c-toolbar--wb-read-only {
+    flex-direction: row;
+    justify-content: space-between;
+    .c-toolbar-left {
+      text-align: start;
+    }
+
+    .c-toolbar-right {
+      justify-content: end;
     }
   }
 }
