@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import {
   createNewEmptyWallboardAC,
+  createNewEmptyWallboardGroupAC,
   handleNewWallboardTitleAC,
   setFiltredWallboardsAC,
   wallboardRedoAC,
@@ -12,7 +13,7 @@ import { RedoIcon } from '../../assets/static/icons/redo';
 import { UndoIcon } from '../../assets/static/icons/undo';
 import CustomAutosuggest from '../autosuggest/autosuggest';
 import { useHistory } from 'react-router';
-import { generateWallboardId } from '../../common/utils/generateId';
+import { generateWallboardGroupId, generateWallboardId } from '../../common/utils/generateId';
 import { handleWallboardActiveModalAC, setSelectedWallboardSettingsAC } from '../../store/actions/modal.action';
 import { SettingsIcon } from '../../assets/static/icons/settings';
 import { DEFAULTS } from '../../common/defaults/defaults';
@@ -25,6 +26,7 @@ const Toolbar = (props) => {
   const wallboards = useSelector((state) => state.landing.wallboardsByCategory);
   const { userInfo } = useSelector((state) => state.login);
   const activeWallboard = useSelector((state) => state.wallboards.present.activeWallboard.wallboard);
+  const wallboardGroup = useSelector((state) => state.wallboards.present.wallboardGroup.wallboardGroup);
   const noOfSteptsForUndo = useSelector((state) => state.wallboards.noOfSteptsForUndo);
   const wallboardStates = useSelector((state) => state.wallboards);
   const history = useHistory();
@@ -52,14 +54,26 @@ const Toolbar = (props) => {
       </div>
     );
   };
+  const newWallboardGroupHeading = () => {
+    const handleChangeTitle = (event) => {
+      dispatch(handleNewWallboardTitleAC(event.target.value));
+    };
+    return (
+      <div className="c-toolbar-left__wrapper">
+        <AutoWidthInput onChange={handleChangeTitle} className="c-input c-input--new-walboard-title" value={wallboardGroup.name} />
+      </div>
+    );
+  };
 
   const handleLeftToolbar = (template) => {
     switch (template) {
-      case 'landing':
+      case DEFAULTS.TOOLBAR.NAME.LANDING:
         return heading();
-      case 'new-wallboard':
+      case DEFAULTS.TOOLBAR.NAME.NEW_WALLBOARD:
         return newWallboardHeading();
-      case 'wb-read-only':
+      case DEFAULTS.TOOLBAR.NAME.NEW_WALLBOARD_GROUP:
+        return newWallboardGroupHeading();
+      case DEFAULTS.TOOLBAR.NAME.WALLBOARD_READ_ONLY:
         return <h1 className="c-toolbar-left__heading c-toolbar-left__heading--new-wallboard">{props.wbName}</h1>;
       default:
         return null;
@@ -102,7 +116,9 @@ const Toolbar = (props) => {
   };
   const handleNewWallboardGroupButton = () => {
     const onClickNewWallboardGroupButton = (e) => {
-      dispatch(setFiltredWallboardsAC(e.target.value));
+      const newWallboardGroupId = generateWallboardGroupId(userInfo.organisationId, userInfo.id);
+      dispatch(createNewEmptyWallboardGroupAC(newWallboardGroupId));
+      history.push(`/wallboard/group/${newWallboardGroupId}/edit`);
     };
 
     return (
@@ -114,7 +130,14 @@ const Toolbar = (props) => {
 
   const handleNewComponentButton = () => {
     const onClickNewComponentModal = () => {
-      dispatch(handleWallboardActiveModalAC(DEFAULTS.MODAL.MODAL_NAMES.SELECT_COMPONENT));
+      switch (props.template) {
+        case DEFAULTS.TOOLBAR.NAME.NEW_WALLBOARD:
+          return dispatch(handleWallboardActiveModalAC(DEFAULTS.MODAL.MODAL_NAMES.SELECT_COMPONENT));
+        case DEFAULTS.TOOLBAR.NAME.NEW_WALLBOARD_GROUP:
+          return dispatch(handleWallboardActiveModalAC(DEFAULTS.MODAL.MODAL_NAMES.SELECT_COMPONENT));
+        default:
+          break;
+      }
     };
 
     return (
@@ -154,7 +177,14 @@ const Toolbar = (props) => {
 
   const handleSaveButton = () => {
     const handleClick = () => {
-      dispatch(handleWallboardActiveModalAC(DEFAULTS.MODAL.MODAL_NAMES.CONFIRM_SAVE_WALLBOARD));
+      switch (props.template) {
+        case DEFAULTS.TOOLBAR.NAME.NEW_WALLBOARD:
+          return dispatch(handleWallboardActiveModalAC(DEFAULTS.MODAL.MODAL_NAMES.CONFIRM_SAVE_WALLBOARD));
+        case DEFAULTS.TOOLBAR.NAME.NEW_WALLBOARD_GROUP:
+          return dispatch(handleWallboardActiveModalAC(DEFAULTS.MODAL.MODAL_NAMES.CONFIRM_SAVE_WALLBOARD));
+        default:
+          break;
+      }
     };
     return (
       <button
@@ -169,7 +199,16 @@ const Toolbar = (props) => {
   };
 
   const onClickCloseButton = () => {
-    if (noOfSteptsForUndo) return dispatch(handleWallboardActiveModalAC(DEFAULTS.MODAL.MODAL_NAMES.SAVE_WALLBOARD));
+    if (noOfSteptsForUndo) {
+      switch (props.template) {
+        case DEFAULTS.TOOLBAR.NAME.NEW_WALLBOARD:
+          return dispatch(handleWallboardActiveModalAC(DEFAULTS.MODAL.MODAL_NAMES.SAVE_WALLBOARD));
+        case DEFAULTS.TOOLBAR.NAME.NEW_WALLBOARD_GROUP:
+          return dispatch(handleWallboardActiveModalAC(DEFAULTS.MODAL.MODAL_NAMES.SAVE_WALLBOARD));
+        default:
+          break;
+      }
+    }
     return history.push('/');
   };
 
@@ -203,7 +242,7 @@ const Toolbar = (props) => {
 
   const handleRightToolbar = (template) => {
     switch (template) {
-      case 'landing':
+      case DEFAULTS.TOOLBAR.NAME.LANDING:
         return (
           <>
             {handleFilterInput()}
@@ -211,7 +250,8 @@ const Toolbar = (props) => {
             {handleNewWallboardGroupButton()}
           </>
         );
-      case 'new-wallboard':
+      case DEFAULTS.TOOLBAR.NAME.NEW_WALLBOARD_GROUP:
+      case DEFAULTS.TOOLBAR.NAME.NEW_WALLBOARD:
         return (
           <>
             {handleNewComponentButton()}
@@ -222,8 +262,9 @@ const Toolbar = (props) => {
             {handleSettingsIcon()}
           </>
         );
-      case 'error':
-      case 'wb-read-only':
+
+      case DEFAULTS.TOOLBAR.NAME.ERROR:
+      case DEFAULTS.TOOLBAR.NAME.WALLBOARD_READ_ONLY:
         return (
           <>
             <button className="c-button c-button--m-left" onClick={() => logout()}>
@@ -238,7 +279,7 @@ const Toolbar = (props) => {
 
   const handleBanner = () => {
     const onLogoClick = () => {
-      if (props.template === 'new-wallboard') {
+      if (props.template === DEFAULTS.TOOLBAR.NAME.NEW_WALLBOARD) {
         return onClickCloseButton();
       }
       return history.push('/');
@@ -254,8 +295,8 @@ const Toolbar = (props) => {
     <>
       {handleBanner()}
       <div
-        className={`c-toolbar ${props.template === 'wb-read-only' ? 'c-toolbar--wb-read-only' : ''} ${
-          props.template === 'error' ? 'c-toolbar--error' : ''
+        className={`c-toolbar ${props.template === DEFAULTS.TOOLBAR.NAME.WALLBOARD_READ_ONLY ? 'c-toolbar--wb-read-only' : ''} ${
+          props.template === DEFAULTS.TOOLBAR.NAME.ERROR ? 'c-toolbar--error' : ''
         }`}
       >
         {props.children && <>{props.children}</>}

@@ -1,0 +1,13 @@
+.wb-group {
+  background-color: $light-grey;
+  display: flex;
+  width: calc(100% - 50px);
+  height: calc(100vh - 170px);
+  margin: 0 auto;
+  padding: 19px 25px;
+  &__title {
+    color: $natterbox-grey-col;
+    font-size: 20px;
+    font-family: $inter-regular;
+  }
+}

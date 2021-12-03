@@ -46,6 +46,7 @@ export const wallboardsUndoable = (reducer) => {
         };
       }
       case wallboardsActions.SAVE_WALLBOARD_SUCCESS:
+      case wallboardsActions.CREATE_LOCAL_NEW_EMPTY_WALLBOARD_GROUP:
       case wallboardsActions.CREATE_LOCAL_NEW_EMPTY_WALLBOARD: {
         const newPresent = reducer(present, action);
         return {

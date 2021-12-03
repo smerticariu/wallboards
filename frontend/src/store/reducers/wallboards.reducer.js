@@ -25,6 +25,23 @@ const wallboardInitialValues = {
   },
   isNewWallboard: null,
 };
+
+const wallboardGroupInitialValues = {
+  name: 'My New Wallboard Group',
+  id: null,
+  description: 'New Wallboard Group Description',
+  wallboards: [],
+  settings: {
+    display: {
+      shrinkHeight: false,
+      shrinkWidth: false,
+    },
+    link: {
+      isReadOnlyEnabled: false,
+    },
+  },
+  isNewWallboardGroup: null,
+};
 export const wallboardsInitialState = {
   wallboardIdForDelete: null,
   searchedWallboards: [],
@@ -39,6 +56,14 @@ export const wallboardsInitialState = {
   allWallboards: {
     wallboards: [],
     fetchStatus: FetchStatus.NULL,
+  },
+  wallboardGroup: {
+    wallboardGroupInitialValues: { ...wallboardGroupInitialValues },
+    wallboardGroup: { ...wallboardGroupInitialValues },
+    fetchStatus: FetchStatus.NULL,
+    fetchMessage: '',
+    saveStatus: FetchStatus.NULL,
+    statusCode: '',
   },
 };
 
@@ -111,6 +136,15 @@ export const wallboardsReducer = (state = { ...wallboardsInitialState }, action)
           ...state.activeWallboard,
           wallboard: { ...wallboardsInitialState.activeWallboard.wallboard, id: action.payload, isNewWallboard: true },
           saveStatus: FetchStatus.SUCCESS,
+        },
+      };
+
+    case wallboardsActions.CREATE_LOCAL_NEW_EMPTY_WALLBOARD_GROUP:
+      return {
+        ...state,
+        wallboardGroup: {
+          ...state.wallboardGroup,
+          wallboardGroup: { ...wallboardsInitialState.wallboardGroup.wallboardGroup, id: action.payload, isNewWallboardGroup: true },
         },
       };
 
@@ -598,6 +632,9 @@ export const wallboardsReducer = (state = { ...wallboardsInitialState }, action)
         ...state,
         activeWallboard: {
           ...wallboardsInitialState.activeWallboard,
+        },
+        wallboardGroup: {
+          ...wallboardsInitialState.wallboardGroup,
         },
       };
     }

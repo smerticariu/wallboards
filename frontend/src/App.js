@@ -29,6 +29,7 @@ import jsforce from 'jsforce';
 import ModalAgentStatus from './components/modal/agent-status/modal.agent-status';
 import ModalQueueList from './components/modal/queue-list/modal.queue-list';
 import ModalNewWidget from './components/modal/new-widget/modal.new-widget';
+import WallboardGroupEdit from './components/wallboard-group/wallboard-group-edit';
 
 function App() {
   const dispatch = useDispatch();
@@ -72,10 +73,10 @@ function App() {
     }
   };
 
-  const getUsersAvatars = async jwtDecoded => {
+  const getUsersAvatars = async (jwtDecoded) => {
     var conn = new jsforce.Connection({
       instanceUrl: jwtDecoded.salesforceRestUrl.split('/services')[0],
-      accessToken: jwtDecoded.salesforceAccessToken
+      accessToken: jwtDecoded.salesforceAccessToken,
     });
 
     conn.query(DEFAULTS.SOQL.GET_USERS_PHOTOS, (err, sfUsers) => {
@@ -128,6 +129,9 @@ function App() {
               </Route>
               <Route exact path="/wallboard/:id/edit">
                 <WallboardEdit />
+              </Route>
+              <Route exact path="/wallboard/group/:id/edit">
+                <WallboardGroupEdit />
               </Route>
               <Route path="/wallboard/:id">
                 <WallboardReadOnly userInfo={userTokenInfo} />
