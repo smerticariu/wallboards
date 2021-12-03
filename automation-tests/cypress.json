@@ -1,17 +1,10 @@
 {
-  
-    
-    "reporter": "junit",
-    "reporterOptions": {
-      "mochaFile": "cypress/reports/junit/test-results.[hash].xml",
-      "testsuitesTitle": false
-    },
-    
-      "baseUrl": "http://localhost:3000/",
-      "chromeWebSecurity": false
-    }
-
-  
-
-  
-
+  "reporter": "junit",
+  "reporterOptions": {
+    "mochaFile": "cypress/reports/junit/test-results.[hash].xml",
+    "testsuitesTitle": false
+  },
+  "baseUrl": "http://localhost:3000/",
+  "chromeWebSecurity": false,
+  "browser": "chrome"
+}
