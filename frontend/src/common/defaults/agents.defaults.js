@@ -12,6 +12,7 @@ export const AGENTS = {
     },
     ERROR: {
       NO_AGENTS: 'No agents',
+      NO_AGENTS_STATUS: 'No data',
     },
   },
 };
