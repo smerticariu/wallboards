@@ -61,21 +61,32 @@ const ModalqueueTracking = ({ ...props }) => {
       </button>
     );
   };
+  const checkIfExistErrors = () => {
+    let isError = false;
+    let queueTrackingCopy = {
+      ...queueTracking,
+    };
+    if (!checkIsAlphanumeric(queueTrackingCopy.title.value)) {
+      queueTrackingCopy.title.errorMessage = DEFAULTS.MODAL.MESSAGES.ALPHANUMERIC_TITLE;
+      isError = true;
+    }
+    if (
+      isNaN(queueTrackingCopy.abandonedCallSLA.value) ||
+      +queueTrackingCopy.abandonedCallSLA.value < 1 ||
+      +queueTrackingCopy.abandonedCallSLA.value > 100
+    ) {
+      queueTrackingCopy.abandonedCallSLA.errorMessage = DEFAULTS.MODAL.MESSAGES.MIN_SLA_TIME + ', ' + DEFAULTS.MODAL.MESSAGES.MAX_VALUE;
+      isError = true;
+    }
+    if (isError) {
+      dispatch(handleQueueTrackingDataAC(queueTrackingCopy));
+    }
+    return isError;
+  };
 
   const handleAddButton = () => {
     const onClickAddButton = (e) => {
-      if (!checkIsAlphanumeric(queueTracking.title.value)) {
-        dispatch(
-          handleQueueTrackingDataAC({
-            title: {
-              ...queueTracking.title,
-              errorMessage: DEFAULTS.MODAL.MESSAGES.ALPHANUMERIC_TITLE,
-            },
-          })
-        );
-
-        return alert(DEFAULTS.MODAL.MESSAGES.ALPHANUMERIC_TITLE);
-      }
+      if (checkIfExistErrors()) return;
       dispatch(addWallboardQueueTrackingAC(queueTracking, userInfo));
       closeModal();
     };

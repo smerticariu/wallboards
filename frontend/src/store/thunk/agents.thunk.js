@@ -388,7 +388,9 @@ export const exportCSVUserStatusDataThunk =
         timeEnd,
       });
       const agentStatusData = responseAgentStatus.data.data;
-
+      if (!agentStatusData.length) {
+        return dispatch(handleIsNotificationShowAC(true, true, DEFAULTS.AGENTS.API.ERROR.NO_AGENTS_STATUS));
+      }
       const responseAgents = await AgentsApi({
         type: DEFAULTS.AGENTS.API.GET.ALL_AGENTS,
         organizationId: userInfo.organisationId,
