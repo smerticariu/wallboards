@@ -744,6 +744,7 @@ Then('none of the one-skill-agents displayed possess the disabled {string}', () 
         Then ('the selected settings for the agent list component is displayed in card view mode', () => {
             agent.verifyCardView();
             agent.readOnlyCardMode().should('be.visible')
+            agent.avatar().should('be.visible')
         })
 
 // Scenario: Agent not possessing any of the skills is displayed when select none option is enabled

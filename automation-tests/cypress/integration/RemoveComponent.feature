@@ -10,7 +10,6 @@ Feature: Removing a component
             | div.c-modal--add-component__left-side > div:nth-child(3) > label                                  |
             | div.c-modal--add-component__left-side > div:nth-child(3) > div.c-modal--add-component__main-radio |
 
-
     Scenario: Removing components is only available from wallboard edit mode
         Given the page for wallboard creation is displayed
         And the user adds component
