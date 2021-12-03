@@ -3,7 +3,7 @@ import React, { useEffect, useRef } from 'react';
 const AutoWidthInput = ({ value, ...props }) => {
   const inputRef = useRef();
   useEffect(() => {
-    if (value.length > 25 || value.length < 10) return;
+    if (value.length > 25 || value.length < 5) return;
     inputRef.current.style.width = value.length + 'ch';
   }, [value]);
 
