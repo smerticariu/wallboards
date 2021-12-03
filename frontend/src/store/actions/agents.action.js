@@ -117,9 +117,9 @@ export const changeAgentAvailabilityStateFailAC = (errorMessage) => ({
   payload: errorMessage,
 });
 
-export const fetchUsersCurrentCallTimeSuccessAC = (calls) => ({
+export const fetchUsersCurrentCallTimeSuccessAC = (calls, callsWithGroup) => ({
   type: agentsActions.FETCH_USERS_CURRENT_CALL_TIME_SUCCESS,
-  payload: calls,
+  payload: { calls, callsWithGroup },
 });
 export const fetchUserLoginDataSuccessAC = (userLoginData, widgetId) => ({
   type: agentsActions.FETCH_USER_LOGIN_DATA_SUCCESS,
