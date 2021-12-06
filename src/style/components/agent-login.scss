@@ -1,0 +1,92 @@
+.agent-login {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  min-width: 900px;
+  &--agent-status {
+    min-width: 1100px;
+  }
+  &__header {
+    display: grid;
+    min-width: 100%;
+    min-height: 32px;
+    background-color: $turquoise-blue;
+    justify-content: space-between;
+    align-items: center;
+    grid-template-columns: 23% 23% 17% 23% 14%;
+    &--queue-list {
+      display: flex;
+      flex-wrap: nowrap;
+      min-width: 100%;
+    }
+    &-item {
+      display: flex;
+      background-color: $turquoise-blue;
+      font-family: $public-sans-regular;
+      font-size: 14px;
+      font-weight: 500;
+      color: $white;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+    }
+  }
+  &__body {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+  }
+  &__row {
+    display: grid;
+    width: 100%;
+    min-height: 24px;
+    align-items: center;
+    justify-content: space-between;
+    grid-template-columns: 23% 23% 17% 23% 14%;
+    background-color: $dark-grey;
+    font-weight: 700;
+    &:nth-child(2n + 1) {
+      background-color: $dark-white;
+      font-weight: normal;
+    }
+
+    &--queue-list {
+      display: flex;
+      flex-wrap: nowrap;
+      min-height: 56px;
+      font-weight: normal;
+      background-color: $white;
+      &:nth-child(2n + 1) {
+        background-color: white;
+      }
+    }
+    &-item {
+      font-family: $public-sans-regular;
+      font-size: 14px;
+      color: $slate-gray;
+      text-align: center;
+      &--queue-list {
+        display: flex;
+        height: 100%;
+        align-items: center;
+        justify-content: center;
+        outline: solid 1px $dark-grey;
+      }
+      &--login {
+        color: $jungle-green;
+        font-weight: 700;
+      }
+      &--logout {
+        color: $natterbox-red;
+        font-weight: normal;
+      }
+      &--login,
+      &--logout {
+        text-transform: lowercase;
+        &:first-letter {
+          text-transform: uppercase;
+        }
+      }
+    }
+  }
+}
