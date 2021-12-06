@@ -102,18 +102,21 @@ const QueueListTable = ({ isPreviewMode, isEditMode, tableData, widget, ...props
           compareRespone = call2[QUEUE_LIST_COLUMN_OPTIONS.TIME_AT_HEAD_OF_QUEUE] - call1[QUEUE_LIST_COLUMN_OPTIONS.TIME_AT_HEAD_OF_QUEUE];
           break;
         case QUEUE_LIST_COLUMN_OPTIONS.CALLBACK_REQUESTED:
-          if (call1[QUEUE_LIST_COLUMN_OPTIONS.CALLBACK_REQUESTED]) compareRespone = -1;
-          compareRespone = 1;
+          compareRespone =
+            call1[QUEUE_LIST_COLUMN_OPTIONS.CALLBACK_REQUESTED] === call2[QUEUE_LIST_COLUMN_OPTIONS.CALLBACK_REQUESTED]
+              ? 0
+              : call1[QUEUE_LIST_COLUMN_OPTIONS.CALLBACK_REQUESTED]
+              ? -1
+              : 1;
           break;
         case QUEUE_LIST_COLUMN_OPTIONS.CALLBACK_ATTEMPTS:
-          if (!call1[QUEUE_LIST_COLUMN_OPTIONS.CALLBACK_ATTEMPTS]) compareRespone = 1;
-          if (!call2[QUEUE_LIST_COLUMN_OPTIONS.CALLBACK_ATTEMPTS]) compareRespone = -1;
           compareRespone = call2[QUEUE_LIST_COLUMN_OPTIONS.CALLBACK_ATTEMPTS] - call1[QUEUE_LIST_COLUMN_OPTIONS.CALLBACK_ATTEMPTS];
+
           break;
         default:
           compareRespone = 0;
       }
-      if (!descending) {
+      if (descending) {
         return 0 - compareRespone;
       }
       return compareRespone;
@@ -172,6 +175,7 @@ const QueueListTable = ({ isPreviewMode, isEditMode, tableData, widget, ...props
                       width: (column.minWidth * 100) / totalWidth + '%',
                       minWidth: column.minWidth + 'px',
                     };
+                    const isStatusConnected = call[QUEUE_LIST_COLUMN_OPTIONS.STATUS] === 'connected';
                     let content = call[column.value];
                     switch (column.value) {
                       case QUEUE_LIST_COLUMN_OPTIONS.PRIORITY:
@@ -184,8 +188,11 @@ const QueueListTable = ({ isPreviewMode, isEditMode, tableData, widget, ...props
                       case QUEUE_LIST_COLUMN_OPTIONS.POSITION_IN_QUEUE:
                         const positionNo = call[column.value];
                         style.backgroundColor = DEFAULTS.MODAL.QUEUE_LIST.QUEUE_POSITION_COLORS[positionNo];
-                        if (isNaN(positionNo)) style.backgroundColor = DEFAULTS.MODAL.QUEUE_LIST.QUEUE_POSITION_COLORS.default;
-                        if (positionNo === 1 || positionNo >= 8) style.color = DEFAULTS.MODAL.QUEUE_LIST.PRIORITY_COLORS.textColorWhite;
+                        if (isStatusConnected) {
+                          content = 'Connected';
+                          style.backgroundColor = DEFAULTS.MODAL.QUEUE_LIST.PRIORITY_COLORS.default;
+                        } else if (positionNo === 1 || positionNo >= 8)
+                          style.color = DEFAULTS.MODAL.QUEUE_LIST.PRIORITY_COLORS.textColorWhite;
                         break;
 
                       case QUEUE_LIST_COLUMN_OPTIONS.TIME_WAITING_IN_QUEUE: {
@@ -197,8 +204,10 @@ const QueueListTable = ({ isPreviewMode, isEditMode, tableData, widget, ...props
                         }
                         content = (
                           <div>
-                            {isProgressBarShow && <ProgressBar width={(timeWaiting * 100) / widget.timeInQueueSLATime} />}
-                            <TimeInterval seconds={timeWaiting} isStop />
+                            {isProgressBarShow && !isStatusConnected && (
+                              <ProgressBar width={(timeWaiting * 100) / widget.timeInQueueSLATime} />
+                            )}
+                            <TimeInterval seconds={timeWaiting} isStop={isStatusConnected} />
                           </div>
                         );
                         break;
@@ -222,8 +231,10 @@ const QueueListTable = ({ isPreviewMode, isEditMode, tableData, widget, ...props
                         }
                         content = (
                           <div>
-                            {isProgressBarShow && <ProgressBar width={(timeAtHeadOfQueue * 100) / widget.timeAtHeadOfQueueSLATime} />}
-                            <TimeInterval seconds={timeAtHeadOfQueue} isStop />
+                            {isProgressBarShow && !isStatusConnected && (
+                              <ProgressBar width={(timeAtHeadOfQueue * 100) / widget.timeAtHeadOfQueueSLATime} />
+                            )}
+                            <TimeInterval seconds={timeAtHeadOfQueue} isStop={isStatusConnected} />
                           </div>
                         );
                         break;
@@ -241,8 +252,10 @@ const QueueListTable = ({ isPreviewMode, isEditMode, tableData, widget, ...props
                       case QUEUE_LIST_COLUMN_OPTIONS.CALLBACK_ATTEMPTS: {
                         const callbackAttempts = call[column.value];
                         if (!isNaN(callbackAttempts)) {
-                          style.backgroundColor = DEFAULTS.MODAL.QUEUE_LIST.QUEUE_POSITION_COLORS.green;
-                          style.color = DEFAULTS.MODAL.QUEUE_LIST.QUEUE_POSITION_COLORS.textColorWhite;
+                          style.backgroundColor = DEFAULTS.MODAL.QUEUE_LIST.QUEUE_POSITION_COLORS[callbackAttempts];
+                          if (callbackAttempts <= 1 || callbackAttempts >= 8)
+                            style.color = DEFAULTS.MODAL.QUEUE_LIST.PRIORITY_COLORS.textColorWhite;
+
                           style.opacity = 0.68;
                           content = callbackAttempts;
                         } else {
