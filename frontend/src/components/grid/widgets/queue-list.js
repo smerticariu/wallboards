@@ -44,7 +44,7 @@ const GridQueueList = ({ widget, ...props }) => {
       return true;
     });
 
-    queuedCallCopy = queuedCallCopy.map((call, key) => {
+    queuedCallCopy = queuedCallCopy.map((call) => {
       call.timeInQueue = findTimeInQueue(call, activeCalls);
       call.timeAtHeadOfQueue = findTimeAtHeadOfQueue(call);
       return call;
@@ -58,7 +58,7 @@ const GridQueueList = ({ widget, ...props }) => {
         [QUEUE_LIST_COLUMN_OPTIONS.TIME_WAITING_IN_QUEUE]: call.timeInQueue,
         [QUEUE_LIST_COLUMN_OPTIONS.DIAL_ATTEMPTS]: call.dialAttempts,
         [QUEUE_LIST_COLUMN_OPTIONS.STATUS]: call.status,
-        [QUEUE_LIST_COLUMN_OPTIONS.AGENT_CONNECTED_TO]: 'unknown',
+        [QUEUE_LIST_COLUMN_OPTIONS.AGENT_CONNECTED_TO]: '',
         [QUEUE_LIST_COLUMN_OPTIONS.SKILLS_REQUESTED]: 'unknown',
         [QUEUE_LIST_COLUMN_OPTIONS.SKILLS_SHORTAGE]: 'unknown',
         [QUEUE_LIST_COLUMN_OPTIONS.TIME_AT_HEAD_OF_QUEUE]: call.timeAtHeadOfQueue,

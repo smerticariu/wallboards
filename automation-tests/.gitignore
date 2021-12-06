@@ -5,4 +5,5 @@ videos
 mochawesome-report
 package-lock.json
 examples
+cypress.env.json
 
