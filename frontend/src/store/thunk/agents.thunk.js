@@ -203,7 +203,7 @@ export const fetchUsersCurrentCallTimeThunk = () => async (dispatch, getState) =
     const callsWithLogicalDirection = response.data.data.reduce((data, callFullType) => {
       return [...data, ...callFullType.channels.map((call) => ({ ...call, logicalDirection: callFullType.direction }))];
     }, []);
-    dispatch(fetchUsersCurrentCallTimeSuccessAC(callsWithLogicalDirection));
+    dispatch(fetchUsersCurrentCallTimeSuccessAC(callsWithLogicalDirection, response.data.data));
   } catch (error) {
     console.log(error.response);
     dispatch(handleIsNotificationShowAC(true, true, `Error: ${error.response.status ?? 'unknown'} - ${DEFAULTS.GLOBAL.FAIL}`));

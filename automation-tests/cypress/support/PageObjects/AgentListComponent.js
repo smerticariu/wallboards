@@ -284,7 +284,7 @@ class AgentListComponent{
 
     verifyCardView(){
         cy.get('.agent-c__user-name')
-        cy.get('.agent-t__arrow-container')
+        cy.get('.c-dropdown.c-dropdown--availability-state')
         cy.get('.agent-c__time.agent-c__time--black')
         cy.get('.agent-c__call-time')
         cy.get('.agent-c__footer')
@@ -328,6 +328,10 @@ class AgentListComponent{
 
     readOnlyCardMode() {
         return cy.get('.agent-c.agent-c')
+    }
+
+    avatar() {
+        return cy.get('.agent-c__user-image')
     }
 
     inspectDefaultOptions() {
