@@ -598,7 +598,7 @@ export const MODAL = {
         text: 'Time at Head of Queue',
         value: QUEUE_LIST_COLUMN_OPTIONS.TIME_AT_HEAD_OF_QUEUE,
         minWidth: 160,
-        isInitialChecked: false,
+        isInitialChecked: true,
       },
       {
         text: 'Callback requested',

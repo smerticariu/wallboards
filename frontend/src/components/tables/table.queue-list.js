@@ -99,7 +99,7 @@ const QueueListTable = ({ isPreviewMode, isEditMode, tableData, widget, ...props
       <div className="widget__header">
         <div className="widget__title">
           <div className="widget__title--bold">{widget.title}: </div>
-          {widget.callQueue.value} - {widget.isCallStatusConnected && widget.isCallStatusWaiting && 'All Cals'}
+          {widget.callQueue.value} - {widget.isCallStatusConnected && widget.isCallStatusWaiting && 'All Calls'}
           {widget.isCallStatusConnected && !widget.isCallStatusWaiting && 'Connected'}
           {!widget.isCallStatusConnected && widget.isCallStatusWaiting && 'Waiting'}
         </div>
