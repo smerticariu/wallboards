@@ -13,26 +13,26 @@ import { getCallsInitialValues } from '../../../common/defaults/wallboards.defau
 
 const GridCallStatus = ({ isEditMode, widget, ...props }) => {
   const dispatch = useDispatch();
-  const calls = useSelector((state) => state.agents.calls);
+  const calls = useSelector((state) => state.agents.callsWithGroup);
   const [noOfCalls, handleNoOfCalls] = useState({ ...getCallsInitialValues() });
   useEffect(() => {
     let noOfCallsCopy = { ...getCallsInitialValues() };
     calls.forEach((call) => {
       switch (call.direction) {
         case CALL_DIRECTION.INBOUND:
-          noOfCallsCopy.inbound.value++;
+          noOfCallsCopy.inbound.prevalue++;
           break;
         case CALL_DIRECTION.OUTBOUND:
-          noOfCallsCopy.outbound.value++;
+          noOfCallsCopy.outbound.prevalue++;
           break;
         case CALL_DIRECTION.INTERNAL:
           noOfCallsCopy.internal.value++;
           break;
         case CALL_DIRECTION.INCOMING:
-          noOfCallsCopy.inbound.prevalue++;
+          noOfCallsCopy.inbound.value++;
           break;
         case CALL_DIRECTION.OUTGOING:
-          noOfCallsCopy.outbound.prevalue++;
+          noOfCallsCopy.outbound.value++;
           break;
         case CALL_DIRECTION.RELAYED:
           noOfCallsCopy.relayed.value++;
