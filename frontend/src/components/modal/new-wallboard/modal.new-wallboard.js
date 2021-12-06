@@ -1,18 +1,26 @@
-import React, { useRef, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useEffect, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { handleWallboardActiveModalAC } from 'src/store/actions/modal.action';
 import { DEFAULTS } from '../../../common/defaults/defaults';
 import { MODAL_NEW_WALLBOARD_SECITONS } from '../../../common/defaults/modal.defaults';
 import useOnClickOutside from '../../../common/hooks/useOnClickOutside';
+import { FetchStatus } from '../../../store/reducers/wallboards.reducer';
+import { fetchAllWallboardsThunk } from '../../../store/thunk/wallboards.thunk';
 
 const ModalNewWallboard = ({ ...props }) => {
   const modalRef = useRef(null);
-  const [newWbFilter, setNewWbFilter] = useState('');
-
-  const [activeSectionValue, setActiveSectionValue] = useState(MODAL_NEW_WALLBOARD_SECITONS.WALLBOARDS);
-
   const [selectedListItem, setSelectedListItem] = useState();
   const dispatch = useDispatch();
+  const [newWbFilter, setNewWbFilter] = useState('');
+  const { userInfo } = useSelector((state) => state.login);
+
+  const { fetchStatus, wallboards } = useSelector((state) => state.wallboards.present.allWallboards);
+  const [activeSectionValue, setActiveSectionValue] = useState(MODAL_NEW_WALLBOARD_SECITONS.WALLBOARDS);
+  useEffect(() => {
+    // dispatch(syncWallboardsWithConfig()); // import and use it when needed - do not delete
+    dispatch(fetchAllWallboardsThunk());
+    // eslint-disable-next-line
+  }, []);
 
   const closeModal = () => {
     dispatch(handleWallboardActiveModalAC(null));
@@ -26,7 +34,7 @@ const ModalNewWallboard = ({ ...props }) => {
 
     return (
       <div className="c-modal--new-wallboard__categories">
-        <div className="c-modal--new-wallboard__header">{DEFAULTS.MODAL.NEW_WIDGET}</div>
+        <div className="c-modal--new-wallboard__header">{DEFAULTS.MODAL.NEW_WALLBOARD.SELECT_COMPONENT}</div>
         {DEFAULTS.MODAL.NEW_WALLBOARD.SECTIONS.map((navItem) => (
           <div
             key={navItem.value}
@@ -47,31 +55,30 @@ const ModalNewWallboard = ({ ...props }) => {
       setSelectedListItem(name);
     };
 
-    const filtredOptions = DEFAULTS.MODAL.NEW_WIDGET.ADD_COMPONENT_OPTIONS[activeSectionValue].filter((option) =>
-      option.NAME.toLowerCase().includes(newWbFilter.toLowerCase())
-    );
-
+    const filtredWallboards = wallboards
+      .filter((wb) => wb.natterboxUserId === userInfo.natterboxUserId && wb.name.toUpperCase().includes(newWbFilter.toUpperCase()))
+      .sort((wb1, wb2) => wb2.lastView - wb1.lastView);
     return (
       <div className="c-modal--new-wallboard__list">
-        {filtredOptions.map((option) => (
+        {filtredWallboards.map((wallboard) => (
           <div
-            key={option.ID}
-            onClick={() => handleSelectedItem(option.ID)}
+            key={wallboard.id}
+            onClick={() => handleSelectedItem(wallboard.id)}
             className={`c-modal--new-wallboard__list-item ${
-              selectedListItem === option.ID ? 'c-modal--new-wallboard__list-item--selected' : ''
+              selectedListItem === wallboard.id ? 'c-modal--new-wallboard__list-item--selected' : ''
             }`}
           >
-            <div className="c-modal--new-wallboard__list-title">{option.NAME}</div>
+            <div className="c-modal--new-wallboard__list-title">{wallboard.name}</div>
             <div className="c-modal--new-wallboard__list-subtitle">
-              <div className="c-modal--new-wallboard__list-text">{option.STATUS}</div>
-              <div className="c-modal--new-wallboard__list-separator">|</div>
-              <div className="c-modal--new-wallboard__list-text">{option.DATE}</div>
-              <div className="c-modal--new-wallboard__list-separator">|</div>
-              <div className="c-modal--new-wallboard__list-text">{option.SERVICE}</div>
+              <div className="c-modal--new-wallboard__list-text">{wallboard.description}</div>
             </div>
           </div>
         ))}
-        {!filtredOptions.length && <div className="empty-message">{DEFAULTS.MODAL.MESSAGES.NO_RESULTS}</div>}
+        {fetchStatus !== FetchStatus.SUCCESS ? (
+          <div className="empty-message">{DEFAULTS.MODAL.MESSAGES.IN_PROGRESS}</div>
+        ) : (
+          !filtredWallboards.length && <div className="empty-message">{DEFAULTS.MODAL.MESSAGES.NO_RESULTS}</div>
+        )}
       </div>
     );
   };

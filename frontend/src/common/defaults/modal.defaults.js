@@ -126,7 +126,7 @@ export const CALL_DIRECTION = {
 export const MODAL = {
   MODAL_NAMES: {
     SELECT_COMPONENT: 'SELECT_COMPONENT',
-    SELECT_WALLBOARD: 'SELECT_WALLBOARD',
+    WALLBOARD_GROUP: 'WALLBOARD_GROUP',
     SAVE_WALLBOARD: 'SAVE_WALLBOARD',
     CONFIRM_SAVE_WALLBOARD: 'CONFIRM_SAVE_WALLBOARD',
     DELETE_WALLBOARD: 'DELETE_WALLBOARD',
@@ -937,6 +937,8 @@ export const MODAL = {
     MIN_VALUE: 'Min value is 1',
     MAX_VALUE: 'Max value is 100',
     MIN_SLA_TIME: 'Min value is 1',
+    NO_RESULTS: 'No data',
+    IN_PROGRESS: 'Fetching wallboards in progress',
   },
   DELETE_WALLBOARD_MODAL: {
     TITLE: 'Delete Wallboard',

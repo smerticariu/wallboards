@@ -30,6 +30,7 @@ import ModalAgentStatus from './components/modal/agent-status/modal.agent-status
 import ModalQueueList from './components/modal/queue-list/modal.queue-list';
 import ModalNewWidget from './components/modal/new-widget/modal.new-widget';
 import WallboardGroupEdit from './components/wallboard-group/wallboard-group-edit';
+import ModalNewWallboard from './components/modal/new-wallboard/modal.new-wallboard';
 
 function App() {
   const dispatch = useDispatch();
@@ -153,7 +154,7 @@ function App() {
           {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.AGENT_LOGIN && <ModalAgentLogin />}
           {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.AGENT_STATUS && <ModalAgentStatus />}
           {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.QUEUE_LIST && <ModalQueueList />}
-          {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.SELECT_WALLBOARD && <ModalNewWidget />}
+          {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.WALLBOARD_GROUP && <ModalNewWallboard />}
           {warningMessage && <ModalWarning />}
         </>
       )}
