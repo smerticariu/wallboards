@@ -4,7 +4,7 @@ import Adapter from 'enzyme-adapter-react-16';
 import { Provider } from 'react-redux';
 import LandingSidebar from '../../src/components/landing/sidebar/landing.sidebar';
 import Landing from '../../src/components/landing/landing';
-import { FetchStatus } from '../../src/store/reducers/wallboards.reducer';
+import { FetchStatus, wallboardGroupInitialValues } from '../../src/store/reducers/wallboards.reducer';
 import createMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
@@ -22,6 +22,14 @@ describe('Landing Sidebar Load', () => {
         },
         activeWallboard: {
           wallboardInitialValues: {},
+        },
+        wallboardGroup: {
+          wallboardGroupInitialValues: { ...wallboardGroupInitialValues },
+          wallboardGroup: { ...wallboardGroupInitialValues },
+          fetchStatus: FetchStatus.NULL,
+          fetchMessage: '',
+          saveStatus: FetchStatus.NULL,
+          statusCode: '',
         },
       },
     },

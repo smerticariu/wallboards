@@ -2,14 +2,14 @@ import React, { useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { handleWallboardActiveModalAC } from 'src/store/actions/modal.action';
 import { DEFAULTS } from '../../../common/defaults/defaults';
-import { MODAL_NEW_WIDGET_SECITONS, WIDGET_TYPE } from '../../../common/defaults/modal.defaults';
+import { MODAL_NEW_WALLBOARD_SECITONS } from '../../../common/defaults/modal.defaults';
 import useOnClickOutside from '../../../common/hooks/useOnClickOutside';
 
-const ModalNewWidget = ({ ...props }) => {
+const ModalNewWallboard = ({ ...props }) => {
   const modalRef = useRef(null);
   const [newWbFilter, setNewWbFilter] = useState('');
 
-  const [activeSectionValue, setActiveSectionValue] = useState(MODAL_NEW_WIDGET_SECITONS.QUEUES);
+  const [activeSectionValue, setActiveSectionValue] = useState(MODAL_NEW_WALLBOARD_SECITONS.WALLBOARDS);
 
   const [selectedListItem, setSelectedListItem] = useState();
   const dispatch = useDispatch();
@@ -26,8 +26,8 @@ const ModalNewWidget = ({ ...props }) => {
 
     return (
       <div className="c-modal--new-wallboard__categories">
-        <div className="c-modal--new-wallboard__header">{DEFAULTS.MODAL.NEW_WIDGET.CATEGORIES}</div>
-        {DEFAULTS.MODAL.NEW_WIDGET.SECTIONS.map((navItem) => (
+        <div className="c-modal--new-wallboard__header">{DEFAULTS.MODAL.NEW_WIDGET}</div>
+        {DEFAULTS.MODAL.NEW_WALLBOARD.SECTIONS.map((navItem) => (
           <div
             key={navItem.value}
             className={`c-modal--new-wallboard__nav-item ${
@@ -46,9 +46,11 @@ const ModalNewWidget = ({ ...props }) => {
     const handleSelectedItem = (name) => {
       setSelectedListItem(name);
     };
+
     const filtredOptions = DEFAULTS.MODAL.NEW_WIDGET.ADD_COMPONENT_OPTIONS[activeSectionValue].filter((option) =>
       option.NAME.toLowerCase().includes(newWbFilter.toLowerCase())
     );
+
     return (
       <div className="c-modal--new-wallboard__list">
         {filtredOptions.map((option) => (
@@ -105,36 +107,7 @@ const ModalNewWidget = ({ ...props }) => {
   };
 
   const handleSelectButton = () => {
-    const onClickSelectButton = (e) => {
-      switch (selectedListItem) {
-        case WIDGET_TYPE.AGENT_LIST: {
-          return dispatch(handleWallboardActiveModalAC(DEFAULTS.MODAL.MODAL_NAMES.AGENT_LIST));
-        }
-        case WIDGET_TYPE.CALL_STATUS: {
-          return dispatch(handleWallboardActiveModalAC(DEFAULTS.MODAL.MODAL_NAMES.CALL_STATUS));
-        }
-        case WIDGET_TYPE.QUEUE_TRACKING: {
-          return dispatch(handleWallboardActiveModalAC(DEFAULTS.MODAL.MODAL_NAMES.QUEUE_TRACKING));
-        }
-        case WIDGET_TYPE.QUEUE_STATUS: {
-          return dispatch(handleWallboardActiveModalAC(DEFAULTS.MODAL.MODAL_NAMES.QUEUE_STATUS));
-        }
-        case WIDGET_TYPE.CALL_TRACKING: {
-          return dispatch(handleWallboardActiveModalAC(DEFAULTS.MODAL.MODAL_NAMES.CALL_TRACKING));
-        }
-        case WIDGET_TYPE.AGENT_LOGIN: {
-          return dispatch(handleWallboardActiveModalAC(DEFAULTS.MODAL.MODAL_NAMES.AGENT_LOGIN));
-        }
-        case WIDGET_TYPE.AGENT_STATUS: {
-          return dispatch(handleWallboardActiveModalAC(DEFAULTS.MODAL.MODAL_NAMES.AGENT_STATUS));
-        }
-        case WIDGET_TYPE.QUEUE_LIST: {
-          return dispatch(handleWallboardActiveModalAC(DEFAULTS.MODAL.MODAL_NAMES.QUEUE_LIST));
-        }
-        default:
-          return;
-      }
-    };
+    const onClickSelectButton = (e) => {};
 
     return (
       <>
@@ -153,7 +126,7 @@ const ModalNewWidget = ({ ...props }) => {
       <div ref={modalRef} className="c-modal__container c-modal__container--new-wallboard">
         <div className="c-modal__content">
           <div className="c-modal__header">
-            <div className="c-modal__title">{DEFAULTS.MODAL.NEW_WIDGET.SELECT_COMPONENT}</div>
+            <div className="c-modal__title">{DEFAULTS.MODAL.NEW_WALLBOARD.SELECT_COMPONENT}</div>
           </div>
 
           <div className="c-modal__body c-modal__body--new-wallboard">
@@ -172,4 +145,4 @@ const ModalNewWidget = ({ ...props }) => {
     </div>
   );
 };
-export default ModalNewWidget;
+export default ModalNewWallboard;

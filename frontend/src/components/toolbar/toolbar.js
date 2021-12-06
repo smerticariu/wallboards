@@ -134,7 +134,7 @@ const Toolbar = (props) => {
         case DEFAULTS.TOOLBAR.NAME.NEW_WALLBOARD:
           return dispatch(handleWallboardActiveModalAC(DEFAULTS.MODAL.MODAL_NAMES.SELECT_COMPONENT));
         case DEFAULTS.TOOLBAR.NAME.NEW_WALLBOARD_GROUP:
-          return dispatch(handleWallboardActiveModalAC(DEFAULTS.MODAL.MODAL_NAMES.SELECT_COMPONENT));
+          return dispatch(handleWallboardActiveModalAC(DEFAULTS.MODAL.MODAL_NAMES.SELECT_WALLBOARD));
         default:
           break;
       }

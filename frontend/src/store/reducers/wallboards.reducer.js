@@ -26,7 +26,7 @@ const wallboardInitialValues = {
   isNewWallboard: null,
 };
 
-const wallboardGroupInitialValues = {
+export const wallboardGroupInitialValues = {
   name: 'My New Wallboard Group',
   id: null,
   description: 'New Wallboard Group Description',

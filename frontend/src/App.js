@@ -153,6 +153,7 @@ function App() {
           {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.AGENT_LOGIN && <ModalAgentLogin />}
           {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.AGENT_STATUS && <ModalAgentStatus />}
           {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.QUEUE_LIST && <ModalQueueList />}
+          {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.SELECT_WALLBOARD && <ModalNewWidget />}
           {warningMessage && <ModalWarning />}
         </>
       )}

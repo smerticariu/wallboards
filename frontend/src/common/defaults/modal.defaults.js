@@ -104,10 +104,13 @@ export const QUEUE_LIST_INTERACTIVITY_OPTIONS_KEYS = {
   // DISCONNECT: 'DISCONNECT',
   LISTEN_LIVE: 'LISTEN_LIVE',
 };
-export const MODAL_NEW_WALLBOARD_SECITONS = {
+export const MODAL_NEW_WIDGET_SECITONS = {
   QUEUES: 'QUEUES',
   CALLS: 'CALLS',
   USERS: 'USERS',
+};
+export const MODAL_NEW_WALLBOARD_SECITONS = {
+  WALLBOARDS: 'WALLBOARDS',
 };
 
 export const CALL_DIRECTION = {
@@ -123,6 +126,7 @@ export const CALL_DIRECTION = {
 export const MODAL = {
   MODAL_NAMES: {
     SELECT_COMPONENT: 'SELECT_COMPONENT',
+    SELECT_WALLBOARD: 'SELECT_WALLBOARD',
     SAVE_WALLBOARD: 'SAVE_WALLBOARD',
     CONFIRM_SAVE_WALLBOARD: 'CONFIRM_SAVE_WALLBOARD',
     DELETE_WALLBOARD: 'DELETE_WALLBOARD',
@@ -130,85 +134,95 @@ export const MODAL = {
     DELETE_WALLBOARD_COMPONENT: 'DELETE_WALLBOARD_COMPONENT',
     ...WIDGET_TYPE,
   },
-  NEW_WALLBOARD: {
+  NEW_WIDGET: {
     SELECT_COMPONENT: 'Select a component',
     CATEGORIES: 'Component Categories',
     SECTIONS: [
       {
         text: 'Queues',
-        value: MODAL_NEW_WALLBOARD_SECITONS.QUEUES,
+        value: MODAL_NEW_WIDGET_SECITONS.QUEUES,
       },
       {
         text: 'Calls',
-        value: MODAL_NEW_WALLBOARD_SECITONS.CALLS,
+        value: MODAL_NEW_WIDGET_SECITONS.CALLS,
       },
       {
         text: 'Users',
-        value: MODAL_NEW_WALLBOARD_SECITONS.USERS,
+        value: MODAL_NEW_WIDGET_SECITONS.USERS,
       },
     ],
+    ADD_COMPONENT_OPTIONS: {
+      [MODAL_NEW_WIDGET_SECITONS.QUEUES]: [
+        {
+          NAME: 'Agent list',
+          STATUS: 'Natterbox Admin',
+          DATE: '19/03/2021 at 14:19',
+          SERVICE: 'Customer Service Calls',
+          ID: WIDGET_TYPE.AGENT_LIST,
+        },
+        {
+          NAME: 'Queue list',
+          STATUS: 'Natterbox Admin',
+          DATE: '19/03/2021 at 14:19',
+          SERVICE: 'Customer Service Calls',
+          ID: WIDGET_TYPE.QUEUE_LIST,
+        },
+        {
+          NAME: 'Queue tracking',
+          STATUS: 'Natterbox Admin',
+          DATE: '19/03/2021 at 14:19',
+          SERVICE: 'Customer Service Calls',
+          ID: WIDGET_TYPE.QUEUE_TRACKING,
+        },
+        {
+          NAME: 'Queue status',
+          STATUS: 'Natterbox Admin',
+          DATE: '19/03/2021 at 14:19',
+          SERVICE: 'Customer Service Calls',
+          ID: WIDGET_TYPE.QUEUE_STATUS,
+        },
+      ],
+      [MODAL_NEW_WIDGET_SECITONS.CALLS]: [
+        {
+          NAME: 'Call status',
+          STATUS: 'Natterbox Admin',
+          DATE: '19/03/2021 at 14:19',
+          SERVICE: 'Customer Service Calls',
+          ID: WIDGET_TYPE.CALL_STATUS,
+        },
+        {
+          NAME: 'Call tracking',
+          STATUS: 'Natterbox Admin',
+          DATE: '19/03/2021 at 14:19',
+          SERVICE: 'Customer Service Calls',
+          ID: WIDGET_TYPE.CALL_TRACKING,
+        },
+      ],
+      [MODAL_NEW_WIDGET_SECITONS.USERS]: [
+        {
+          NAME: 'Agent login',
+          STATUS: 'Natterbox Admin',
+          DATE: '19/03/2021 at 14:19',
+          SERVICE: 'Customer Service Calls',
+          ID: WIDGET_TYPE.AGENT_LOGIN,
+        },
+        {
+          NAME: 'Agent status',
+          STATUS: 'Natterbox Admin',
+          DATE: '19/03/2021 at 14:19',
+          SERVICE: 'Customer Service Calls',
+          ID: WIDGET_TYPE.AGENT_STATUS,
+        },
+      ],
+    },
   },
-  ADD_COMPONENT_OPTIONS: {
-    [MODAL_NEW_WALLBOARD_SECITONS.QUEUES]: [
+  NEW_WALLBOARD: {
+    SELECT_COMPONENT: 'Select A Wallboard',
+    CATEGORIES: 'Your Wallboards',
+    SECTIONS: [
       {
-        NAME: 'Agent list',
-        STATUS: 'Natterbox Admin',
-        DATE: '19/03/2021 at 14:19',
-        SERVICE: 'Customer Service Calls',
-        ID: WIDGET_TYPE.AGENT_LIST,
-      },
-      {
-        NAME: 'Queue list',
-        STATUS: 'Natterbox Admin',
-        DATE: '19/03/2021 at 14:19',
-        SERVICE: 'Customer Service Calls',
-        ID: WIDGET_TYPE.QUEUE_LIST,
-      },
-      {
-        NAME: 'Queue tracking',
-        STATUS: 'Natterbox Admin',
-        DATE: '19/03/2021 at 14:19',
-        SERVICE: 'Customer Service Calls',
-        ID: WIDGET_TYPE.QUEUE_TRACKING,
-      },
-      {
-        NAME: 'Queue status',
-        STATUS: 'Natterbox Admin',
-        DATE: '19/03/2021 at 14:19',
-        SERVICE: 'Customer Service Calls',
-        ID: WIDGET_TYPE.QUEUE_STATUS,
-      },
-    ],
-    [MODAL_NEW_WALLBOARD_SECITONS.CALLS]: [
-      {
-        NAME: 'Call status',
-        STATUS: 'Natterbox Admin',
-        DATE: '19/03/2021 at 14:19',
-        SERVICE: 'Customer Service Calls',
-        ID: WIDGET_TYPE.CALL_STATUS,
-      },
-      {
-        NAME: 'Call tracking',
-        STATUS: 'Natterbox Admin',
-        DATE: '19/03/2021 at 14:19',
-        SERVICE: 'Customer Service Calls',
-        ID: WIDGET_TYPE.CALL_TRACKING,
-      },
-    ],
-    [MODAL_NEW_WALLBOARD_SECITONS.USERS]: [
-      {
-        NAME: 'Agent login',
-        STATUS: 'Natterbox Admin',
-        DATE: '19/03/2021 at 14:19',
-        SERVICE: 'Customer Service Calls',
-        ID: WIDGET_TYPE.AGENT_LOGIN,
-      },
-      {
-        NAME: 'Agent status',
-        STATUS: 'Natterbox Admin',
-        DATE: '19/03/2021 at 14:19',
-        SERVICE: 'Customer Service Calls',
-        ID: WIDGET_TYPE.AGENT_STATUS,
+        text: 'Wallboards',
+        value: MODAL_NEW_WALLBOARD_SECITONS.WALLBOARDS,
       },
     ],
   },
