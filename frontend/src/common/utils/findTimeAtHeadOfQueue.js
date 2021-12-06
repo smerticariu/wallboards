@@ -7,8 +7,8 @@ export const findTimeAtHeadOfQueue = (call, activeCalls) => {
     if (call == null || call.reachedHeadOfQueue == null) {
       return 0;
     }
-    var start = moment.utc(call.reachedHeadOfQueue);
-    var end = moment.utc(timeNow);
+    let start = moment.utc(call.reachedHeadOfQueue);
+    let end = moment.utc(timeNow);
     if (call.status === 'bridged' || call.status === 'connected') {
       if (
         activeCalls.hasOwnProperty(call.uuid) &&

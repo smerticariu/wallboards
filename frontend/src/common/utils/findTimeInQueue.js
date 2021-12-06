@@ -2,8 +2,8 @@ import moment from 'moment';
 export const findTimeInQueue = (call, activeCalls) => {
   const timeNow = moment.utc();
   try {
-    var start = moment.utc(call.created);
-    var end = moment.utc(timeNow);
+    let start = moment.utc(call.created);
+    let end = moment.utc(timeNow);
     if (call.status.toLowerCase() === 'bridged' || call.status.toLowerCase() === 'connected') {
       if (
         activeCalls.hasOwnProperty(call.uuid) &&
