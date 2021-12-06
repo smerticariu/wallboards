@@ -1,0 +1,53 @@
+import { PRESENCE_STATE_KEYS } from './modal.defaults';
+
+export const GRID = {
+  TABLE_PREVIEW: {
+    AVAILABILITY_COLORS: [
+      PRESENCE_STATE_KEYS.AGENT_STATUS_IDLE,
+      PRESENCE_STATE_KEYS.AGENT_STATUS_INBOUND_CALL_OTHER,
+      PRESENCE_STATE_KEYS.AGENT_STATUS_OUTBOUND,
+    ],
+  },
+  AGENTS_TABLE_MOCK: [
+    {
+      callStatusKey: PRESENCE_STATE_KEYS.AGENT_STATUS_IDLE,
+      agentName: 'Megan Carter',
+      agentExtNo: '0000',
+      currAvaiState: 'Busy on calls',
+      currPresState: 'Inbound Call',
+      noCallsOffered: '0',
+      noCallsAnswered: '0',
+      noCallsMissed: '0',
+      timeInCurrentPresenceState: 0,
+      timeInCurrentAvailabilityState: 0,
+      timeInCurrentCall: 0,
+      timeInCurrentWrapup: 0,
+      listOfSkills: ['Skill'],
+    },
+    {
+      callStatusKey: PRESENCE_STATE_KEYS.AGENT_STATUS_IDLE,
+      agentName: 'Megan Carter2',
+      agentExtNo: '0000',
+      currAvaiState: 'Busy on calls',
+      currPresState: 'Inbound Call',
+      noCallsOffered: '0',
+      noCallsAnswered: '0',
+      noCallsMissed: '0',
+      timeInCurrentPresenceState: 0,
+      timeInCurrentAvailabilityState: 0,
+      timeInCurrentCall: 0,
+      timeInCurrentWrapup: 0,
+      listOfSkills: ['Skill'],
+    },
+  ],
+  INITIAL_CELLS_NUMBER: 120,
+  CELLS_NUMBER_REMOVE: 216,
+  CELLS_NUMBER_ADD: 24,
+  CELL_HEIGHT: 29,
+  CELLS_ON_ROW: 12,
+  RESIZE_GRID_COLUMNS: 24,
+  GRID_MODIFIER: 200,
+  WIDGET_INITIAL_HEIGHT: 400,
+  WIDGET_MARGIN_TOP: 10,
+  MAX_NAME_CHARACTERS: 18,
+};

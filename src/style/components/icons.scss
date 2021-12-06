@@ -1,0 +1,100 @@
+.i {
+  &--redo,
+  &--undo {
+    fill: $grey;
+    cursor: pointer;
+    &--disabled {
+      fill: $dark-white;
+      cursor: default;
+    }
+  }
+  &--arrow {
+    &--down {
+      transform: rotate(180deg);
+      stroke: $white;
+      &--small {
+        width: 8px;
+        height: 8px;
+      }
+      &--large {
+        width: 15px;
+        height: 15px;
+      }
+      &--table {
+        position: absolute;
+        top: 50%;
+        transform: rotate(180deg) translateY(50%);
+        right: 10px;
+      }
+    }
+  }
+  &--checkmark {
+    fill: $green;
+    cursor: pointer;
+    &--notification {
+      box-sizing: content-box;
+      padding: 5px;
+      border-radius: 50%;
+      background-color: $white;
+      cursor: default;
+    }
+  }
+  &--close {
+    fill: $white;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    &--small {
+      width: 20px;
+      height: 20px;
+      fill: $natterbox-dark-blue-grey;
+    }
+    &--error {
+      fill: $natterbox-lighter-red;
+      box-sizing: content-box;
+      padding: 5px;
+      border-radius: 50%;
+      background-color: $white;
+      cursor: default;
+    }
+    &--black {
+      fill: $natterbox-dark-blue-grey;
+    }
+  }
+  &--settings {
+    fill: $white;
+    width: 10px;
+    height: 10px;
+    cursor: pointer;
+    &--toolbar {
+      fill: $slate-gray;
+      width: 21px;
+      height: 21px;
+      margin-bottom: 5px;
+      margin-left: 10px;
+    }
+    &--table {
+      fill: $slate-gray;
+      width: 20px;
+      height: 20px;
+      &--small {
+        width: 10px;
+        height: 10px;
+      }
+    }
+    &--call-status {
+      width: 18px;
+      height: 18px;
+      fill: $natterbox-dark-blue-grey;
+      margin-right: 10px;
+    }
+  }
+  &--edit {
+    fill: $natterbox-dark-blue-grey;
+    width: 14px;
+    height: 14px;
+    &--margin-right {
+      margin-right: 10px;
+    }
+  }
+}

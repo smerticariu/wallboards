@@ -1,0 +1,157 @@
+.c-grid {
+  width: calc(100% - 30px);
+  margin: 0 auto;
+  position: relative;
+  height: 100%;
+  &__cells {
+    display: grid;
+    width: 100%;
+    row-gap: 4px;
+    column-gap: 4px;
+    grid-template-columns: repeat(12, calc((100% / 12) - 4px));
+  }
+  &__cell {
+    height: 25px;
+    background-color: $dark-white;
+  }
+  &__components {
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    transform: rotateX(180deg);
+  }
+  &__components-container {
+    display: flex;
+    width: calc(100% - 4px);
+    height: 100%;
+    position: relative;
+    transform: rotateX(180deg);
+  }
+}
+
+.widget {
+  border: solid 1px $pinkish-grey;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  background-color: $white;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  &__header {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    background-color: $dark-grey;
+    padding: 8px 10px;
+  }
+  &__title {
+    display: flex;
+    width: calc(100% - 50px);
+    font-family: $public-sans-regular;
+    font-size: 14px;
+    color: $slate-gray;
+    user-select: none;
+    cursor: pointer;
+    &--bold {
+      font-family: $public-sans-bold;
+      margin-right: 3px;
+    }
+  }
+  &__icons {
+    display: flex;
+    align-items: center;
+    margin-left: 16px;
+  }
+  &__edit-icon,
+  &__delete-icon {
+    cursor: pointer;
+  }
+  &__body {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    padding: 15px;
+    overflow: auto;
+    &--table {
+      padding: 0;
+      padding-bottom: 10px;
+      height: 100%;
+      display: flex;
+      flex-wrap: nowrap;
+      .agent-list-table:nth-child(2) {
+        margin-left: 30px;
+      }
+    }
+    &--call-status {
+      display: flex;
+      flex-wrap: wrap;
+    }
+  }
+  &__call-status {
+    &-row {
+      display: flex;
+      width: 33%;
+      min-width: 350px;
+      height: 56px;
+      align-items: center;
+      background-color: $silver;
+      border-radius: 4px;
+      padding-left: 8px;
+      padding-right: 4px;
+      font-family: $public-sans-bold;
+      font-size: 20px;
+      font-weight: 500;
+      color: $slate-gray;
+      margin-bottom: 8px;
+      justify-content: space-between;
+      margin-right: 4px;
+      overflow: hidden;
+      &--queue-tracking {
+        width: 24%;
+      }
+      &--red {
+        background-color: $natterbox-lighter-red;
+        color: $white;
+        .widget__call-status-data__column {
+          background-color: $natterbox-lighter-red;
+          color: $white;
+        }
+      }
+    }
+    &-title {
+      width: 60%;
+      text-transform: capitalize;
+    }
+    &-data {
+      display: grid;
+      width: 40%;
+      height: 100%;
+      grid-template-columns: 100%;
+      column-gap: 4px;
+      &--two-columns {
+        grid-template-columns: calc(50% - 2px) calc(50% - 2px);
+      }
+      &__column {
+        display: flex;
+        height: 100%;
+        background-color: $turquoise-blue;
+        align-items: center;
+        justify-content: center;
+        color: $white;
+        &--grey {
+          background-color: $natterbox-grey-col;
+        }
+        &--blue {
+          background-color: $turquoise-blue;
+        }
+      }
+    }
+  }
+}
