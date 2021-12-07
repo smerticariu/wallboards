@@ -13,7 +13,8 @@ export const WallboardsApi = async (props) => {
     },
   };
 
-  const baseUrl = `${generateWallboardsApi()}/${props.organizationId}`;
+  const url = await generateWallboardsApi();
+  const baseUrl = `${url}/${props.organizationId}`;
   const wallboarIdUrl = `${baseUrl}/key/${props.wallboardId}`;
   const configUrl = `${baseUrl}/key/config.json`;
 

@@ -4,7 +4,7 @@ import { HashRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import store from 'src/store/store';
 import './style/main.scss';
-import config from 'src/config/auth';
+import config from 'src/config/auth/authConfig';
 import App from './App';
 import { Auth0Provider } from '@auth0/auth0-react';
 import reportWebVitals from './reportWebVitals';

@@ -13,7 +13,8 @@ export const CallsApi = async (props) => {
     },
   };
 
-  const baseUrl = `${generateSapienApi()}/${props.organizationId}/call`;
+  const url = await generateSapienApi();
+  const baseUrl = `${url}/${props.organizationId}/call`;
 
   switch (props.type) {
     case DEFAULTS.CALLS.API.SAVE.CALL_AGENT:

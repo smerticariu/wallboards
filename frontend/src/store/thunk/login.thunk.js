@@ -2,7 +2,7 @@ import axios from '../../../node_modules/axios/index';
 import { AgentsApi } from '../../common/api/agents.api';
 import { DEFAULTS } from '../../common/defaults/defaults';
 import jwtExtractor from '../../common/utils/jwtExtractor';
-import config from '../../config/auth/index';
+import config from '../../config/auth/authConfig';
 import { setAccessTokenAC, setUserInfoAC, setUserTokenInfoAC } from '../actions/login.action';
 
 export const fetchUserInfoThunk = (token) => async (dispatch, getState) => {
