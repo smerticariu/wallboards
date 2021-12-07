@@ -207,7 +207,7 @@ const QueueListTable = ({ isPreviewMode, isEditMode, tableData, widget, ...props
                             {isProgressBarShow && !isStatusConnected && (
                               <ProgressBar width={(timeWaiting * 100) / widget.timeInQueueSLATime} />
                             )}
-                            <TimeInterval seconds={timeWaiting} isStop={isStatusConnected} />
+                            <TimeInterval seconds={timeWaiting} isStop={isStatusConnected} isInfinit={isPreviewMode} />
                           </div>
                         );
                         break;
@@ -234,7 +234,7 @@ const QueueListTable = ({ isPreviewMode, isEditMode, tableData, widget, ...props
                             {isProgressBarShow && !isStatusConnected && (
                               <ProgressBar width={(timeAtHeadOfQueue * 100) / widget.timeAtHeadOfQueueSLATime} />
                             )}
-                            <TimeInterval seconds={timeAtHeadOfQueue} isStop={isStatusConnected} />
+                            <TimeInterval seconds={timeAtHeadOfQueue} isStop={isStatusConnected} isInfinit={isPreviewMode} />
                           </div>
                         );
                         break;

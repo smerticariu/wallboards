@@ -88,7 +88,7 @@ const ModalCallStatus = ({ ...props }) => {
       <div ref={modalRef} className="c-modal__container c-modal__container--call-status">
         <div className="c-modal__content">
           <div className="c-modal__header">
-            <div className="c-modal__title">{DEFAULTS.MODAL.CALL_STATUS.MODAL_TITLE}</div>
+            <div className="c-modal__title">{callStatus.isEditMode ? 'Edit' : 'Add'} Component</div>
           </div>
           <div className="c-modal__body c-modal__body--call-status">
             {handleTitleInput()}
