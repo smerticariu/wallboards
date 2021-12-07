@@ -52,6 +52,12 @@ export const wallboardsActions = {
   APPLY_WALLBOARD_SETTINGS: 'APPLY_WALLBOARD_SETTINGS',
 
   SYNC_WIDGET_SIZE_FOR_NEW_SCREEN: 'SYNC_WIDGET_SIZE_FOR_NEW_SCREEN',
+
+  ADD_WALLBOARD_FOR_WALLBOARD_GROUP: 'ADD_WALLBOARD_FOR_WALLBOARD_GROUP',
+
+  ADD_NEW_STEP_FOR_WALLBOARD_GROUP: 'ADD_NEW_STEP_FOR_WALLBOARD_GROUP',
+  REMOVE_NEW_STEP_FOR_WALLBOARD_GROUP: 'REMOVE_NEW_STEP_FOR_WALLBOARD_GROUP',
+  REMOVE_WALLBOARD_FOR_WALLBOARD_GROUP: 'REMOVE_WALLBOARD_FOR_WALLBOARD_GROUP',
 };
 
 export const handleNewWallboardTitleAC = (title) => ({
@@ -202,4 +208,23 @@ export const applyWallboardSettingsAC = (settings) => ({
 export const syncWidgetsSizeForNewScreenAC = (widgets) => ({
   type: wallboardsActions.SYNC_WIDGET_SIZE_FOR_NEW_SCREEN,
   payload: widgets,
+});
+
+export const addWallboardForWallboardGroupAC = (wallboard) => ({
+  type: wallboardsActions.ADD_WALLBOARD_FOR_WALLBOARD_GROUP,
+  payload: wallboard,
+});
+
+export const addStepForWallboardGroupAC = () => ({
+  type: wallboardsActions.ADD_NEW_STEP_FOR_WALLBOARD_GROUP,
+});
+
+export const removeStepForWallboardGroupAC = (stepId) => ({
+  type: wallboardsActions.REMOVE_NEW_STEP_FOR_WALLBOARD_GROUP,
+  payload: stepId,
+});
+
+export const removeWallboardForWallboardGroupAC = (stepId) => ({
+  type: wallboardsActions.REMOVE_WALLBOARD_FOR_WALLBOARD_GROUP,
+  payload: stepId,
 });

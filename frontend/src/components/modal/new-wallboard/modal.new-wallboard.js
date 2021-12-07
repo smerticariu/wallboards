@@ -1,19 +1,18 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { handleWallboardActiveModalAC } from 'src/store/actions/modal.action';
 import { DEFAULTS } from '../../../common/defaults/defaults';
 import { MODAL_NEW_WALLBOARD_SECITONS } from '../../../common/defaults/modal.defaults';
 import useOnClickOutside from '../../../common/hooks/useOnClickOutside';
+import { addWallboardForWallboardGroupAC } from '../../../store/actions/wallboards.action';
 import { FetchStatus } from '../../../store/reducers/wallboards.reducer';
 import { fetchAllWallboardsThunk } from '../../../store/thunk/wallboards.thunk';
 
-const ModalNewWallboard = ({ ...props }) => {
+const ModalNewWallboard = ({ stepId, selectedWallboardId, onClose, ...props }) => {
   const modalRef = useRef(null);
-  const [selectedListItem, setSelectedListItem] = useState();
+  const [selectedListItem, setSelectedListItem] = useState(selectedWallboardId);
   const dispatch = useDispatch();
   const [newWbFilter, setNewWbFilter] = useState('');
   const { userInfo } = useSelector((state) => state.login);
-
   const { fetchStatus, wallboards } = useSelector((state) => state.wallboards.present.allWallboards);
   const [activeSectionValue, setActiveSectionValue] = useState(MODAL_NEW_WALLBOARD_SECITONS.WALLBOARDS);
   useEffect(() => {
@@ -22,10 +21,7 @@ const ModalNewWallboard = ({ ...props }) => {
     // eslint-disable-next-line
   }, []);
 
-  const closeModal = () => {
-    dispatch(handleWallboardActiveModalAC(null));
-  };
-  useOnClickOutside(modalRef, () => closeModal());
+  useOnClickOutside(modalRef, () => onClose());
 
   const handleLeftSidebar = () => {
     const handleClick = (e, category) => {
@@ -101,7 +97,7 @@ const ModalNewWallboard = ({ ...props }) => {
 
   const handleCancelButton = () => {
     const onClickCancelButton = (e) => {
-      closeModal();
+      onClose();
     };
 
     return (
@@ -114,12 +110,24 @@ const ModalNewWallboard = ({ ...props }) => {
   };
 
   const handleSelectButton = () => {
-    const onClickSelectButton = (e) => {};
+    const onClickSelectButton = (e) => {
+      const wallboard = wallboards.find((wb) => wb.id === selectedListItem);
+      dispatch(
+        addWallboardForWallboardGroupAC({
+          wallboardName: wallboard.name,
+          wallboardId: wallboard.id,
+          wallboardDescription: wallboard.description,
+          stepId: stepId,
+        })
+      );
+      onClose(null);
+    };
 
     return (
       <>
         <button
           className={`c-button c-button--m-left ${selectedListItem ? 'c-button--blue' : 'c-button--disabled'}`}
+          disabled={!selectedListItem}
           onClick={onClickSelectButton}
         >
           Select

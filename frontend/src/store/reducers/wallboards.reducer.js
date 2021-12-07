@@ -30,7 +30,7 @@ export const wallboardGroupInitialValues = {
   name: 'My New Wallboard Group',
   id: null,
   description: 'New Wallboard Group Description',
-  wallboards: [],
+  steps: [],
   settings: {
     display: {
       shrinkHeight: false,
@@ -653,6 +653,81 @@ export const wallboardsReducer = (state = { ...wallboardsInitialState }, action)
           wallboard: {
             ...state.activeWallboard.wallboard,
             widgets: [...action.payload],
+          },
+        },
+      };
+    }
+
+    case wallboardsActions.ADD_NEW_STEP_FOR_WALLBOARD_GROUP: {
+      const id = new Date().getTime();
+      return {
+        ...state,
+        wallboardGroup: {
+          ...state.wallboardGroup,
+          wallboardGroup: {
+            ...state.wallboardGroup.wallboardGroup,
+            steps: [
+              ...state.wallboardGroup.wallboardGroup.steps,
+              {
+                stepId: id,
+                stepTime: 30, //seconds
+                wallboardId: null,
+                wallboardName: null,
+                wallboardDescription: null,
+              },
+            ],
+          },
+        },
+      };
+    }
+    case wallboardsActions.REMOVE_NEW_STEP_FOR_WALLBOARD_GROUP: {
+      return {
+        ...state,
+        wallboardGroup: {
+          ...state.wallboardGroup,
+          wallboardGroup: {
+            ...state.wallboardGroup.wallboardGroup,
+            steps: state.wallboardGroup.wallboardGroup.steps.filter((step) => step.stepId !== action.payload),
+          },
+        },
+      };
+    }
+    case wallboardsActions.REMOVE_WALLBOARD_FOR_WALLBOARD_GROUP: {
+      return {
+        ...state,
+        wallboardGroup: {
+          ...state.wallboardGroup,
+          wallboardGroup: {
+            ...state.wallboardGroup.wallboardGroup,
+            steps: state.wallboardGroup.wallboardGroup.steps.map((step) =>
+              step.stepId === action.payload
+                ? {
+                    ...step,
+                    wallboardId: null,
+                    wallboardName: null,
+                    wallboardDescription: null,
+                  }
+                : step
+            ),
+          },
+        },
+      };
+    }
+    case wallboardsActions.ADD_WALLBOARD_FOR_WALLBOARD_GROUP: {
+      return {
+        ...state,
+        wallboardGroup: {
+          ...state.wallboardGroup,
+          wallboardGroup: {
+            ...state.wallboardGroup.wallboardGroup,
+            steps: state.wallboardGroup.wallboardGroup.steps.map((step) =>
+              step.stepId === action.payload.stepId
+                ? {
+                    ...step,
+                    ...action.payload,
+                  }
+                : step
+            ),
           },
         },
       };

@@ -200,6 +200,25 @@ export const getQueueTrackingUtilityFields = () => ({
   abortedCallTotalWaitTime: { id: 'abortedCallTotalWaitTime', name: '', value: 0 },
 });
 
+export const SCREEN_OPTIONS_ID = {
+  CHANGE: 'CHANGE',
+  REMOVE_WALLBOARD: 'REMOVE_WALLBOARD',
+  REMOVE_STEP: 'REMOVE_STEP',
+};
+export const SCREEN_OPTIONS = [
+  {
+    id: SCREEN_OPTIONS_ID.CHANGE,
+    name: 'Change Current Wallboard',
+  },
+  {
+    id: SCREEN_OPTIONS_ID.REMOVE_WALLBOARD,
+    name: 'Remove Current Wallaboard',
+  },
+  {
+    id: SCREEN_OPTIONS_ID.REMOVE_STEP,
+    name: 'Remove this Step',
+  },
+];
 export const COUNTRY_CODE = [
   { name: 'Israel', dial_code: '+972', code: 'IL' },
   { name: 'Afghanistan', dial_code: '+93', code: 'AF' },
