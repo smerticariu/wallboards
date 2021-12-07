@@ -13,7 +13,9 @@ export const AvailabilityApi = async (props) => {
     },
   };
 
-  const baseUrl = `${generateSapienApi()}/${props.organizationId}/availability`;
+  const url = await generateSapienApi();
+
+  const baseUrl = `${url}/${props.organizationId}/availability`;
 
   switch (props.type) {
     case DEFAULTS.AVAILABILITY.API.GET.PROFILES:

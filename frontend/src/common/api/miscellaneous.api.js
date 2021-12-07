@@ -13,7 +13,8 @@ export const MiscellaneousApi = async (props) => {
     },
   };
 
-  const baseUrl = `${generateSapienApi()}/${props.organizationId}`;
+  const url = await generateSapienApi();
+  const baseUrl = `${url}/${props.organizationId}`;
 
   switch (props.type) {
     case DEFAULTS.MISCELLANEOUS.API.GET.SIP_DEVICE:
