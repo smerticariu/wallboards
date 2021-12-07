@@ -1,5 +1,5 @@
 import axios from "axios";
-import config from 'src/config/auth/authConfig';
+import config from '../../config/auth/authConfig';
 
 export const generateSapienApi = async orgPath => {
   let sapienUrl = ""; 
