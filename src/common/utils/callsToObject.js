@@ -1,6 +1,6 @@
 export const callsToObject = (array, key) => {
   if (array.length > 0) {
-    let obj = array.reduce(function (o, v, i) {
+    var obj = array.reduce(function (o, v, i) {
       array.forEach((value, k) => {
         if (value[key] != null) {
           o[value[key]] = value;

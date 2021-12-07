@@ -1,15 +1,15 @@
-export const generateSapienApi = orgQuery => {
-  const env = process.env.REACT_APP_ENV;
+import axios from "axios";
+import config from 'src/config/auth/authConfig';
 
-  switch(env) {
-    case 'LOCAL':
-    case 'DEV':
-    case 'QA':
-      return orgQuery ? 'https://sapien-proxy.redmatter-qa01.pub/v1' : 'https://sapien-proxy.redmatter-qa01.pub/v1/organisation';    
-    case 'STAGE':
-      return orgQuery ? 'https://nbwallboardcache-stage.herokuapp.com/v1' : 'https://nbwallboardcache-stage.herokuapp.com/v1/organisation';
-    default:
-      // return orgQuery ? 'https://wbsapien.redmatter.com/v1' : 'https://wbsapien.redmatter.com/v1/organisation'; // do not delete
-      return orgQuery ? 'https://sapien-proxy.redmatter-qa01.pub/v1' : 'https://sapien-proxy.redmatter-qa01.pub/v1/organisation'; 
-  }
+export const generateSapienApi = async orgPath => {
+  let sapienUrl = ""; 
+  await axios.get(`${config.envHost}/flightdeck/config`).then(res => {
+    if(orgPath) {
+      sapienUrl = `${res.data.sapienUrl}/v1/organisation`;
+    } else {
+      sapienUrl = `${res.data.sapienUrl}/v1`;
+    }
+  });
+  console.log(sapienUrl, orgPath)
+  return sapienUrl;
 }

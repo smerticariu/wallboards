@@ -1,8 +1,8 @@
 import moment from 'moment';
 export const getTimesCallTracking = (widget) => {
-  let period = { timeStart: 0, timeEnd: 0 };
-  let start = moment().utcOffset(+widget.timeZone.id);
-  let end = moment()
+  var period = { timeStart: 0, timeEnd: 0 };
+  var start = moment().utcOffset(+widget.timeZone.id);
+  var end = moment()
     .utcOffset(+widget.timeZone.id)
     .endOf('day');
   switch (widget.period.id) {

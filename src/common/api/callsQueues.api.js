@@ -13,7 +13,8 @@ export const CallsQueuesApi = async (props) => {
     },
   };
 
-  const baseUrl = `${generateSapienApi()}/${props.organizationId}/call-queue`;
+  const url = await generateSapienApi();
+  const baseUrl = `${url}/${props.organizationId}/call-queue`;
 
   switch (props.type) {
     case DEFAULTS.CALLS_QUEUES.API.GET.ALL_CALLS_QUEUES:
