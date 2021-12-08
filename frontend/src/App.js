@@ -30,6 +30,8 @@ import ModalAgentStatus from './components/modal/agent-status/modal.agent-status
 import ModalQueueList from './components/modal/queue-list/modal.queue-list';
 import ModalNewWidget from './components/modal/new-widget/modal.new-widget';
 import WallboardGroupEdit from './components/wallboard-group/wallboard-group-edit';
+import ModalConfirmSaveWallboardGroup from './components/modal/save-wallboard-group/modal.confirm-save-wallboard-group';
+import ModalSaveWallboardGroup from './components/modal/save-wallboard-group/modal.save-wallboard-group';
 
 function App() {
   const dispatch = useDispatch();
@@ -142,10 +144,12 @@ function App() {
           {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.SELECT_COMPONENT && <ModalNewWidget />}
           {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.AGENT_LIST && <ModalAgentList />}
           {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.SAVE_WALLBOARD && <ModalSaveWallboard />}
+          {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.SAVE_WALLBOARD_GROUP && <ModalSaveWallboardGroup />}
           {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.DELETE_WALLBOARD && <ModalDeleteWallboard />}
           {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.EDIT_WALLBOARD && <ModalEditWallboard />}
           {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.DELETE_WALLBOARD_COMPONENT && <ModalDeleteWallboardComponent />}
           {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.CONFIRM_SAVE_WALLBOARD && <ModalConfirmSaveWallboard />}
+          {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.CONFIRM_SAVE_WALLBOARD_GROUP && <ModalConfirmSaveWallboardGroup />}
           {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.CALL_STATUS && <ModalCallStatus />}
           {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.QUEUE_TRACKING && <ModalQueueTracking />}
           {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.QUEUE_STATUS && <ModalQueueStatus />}

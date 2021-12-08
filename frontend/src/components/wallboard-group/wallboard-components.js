@@ -53,7 +53,11 @@ const WallboardComponents = () => {
       <div className="wb-group__wallboards">
         <div className="wb-group__steps">
           {steps.map((stepGroup, stepGropuIndex) => (
-            <div key={stepGropuIndex} className={`wb-group__step-group ${steps.length % 2 === 0 ? 'wb-group__step-group--end' : ''}`}>
+            <div
+              key={stepGropuIndex}
+              tabIndex={stepGropuIndex}
+              className={`wb-group__step-group ${steps.length % 2 === 0 ? 'wb-group__step-group--end' : ''}`}
+            >
               {stepGroup.map((step, stepIndex) => (
                 <div key={step.stepId} className="wb-group__step">
                   {step.wallboardId ? (
@@ -80,12 +84,12 @@ const WallboardComponents = () => {
                 gridBreak="50"
                 zIndex={1}
                 color="#00a9ce"
-                strokeWidth={2}
+                strokeWidth={1}
               />
             );
           })}
         </div>
-        <NewStep />
+        {wallboardGroup.steps.length < 10 && <NewStep />}
       </div>
       {selectedStep && (
         <ModalNewWallboard selectedWallboardId={selectedStep.wallboardId} onClose={handleSelectedStep} stepId={selectedStep.stepId} />
