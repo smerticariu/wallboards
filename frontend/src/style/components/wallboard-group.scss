@@ -6,6 +6,7 @@
   margin: 0 auto;
   padding: 19px 25px;
   overflow: auto;
+  padding-bottom: 150px;
 
   &__title {
     color: $natterbox-grey-col;
@@ -13,7 +14,7 @@
     font-family: $inter-regular;
   }
   &__wallboards {
-    min-height: calc(100vh - 170px);
+    min-height: calc(100vh - 350px);
     display: flex;
     width: 100%;
     max-width: 1800px;
@@ -22,17 +23,46 @@
     align-items: center;
     justify-content: space-between;
   }
+  &__step-group {
+    display: flex;
+    width: 100%;
+    justify-content: flex-start;
+    z-index: 3;
+    &--end {
+      justify-content: flex-end;
+    }
+  }
   &__steps {
     display: flex;
+    width: 100%;
     flex-wrap: wrap;
-    justify-content: center;
   }
   &__step {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 375px;
+    width: 25%;
     height: 300px;
+  }
+  @media screen and (max-width: $monitor) {
+    &__step {
+      // width: calc(100% / 3);
+      width: 33%;
+    }
+  }
+  @media screen and (max-width: $xl) {
+    &__step {
+      width: 50%;
+    }
+  }
+  @media screen and (max-width: $tablet) {
+    &__wallboards {
+      flex-direction: column-reverse;
+      margin-top: 20px;
+      padding: 0;
+      width: calc(100% + 60px);
+      margin-left: -30px;
+    }
   }
 }
 
@@ -70,8 +100,8 @@
 
 .new-empty-step {
   width: 168px;
+  background-color: $light-grey;
   &__plus {
-    cursor: pointer;
     display: flex;
     width: 100%;
     height: 128px;
@@ -82,6 +112,7 @@
     background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='6' ry='6' stroke='%2300A9CEFF' stroke-width='2' stroke-dasharray='6%2c 8' stroke-dashoffset='4' stroke-linecap='square'/%3e%3c/svg%3e");
   }
   &__plus-icon {
+    cursor: pointer;
     fill: $white;
     width: 18px;
     height: 18px;
@@ -125,8 +156,8 @@
   &__wallboard {
     display: flex;
     flex-direction: column;
-    width: 344px;
-    height: 200px;
+    width: 270px;
+    height: 170px;
     background-color: $dark-grey;
     overflow: hidden;
     border-radius: 6px;
@@ -239,7 +270,7 @@
   position: absolute;
   left: 50%;
   top: calc(100% + 15px);
-  z-index: 3;
+  z-index: 10;
   width: 200px;
   transform: translateX(-50%);
   &__container {

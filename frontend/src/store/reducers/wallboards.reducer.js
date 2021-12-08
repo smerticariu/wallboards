@@ -184,6 +184,42 @@ export const wallboardsReducer = (state = { ...wallboardsInitialState }, action)
         },
       };
 
+    case wallboardsActions.SAVE_WALLBOARD_GROUP:
+      return {
+        ...state,
+        wallboardGroup: {
+          ...state.wallboardGroup,
+          saveStatus: FetchStatus.IN_PROGRESS,
+        },
+      };
+    case wallboardsActions.SAVE_WALLBOARD_GROUP_SUCCESS:
+      return {
+        ...state,
+        wallboardGroup: {
+          ...state.wallboardGroup,
+          wallboardGroup: action.payload,
+          wallboardGroupInitialValues: action.payload,
+          saveStatus: FetchStatus.SUCCESS,
+          fetchStatus: FetchStatus.SUCCESS,
+        },
+      };
+    case wallboardsActions.SAVE_WALLBOARD_GROUP_FAIL:
+      return {
+        ...state,
+        wallboardGroup: {
+          ...state.wallboardGroup,
+          saveStatus: FetchStatus.FAIL,
+        },
+      };
+    case wallboardsActions.SAVE_WALLBOARD_GROUP_RESET_STATUS:
+      return {
+        ...state,
+        wallboardGroup: {
+          ...state.wallboardGroup,
+          saveStatus: FetchStatus.NULL,
+        },
+      };
+
     case wallboardsActions.ADD_WALLBOARD_AGENT_LIST: {
       const { widgets } = state.activeWallboard.wallboard;
       const { agentList, userInfo } = action.payload;
@@ -593,6 +629,17 @@ export const wallboardsReducer = (state = { ...wallboardsInitialState }, action)
           ...state.activeWallboard,
           wallboard: {
             ...state.activeWallboard.wallboard,
+            name: action.payload,
+          },
+        },
+      };
+    case wallboardsActions.HANDLE_NEW_WALLBOARD_GROUP_TITLE:
+      return {
+        ...state,
+        wallboardGroup: {
+          ...state.wallboardGroup,
+          wallboardGroup: {
+            ...state.wallboardGroup.wallboardGroup,
             name: action.payload,
           },
         },

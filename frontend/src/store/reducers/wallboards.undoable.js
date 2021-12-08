@@ -46,6 +46,7 @@ export const wallboardsUndoable = (reducer) => {
         };
       }
       case wallboardsActions.SAVE_WALLBOARD_SUCCESS:
+      case wallboardsActions.SAVE_WALLBOARD_GROUP_SUCCESS:
       case wallboardsActions.CREATE_LOCAL_NEW_EMPTY_WALLBOARD_GROUP:
       case wallboardsActions.CREATE_LOCAL_NEW_EMPTY_WALLBOARD: {
         const newPresent = reducer(present, action);
@@ -67,6 +68,9 @@ export const wallboardsUndoable = (reducer) => {
       case wallboardsActions.SAVE_WALLBOARD:
       case wallboardsActions.SAVE_WALLBOARD_FAIL:
       case wallboardsActions.SAVE_WALLBOARD_RESET_STATUS:
+      case wallboardsActions.SAVE_WALLBOARD_GROUP:
+      case wallboardsActions.SAVE_WALLBOARD_GROUP_FAIL:
+      case wallboardsActions.SAVE_WALLBOARD_GROUP_RESET_STATUS:
       case wallboardsActions.SYNC_WIDGET_SIZE_FOR_NEW_SCREEN: {
         const newPresent = reducer(present, action);
         if (present === newPresent) {

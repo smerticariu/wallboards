@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import {
   createNewEmptyWallboardAC,
   createNewEmptyWallboardGroupAC,
+  handleNewWallboardGroupTitleAC,
   handleNewWallboardTitleAC,
   setFiltredWallboardsAC,
   wallboardRedoAC,
@@ -19,6 +20,7 @@ import { SettingsIcon } from '../../assets/static/icons/settings';
 import { DEFAULTS } from '../../common/defaults/defaults';
 import { useAuth0 } from '@auth0/auth0-react';
 import AutoWidthInput from '../input/AutoWidthInput';
+import { saveWallboardGroupThunk } from '../../store/thunk/wallboards.thunk';
 
 const Toolbar = (props) => {
   const dispatch = useDispatch();
@@ -56,7 +58,7 @@ const Toolbar = (props) => {
   };
   const newWallboardGroupHeading = () => {
     const handleChangeTitle = (event) => {
-      dispatch(handleNewWallboardTitleAC(event.target.value));
+      dispatch(handleNewWallboardGroupTitleAC(event.target.value));
     };
     return (
       <div className="c-toolbar-left__wrapper">
@@ -179,7 +181,7 @@ const Toolbar = (props) => {
         case DEFAULTS.TOOLBAR.NAME.NEW_WALLBOARD:
           return dispatch(handleWallboardActiveModalAC(DEFAULTS.MODAL.MODAL_NAMES.CONFIRM_SAVE_WALLBOARD));
         case DEFAULTS.TOOLBAR.NAME.NEW_WALLBOARD_GROUP:
-          return dispatch(handleWallboardActiveModalAC(DEFAULTS.MODAL.MODAL_NAMES.CONFIRM_SAVE_WALLBOARD));
+          return dispatch(saveWallboardGroupThunk());
         default:
           break;
       }

@@ -13,6 +13,7 @@ export const WALLBOARDS = {
   MESSAGE: {
     LOADING: 'Wallboard loading...',
     NAME_WARNING: 'Wallboard name must contain only alphanumeric characters',
+    WALLBOARD_GROUP_NAME_WARNING: 'Wallboard Group name must contain only alphanumeric characters',
     NO_COMPONENTS: 'This wallboard has no components.',
     ADD_COMPONENTS: 'To start adding components, click the button below.',
     NOT_ALLOWED_EDIT: 'You are not allowed to edit this wallboard. Please contact your Administrator',
@@ -29,6 +30,7 @@ export const WALLBOARDS = {
     },
     SAVE: {
       WALLBOARD: 'save wallboard',
+      WALLBOARD_GROUP: 'save wallboard group',
       SYNC_CONFIG: 'sync config',
       CREATE_CONFIG: 'create config file',
     },
@@ -214,6 +216,17 @@ export const SCREEN_OPTIONS = [
     id: SCREEN_OPTIONS_ID.REMOVE_WALLBOARD,
     name: 'Remove Current Wallaboard',
   },
+  {
+    id: SCREEN_OPTIONS_ID.REMOVE_STEP,
+    name: 'Remove this Step',
+  },
+];
+export const EMPTY_STEP_SCREEN_OPTIONS = [
+  {
+    id: SCREEN_OPTIONS_ID.CHANGE,
+    name: 'Change Current Wallboard',
+  },
+
   {
     id: SCREEN_OPTIONS_ID.REMOVE_STEP,
     name: 'Remove this Step',

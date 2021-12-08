@@ -1,18 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { SettingsIcon } from '../../../assets/static/icons/settings';
 import { SCREEN_OPTIONS, SCREEN_OPTIONS_ID } from '../../../common/defaults/wallboards.defaults';
 import { removeStepForWallboardGroupAC, removeWallboardForWallboardGroupAC } from '../../../store/actions/wallboards.action';
 import StepPopup from './step-popup';
 import StepWallboard from './step-wallboard';
-import { useXarrow } from 'react-xarrows';
-const StepWithWallboard = ({ handleSelectedStep, step }) => {
+const StepWithWallboard = ({ isFirst, handleSelectedStep, step }) => {
   const [isShowStepPopup, handleIsShowStepPopup] = useState(false);
   const dispatch = useDispatch();
-  const updateXarrow = useXarrow();
-  useEffect(() => {
-    updateXarrow();
-  }, [step]);
+  console.log('update wallboard outside');
   const handleScreenOptionClick = (optionId) => {
     handleIsShowStepPopup(false);
     switch (optionId) {

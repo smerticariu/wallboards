@@ -129,6 +129,53 @@ export const saveWallboardThunk = () => async (dispatch, getState) => {
     console.log(error);
   }
 };
+export const saveWallboardGroupThunk = () => async (dispatch, getState) => {
+  const wallboardGroup = getState().wallboards.present.wallboardGroup.wallboardGroup;
+  const { userInfo, token } = getState().login;
+
+  if (!checkIsAlphanumeric(wallboardGroup.name)) {
+    return dispatch(handleWarningMessageAC(DEFAULTS.WALLBOARDS.MESSAGE.WALLBOARD_GROUP_NAME_WARNING));
+  }
+  try {
+    dispatch(saveWallboardAC());
+    const currentDate = new Date().getTime();
+    const wbId = wallboardGroup.id;
+    const data = {
+      id: wbId,
+      name: wallboardGroup.name,
+      createdBy: wallboardGroup.isNewWallboard ? `${userInfo.firstName} ${userInfo.lastName}` : wallboardGroup.createdBy,
+      createdByUserId: wallboardGroup.isNewWallboard ? userInfo.id : wallboardGroup.createdByUserId,
+      lastEditedBy: wallboardGroup.isNewWallboard ? `${userInfo.firstName} ${userInfo.lastName}` : wallboardGroup.lastEditedBy,
+      createdOn: wallboardGroup.createdOn ?? currentDate,
+      lastView: currentDate,
+      description: wallboardGroup.description,
+      steps: wallboardGroup.steps,
+      settings: wallboardGroup.settings,
+    };
+
+    await WallboardsApi({
+      type: DEFAULTS.WALLBOARDS.API.SAVE.WALLBOARD_GROUP,
+      organizationId: userInfo.organisationId,
+      token,
+      data,
+      wallboardId: wbId,
+    });
+    // dispatch(updateConfig(data, DEFAULTS.WALLBOARDS.API.SAVE.WALLBOARD));
+    dispatch(saveWallboardSuccessAC(data));
+
+    if (wallboardGroup.id !== undefined) {
+      dispatch(handleIsNotificationShowAC(true, false, DEFAULTS.WALLBOARDS.NOTIFICATION.SUCCESS.SAVE));
+    }
+  } catch (error) {
+    dispatch(saveWallboardFailAC());
+    if (wallboardGroup.id !== undefined) {
+      console.log(error.response);
+      dispatch(
+        handleIsNotificationShowAC(true, true, `Error: ${error.response.status ?? 'unknown'} ${DEFAULTS.WALLBOARDS.NOTIFICATION.FAIL.SAVE}`)
+      );
+    }
+  }
+};
 
 export const deleteWallboardThunk = (wbId) => async (dispatch, getState) => {
   try {

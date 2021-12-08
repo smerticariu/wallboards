@@ -1,5 +1,8 @@
 export const wallboardsActions = {
   HANDLE_NEW_WALLBOARD_TITLE: 'HANDLE_NEW_WALLBOARD_TITLE',
+
+  HANDLE_NEW_WALLBOARD_GROUP_TITLE: 'HANDLE_NEW_WALLBOARD_GROUP_TITLE',
+
   HANDLE_SELECTED_WALLBOARD_DESCRIPTION: 'HANDLE_SELECTED_WALLBOARD_DESCRIPTION',
   LANDING_SELECTED_WALLBOARD_CATEGORY: 'LANDING_SELECTED_WALLBOARD_CATEGORY',
   SET_FILTERED_WALLBOARDS: 'SET_FILTERED_WALLBOARDS',
@@ -21,6 +24,11 @@ export const wallboardsActions = {
   SAVE_WALLBOARD_SUCCESS: 'SAVE_WALLBOARD_SUCCESS',
   SAVE_WALLBOARD_FAIL: 'SAVE_WALLBOARD_FAIL',
   SAVE_WALLBOARD_RESET_STATUS: 'SAVE_WALLBOARD_RESET_STATUS',
+
+  SAVE_WALLBOARD_GROUP: 'SAVE_WALLBOARD_GROUP',
+  SAVE_WALLBOARD_GROUP_SUCCESS: 'SAVE_WALLBOARD_GROUP_SUCCESS',
+  SAVE_WALLBOARD_GROUP_FAIL: 'SAVE_WALLBOARD_GROUP_FAIL',
+  SAVE_WALLBOARD_GROUP_RESET_STATUS: 'SAVE_WALLBOARD_GROUP_RESET_STATUS',
 
   ADD_WALLBOARD_AGENT_LIST: 'ADD_WALLBOARD_AGENT_LIST',
 
@@ -62,6 +70,11 @@ export const wallboardsActions = {
 
 export const handleNewWallboardTitleAC = (title) => ({
   type: wallboardsActions.HANDLE_NEW_WALLBOARD_TITLE,
+  payload: title,
+});
+
+export const handleNewWallboardGroupTitleAC = (title) => ({
+  type: wallboardsActions.HANDLE_NEW_WALLBOARD_GROUP_TITLE,
   payload: title,
 });
 
@@ -133,6 +146,21 @@ export const saveWallboardFailAC = (errorMEssage) => ({
 });
 export const saveWallboardResetStatusAC = (errorMEssage) => ({
   type: wallboardsActions.SAVE_WALLBOARD_RESET_STATUS,
+});
+
+export const saveWallboardGroupAC = () => ({
+  type: wallboardsActions.SAVE_WALLBOARD_GROUP,
+});
+export const saveWallboardGroupSuccessAC = (wallboardGroup) => ({
+  type: wallboardsActions.SAVE_WALLBOARD_GROUP_SUCCESS,
+  payload: wallboardGroup,
+});
+export const saveWallboardGroupFailAC = (errorMEssage) => ({
+  type: wallboardsActions.SAVE_WALLBOARD_GROUP_FAIL,
+  payload: errorMEssage,
+});
+export const saveWallboardGroupResetStatusAC = (errorMEssage) => ({
+  type: wallboardsActions.SAVE_WALLBOARD_GROUP_RESET_STATUS,
 });
 
 export const addWallboardAgentListAC = (userInfo, agentList) => ({
