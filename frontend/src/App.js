@@ -45,7 +45,6 @@ function App() {
     // eslint-disable-next-line
   }, [isAuthenticated, token]);
   useEffect(() => {
-    // debugger
     let tokenExpiryTimeout = null;
     if (userTokenInfo?.expiry) {
       tokenExpiryTimeout = setTimeout(() => {

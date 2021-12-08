@@ -7,7 +7,7 @@ const config = {
   responseType:"id_token",
   cacheLocation:"localstorage",
   instanceUrl: process.env.REACT_APP_ENV === "LOCAL" ? 'https://natterbox-3c-dev-ed--c.visualforce.com' : `https://${window.location.host}`,
-  envHost: process.env.REACT_APP_ENV === "LOCAL" ? "https://flightdeck.natterbox-dev01.net" : window?.WbConfig?.host || `https://${window.location.host}`,
+  envHost: process.env.REACT_APP_ENV === "LOCAL" ? "https://flightdeck.natterbox-qa01.net" : window?.WbConfig?.host || `https://${window.location.host}`,
 }
 
 export default config;

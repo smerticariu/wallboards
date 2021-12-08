@@ -10,6 +10,5 @@ export const generateSapienApi = async orgPath => {
       sapienUrl = `${res.data.sapienUrl}/v1`;
     }
   });
-  console.log(sapienUrl, orgPath)
   return sapienUrl;
 }
