@@ -291,7 +291,7 @@ const ModalQueueList = ({ ...props }) => {
           {DEFAULTS.MODAL.QUEUE_LIST.NAMES.PREVIEW}
         </div>
         <div>
-          <div className="c-modal__preview-section">
+          <div className="c-modal__preview-section c-modal__preview-section--queue-list">
             <QueueListTable
               isPreviewMode={true}
               tableData={DEFAULTS.MODAL.QUEUE_LIST.MOCK_DATA}
@@ -322,7 +322,7 @@ const ModalQueueList = ({ ...props }) => {
       <div ref={modalRef} className="c-modal__container c-modal__container--add-component ">
         <div className="c-modal__content">
           <div className="c-modal__header">
-            <div className="c-modal__title">{DEFAULTS.MODAL.QUEUE_LIST.MODAL_TITLE}</div>
+            <div className="c-modal__title">{queueList.isEditMode ? 'Edit' : 'Add'} Component</div>
           </div>
           <div className="c-modal__body--add-component">
             {handleModalLeftSide()}

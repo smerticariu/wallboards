@@ -25,6 +25,23 @@ const wallboardInitialValues = {
   },
   isNewWallboard: null,
 };
+
+export const wallboardGroupInitialValues = {
+  name: 'My New Wallboard Group',
+  id: null,
+  description: 'New Wallboard Group Description',
+  steps: [],
+  settings: {
+    display: {
+      shrinkHeight: false,
+      shrinkWidth: false,
+    },
+    link: {
+      isReadOnlyEnabled: false,
+    },
+  },
+  isNewWallboardGroup: null,
+};
 export const wallboardsInitialState = {
   wallboardIdForDelete: null,
   searchedWallboards: [],
@@ -39,6 +56,14 @@ export const wallboardsInitialState = {
   allWallboards: {
     wallboards: [],
     fetchStatus: FetchStatus.NULL,
+  },
+  wallboardGroup: {
+    wallboardGroupInitialValues: { ...wallboardGroupInitialValues },
+    wallboardGroup: { ...wallboardGroupInitialValues },
+    fetchStatus: FetchStatus.NULL,
+    fetchMessage: '',
+    saveStatus: FetchStatus.NULL,
+    statusCode: '',
   },
 };
 
@@ -114,6 +139,15 @@ export const wallboardsReducer = (state = { ...wallboardsInitialState }, action)
         },
       };
 
+    case wallboardsActions.CREATE_LOCAL_NEW_EMPTY_WALLBOARD_GROUP:
+      return {
+        ...state,
+        wallboardGroup: {
+          ...state.wallboardGroup,
+          wallboardGroup: { ...wallboardsInitialState.wallboardGroup.wallboardGroup, id: action.payload, isNewWallboardGroup: true },
+        },
+      };
+
     case wallboardsActions.SAVE_WALLBOARD:
       return {
         ...state,
@@ -146,6 +180,42 @@ export const wallboardsReducer = (state = { ...wallboardsInitialState }, action)
         ...state,
         activeWallboard: {
           ...state.activeWallboard,
+          saveStatus: FetchStatus.NULL,
+        },
+      };
+
+    case wallboardsActions.SAVE_WALLBOARD_GROUP:
+      return {
+        ...state,
+        wallboardGroup: {
+          ...state.wallboardGroup,
+          saveStatus: FetchStatus.IN_PROGRESS,
+        },
+      };
+    case wallboardsActions.SAVE_WALLBOARD_GROUP_SUCCESS:
+      return {
+        ...state,
+        wallboardGroup: {
+          ...state.wallboardGroup,
+          wallboardGroup: action.payload,
+          wallboardGroupInitialValues: action.payload,
+          saveStatus: FetchStatus.SUCCESS,
+          fetchStatus: FetchStatus.SUCCESS,
+        },
+      };
+    case wallboardsActions.SAVE_WALLBOARD_GROUP_FAIL:
+      return {
+        ...state,
+        wallboardGroup: {
+          ...state.wallboardGroup,
+          saveStatus: FetchStatus.FAIL,
+        },
+      };
+    case wallboardsActions.SAVE_WALLBOARD_GROUP_RESET_STATUS:
+      return {
+        ...state,
+        wallboardGroup: {
+          ...state.wallboardGroup,
           saveStatus: FetchStatus.NULL,
         },
       };
@@ -563,6 +633,17 @@ export const wallboardsReducer = (state = { ...wallboardsInitialState }, action)
           },
         },
       };
+    case wallboardsActions.HANDLE_NEW_WALLBOARD_GROUP_TITLE:
+      return {
+        ...state,
+        wallboardGroup: {
+          ...state.wallboardGroup,
+          wallboardGroup: {
+            ...state.wallboardGroup.wallboardGroup,
+            name: action.payload,
+          },
+        },
+      };
 
     case wallboardsActions.HANDLE_SELECTED_WALLBOARD_DESCRIPTION:
       return {
@@ -599,6 +680,9 @@ export const wallboardsReducer = (state = { ...wallboardsInitialState }, action)
         activeWallboard: {
           ...wallboardsInitialState.activeWallboard,
         },
+        wallboardGroup: {
+          ...wallboardsInitialState.wallboardGroup,
+        },
       };
     }
 
@@ -616,6 +700,81 @@ export const wallboardsReducer = (state = { ...wallboardsInitialState }, action)
           wallboard: {
             ...state.activeWallboard.wallboard,
             widgets: [...action.payload],
+          },
+        },
+      };
+    }
+
+    case wallboardsActions.ADD_NEW_STEP_FOR_WALLBOARD_GROUP: {
+      const id = new Date().getTime();
+      return {
+        ...state,
+        wallboardGroup: {
+          ...state.wallboardGroup,
+          wallboardGroup: {
+            ...state.wallboardGroup.wallboardGroup,
+            steps: [
+              ...state.wallboardGroup.wallboardGroup.steps,
+              {
+                stepId: id,
+                stepTime: 30, //seconds
+                wallboardId: null,
+                wallboardName: null,
+                wallboardDescription: null,
+              },
+            ],
+          },
+        },
+      };
+    }
+    case wallboardsActions.REMOVE_NEW_STEP_FOR_WALLBOARD_GROUP: {
+      return {
+        ...state,
+        wallboardGroup: {
+          ...state.wallboardGroup,
+          wallboardGroup: {
+            ...state.wallboardGroup.wallboardGroup,
+            steps: state.wallboardGroup.wallboardGroup.steps.filter((step) => step.stepId !== action.payload),
+          },
+        },
+      };
+    }
+    case wallboardsActions.REMOVE_WALLBOARD_FOR_WALLBOARD_GROUP: {
+      return {
+        ...state,
+        wallboardGroup: {
+          ...state.wallboardGroup,
+          wallboardGroup: {
+            ...state.wallboardGroup.wallboardGroup,
+            steps: state.wallboardGroup.wallboardGroup.steps.map((step) =>
+              step.stepId === action.payload
+                ? {
+                    ...step,
+                    wallboardId: null,
+                    wallboardName: null,
+                    wallboardDescription: null,
+                  }
+                : step
+            ),
+          },
+        },
+      };
+    }
+    case wallboardsActions.ADD_WALLBOARD_FOR_WALLBOARD_GROUP: {
+      return {
+        ...state,
+        wallboardGroup: {
+          ...state.wallboardGroup,
+          wallboardGroup: {
+            ...state.wallboardGroup.wallboardGroup,
+            steps: state.wallboardGroup.wallboardGroup.steps.map((step) =>
+              step.stepId === action.payload.stepId
+                ? {
+                    ...step,
+                    ...action.payload,
+                  }
+                : step
+            ),
           },
         },
       };

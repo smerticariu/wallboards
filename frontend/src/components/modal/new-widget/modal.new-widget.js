@@ -2,14 +2,14 @@ import React, { useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { handleWallboardActiveModalAC } from 'src/store/actions/modal.action';
 import { DEFAULTS } from '../../../common/defaults/defaults';
-import { MODAL_NEW_WALLBOARD_SECITONS, WIDGET_TYPE } from '../../../common/defaults/modal.defaults';
+import { MODAL_NEW_WIDGET_SECITONS, WIDGET_TYPE } from '../../../common/defaults/modal.defaults';
 import useOnClickOutside from '../../../common/hooks/useOnClickOutside';
 
 const ModalNewWidget = ({ ...props }) => {
   const modalRef = useRef(null);
   const [newWbFilter, setNewWbFilter] = useState('');
 
-  const [activeSectionValue, setActiveSectionValue] = useState(MODAL_NEW_WALLBOARD_SECITONS.QUEUES);
+  const [activeSectionValue, setActiveSectionValue] = useState(MODAL_NEW_WIDGET_SECITONS.QUEUES);
 
   const [selectedListItem, setSelectedListItem] = useState();
   const dispatch = useDispatch();
@@ -26,8 +26,8 @@ const ModalNewWidget = ({ ...props }) => {
 
     return (
       <div className="c-modal--new-wallboard__categories">
-        <div className="c-modal--new-wallboard__header">{DEFAULTS.MODAL.NEW_WALLBOARD.CATEGORIES}</div>
-        {DEFAULTS.MODAL.NEW_WALLBOARD.SECTIONS.map((navItem) => (
+        <div className="c-modal--new-wallboard__header">{DEFAULTS.MODAL.NEW_WIDGET.CATEGORIES}</div>
+        {DEFAULTS.MODAL.NEW_WIDGET.SECTIONS.map((navItem) => (
           <div
             key={navItem.value}
             className={`c-modal--new-wallboard__nav-item ${
@@ -46,7 +46,7 @@ const ModalNewWidget = ({ ...props }) => {
     const handleSelectedItem = (name) => {
       setSelectedListItem(name);
     };
-    const filtredOptions = DEFAULTS.MODAL.ADD_COMPONENT_OPTIONS[activeSectionValue].filter((option) =>
+    const filtredOptions = DEFAULTS.MODAL.NEW_WIDGET.ADD_COMPONENT_OPTIONS[activeSectionValue].filter((option) =>
       option.NAME.toLowerCase().includes(newWbFilter.toLowerCase())
     );
     return (
@@ -153,7 +153,7 @@ const ModalNewWidget = ({ ...props }) => {
       <div ref={modalRef} className="c-modal__container c-modal__container--new-wallboard">
         <div className="c-modal__content">
           <div className="c-modal__header">
-            <div className="c-modal__title">{DEFAULTS.MODAL.NEW_WALLBOARD.SELECT_COMPONENT}</div>
+            <div className="c-modal__title">{DEFAULTS.MODAL.NEW_WIDGET.SELECT_COMPONENT}</div>
           </div>
 
           <div className="c-modal__body c-modal__body--new-wallboard">

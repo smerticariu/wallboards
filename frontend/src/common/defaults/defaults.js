@@ -9,6 +9,7 @@ import { GRID } from './grid.defaults';
 import { MODAL } from './modal.defaults';
 import { LANDING } from './landing.defaults';
 import { SOQL } from './soql.defaults';
+import { TOOLBAR } from './toolbar.defaults';
 
 export const DEFAULTS = {
   GLOBAL: {
@@ -25,4 +26,5 @@ export const DEFAULTS = {
   MODAL,
   LANDING,
   SOQL,
+  TOOLBAR,
 };

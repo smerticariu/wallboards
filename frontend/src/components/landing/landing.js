@@ -4,6 +4,7 @@ import LandingSidebar from './sidebar/landing.sidebar';
 import LandingTable from './table/landing.table';
 import Toolbar from '../toolbar/toolbar';
 import useOnClickOutside from '../../common/hooks/useOnClickOutside';
+import { DEFAULTS } from '../../common/defaults/defaults';
 
 const Landing = () => {
   const [isSidebarOpen, handleIsSidebarOpen] = useState(false);
@@ -15,7 +16,7 @@ const Landing = () => {
 
   if (!adminPermissions || teamleaderPermissions) {
     return (
-      <Toolbar template="error">
+      <Toolbar template={DEFAULTS.TOOLBAR.NAME.ERROR}>
         <div className="error-message-container">
           <h3 className="error-message--headline">Error 401:</h3>
           <p className="error-message">Access Denied!</p>
@@ -26,7 +27,7 @@ const Landing = () => {
 
   return (
     <div className="c-landing">
-      <Toolbar template="landing" />
+      <Toolbar template={DEFAULTS.TOOLBAR.NAME.LANDING} />
       <div className="c-landing__content">
         <LandingSidebar ref={sidebarRef} handleIsSidebarOpen={handleIsSidebarOpen} isSidebarOpen={isSidebarOpen} />
         <LandingTable />

@@ -131,7 +131,7 @@ const QueueListTable = ({ isPreviewMode, isEditMode, tableData, widget, ...props
       <div className="widget__header">
         <div className="widget__title">
           <div className="widget__title--bold">{widget.title}: </div>
-          {widget.callQueue.value} - {widget.isCallStatusConnected && widget.isCallStatusWaiting && 'All Cals'}
+          {widget.callQueue.value} - {widget.isCallStatusConnected && widget.isCallStatusWaiting && 'All Calls'}
           {widget.isCallStatusConnected && !widget.isCallStatusWaiting && 'Connected'}
           {!widget.isCallStatusConnected && widget.isCallStatusWaiting && 'Waiting'}
         </div>
@@ -207,7 +207,7 @@ const QueueListTable = ({ isPreviewMode, isEditMode, tableData, widget, ...props
                             {isProgressBarShow && !isStatusConnected && (
                               <ProgressBar width={(timeWaiting * 100) / widget.timeInQueueSLATime} />
                             )}
-                            <TimeInterval seconds={timeWaiting} isStop={isStatusConnected} />
+                            <TimeInterval seconds={timeWaiting} isStop={isStatusConnected} isInfinit={isPreviewMode} />
                           </div>
                         );
                         break;
@@ -234,7 +234,7 @@ const QueueListTable = ({ isPreviewMode, isEditMode, tableData, widget, ...props
                             {isProgressBarShow && !isStatusConnected && (
                               <ProgressBar width={(timeAtHeadOfQueue * 100) / widget.timeAtHeadOfQueueSLATime} />
                             )}
-                            <TimeInterval seconds={timeAtHeadOfQueue} isStop={isStatusConnected} />
+                            <TimeInterval seconds={timeAtHeadOfQueue} isStop={isStatusConnected} isInfinit={isPreviewMode} />
                           </div>
                         );
                         break;

@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import moment from 'moment';
 
-const TimeInterval = ({ isStop, seconds = 0, ...props }) => {
+const TimeInterval = ({ isStop, isInfinit, seconds = 0, ...props }) => {
   const [timeLocal, setTimeLocal] = useState(seconds);
   useEffect(() => {
     let interval;
     if (!isStop) {
-      setTimeLocal(seconds);
+      if (isInfinit) {
+        setTimeLocal(timeLocal);
+      } else {
+        setTimeLocal(seconds);
+      }
       interval = setInterval(() => {
         setTimeLocal((t) => t + 1);
       }, [1000]);

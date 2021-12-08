@@ -33,6 +33,11 @@ export const WallboardsApi = async (props) => {
       options.url = wallboarIdUrl;
       options.data = props.data;
       break;
+    case DEFAULTS.WALLBOARDS.API.SAVE.WALLBOARD_GROUP:
+      options.method = 'put';
+      options.url = wallboarIdUrl;
+      options.data = props.data;
+      break;
     case DEFAULTS.WALLBOARDS.API.SAVE.CREATE_CONFIG:
       options.method = 'put';
       options.url = configUrl;

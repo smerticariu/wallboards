@@ -88,6 +88,16 @@
       fill: $natterbox-dark-blue-grey;
       margin-right: 10px;
     }
+    &--step-card {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      fill: $pinkish-grey-two;
+      width: 15px;
+      height: 15px;
+      cursor: pointer;
+      z-index: 3;
+    }
   }
   &--edit {
     fill: $natterbox-dark-blue-grey;
