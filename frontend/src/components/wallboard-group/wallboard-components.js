@@ -73,7 +73,15 @@ const WallboardComponents = () => {
           ))}
           {coords.map((coord) => {
             return (
-              <Xarrow key={new Date() * Math.random()} {...coord} path="smooth" gridBreak="50" zIndex={1} color="#00a9ce" strokeWidth={2} />
+              <Xarrow
+                key={new Date() * Math.random()}
+                {...coord}
+                path="straight"
+                gridBreak="50"
+                zIndex={1}
+                color="#00a9ce"
+                strokeWidth={2}
+              />
             );
           })}
         </div>
