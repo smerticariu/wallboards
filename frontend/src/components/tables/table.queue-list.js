@@ -231,9 +231,7 @@ const QueueListTable = ({ isPreviewMode, isEditMode, tableData, widget, ...props
                         }
                         content = (
                           <div>
-                            {isProgressBarShow && !isStatusConnected && (
-                              <ProgressBar width={(timeAtHeadOfQueue * 100) / widget.timeAtHeadOfQueueSLATime} />
-                            )}
+                            {isProgressBarShow && <ProgressBar width={(timeAtHeadOfQueue * 100) / widget.timeAtHeadOfQueueSLATime} />}
                             <TimeInterval seconds={timeAtHeadOfQueue} isStop={isStatusConnected} isInfinit={isPreviewMode} />
                           </div>
                         );

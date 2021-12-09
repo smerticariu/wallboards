@@ -9,7 +9,7 @@ import { fetchAllWallboardsThunk } from '../../../store/thunk/wallboards.thunk';
 
 const ModalNewWallboard = ({ stepId, selectedWallboardId, onClose, ...props }) => {
   const modalRef = useRef(null);
-  const [selectedListItem, setSelectedListItem] = useState(selectedWallboardId);
+  const [selectedListItem, setSelectedListItem] = useState(selectedWallboardId ?? undefined);
   const dispatch = useDispatch();
   const [newWbFilter, setNewWbFilter] = useState('');
   const { userInfo } = useSelector((state) => state.login);

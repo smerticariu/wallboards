@@ -524,7 +524,7 @@ export const MODAL = {
       PREVIEW: 'Preview',
     },
     PLACEHOLDER: {
-      COMPONENT_NAME: 'New Queue List',
+      COMPONENT_NAME: 'Queue List',
     },
     LABEL: {
       CONNECTED: 'Connected',

@@ -5,7 +5,7 @@ import { SettingsIcon } from '../../../assets/static/icons/settings';
 import { EMPTY_STEP_SCREEN_OPTIONS, SCREEN_OPTIONS_ID } from '../../../common/defaults/wallboards.defaults';
 import { removeStepForWallboardGroupAC } from '../../../store/actions/wallboards.action';
 import StepPopup from './step-popup';
-const NewEmptyStep = ({ isFirst, isLast, handleSelectedStep, onClick, step }) => {
+const NewEmptyStep = ({ isFirst, isLast, handleChangeStepTime, handleSelectedStep, onClick, step }) => {
   const [isShowStepPopup, handleIsShowStepPopup] = useState(false);
   const dispatch = useDispatch();
   const handleScreenOptionClick = (optionId) => {
@@ -35,7 +35,14 @@ const NewEmptyStep = ({ isFirst, isLast, handleSelectedStep, onClick, step }) =>
               {isLast && 'Ends'}
             </>
           )}
-          <input className="c-input c-input--seconds c-input--seconds--absolute" value={30} onChange={() => {}} />
+          <input
+            className="c-input c-input--seconds c-input--seconds--absolute"
+            value={step.stepTime}
+            type="number"
+            onChange={(e) => {
+              handleChangeStepTime(e, step.stepId);
+            }}
+          />
           <div className="new-empty-step__seconds">sec</div>
         </div>
       </div>

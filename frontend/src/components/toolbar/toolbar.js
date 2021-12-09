@@ -88,7 +88,7 @@ const Toolbar = (props) => {
     };
 
     let allTitlesForAutocomplete = wallboards.map(({ name }) => name);
-    allTitlesForAutocomplete = [...allTitlesForAutocomplete, ...wallboards.map(({ createdBy }) => createdBy)];
+    allTitlesForAutocomplete = [...allTitlesForAutocomplete, ...wallboards.map(({ createdBy }) => createdBy ?? '')];
     allTitlesForAutocomplete = [...new Set(allTitlesForAutocomplete)];
     return (
       <div className="c-toolbar-right__search-input">
@@ -119,7 +119,7 @@ const Toolbar = (props) => {
     const onClickNewWallboardGroupButton = (e) => {
       const newWallboardGroupId = generateWallboardGroupId(userInfo.organisationId, userInfo.id);
       dispatch(createNewEmptyWallboardGroupAC(newWallboardGroupId));
-      history.push(`/wallboard/group/${newWallboardGroupId}/edit`);
+      history.push(`/group/${newWallboardGroupId}/edit`);
     };
 
     return (
@@ -219,13 +219,24 @@ const Toolbar = (props) => {
     );
   };
   const handleRunButton = () => {
-    const isLinkDisabled = !activeWallboard?.widgets?.length || activeWallboard.isNewWallboard;
+    let isLinkDisabled = true;
+    let url = '/wallboard/';
+    switch (props.template) {
+      case DEFAULTS.TOOLBAR.NAME.NEW_WALLBOARD:
+        isLinkDisabled = !activeWallboard?.widgets?.length || activeWallboard.isNewWallboard;
+        url += activeWallboard.id;
+        break;
+      case DEFAULTS.TOOLBAR.NAME.NEW_WALLBOARD_GROUP:
+        isLinkDisabled =
+          !wallboardGroup?.steps?.filter((step) => step.wallboardId)?.length || wallboardGroup.isNewWallboard || !!noOfSteptsForUndo;
+        url = '/group/' + wallboardGroup.id;
+        break;
+      default:
+        break;
+    }
+
     return (
-      <Link
-        target="_blank"
-        to={`/wallboard/${activeWallboard.id}`}
-        className={`c-button c-button--blue c-button--m-left ${isLinkDisabled && 'c-button--disabled'}`}
-      >
+      <Link target="_blank" to={url} className={`c-button c-button--blue c-button--m-left ${isLinkDisabled ? 'c-button--disabled' : ''}`}>
         Run
       </Link>
     );

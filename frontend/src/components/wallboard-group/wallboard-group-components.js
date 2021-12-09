@@ -2,13 +2,15 @@ import React, { useEffect, useState } from 'react';
 import NewStep from './common/new-step';
 import Xarrow from 'react-xarrows';
 import NewEmptyStep from './common/new-empty-step';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import ModalNewWallboard from '../modal/new-wallboard/modal.new-wallboard';
 import StepWithWallboard from './common/step-with-wallboard';
 import useWindowSize from '../../common/hooks/useWindowSize';
+import { handleChangeStepTimeAC } from '../../store/actions/wallboards.action';
 
 const WallboardComponents = () => {
   const wallboardGroup = useSelector((state) => state.wallboards.present.wallboardGroup.wallboardGroup);
+  const dispatch = useDispatch();
   const [selectedStep, handleSelectedStep] = useState(null);
   const [steps, setSteps] = useState([]);
   const [coords, setCoords] = useState([]);
@@ -39,6 +41,11 @@ const WallboardComponents = () => {
             end: `${index + 1 === stepsNo ? wallboardGroup.steps[0].stepId : wallboardGroup.steps[index + 1].stepId}`,
             startAnchor: 'auto',
             endAnchor: index === stepsNo - 1 ? 'top' : 'auto',
+            path: 'straight',
+            gridBreak: '50',
+            zIndex: 1,
+            color: '#00a9ce',
+            strokeWidth: 1,
           };
         })
       );
@@ -46,7 +53,9 @@ const WallboardComponents = () => {
       setCoords([]);
     }
   }, [steps]);
-
+  const handleChangeStepTime = (event, stepId) => {
+    dispatch(handleChangeStepTimeAC(stepId, +event.target.value));
+  };
   return (
     <div className="wb-group">
       <div className="wb-group__title">Wallboard group configuration setup</div>
@@ -61,9 +70,15 @@ const WallboardComponents = () => {
               {stepGroup.map((step, stepIndex) => (
                 <div key={step.stepId} className="wb-group__step">
                   {step.wallboardId ? (
-                    <StepWithWallboard isLast={!stepIndex && steps.length} handleSelectedStep={handleSelectedStep} step={step} />
+                    <StepWithWallboard
+                      handleChangeStepTime={handleChangeStepTime}
+                      isLast={!stepIndex && steps.length}
+                      handleSelectedStep={handleSelectedStep}
+                      step={step}
+                    />
                   ) : (
                     <NewEmptyStep
+                      handleChangeStepTime={handleChangeStepTime}
                       handleSelectedStep={handleSelectedStep}
                       isFirst={step.stepId === wallboardGroup.steps[0]?.stepId}
                       isLast={step.stepId === wallboardGroup.steps.slice(-1)[0]?.stepId}
@@ -76,17 +91,7 @@ const WallboardComponents = () => {
             </div>
           ))}
           {coords.map((coord) => {
-            return (
-              <Xarrow
-                key={new Date() * Math.random()}
-                {...coord}
-                path="straight"
-                gridBreak="50"
-                zIndex={1}
-                color="#00a9ce"
-                strokeWidth={1}
-              />
-            );
+            return <Xarrow key={new Date() * Math.random()} {...coord} />;
           })}
         </div>
         {wallboardGroup.steps.length < 10 && <NewStep />}

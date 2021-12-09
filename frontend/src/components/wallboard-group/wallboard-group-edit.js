@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import WallboardComponents from './wallboard-components';
+import WallboardComponents from './wallboard-group-components';
 import Toolbar from '../toolbar/toolbar';
-import { fetchWallboardByIdThunk } from 'src/store/thunk/wallboards.thunk';
+import { fetchWallboardGroupByIdThunk } from 'src/store/thunk/wallboards.thunk';
 import { useParams } from 'react-router';
 import { FetchStatus } from 'src/store/reducers/wallboards.reducer';
 import { DEFAULTS } from '../../common/defaults/defaults';
@@ -17,7 +17,7 @@ const WallboardGroupEdit = () => {
   const teamleaderPermissions = userInfo.isTeamLeader;
 
   useEffect(() => {
-    if (!wallboardGroup.isNewWallboardGroup) dispatch(fetchWallboardByIdThunk({ id }));
+    if (!wallboardGroup.isNewWallboardGroup) dispatch(fetchWallboardGroupByIdThunk({ id }));
     // eslint-disable-next-line
   }, [id]);
 
@@ -57,8 +57,8 @@ const WallboardGroupEdit = () => {
 
   return (
     <div className="c-wallboard--new">
-      {/* {adminPermissions && (fetchStatus === FetchStatus.SUCCESS || wallboardGroup.isNewWallboardGroup) ? ( */}
-      {true ? (
+      {adminPermissions && (fetchStatus === FetchStatus.SUCCESS || wallboardGroup.isNewWallboardGroup) ? (
+        // {true ? (
         <>
           <Toolbar template={DEFAULTS.TOOLBAR.NAME.NEW_WALLBOARD_GROUP} />
           <WallboardComponents />

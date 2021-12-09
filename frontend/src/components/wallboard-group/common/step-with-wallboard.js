@@ -5,10 +5,9 @@ import { SCREEN_OPTIONS, SCREEN_OPTIONS_ID } from '../../../common/defaults/wall
 import { removeStepForWallboardGroupAC, removeWallboardForWallboardGroupAC } from '../../../store/actions/wallboards.action';
 import StepPopup from './step-popup';
 import StepWallboard from './step-wallboard';
-const StepWithWallboard = ({ isFirst, handleSelectedStep, step }) => {
+const StepWithWallboard = ({ isFirst, handleChangeStepTime, handleSelectedStep, step }) => {
   const [isShowStepPopup, handleIsShowStepPopup] = useState(false);
   const dispatch = useDispatch();
-  console.log('update wallboard outside');
   const handleScreenOptionClick = (optionId) => {
     handleIsShowStepPopup(false);
     switch (optionId) {
@@ -36,7 +35,12 @@ const StepWithWallboard = ({ isFirst, handleSelectedStep, step }) => {
           </div>
           <div className="step__footer-input-cog">
             <div className="step__footer-input-container">
-              <input className="c-input c-input--seconds" value={step.stepTime} onChange={() => {}} />
+              <input
+                className="c-input c-input--seconds"
+                type="number"
+                value={step.stepTime}
+                onChange={(e) => handleChangeStepTime(e, step.stepId)}
+              />
               <div className="step__footer-seconds">sec</div>
             </div>
             <SettingsIcon onClick={() => handleIsShowStepPopup(true)} className="i--settings" />

@@ -32,6 +32,7 @@ import ModalNewWidget from './components/modal/new-widget/modal.new-widget';
 import WallboardGroupEdit from './components/wallboard-group/wallboard-group-edit';
 import ModalConfirmSaveWallboardGroup from './components/modal/save-wallboard-group/modal.confirm-save-wallboard-group';
 import ModalSaveWallboardGroup from './components/modal/save-wallboard-group/modal.save-wallboard-group';
+import WallboardGroupReadOnly from './components/wallboard-group/wallboard-group-read-only';
 
 function App() {
   const dispatch = useDispatch();
@@ -132,8 +133,11 @@ function App() {
               <Route exact path="/wallboard/:id/edit">
                 <WallboardEdit />
               </Route>
-              <Route exact path="/wallboard/group/:id/edit">
+              <Route exact path="/group/:id/edit">
                 <WallboardGroupEdit />
+              </Route>
+              <Route exact path="/group/:id">
+                <WallboardGroupReadOnly userInfo={userTokenInfo} />
               </Route>
               <Route path="/wallboard/:id">
                 <WallboardReadOnly userInfo={userTokenInfo} />

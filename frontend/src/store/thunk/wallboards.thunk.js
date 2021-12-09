@@ -11,9 +11,15 @@ import {
   fetchWallboardByIdAC,
   fetchWallboardByIdFailAC,
   fetchWallboardByIdSuccessAC,
+  fetchWallboardGroupByIdAC,
+  fetchWallboardGroupByIdFailAC,
+  fetchWallboardGroupByIdSuccessAC,
   resetWallboardEditPageDataAC,
   saveWallboardAC,
   saveWallboardFailAC,
+  saveWallboardGroupAC,
+  saveWallboardGroupFailAC,
+  saveWallboardGroupSuccessAC,
   saveWallboardSuccessAC,
 } from '../actions/wallboards.action';
 
@@ -52,6 +58,44 @@ export const fetchWallboardByIdThunk =
       dispatch(fetchWallboardByIdSuccessAC({ widgets: [], ...wallboardById.data }));
     } catch (error) {
       dispatch(fetchWallboardByIdFailAC(DEFAULTS.GLOBAL.FAIL, error.response.status));
+      console.log(error);
+    }
+  };
+export const fetchWallboardGroupByIdThunk =
+  ({ id, copyWb }) =>
+  async (dispatch, getState) => {
+    try {
+      dispatch(fetchWallboardGroupByIdAC(DEFAULTS.WALLBOARDS.MESSAGE.LOADING));
+      const { userInfo, token } = getState().login;
+      const currentDate = new Date().getTime();
+
+      const wallboardById = await WallboardsApi({
+        type: DEFAULTS.WALLBOARDS.API.GET.BY_ID,
+        organizationId: userInfo.organisationId,
+        wallboardId: id,
+        token,
+      });
+
+      // if (!copyWb) {
+      //   await WallboardsApi({
+      //     type: DEFAULTS.WALLBOARDS.API.SAVE.WALLBOARD,
+      //     organizationId: userInfo.organisationId,
+      //     token,
+      //     data: {
+      //       ...wallboardById.data,
+      //       lastView: currentDate,
+      //     },
+      //     wallboardId: id,
+      //   });
+
+      //   dispatch(updateConfig({ ...wallboardById.data, lastView: currentDate }, DEFAULTS.WALLBOARDS.API.SAVE.WALLBOARD));
+      // } else {
+      //   dispatch(updateConfig(wallboardById.data, DEFAULTS.WALLBOARDS.API.SAVE.WALLBOARD));
+      // }
+
+      dispatch(fetchWallboardGroupByIdSuccessAC(wallboardById.data));
+    } catch (error) {
+      dispatch(fetchWallboardGroupByIdFailAC(DEFAULTS.GLOBAL.FAIL, error.response.status));
       console.log(error);
     }
   };
@@ -137,15 +181,15 @@ export const saveWallboardGroupThunk = () => async (dispatch, getState) => {
     return dispatch(handleWarningMessageAC(DEFAULTS.WALLBOARDS.MESSAGE.WALLBOARD_GROUP_NAME_WARNING));
   }
   try {
-    dispatch(saveWallboardAC());
+    dispatch(saveWallboardGroupAC());
     const currentDate = new Date().getTime();
     const wbId = wallboardGroup.id;
     const data = {
       id: wbId,
       name: wallboardGroup.name,
-      createdBy: wallboardGroup.isNewWallboard ? `${userInfo.firstName} ${userInfo.lastName}` : wallboardGroup.createdBy,
-      createdByUserId: wallboardGroup.isNewWallboard ? userInfo.id : wallboardGroup.createdByUserId,
-      lastEditedBy: wallboardGroup.isNewWallboard ? `${userInfo.firstName} ${userInfo.lastName}` : wallboardGroup.lastEditedBy,
+      createdBy: wallboardGroup.isNewWallboardGroup ? `${userInfo.firstName} ${userInfo.lastName}` : wallboardGroup.createdBy,
+      createdByUserId: wallboardGroup.isNewWallboardGroup ? userInfo.id : wallboardGroup.createdByUserId,
+      lastEditedBy: wallboardGroup.isNewWallboardGroup ? `${userInfo.firstName} ${userInfo.lastName}` : wallboardGroup.lastEditedBy,
       createdOn: wallboardGroup.createdOn ?? currentDate,
       lastView: currentDate,
       description: wallboardGroup.description,
@@ -161,13 +205,13 @@ export const saveWallboardGroupThunk = () => async (dispatch, getState) => {
       wallboardId: wbId,
     });
     // dispatch(updateConfig(data, DEFAULTS.WALLBOARDS.API.SAVE.WALLBOARD));
-    dispatch(saveWallboardSuccessAC(data));
+    dispatch(saveWallboardGroupSuccessAC(data));
 
     if (wallboardGroup.id !== undefined) {
-      dispatch(handleIsNotificationShowAC(true, false, DEFAULTS.WALLBOARDS.NOTIFICATION.SUCCESS.SAVE));
+      dispatch(handleIsNotificationShowAC(true, false, DEFAULTS.WALLBOARDS.NOTIFICATION.SUCCESS.SAVE_WALLBOARD_GROUP));
     }
   } catch (error) {
-    dispatch(saveWallboardFailAC());
+    dispatch(saveWallboardGroupFailAC());
     if (wallboardGroup.id !== undefined) {
       console.log(error.response);
       dispatch(

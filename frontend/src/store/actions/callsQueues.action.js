@@ -21,9 +21,9 @@ export const fetchAllCallsQueuesFailAC = (errorMessage) => ({
   payload: errorMessage,
 });
 
-export const fetchQueuedCallSuccess = (queuedCall) => ({
+export const fetchQueuedCallSuccess = (queuedCall, callQueueId) => ({
   type: callsQueuesActions.FETCH_QUEUED_CALL_SUCCESS,
-  payload: queuedCall,
+  payload: { queuedCall, callQueueId },
 });
 
 export const fetchCallStatisticSuccessAC = (callsStatistic, widgetId) => ({

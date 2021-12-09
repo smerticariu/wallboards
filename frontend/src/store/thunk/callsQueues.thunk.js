@@ -40,7 +40,7 @@ export const fetchQueuedCallThunk = (callQueueId) => async (dispatch, getState) 
       token,
     });
 
-    dispatch(fetchQueuedCallSuccess(allCallsQueues.data.data));
+    dispatch(fetchQueuedCallSuccess(allCallsQueues.data.data, callQueueId));
   } catch (error) {
     console.log(error);
   }

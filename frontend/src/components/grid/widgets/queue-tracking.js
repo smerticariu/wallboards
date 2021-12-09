@@ -45,8 +45,8 @@ const GridQueueTracking = ({ isEditMode, isPreview, widget, ...props }) => {
 
       //do not remove
       // if (widget.solidCallsOverride.isChecked) {
-      //   if (moment(widget.solidCallsOverride.value, 'HH:mm:ss').diff(moment().startOf('day'), 'seconds') < value.totalTalkTime) {
-      //     queueTrackingInitialValues.solidCallCount.value += value.solidCallCount;
+      // if (moment(widget.solidCallsOverride.value, 'HH:mm:ss').diff(moment().startOf('day'), 'seconds') < value.totalTalkTime) {
+      queueTrackingInitialValues.solidCallCount.value += value.solidCallCount;
       //   }
       // } else {
       //   queueTrackingInitialValues.solidCallCount.value += value.solidCallCount;
