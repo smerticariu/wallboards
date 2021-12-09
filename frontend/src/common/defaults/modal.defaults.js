@@ -982,6 +982,14 @@ export const MODAL = {
     TITLE: 'Delete Wallboard',
     QUESTION: 'Are you sure you want to delete this wallboard?',
   },
+  REMOVE_STEP_MODAL: {
+    TITLE: 'Removing Step - Warning!',
+    QUESTION: `Are you sure you want to remove this wallboard from the
+    Wallboard Group?
+    
+    Depending on your permissions to wallboards, you may not
+    be able to add it back again. `,
+  },
   DELETE_WALLBOARD_COMPONENT_MODAL: {
     QUESTION: 'Are you sure you want to delete this component?',
   },

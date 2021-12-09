@@ -6,7 +6,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import ModalNewWallboard from '../modal/new-wallboard/modal.new-wallboard';
 import StepWithWallboard from './common/step-with-wallboard';
 import useWindowSize from '../../common/hooks/useWindowSize';
-import { handleChangeStepTimeAC } from '../../store/actions/wallboards.action';
+import {
+  handleChangeStepTimeAC,
+  removeStepForWallboardGroupAC,
+  removeWallboardForWallboardGroupAC,
+} from '../../store/actions/wallboards.action';
+import { SCREEN_OPTIONS_ID } from '../../common/defaults/wallboards.defaults';
 
 const WallboardComponents = () => {
   const wallboardGroup = useSelector((state) => state.wallboards.present.wallboardGroup.wallboardGroup);
@@ -15,6 +20,7 @@ const WallboardComponents = () => {
   const [steps, setSteps] = useState([]);
   const [coords, setCoords] = useState([]);
   const { width } = useWindowSize();
+
   useEffect(() => {
     const stepsNo = wallboardGroup.steps.length;
     const spetsInRow = getStepsForOneRow();
@@ -23,6 +29,7 @@ const WallboardComponents = () => {
       if (index % 2 === 0) return wallboardGroup.steps.slice(index * spetsInRow, (index + 1) * spetsInRow);
       return wallboardGroup.steps.slice(index * spetsInRow, (index + 1) * spetsInRow).reverse();
     });
+
     setSteps([...stepsRowCopy].reverse());
   }, [wallboardGroup.steps, width]);
 
@@ -53,8 +60,24 @@ const WallboardComponents = () => {
       setCoords([]);
     }
   }, [steps]);
+
   const handleChangeStepTime = (event, stepId) => {
     dispatch(handleChangeStepTimeAC(stepId, +event.target.value));
+  };
+  const handleScreenOptionClick = (optionId, step) => {
+    switch (optionId) {
+      case SCREEN_OPTIONS_ID.CHANGE:
+        handleSelectedStep(step);
+        break;
+      case SCREEN_OPTIONS_ID.REMOVE_STEP:
+        dispatch(removeStepForWallboardGroupAC(step.stepId));
+        break;
+      case SCREEN_OPTIONS_ID.REMOVE_WALLBOARD:
+        dispatch(removeWallboardForWallboardGroupAC(step.stepId));
+        break;
+      default:
+        break;
+    }
   };
   return (
     <div className="wb-group">
@@ -67,22 +90,21 @@ const WallboardComponents = () => {
               tabIndex={stepGropuIndex}
               className={`wb-group__step-group ${steps.length % 2 === 0 ? 'wb-group__step-group--end' : ''}`}
             >
-              {stepGroup.map((step, stepIndex) => (
+              {stepGroup.map((step) => (
                 <div key={step.stepId} className="wb-group__step">
                   {step.wallboardId ? (
                     <StepWithWallboard
                       handleChangeStepTime={handleChangeStepTime}
-                      isLast={!stepIndex && steps.length}
-                      handleSelectedStep={handleSelectedStep}
+                      handleScreenOptionClick={handleScreenOptionClick}
                       step={step}
                     />
                   ) : (
                     <NewEmptyStep
                       handleChangeStepTime={handleChangeStepTime}
-                      handleSelectedStep={handleSelectedStep}
                       isFirst={step.stepId === wallboardGroup.steps[0]?.stepId}
                       isLast={step.stepId === wallboardGroup.steps.slice(-1)[0]?.stepId}
-                      onClick={handleSelectedStep}
+                      onPlusClick={handleSelectedStep}
+                      handleScreenOptionClick={handleScreenOptionClick}
                       step={step}
                     />
                   )}
