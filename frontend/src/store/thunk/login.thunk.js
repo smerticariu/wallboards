@@ -21,9 +21,13 @@ export const fetchUserInfoThunk = (token) => async (dispatch, getState) => {
 
 export const fetchUserDataThunk = (sfToken) => async (dispatch, getState) => {
   try {
+    let gatekeeperUrl = "";
+
+    await axios.get(`${config.envHost}/flightdeck/config`).then(res => gatekeeperUrl = res.data.gatekeeperUrl);
+
     const options = {
       method: 'get',
-      url: `https://gatekeeper.redmatter-qa01.pub/token/salesforce?scope=${config.scope}`,
+      url: `${gatekeeperUrl}/token/salesforce?scope=${config.scope}`,
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${sfToken}`,
