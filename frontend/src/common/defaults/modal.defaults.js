@@ -134,6 +134,9 @@ export const MODAL = {
     DELETE_WALLBOARD: 'DELETE_WALLBOARD',
     EDIT_WALLBOARD: 'EDIT_WALLBOARD',
     DELETE_WALLBOARD_COMPONENT: 'DELETE_WALLBOARD_COMPONENT',
+    NEW_STEP_WALLBOARD: 'NEW_STEP_WALLBOARD',
+    REMOVE_STEP: 'REMOVE_STEP',
+    REMOVE_WALLBOARD: 'REMOVE_WALLBOARD',
     ...WIDGET_TYPE,
   },
   NEW_WIDGET: {
@@ -984,11 +987,15 @@ export const MODAL = {
   },
   REMOVE_STEP_MODAL: {
     TITLE: 'Removing Step - Warning!',
-    QUESTION: `Are you sure you want to remove this wallboard from the
-    Wallboard Group?
+    QUESTION: `Are you sure you want to remove this wallboard from the Wallboard Group?
+
+    Depending on your permissions to wallboards, you may not be able to add it back again. `,
+  },
+  REMOVE_WALLBOARD_MODAL: {
+    TITLE: 'Removing Wallboard - Warning!',
+    QUESTION: `Are you sure you want to remove this wallboard from the Wallboard Group?
     
-    Depending on your permissions to wallboards, you may not
-    be able to add it back again. `,
+    Depending on your permissions to wallboards, you may not be able to add it back again. `,
   },
   DELETE_WALLBOARD_COMPONENT_MODAL: {
     QUESTION: 'Are you sure you want to delete this component?',

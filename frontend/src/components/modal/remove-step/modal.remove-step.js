@@ -2,14 +2,10 @@ import React, { useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { DEFAULTS } from '../../../common/defaults/defaults';
 import useOnClickOutside from '../../../common/hooks/useOnClickOutside';
-import { handleWallboardActiveModalAC } from '../../../store/actions/modal.action';
 
-const ModalDeleteStep = ({ onOkClick, id, onClose, ...props }) => {
+const ModalRemoveStep = ({ onOkClick, id, description, title, onClose, ...props }) => {
   const modalRef = useRef(null);
   const dispatch = useDispatch();
-  const closeModal = () => {
-    dispatch(handleWallboardActiveModalAC(null));
-  };
 
   useOnClickOutside(modalRef, () => onClose());
 
@@ -19,7 +15,7 @@ const ModalDeleteStep = ({ onOkClick, id, onClose, ...props }) => {
     };
     return (
       <>
-        <button className="c-button" onClick={onClickCancelButton}>
+        <button className="c-button c-button--m-left-large c-button--red" onClick={onClickCancelButton}>
           Cancel
         </button>
       </>
@@ -29,13 +25,13 @@ const ModalDeleteStep = ({ onOkClick, id, onClose, ...props }) => {
   const handleDeleteButton = () => {
     const onClickDeleteButton = () => {
       dispatch(onOkClick(id));
-      closeModal();
+      onClose();
     };
 
     return (
       <>
-        <button className={`c-button c-button--m-left c-button--blue`} onClick={onClickDeleteButton}>
-          Delete
+        <button className={`c-button  c-button--blue`} onClick={onClickDeleteButton}>
+          Ok
         </button>
       </>
     );
@@ -43,19 +39,18 @@ const ModalDeleteStep = ({ onOkClick, id, onClose, ...props }) => {
 
   return (
     <div className={`c-modal c-modal--open`}>
-      <div ref={modalRef} className="c-modal__container c-modal__container--save-changes ">
+      <div ref={modalRef} className="c-modal__container c-modal__container--call-status ">
         <div className="c-modal__content">
           <div className="c-modal__header">
-            <div className="c-modal__title c-modal__title--bold">{DEFAULTS.MODAL.REMOVE_STEP_MODAL.TITLE}</div>
+            <div className="c-modal__title c-modal__title--remove-step">{title}</div>
           </div>
           <div className="c-modal__body c-modal__body--save-changes">
-            <div className="c-modal__body--save-changes__phrase">{DEFAULTS.MODAL.REMOVE_STEP_MODAL.QUESTION}</div>
+            <div className="c-modal__body--remove-step">{description}</div>
           </div>
-          <div className="c-modal__footer">
-            <div className="c-modal__footer-left-side" />
+          <div className="c-modal__footer c-modal__footer--remove-step">
             <div className="c-modal__footer-right-side">
-              {handleCancelButton()}
               {handleDeleteButton()}
+              {handleCancelButton()}
             </div>
           </div>
         </div>
@@ -63,4 +58,4 @@ const ModalDeleteStep = ({ onOkClick, id, onClose, ...props }) => {
     </div>
   );
 };
-export default ModalDeleteStep;
+export default ModalRemoveStep;

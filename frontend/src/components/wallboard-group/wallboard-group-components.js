@@ -4,6 +4,7 @@ import Xarrow from 'react-xarrows';
 import NewEmptyStep from './common/new-empty-step';
 import { useDispatch, useSelector } from 'react-redux';
 import ModalNewWallboard from '../modal/new-wallboard/modal.new-wallboard';
+import ModalRemoveStep from '../modal/remove-step/modal.remove-step';
 import StepWithWallboard from './common/step-with-wallboard';
 import useWindowSize from '../../common/hooks/useWindowSize';
 import {
@@ -12,10 +13,12 @@ import {
   removeWallboardForWallboardGroupAC,
 } from '../../store/actions/wallboards.action';
 import { SCREEN_OPTIONS_ID } from '../../common/defaults/wallboards.defaults';
+import { DEFAULTS } from '../../common/defaults/defaults';
 
 const WallboardComponents = () => {
   const wallboardGroup = useSelector((state) => state.wallboards.present.wallboardGroup.wallboardGroup);
   const dispatch = useDispatch();
+  const [activeModal, handleActiveModal] = useState(null);
   const [selectedStep, handleSelectedStep] = useState(null);
   const [steps, setSteps] = useState([]);
   const [coords, setCoords] = useState([]);
@@ -65,19 +68,25 @@ const WallboardComponents = () => {
     dispatch(handleChangeStepTimeAC(stepId, +event.target.value));
   };
   const handleScreenOptionClick = (optionId, step) => {
+    handleSelectedStep(step);
     switch (optionId) {
       case SCREEN_OPTIONS_ID.CHANGE:
-        handleSelectedStep(step);
+        handleActiveModal(DEFAULTS.MODAL.MODAL_NAMES.NEW_STEP_WALLBOARD);
         break;
       case SCREEN_OPTIONS_ID.REMOVE_STEP:
-        dispatch(removeStepForWallboardGroupAC(step.stepId));
+        handleActiveModal(DEFAULTS.MODAL.MODAL_NAMES.REMOVE_STEP);
         break;
       case SCREEN_OPTIONS_ID.REMOVE_WALLBOARD:
-        dispatch(removeWallboardForWallboardGroupAC(step.stepId));
+        handleActiveModal(DEFAULTS.MODAL.MODAL_NAMES.REMOVE_WALLBOARD);
         break;
       default:
         break;
     }
+  };
+
+  const onPlusClick = (step) => {
+    handleSelectedStep(step);
+    handleActiveModal(DEFAULTS.MODAL.MODAL_NAMES.NEW_STEP_WALLBOARD);
   };
   return (
     <div className="wb-group">
@@ -103,7 +112,7 @@ const WallboardComponents = () => {
                       handleChangeStepTime={handleChangeStepTime}
                       isFirst={step.stepId === wallboardGroup.steps[0]?.stepId}
                       isLast={step.stepId === wallboardGroup.steps.slice(-1)[0]?.stepId}
-                      onPlusClick={handleSelectedStep}
+                      onPlusClick={onPlusClick}
                       handleScreenOptionClick={handleScreenOptionClick}
                       step={step}
                     />
@@ -118,8 +127,26 @@ const WallboardComponents = () => {
         </div>
         {wallboardGroup.steps.length < 10 && <NewStep />}
       </div>
-      {selectedStep && (
-        <ModalNewWallboard selectedWallboardId={selectedStep.wallboardId} onClose={handleSelectedStep} stepId={selectedStep.stepId} />
+      {activeModal === DEFAULTS.MODAL.MODAL_NAMES.NEW_STEP_WALLBOARD && (
+        <ModalNewWallboard selectedWallboardId={selectedStep.wallboardId} onClose={handleActiveModal} stepId={selectedStep.stepId} />
+      )}
+      {activeModal === DEFAULTS.MODAL.MODAL_NAMES.REMOVE_STEP && (
+        <ModalRemoveStep
+          title={DEFAULTS.MODAL.REMOVE_STEP_MODAL.TITLE}
+          description={DEFAULTS.MODAL.REMOVE_STEP_MODAL.QUESTION}
+          onClose={() => handleActiveModal(null)}
+          onOkClick={removeStepForWallboardGroupAC}
+          id={selectedStep.stepId}
+        />
+      )}
+      {activeModal === DEFAULTS.MODAL.MODAL_NAMES.REMOVE_WALLBOARD && (
+        <ModalRemoveStep
+          title={DEFAULTS.MODAL.REMOVE_WALLBOARD_MODAL.TITLE}
+          description={DEFAULTS.MODAL.REMOVE_WALLBOARD_MODAL.QUESTION}
+          onClose={() => handleActiveModal(null)}
+          onOkClick={removeWallboardForWallboardGroupAC}
+          id={selectedStep.stepId}
+        />
       )}
     </div>
   );
