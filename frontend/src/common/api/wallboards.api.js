@@ -8,12 +8,12 @@ export const WallboardsApi = async (props) => {
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${props.token}`,
-      'Access-Control-Allow-Origin': '*',
       Accept: 'application/json',
     },
   };
 
-  const baseUrl = `${generateWallboardsApi()}/${props.organizationId}`;
+  const url = await generateWallboardsApi();
+  const baseUrl = `${url}/${props.organizationId}`;
   const wallboarIdUrl = `${baseUrl}/key/${props.wallboardId}`;
   const configUrl = `${baseUrl}/key/config.json`;
 

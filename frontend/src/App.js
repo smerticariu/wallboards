@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useAuth0 } from '@auth0/auth0-react';
-import config from 'src/config/auth';
+import config from 'src/config/auth/authConfig';
 import Login from 'src/components/login/login';
 import Landing from 'src/components/landing/landing';
 import jwtExtractor from 'src/common/utils/jwtExtractor';
@@ -39,12 +39,11 @@ function App() {
   const { isAuthenticated, getAccessTokenSilently, isLoading } = useAuth0();
   const activeModalName = useSelector((state) => state.modal.activeModalName);
   const { warningMessage } = useSelector((state) => state.modal);
-  const sfToken = window?.WbConfig?.sfSessionId;
+  const sfToken = window?.WbConfig?.sfSessionId || process.env.REACT_APP_TOKEN;
   useEffect(() => {
     if (!token) {
       fetchData();
     }
-
     // eslint-disable-next-line
   }, [isAuthenticated, token]);
   useEffect(() => {
@@ -68,7 +67,7 @@ function App() {
         });
       } else if (sfToken) {
         dispatch(fetchUserDataThunk(sfToken));
-        dispatch(setUsersAvatarsAC(window.WbConfig.usersAvatars));
+        dispatch(setUsersAvatarsAC(window?.WbConfig?.usersAvatars));
       }
     } catch (err) {
       console.log(err);

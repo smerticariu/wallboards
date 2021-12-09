@@ -8,7 +8,7 @@ import CheckBox from 'src/components/checkbox/checkbox';
 import { applyWallboardSettingsAC } from '../../../store/actions/wallboards.action';
 import TextArea from 'src/components/textarea/textarea';
 import { handleIsNotificationShowAC } from 'src/store/actions/notification.action';
-import config from '../../../config/auth';
+import config from '../../../config/auth/authConfig';
 import { DEFAULTS } from '../../../common/defaults/defaults';
 
 const ModalEditWallboard = ({ ...props }) => {

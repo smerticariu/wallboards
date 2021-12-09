@@ -9,13 +9,13 @@ export const AgentsApi = async props => {
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${props.token}`,
-      'Access-Control-Allow-Origin': '*',
       Accept: 'application/json',
     },
   };
 
-  const baseUrl = `${generateSapienApi()}/${props.organizationId}/user`;
-  const userInfoUrl = `${generateSapienApi(true)}/user/me`;
+  const url = await generateSapienApi();
+  const baseUrl = `${url}/${props.organizationId}/user`;
+  const userInfoUrl = `${url}/user/me`;
 
   switch(props.type) {
     case DEFAULTS.AGENTS.API.GET.ALL_AGENTS:
