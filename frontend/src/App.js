@@ -131,7 +131,7 @@ function App() {
               <Route exact path="/wallboard/:id/edit">
                 <WallboardEdit />
               </Route>
-              <Route exact path="/wallboard/group/:id/edit">
+              <Route exact path="/group/:id/edit">
                 <WallboardGroupEdit />
               </Route>
               <Route path="/wallboard/:id">

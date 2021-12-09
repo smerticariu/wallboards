@@ -59,7 +59,6 @@ export const fetchWallboardByIdThunk =
 export const fetchAllWallboardsThunk = () => async (dispatch, getState) => {
   try {
     dispatch(fetchAllWallboardsAC());
-
     const { userInfo, token } = getState().login;
     const allWallboards = await WallboardsApi({
       type: DEFAULTS.WALLBOARDS.API.GET.ALL_WALLBOARDS_VIA_CONFIG,
@@ -143,9 +142,9 @@ export const saveWallboardGroupThunk = () => async (dispatch, getState) => {
     const data = {
       id: wbId,
       name: wallboardGroup.name,
-      createdBy: wallboardGroup.isNewWallboard ? `${userInfo.firstName} ${userInfo.lastName}` : wallboardGroup.createdBy,
-      createdByUserId: wallboardGroup.isNewWallboard ? userInfo.id : wallboardGroup.createdByUserId,
-      lastEditedBy: wallboardGroup.isNewWallboard ? `${userInfo.firstName} ${userInfo.lastName}` : wallboardGroup.lastEditedBy,
+      createdBy: wallboardGroup.isNewWallboardGroup ? `${userInfo.firstName} ${userInfo.lastName}` : wallboardGroup.createdBy,
+      createdByUserId: wallboardGroup.isNewWallboardGroup ? userInfo.id : wallboardGroup.createdByUserId,
+      lastEditedBy: wallboardGroup.isNewWallboardGroup ? `${userInfo.firstName} ${userInfo.lastName}` : wallboardGroup.lastEditedBy,
       createdOn: wallboardGroup.createdOn ?? currentDate,
       lastView: currentDate,
       description: wallboardGroup.description,
@@ -160,7 +159,7 @@ export const saveWallboardGroupThunk = () => async (dispatch, getState) => {
       data,
       wallboardId: wbId,
     });
-    // dispatch(updateConfig(data, DEFAULTS.WALLBOARDS.API.SAVE.WALLBOARD));
+    dispatch(updateConfig(data, DEFAULTS.WALLBOARDS.API.SAVE.WALLBOARD));
     dispatch(saveWallboardSuccessAC(data));
 
     if (wallboardGroup.id !== undefined) {
