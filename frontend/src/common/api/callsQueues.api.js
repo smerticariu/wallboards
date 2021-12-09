@@ -8,12 +8,12 @@ export const CallsQueuesApi = async (props) => {
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${props.token}`,
-      'Access-Control-Allow-Origin': '*',
       Accept: 'application/json',
     },
   };
 
-  const baseUrl = `${generateSapienApi()}/${props.organizationId}/call-queue`;
+  const url = await generateSapienApi();
+  const baseUrl = `${url}/${props.organizationId}/call-queue`;
 
   switch (props.type) {
     case DEFAULTS.CALLS_QUEUES.API.GET.ALL_CALLS_QUEUES:

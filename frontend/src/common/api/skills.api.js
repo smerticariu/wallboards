@@ -9,12 +9,12 @@ export const SkilsApi = async props => {
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${props.token}`,
-      'Access-Control-Allow-Origin': '*',
       Accept: 'application/json',
     },
   };
 
-  const baseUrl = `${generateSapienApi()}/${props.organizationId}/skill`;
+  const url = await generateSapienApi();
+  const baseUrl = `${url}/${props.organizationId}/skill`;
 
   switch(props.type) {
     case DEFAULTS.SKILLS.API.GET.ALL_SKILLS:

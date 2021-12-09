@@ -18,6 +18,7 @@ const LandingTable = () => {
   const { userInfo } = useSelector((state) => state.login);
   const { category, searchedWallboards } = useSelector((state) => state.landing);
 
+  const [dataType, setDataType] = useState('Wallboard');
   useEffect(() => {
     // dispatch(syncWallboardsWithConfig()); // import and use it when needed - do not delete
     dispatch(fetchAllWallboardsThunk());
@@ -71,11 +72,24 @@ const LandingTable = () => {
     const filterWbsByCategory = (category) => {
       switch (category) {
         case 'All Wallboards':
-          const wbsByDate = wallboards.sort((a, b) => a.lastView.toString().localeCompare(b.lastView.toString())).reverse();
+          let wbsByDate = [];
+          setDataType('Wallboard');
+          if(wallboards.length) {
+            const allWallboards = wallboards.filter(wb => wb.id.includes('-w-'));
+            wbsByDate = allWallboards.sort((a, b) => a.lastView.toString().localeCompare(b.lastView.toString())).reverse();
+          } else return [];
           return wbsByDate;
         case 'Created By Me':
-          const wbsByUser = wallboards.filter((wb) => wb.natterboxUserId === userInfo.natterboxUserId);
+          const wbsByUser = []; 
+          if(wallboards.length) {
+            const allWallboards = wallboards.filter(wb => wb.id.includes('-w-'));
+            wbsByUser = allWallboards.filter((wb) => wb.natterboxUserId === userInfo.natterboxUserId);
+          } else return [];
           return wbsByUser;
+        case 'All Wallboard Groups':
+          setDataType('Group')
+          const allGroups = wallboards.filter(wb => wb.id.includes('-g-'));
+          return allGroups;
         default:
           return wallboards;
       }
@@ -125,7 +139,7 @@ const LandingTable = () => {
             <tr>
               <td>
                 <span className="c-landing-table__filter" onClick={() => handleSortWallboards('name')}>
-                  Wallboard Name & Description
+                  {dataType} Name & Description
                 </span>
               </td>
               <td>
@@ -143,11 +157,12 @@ const LandingTable = () => {
           <tbody>
             {filteredWbs.length > 0 &&
               filteredWbs.map((wb, index) => {
+                const path = dataType === 'Wallboard' ? 'wallboard' : 'group';
                 return (
                   <tr key={index}>
                     <td className="c-landing-table__wb-name">
                       <p>
-                        <a target="_blank" href={`#/wallboard/${wb.id}`} rel="noreferrer">
+                        <a target="_blank" href={`#/${path}/${wb.id}`} rel="noreferrer">
                           {wb.name}
                         </a>
                       </p>
@@ -160,7 +175,7 @@ const LandingTable = () => {
                       <p>{handleConvertDate(wb.createdOn)}</p>
                     </td>
                     <td className="c-landing-table__wb-actions">
-                      <a target="_blank" rel="noreferrer" href={`#/wallboard/${wb.id}/edit`} className="c-landing-table__edit-btn">
+                      <a target="_blank" rel="noreferrer" href={`#/${path}/${wb.id}/edit`} className="c-landing-table__edit-btn">
                         {' '}
                       </a>
                       <button

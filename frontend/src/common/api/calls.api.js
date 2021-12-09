@@ -8,12 +8,12 @@ export const CallsApi = async (props) => {
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${props.token}`,
-      'Access-Control-Allow-Origin': '*',
       Accept: 'application/json',
     },
   };
 
-  const baseUrl = `${generateSapienApi()}/${props.organizationId}/call`;
+  const url = await generateSapienApi();
+  const baseUrl = `${url}/${props.organizationId}/call`;
 
   switch (props.type) {
     case DEFAULTS.CALLS.API.SAVE.CALL_AGENT:

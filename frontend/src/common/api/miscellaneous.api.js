@@ -8,12 +8,12 @@ export const MiscellaneousApi = async (props) => {
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${props.token}`,
-      'Access-Control-Allow-Origin': '*',
       Accept: 'application/json',
     },
   };
 
-  const baseUrl = `${generateSapienApi()}/${props.organizationId}`;
+  const url = await generateSapienApi();
+  const baseUrl = `${url}/${props.organizationId}`;
 
   switch (props.type) {
     case DEFAULTS.MISCELLANEOUS.API.GET.SIP_DEVICE:

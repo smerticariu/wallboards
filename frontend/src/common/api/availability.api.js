@@ -8,12 +8,13 @@ export const AvailabilityApi = async (props) => {
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${props.token}`,
-      'Access-Control-Allow-Origin': '*',
       Accept: 'application/json',
     },
   };
 
-  const baseUrl = `${generateSapienApi()}/${props.organizationId}/availability`;
+  const url = await generateSapienApi();
+
+  const baseUrl = `${url}/${props.organizationId}/availability`;
 
   switch (props.type) {
     case DEFAULTS.AVAILABILITY.API.GET.PROFILES:

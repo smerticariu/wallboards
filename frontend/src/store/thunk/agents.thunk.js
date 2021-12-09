@@ -403,6 +403,7 @@ export const exportCSVUserStatusDataThunk =
         const timeInSecconds = moment().diff(moment(user.time), 'seconds');
         const noOfDays = Math.floor(timeInSecconds / 86400); // 1 day === 86400 seconds
         const dateString = moment.utc(timeInSecconds * 1000).format('HH:mm:ss');
+        debugger;
         users.push([
           `${agent.firstName + ' ' + agent.lastName},${user.availabilityProfileName},${user.availabilityStateDisplayName},${moment(
             user.time
