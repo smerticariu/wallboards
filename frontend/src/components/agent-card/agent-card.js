@@ -111,7 +111,7 @@ const AgentCard = ({
                   <button className="c-button c-button--empty c-dropdown__trigger--agent-name agent-list-table__arrow-container agent-list-table__arrow-container--card">
                     {status}
                   </button>
-                  {availabilityStatesList.length && canChangeAvailabilityState && (
+                  {!!availabilityStatesList.length && canChangeAvailabilityState && (
                     <ArrowDownIcon className="i--arrow--down i--arrow--down--table i--arrow--down--small" />
                   )}
                 </>

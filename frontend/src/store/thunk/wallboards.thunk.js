@@ -1,7 +1,7 @@
 import { WallboardsApi } from '../../common/api/wallboards.api';
 import { DEFAULTS } from '../../common/defaults/defaults';
 import { checkIsAlphanumeric } from '../../common/utils/alphanumeric-validation';
-import { generateWallboardId } from '../../common/utils/generateId';
+import { generateWallboardGroupId, generateWallboardId } from '../../common/utils/generateId';
 import { handleWarningMessageAC } from '../actions/modal.action';
 import { handleIsNotificationShowAC } from '../actions/notification.action';
 import {
@@ -11,9 +11,15 @@ import {
   fetchWallboardByIdAC,
   fetchWallboardByIdFailAC,
   fetchWallboardByIdSuccessAC,
+  fetchWallboardGroupByIdAC,
+  fetchWallboardGroupByIdFailAC,
+  fetchWallboardGroupByIdSuccessAC,
   resetWallboardEditPageDataAC,
   saveWallboardAC,
   saveWallboardFailAC,
+  saveWallboardGroupAC,
+  saveWallboardGroupFailAC,
+  saveWallboardGroupSuccessAC,
   saveWallboardSuccessAC,
 } from '../actions/wallboards.action';
 
@@ -54,6 +60,45 @@ export const fetchWallboardByIdThunk =
       dispatch(fetchWallboardByIdSuccessAC({ widgets: [], ...wallboardById.data }));
     } catch (error) {
       dispatch(fetchWallboardByIdFailAC(DEFAULTS.GLOBAL.FAIL, error.response.status));
+      console.log(error);
+    }
+  };
+export const fetchWallboardGroupByIdThunk =
+  ({ id, copyWb }) =>
+  async (dispatch, getState) => {
+    try {
+      dispatch(fetchWallboardGroupByIdAC(DEFAULTS.WALLBOARDS.MESSAGE.LOADING));
+      const { userInfo, token, storeUrl } = getState().login;
+      const currentDate = new Date().getTime();
+
+      const wallboardById = await WallboardsApi({
+        type: DEFAULTS.WALLBOARDS.API.GET.BY_ID,
+        organizationId: userInfo.organisationId,
+        wallboardId: id,
+        token,
+        storeUrl,
+      });
+
+      // if (!copyWb) {
+      //   await WallboardsApi({
+      //     type: DEFAULTS.WALLBOARDS.API.SAVE.WALLBOARD,
+      //     organizationId: userInfo.organisationId,
+      //     token,
+      //     data: {
+      //       ...wallboardById.data,
+      //       lastView: currentDate,
+      //     },
+      //     wallboardId: id,
+      //   });
+
+      //   dispatch(updateConfig({ ...wallboardById.data, lastView: currentDate }, DEFAULTS.WALLBOARDS.API.SAVE.WALLBOARD));
+      // } else {
+      //   dispatch(updateConfig(wallboardById.data, DEFAULTS.WALLBOARDS.API.SAVE.WALLBOARD));
+      // }
+
+      dispatch(fetchWallboardGroupByIdSuccessAC(wallboardById.data));
+    } catch (error) {
+      dispatch(fetchWallboardGroupByIdFailAC(DEFAULTS.GLOBAL.FAIL, error.response.status));
       console.log(error);
     }
   };
@@ -140,7 +185,7 @@ export const saveWallboardGroupThunk = () => async (dispatch, getState) => {
     return dispatch(handleWarningMessageAC(DEFAULTS.WALLBOARDS.MESSAGE.WALLBOARD_GROUP_NAME_WARNING));
   }
   try {
-    dispatch(saveWallboardAC());
+    dispatch(saveWallboardGroupAC());
     const currentDate = new Date().getTime();
     const wbId = wallboardGroup.id;
     const data = {
@@ -165,13 +210,13 @@ export const saveWallboardGroupThunk = () => async (dispatch, getState) => {
       storeUrl,
     });
     dispatch(updateConfig(data, DEFAULTS.WALLBOARDS.API.SAVE.WALLBOARD));
-    dispatch(saveWallboardSuccessAC(data));
+    dispatch(saveWallboardGroupSuccessAC(data));
 
     if (wallboardGroup.id !== undefined) {
-      dispatch(handleIsNotificationShowAC(true, false, DEFAULTS.WALLBOARDS.NOTIFICATION.SUCCESS.SAVE));
+      dispatch(handleIsNotificationShowAC(true, false, DEFAULTS.WALLBOARDS.NOTIFICATION.SUCCESS.SAVE_WALLBOARD_GROUP));
     }
   } catch (error) {
-    dispatch(saveWallboardFailAC());
+    dispatch(saveWallboardGroupFailAC());
     if (wallboardGroup.id !== undefined) {
       console.log(error.response);
       dispatch(
@@ -206,6 +251,50 @@ export const deleteWallboardThunk = (wbId) => async (dispatch, getState) => {
     console.log(error);
   }
 };
+
+export const copyWallboardGroupThunk =
+  ({ wb }) =>
+  async (dispatch, getState) => {
+    try {
+      const { userInfo, token, storeUrl } = getState().login;
+
+      const groupById = await WallboardsApi({
+        type: DEFAULTS.WALLBOARDS.API.GET.BY_ID,
+        organizationId: userInfo.organisationId,
+        wallboardId: wb.id,
+        token,
+        storeUrl,
+      });
+
+      const newGroup = groupById.data;
+
+      const currentDate = new Date().getTime();
+      const wbId = generateWallboardGroupId(userInfo.organisationId, userInfo.id);
+      newGroup.id = wbId;
+      newGroup.name = `${newGroup.name} Copy`;
+      newGroup.createdOn = currentDate + 1000; // add one second to timestamp;
+      newGroup.lastView = currentDate;
+
+      const data = {
+        ...newGroup,
+      };
+
+      await WallboardsApi({
+        type: DEFAULTS.WALLBOARDS.API.SAVE.WALLBOARD_GROUP,
+        organizationId: userInfo.organisationId,
+        token,
+        data,
+        wallboardId: wbId,
+        storeUrl,
+      });
+
+      dispatch(resetWallboardEditPageDataAC());
+      dispatch(updateConfig(data, DEFAULTS.WALLBOARDS.API.SAVE.WALLBOARD));
+    } catch (error) {
+      dispatch(saveWallboardGroupFailAC());
+      console.log(error);
+    }
+  };
 
 export const copyWallboardThunk =
   ({ wb }) =>
@@ -280,6 +369,7 @@ export const syncWallboardsWithConfig = () => async (dispatch, getState) => {
           organizationId: userInfo.organisationId,
           token,
           data: configWbs,
+          storeUrl,
         });
       }
     });
@@ -373,6 +463,7 @@ export const deleteAllWallboardsThunk = () => async (dispatch, getState) => {
       organizationId: userInfo.organisationId,
       token,
       data: allWallboards,
+      storeUrl,
     });
     dispatch(syncWallboardsWithConfig());
   } catch (error) {

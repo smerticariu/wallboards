@@ -9,7 +9,7 @@ import { fetchAllWallboardsThunk } from '../../../store/thunk/wallboards.thunk';
 
 const ModalNewWallboard = ({ stepId, selectedWallboardId, onClose, ...props }) => {
   const modalRef = useRef(null);
-  const [selectedListItem, setSelectedListItem] = useState(selectedWallboardId);
+  const [selectedListItem, setSelectedListItem] = useState(selectedWallboardId ?? undefined);
   const dispatch = useDispatch();
   const [newWbFilter, setNewWbFilter] = useState('');
   const { userInfo } = useSelector((state) => state.login);
@@ -52,7 +52,12 @@ const ModalNewWallboard = ({ stepId, selectedWallboardId, onClose, ...props }) =
     };
 
     const filtredWallboards = wallboards
-      .filter((wb) => wb.natterboxUserId === userInfo.natterboxUserId && wb.name.toUpperCase().includes(newWbFilter.toUpperCase()))
+      .filter(
+        (wb) =>
+          !wb.id.includes('-g-') &&
+          wb.natterboxUserId === userInfo.natterboxUserId &&
+          wb.name.toUpperCase().includes(newWbFilter.toUpperCase())
+      )
       .sort((wb1, wb2) => wb2.lastView - wb1.lastView);
     return (
       <div className="c-modal--new-wallboard__list">

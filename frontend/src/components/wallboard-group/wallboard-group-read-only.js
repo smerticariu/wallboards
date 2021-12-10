@@ -1,40 +1,39 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Toolbar from '../toolbar/toolbar';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchWallboardByIdThunk } from 'src/store/thunk/wallboards.thunk';
+import { fetchWallboardByIdThunk, fetchWallboardGroupByIdThunk } from 'src/store/thunk/wallboards.thunk';
 import { FetchStatus } from 'src/store/reducers/wallboards.reducer';
 import GridResizeContainer from '../grid/grid.resize-container';
-import { fetchAvailabilityProfilesThunk, fetchAvailabilityStatesThunk } from '../../store/thunk/agents.thunk';
 import { DEFAULTS } from '../../common/defaults/defaults';
 
-const WallboardReadOnly = () => {
+const WallboardGroupReadOnly = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const { userInfo } = useSelector((state) => state.login);
-  const { wallboard, fetchStatus, fetchMessage, statusCode } = useSelector((state) => state.wallboards.present.activeWallboard);
-  const { availabilityProfiles } = useSelector((state) => state.agents);
+  const wallboard = useSelector((state) => state.wallboards.present.activeWallboard.wallboard);
+  const { wallboardGroup, fetchStatus, fetchMessage, statusCode } = useSelector((state) => state.wallboards.present.wallboardGroup);
   const adminPermissions = userInfo.isAdmin;
   const teamleaderPermissions = userInfo.isTeamLeader;
+  const [nextStepIndex, handleNextStepIndex] = useState(0);
+  const stepsWithWallboard = wallboardGroup.steps.filter((step) => step.wallboardId !== null);
+  const noOfStepsWithWallboard = stepsWithWallboard.length;
   useEffect(() => {
-    dispatch(fetchWallboardByIdThunk({ id }));
+    dispatch(fetchWallboardGroupByIdThunk({ id }));
     // eslint-disable-next-line
   }, [id]);
 
   useEffect(() => {
-    dispatch(fetchAvailabilityProfilesThunk());
-
-    // eslint-disable-next-line
-  }, []);
-
-  useEffect(() => {
-    if (availabilityProfiles.length) {
-      availabilityProfiles.forEach((avProfile) => {
-        dispatch(fetchAvailabilityStatesThunk(avProfile.id));
-      });
+    let timeout = null;
+    if (noOfStepsWithWallboard) {
+      const currentStep = stepsWithWallboard[nextStepIndex];
+      dispatch(fetchWallboardByIdThunk({ id: currentStep.wallboardId }));
+      timeout = setTimeout(() => {
+        handleNextStepIndex(nextStepIndex + 1 === noOfStepsWithWallboard ? 0 : nextStepIndex + 1);
+      }, currentStep.stepTime * 1000);
     }
-    // eslint-disable-next-line
-  }, [availabilityProfiles]);
+    return () => clearTimeout(timeout);
+  }, [wallboardGroup.steps, nextStepIndex]);
 
   const handleErrors = () => {
     if (fetchStatus !== FetchStatus.SUCCESS) {
@@ -53,7 +52,6 @@ const WallboardReadOnly = () => {
       </div>
     );
   };
-
   return (
     <div className="c-wallboard--read-only">
       {fetchStatus === FetchStatus.SUCCESS &&
@@ -61,8 +59,7 @@ const WallboardReadOnly = () => {
         ? true
         : adminPermissions || (teamleaderPermissions && wallboard.createdByUserId === userInfo.id)) ? (
         <>
-          <Toolbar template={DEFAULTS.TOOLBAR.NAME.WALLBOARD_READ_ONLY} wbName={wallboard.name} />
-
+          <Toolbar template={DEFAULTS.TOOLBAR.NAME.WALLBOARD_READ_ONLY} wbName={wallboard.id ? wallboard.name : ''} />
           <div className="c-wallboard--read-only__component">
             <div className="c-wallboard--read-only__cards">
               <GridResizeContainer isEditMode={false} widgets={wallboard.widgets} />
@@ -76,4 +73,4 @@ const WallboardReadOnly = () => {
   );
 };
 
-export default WallboardReadOnly;
+export default WallboardGroupReadOnly;

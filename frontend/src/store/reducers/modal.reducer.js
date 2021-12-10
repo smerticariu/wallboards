@@ -239,7 +239,7 @@ export const modalInitialState = {
     isEditMode: false,
     id: null,
     title: {
-      value: 'New Queue List',
+      value: 'Queue List',
       errorMessage: '',
     },
     callQueue: {

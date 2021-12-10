@@ -102,6 +102,39 @@ export const wallboardsReducer = (state = { ...wallboardsInitialState }, action)
         },
       };
 
+    case wallboardsActions.FETCH_WALLBOARD_GROUP_BY_ID:
+      return {
+        ...state,
+        wallboardGroup: {
+          ...state.wallboardGroup,
+          fetchStatus: FetchStatus.IN_PROGRESS,
+          fetchMessage: action.payload,
+          statusCode: '',
+        },
+      };
+    case wallboardsActions.FETCH_WALLBOARD_GROUP_BY_ID_SUCCESS:
+      return {
+        ...state,
+        wallboardGroup: {
+          ...state.wallboardGroup,
+          wallboardGroup: action.payload,
+          wallboardGroupInitialValues: action.payload,
+          fetchStatus: FetchStatus.SUCCESS,
+          statusCode: '',
+        },
+      };
+    case wallboardsActions.FETCH_WALLBOARD_GROUP_BY_ID_FAIL:
+      return {
+        ...state,
+        wallboardGroup: {
+          ...state.wallboardGroup,
+          wallboardGroup: { ...wallboardGroupInitialValues },
+          fetchStatus: FetchStatus.FAIL,
+          fetchMessage: action.payload.errorMEssage,
+          statusCode: action.payload.statusCode,
+        },
+      };
+
     case wallboardsActions.FETCH_ALL_WALLBOARDS:
       return {
         ...state,
@@ -735,6 +768,19 @@ export const wallboardsReducer = (state = { ...wallboardsInitialState }, action)
           wallboardGroup: {
             ...state.wallboardGroup.wallboardGroup,
             steps: state.wallboardGroup.wallboardGroup.steps.filter((step) => step.stepId !== action.payload),
+          },
+        },
+      };
+    }
+    case wallboardsActions.HANDLE_CHANGE_STEP_TIME: {
+      const { stepId, stepTime } = action.payload;
+      return {
+        ...state,
+        wallboardGroup: {
+          ...state.wallboardGroup,
+          wallboardGroup: {
+            ...state.wallboardGroup.wallboardGroup,
+            steps: state.wallboardGroup.wallboardGroup.steps.map((step) => (step.stepId === stepId ? { ...step, stepTime } : step)),
           },
         },
       };

@@ -12,6 +12,10 @@ export const wallboardsActions = {
   FETCH_WALLBOARD_BY_ID_SUCCESS: 'FETCH_WALLBOARD_BY_ID_SUCCESS',
   FETCH_WALLBOARD_BY_ID_FAIL: 'FETCH_WALLBOARD_BY_ID_FAIL',
 
+  FETCH_WALLBOARD_GROUP_BY_ID: 'FETCH_WALLBOARD_GROUP_BY_ID',
+  FETCH_WALLBOARD_GROUP_BY_ID_SUCCESS: 'FETCH_WALLBOARD_GROUP_BY_ID_SUCCESS',
+  FETCH_WALLBOARD_GROUP_BY_ID_FAIL: 'FETCH_WALLBOARD_GROUP_BY_ID_FAIL',
+
   FETCH_ALL_WALLBOARDS: 'FETCH_ALL_WALLBOARDS',
   FETCH_ALL_WALLBOARDS_SUCCESS: 'FETCH_ALL_WALLBOARDS_SUCCESS',
   FETCH_ALL_WALLBOARDS_FAIL: 'FETCH_ALL_WALLBOARDS_FAIL',
@@ -65,6 +69,7 @@ export const wallboardsActions = {
 
   ADD_NEW_STEP_FOR_WALLBOARD_GROUP: 'ADD_NEW_STEP_FOR_WALLBOARD_GROUP',
   REMOVE_NEW_STEP_FOR_WALLBOARD_GROUP: 'REMOVE_NEW_STEP_FOR_WALLBOARD_GROUP',
+  HANDLE_CHANGE_STEP_TIME: 'HANDLE_CHANGE_STEP_TIME',
   REMOVE_WALLBOARD_FOR_WALLBOARD_GROUP: 'REMOVE_WALLBOARD_FOR_WALLBOARD_GROUP',
 };
 
@@ -109,6 +114,19 @@ export const fetchWallboardByIdSuccessAC = (wallboard) => ({
 export const fetchWallboardByIdFailAC = (errorMEssage, statusCode) => ({
   type: wallboardsActions.FETCH_WALLBOARD_BY_ID_FAIL,
   payload: { errorMEssage, statusCode },
+});
+
+export const fetchWallboardGroupByIdAC = (message) => ({
+  type: wallboardsActions.FETCH_WALLBOARD_GROUP_BY_ID,
+  payload: message,
+});
+export const fetchWallboardGroupByIdSuccessAC = (wallboardGroup) => ({
+  type: wallboardsActions.FETCH_WALLBOARD_GROUP_BY_ID_SUCCESS,
+  payload: wallboardGroup,
+});
+export const fetchWallboardGroupByIdFailAC = (errorMessage, statusCode) => ({
+  type: wallboardsActions.FETCH_WALLBOARD_GROUP_BY_ID_FAIL,
+  payload: { errorMessage, statusCode },
 });
 
 export const fetchAllWallboardsAC = () => ({
@@ -250,6 +268,11 @@ export const addStepForWallboardGroupAC = () => ({
 export const removeStepForWallboardGroupAC = (stepId) => ({
   type: wallboardsActions.REMOVE_NEW_STEP_FOR_WALLBOARD_GROUP,
   payload: stepId,
+});
+
+export const handleChangeStepTimeAC = (stepId, stepTime) => ({
+  type: wallboardsActions.HANDLE_CHANGE_STEP_TIME,
+  payload: { stepId, stepTime },
 });
 
 export const removeWallboardForWallboardGroupAC = (stepId) => ({

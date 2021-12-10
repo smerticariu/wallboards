@@ -5,6 +5,7 @@ export const WALLBOARDS = {
     SUCCESS: {
       DELETE: 'The wallboard was successfully deleted',
       SAVE: 'The Wallboard was successfully saved',
+      SAVE_WALLBOARD_GROUP: 'The Wallboard Group was successfully saved',
     },
     FAIL: {
       DELETE: 'The Wallboard was not deleted',
@@ -222,11 +223,6 @@ export const SCREEN_OPTIONS = [
   },
 ];
 export const EMPTY_STEP_SCREEN_OPTIONS = [
-  {
-    id: SCREEN_OPTIONS_ID.CHANGE,
-    name: 'Change Current Wallboard',
-  },
-
   {
     id: SCREEN_OPTIONS_ID.REMOVE_STEP,
     name: 'Remove this Step',
