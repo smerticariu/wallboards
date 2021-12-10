@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import NewStep from './common/new-step';
 import Xarrow from 'react-xarrows';
 import NewEmptyStep from './common/new-empty-step';
@@ -23,7 +23,21 @@ const WallboardComponents = () => {
   const [steps, setSteps] = useState([]);
   const [coords, setCoords] = useState([]);
   const { width } = useWindowSize();
-
+  const [svgData, setSvgData] = useState({
+    svgSize: {
+      x: 0,
+      y: 0,
+    },
+    svgStartPoint: {
+      x: 0,
+      y: 0,
+    },
+    svgEndPoint: {
+      x: 0,
+      y: 0,
+    },
+  });
+  const containerRef = useRef();
   useEffect(() => {
     const stepsNo = wallboardGroup.steps.length;
     const spetsInRow = getStepsForOneRow();
@@ -45,20 +59,48 @@ const WallboardComponents = () => {
     const stepsNo = wallboardGroup.steps.length;
     if (stepsNo > 1) {
       setCoords(
-        wallboardGroup.steps.map((step, index) => {
-          return {
-            start: `${step.stepId}`,
-            end: `${index + 1 === stepsNo ? wallboardGroup.steps[0].stepId : wallboardGroup.steps[index + 1].stepId}`,
-            startAnchor: 'auto',
-            endAnchor: index === stepsNo - 1 ? 'top' : 'auto',
-            path: 'straight',
-            gridBreak: '50',
-            zIndex: 1,
-            color: '#00a9ce',
-            strokeWidth: 1,
-          };
-        })
+        wallboardGroup.steps
+          .map((step, index) => {
+            return {
+              start: `${step.stepId}`,
+              end: `${index + 1 === stepsNo ? wallboardGroup.steps[0].stepId : wallboardGroup.steps[index + 1].stepId}`,
+              startAnchor: 'auto',
+              endAnchor: index === stepsNo - 1 ? 'top' : 'auto',
+              path: 'straight',
+              gridBreak: '50',
+              zIndex: 1,
+              color: '#00a9ce',
+              strokeWidth: 1,
+            };
+          })
+          .filter((_, i, arr) => i < arr.length - 1)
       );
+
+      const containerPosition = containerRef.current.getBoundingClientRect();
+      const firstStepPosition = document.getElementById(wallboardGroup.steps[0].stepId).getBoundingClientRect();
+      const lastStepPosition = document.getElementById(wallboardGroup.steps.slice(-1)[0]?.stepId).getBoundingClientRect();
+      const firstElementTop = firstStepPosition.top - containerPosition.top;
+      const firstElementLeft = firstStepPosition.left - containerPosition.left;
+      const lastElementTop = lastStepPosition.top - containerPosition.top;
+      const lastElementLeft = lastStepPosition.left - containerPosition.left;
+
+      const svgStartPoint = {
+        x: lastElementTop + lastStepPosition.height / 2,
+        y: lastElementLeft,
+      };
+      const svgEndPoint = {
+        x: firstElementTop,
+        y: firstElementLeft + firstStepPosition.height / 2,
+      };
+      const svgSize = {
+        x: containerPosition.width,
+        y: containerPosition.height,
+      };
+      setSvgData({
+        svgSize,
+        svgStartPoint,
+        svgEndPoint,
+      });
     } else {
       setCoords([]);
     }
@@ -92,7 +134,7 @@ const WallboardComponents = () => {
     <div className="wb-group">
       <div className="wb-group__title">Wallboard group configuration setup</div>
       <div className="wb-group__wallboards">
-        <div className="wb-group__steps">
+        <div className="wb-group__steps" ref={containerRef}>
           {steps.map((stepGroup, stepGropuIndex) => (
             <div
               key={stepGropuIndex}
@@ -124,6 +166,33 @@ const WallboardComponents = () => {
           {coords.map((coord) => {
             return <Xarrow key={new Date() * Math.random()} {...coord} />;
           })}
+          {svgData && (
+            <div style={{ position: 'absolute', zIndex: 1 }}>
+              <svg
+                width={svgData.svgSize.x}
+                height={svgData.svgSize.y}
+                overflow="auto"
+                style={{ position: 'absolute', left: '0', top: '0', pointerEvents: 'none' }}
+              >
+                <path
+                  d={`M ${svgData.svgStartPoint.y} ${svgData.svgStartPoint.x} L ${svgData.svgEndPoint.y} ${svgData.svgEndPoint.x}`}
+                  stroke="#00a9ce"
+                  strokeDasharray="0 0"
+                  strokeWidth="1"
+                  fill="transparent"
+                  pointerEvents="visibleStroke"
+                ></path>
+                <g
+                  fill="#00a9ce"
+                  pointerEvents="auto"
+                  transform="translate(10.57679983529089,192.3212508946138) rotate(-195.20578048710772) scale(6)"
+                  opacity="1"
+                >
+                  <animate dur="0.4" attributeName="opacity" from="0" to="1" begin="indefinite" repeatCount="0" fill="freeze"></animate>
+                </g>
+              </svg>
+            </div>
+          )}
         </div>
         {wallboardGroup.steps.length < 10 && <NewStep />}
       </div>
