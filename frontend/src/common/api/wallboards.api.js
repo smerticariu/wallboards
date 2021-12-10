@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { DEFAULTS } from '../defaults/defaults';
-import { generateWallboardsApi } from './generateWallboardsApi';
 
 export const WallboardsApi = async (props) => {
   const options = {
@@ -12,8 +11,8 @@ export const WallboardsApi = async (props) => {
     },
   };
 
-  const url = await generateWallboardsApi();
-  const baseUrl = `${url}/${props.organizationId}`;
+
+  const baseUrl = `${props.storeUrl}/organisation/${props.organizationId}`;
   const wallboarIdUrl = `${baseUrl}/key/${props.wallboardId}`;
   const configUrl = `${baseUrl}/key/config.json`;
 
