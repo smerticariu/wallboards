@@ -68,7 +68,7 @@ export const fetchWallboardGroupByIdThunk =
   async (dispatch, getState) => {
     try {
       dispatch(fetchWallboardGroupByIdAC(DEFAULTS.WALLBOARDS.MESSAGE.LOADING));
-      const { userInfo, token } = getState().login;
+      const { userInfo, token, storeUrl } = getState().login;
       const currentDate = new Date().getTime();
 
       const wallboardById = await WallboardsApi({
@@ -76,6 +76,7 @@ export const fetchWallboardGroupByIdThunk =
         organizationId: userInfo.organisationId,
         wallboardId: id,
         token,
+        storeUrl,
       });
 
       // if (!copyWb) {
@@ -324,6 +325,7 @@ export const syncWallboardsWithConfig = () => async (dispatch, getState) => {
           organizationId: userInfo.organisationId,
           token,
           data: configWbs,
+          storeUrl,
         });
       }
     });
@@ -417,6 +419,7 @@ export const deleteAllWallboardsThunk = () => async (dispatch, getState) => {
       organizationId: userInfo.organisationId,
       token,
       data: allWallboards,
+      storeUrl,
     });
     dispatch(syncWallboardsWithConfig());
   } catch (error) {
