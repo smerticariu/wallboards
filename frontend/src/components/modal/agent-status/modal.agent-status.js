@@ -109,7 +109,9 @@ const ModalAgentStatus = ({ ...props }) => {
           { timeStart, timeEnd },
           +agentStatus.profile.id,
           +agentStatus.limitResult.value,
-          +agentStatus.timeZone.value
+          +agentStatus.timeZone.id,
+          agentStatus.isShowDisplayName,
+          agentStatus.isShowStateName
         )
       );
     };

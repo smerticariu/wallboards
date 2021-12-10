@@ -191,7 +191,7 @@ export const callAgentThunk = (id) => async (dispatch, getState) => {
       token,
       agentId: id,
       data,
-      sapienUrl
+      sapienUrl,
     });
   } catch (error) {
     dispatch(handleIsNotificationShowAC(true, true, `Error: ${error.response.status ?? 'unknown'} - ${DEFAULTS.GLOBAL.FAIL}`));
@@ -315,7 +315,7 @@ export const fetchUserStatusDataThunk =
         limitResult,
         timeStart,
         timeEnd,
-        sapienUrl
+        sapienUrl,
       });
 
       dispatch(fetchUserStatusDataSuccessAC(responseAgentStatus.data.data, widgetId));
@@ -391,7 +391,7 @@ export const exportCSVUserLoginDataThunk =
   };
 
 export const exportCSVUserStatusDataThunk =
-  ({ timeStart, timeEnd }, profileId, limitResult, timezone) =>
+  ({ timeStart, timeEnd }, profileId, limitResult, timezone, isShowDisplayName, isShowStateName) =>
   async (dispatch, getState) => {
     try {
       const { userInfo, token, sapienUrl } = getState().login;
@@ -417,21 +417,20 @@ export const exportCSVUserStatusDataThunk =
         sapienUrl,
       });
       const allAgents = responseAgents.data.data;
-      let users = ['Name,Profile,State Name,State Display Name,Date & Time,Elapsed'];
+      let users = [
+        `Name,Profile,${isShowStateName ? 'State Name,' : ''}${isShowDisplayName ? 'State Display Name,' : ''}Date & Time,Elapsed`,
+      ];
       agentStatusData.forEach((user) => {
         const agent = allAgents.find((agent) => agent.id === user.userId);
         const timeInSecconds = moment().diff(moment(user.time), 'seconds');
         const noOfDays = Math.floor(timeInSecconds / 86400); // 1 day === 86400 seconds
         const dateString = moment.utc(timeInSecconds * 1000).format('HH:mm:ss');
-        debugger;
         users.push([
-          `${agent.firstName + ' ' + agent.lastName},${user.availabilityProfileName},${user.availabilityStateDisplayName},${moment(
-            user.time
-          )
+          `${agent.firstName + ' ' + agent.lastName},${user.availabilityProfileName},${
+            isShowStateName ? user.availabilityStateName + ',' : ''
+          }${isShowDisplayName ? user.availabilityStateDisplayName + ',' : ''}${moment(user.time)
             .utcOffset(timezone)
-            .format('YYYY-MM-DD HH:mm:ss')},${moment(user.time).format('YYYY-DD-MM HH:mm:ss')},${
-            noOfDays ? `${noOfDays} Day${noOfDays === 1 ? '' : 's'}` : dateString
-          }`,
+            .format('YYYY-MM-DD HH:mm:ss')},${noOfDays ? `${noOfDays} Day${noOfDays === 1 ? '' : 's'}` : dateString}`,
         ]);
       });
       let csvContent = 'data:text/csv;charset=utf-8,' + users.map((user) => user).join('\n');
