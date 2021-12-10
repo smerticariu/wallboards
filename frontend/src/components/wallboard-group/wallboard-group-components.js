@@ -83,7 +83,6 @@ const WallboardComponents = () => {
       const firstElementLeft = firstStepPosition.left - containerPosition.left;
       const lastElementTop = lastStepPosition.top - containerPosition.top;
       const lastElementLeft = lastStepPosition.left - containerPosition.left;
-
       const svgStartPoint = {
         x: lastElementTop + lastStepPosition.height / 2,
         y: lastElementLeft,
