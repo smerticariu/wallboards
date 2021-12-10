@@ -28,7 +28,7 @@ export const fetchWallboardByIdThunk =
   async (dispatch, getState) => {
     try {
       dispatch(fetchWallboardByIdAC(DEFAULTS.WALLBOARDS.MESSAGE.LOADING));
-      const { userInfo, token } = getState().login;
+      const { userInfo, token, storeUrl } = getState().login;
       const currentDate = new Date().getTime();
 
       const wallboardById = await WallboardsApi({
@@ -36,6 +36,7 @@ export const fetchWallboardByIdThunk =
         organizationId: userInfo.organisationId,
         wallboardId: id,
         token,
+        storeUrl,
       });
 
       if (!copyWb) {
@@ -48,6 +49,7 @@ export const fetchWallboardByIdThunk =
             lastView: currentDate,
           },
           wallboardId: id,
+          storeUrl,
         });
 
         dispatch(updateConfig({ ...wallboardById.data, lastView: currentDate }, DEFAULTS.WALLBOARDS.API.SAVE.WALLBOARD));
@@ -103,11 +105,13 @@ export const fetchWallboardGroupByIdThunk =
 export const fetchAllWallboardsThunk = () => async (dispatch, getState) => {
   try {
     dispatch(fetchAllWallboardsAC());
-    const { userInfo, token } = getState().login;
+    const { userInfo, token, storeUrl } = getState().login;
+
     const allWallboards = await WallboardsApi({
       type: DEFAULTS.WALLBOARDS.API.GET.ALL_WALLBOARDS_VIA_CONFIG,
       organizationId: userInfo.organisationId,
       token,
+      storeUrl,
     });
 
     let wallboardsFilteredByPermissions;
@@ -126,8 +130,7 @@ export const fetchAllWallboardsThunk = () => async (dispatch, getState) => {
 
 export const saveWallboardThunk = () => async (dispatch, getState) => {
   const activeWallboard = getState().wallboards.present.activeWallboard.wallboard;
-  const { userInfo, token } = getState().login;
-
+  const { userInfo, token, storeUrl } = getState().login;
   if (!checkIsAlphanumeric(activeWallboard.name)) {
     return dispatch(handleWarningMessageAC(DEFAULTS.WALLBOARDS.MESSAGE.NAME_WARNING));
   }
@@ -154,6 +157,7 @@ export const saveWallboardThunk = () => async (dispatch, getState) => {
       token,
       data,
       wallboardId: wbId,
+      storeUrl,
     });
     dispatch(updateConfig(data, DEFAULTS.WALLBOARDS.API.SAVE.WALLBOARD));
     dispatch(saveWallboardSuccessAC(data));
@@ -174,7 +178,7 @@ export const saveWallboardThunk = () => async (dispatch, getState) => {
 };
 export const saveWallboardGroupThunk = () => async (dispatch, getState) => {
   const wallboardGroup = getState().wallboards.present.wallboardGroup.wallboardGroup;
-  const { userInfo, token } = getState().login;
+  const { userInfo, token, storeUrl } = getState().login;
 
   if (!checkIsAlphanumeric(wallboardGroup.name)) {
     return dispatch(handleWarningMessageAC(DEFAULTS.WALLBOARDS.MESSAGE.WALLBOARD_GROUP_NAME_WARNING));
@@ -202,6 +206,7 @@ export const saveWallboardGroupThunk = () => async (dispatch, getState) => {
       token,
       data,
       wallboardId: wbId,
+      storeUrl,
     });
     dispatch(updateConfig(data, DEFAULTS.WALLBOARDS.API.SAVE.WALLBOARD));
     dispatch(saveWallboardGroupSuccessAC(data));
@@ -222,12 +227,13 @@ export const saveWallboardGroupThunk = () => async (dispatch, getState) => {
 
 export const deleteWallboardThunk = (wbId) => async (dispatch, getState) => {
   try {
-    const { userInfo, token } = getState().login;
+    const { userInfo, token, storeUrl } = getState().login;
     await WallboardsApi({
       type: DEFAULTS.WALLBOARDS.API.DELETE.WALLBOARD,
       organizationId: userInfo.organisationId,
       token,
       wallboardId: wbId,
+      storeUrl,
     });
 
     dispatch(updateConfig(wbId, DEFAULTS.WALLBOARDS.API.DELETE.WALLBOARD));
@@ -249,7 +255,7 @@ export const copyWallboardThunk =
   ({ wb }) =>
   async (dispatch, getState) => {
     try {
-      const { userInfo, token } = getState().login;
+      const { userInfo, token, storeUrl } = getState().login;
       await dispatch(fetchWallboardByIdThunk({ id: wb.id, copyWb: true }));
       let activeWallboard = getState().wallboards.present.activeWallboard.wallboard;
 
@@ -270,6 +276,7 @@ export const copyWallboardThunk =
         token,
         data,
         wallboardId: wbId,
+        storeUrl,
       });
 
       dispatch(resetWallboardEditPageDataAC());
@@ -282,7 +289,7 @@ export const copyWallboardThunk =
 
 export const syncWallboardsWithConfig = () => async (dispatch, getState) => {
   try {
-    const { userInfo, token } = getState().login;
+    const { userInfo, token, storeUrl } = getState().login;
 
     const allWallboards = await WallboardsApi({
       type: DEFAULTS.WALLBOARDS.API.GET.ALL_WALLBOARDS,
@@ -297,6 +304,7 @@ export const syncWallboardsWithConfig = () => async (dispatch, getState) => {
         organizationId: userInfo.organisationId,
         token,
         wallboardId: wb.key,
+        storeUrl,
       }).then((res) => {
         if (!res.data.name) return;
         configWbs.push({
@@ -327,11 +335,12 @@ export const syncWallboardsWithConfig = () => async (dispatch, getState) => {
 
 export const updateConfig = (wallboard, method) => async (dispatch, getState) => {
   try {
-    const { userInfo, token } = getState().login;
+    const { userInfo, token, storeUrl } = getState().login;
     const config = await WallboardsApi({
       type: DEFAULTS.WALLBOARDS.API.GET.ALL_WALLBOARDS_VIA_CONFIG,
       organizationId: userInfo.organisationId,
       token,
+      storeUrl,
     });
 
     const currentDate = new Date().getTime();
@@ -382,6 +391,7 @@ export const updateConfig = (wallboard, method) => async (dispatch, getState) =>
       organizationId: userInfo.organisationId,
       token,
       data: allWallboards,
+      storeUrl,
     });
 
     dispatch(fetchAllWallboardsThunk());
@@ -393,12 +403,13 @@ export const updateConfig = (wallboard, method) => async (dispatch, getState) =>
 
 export const deleteAllWallboardsThunk = () => async (dispatch, getState) => {
   try {
-    const { userInfo, token } = getState().login;
+    const { userInfo, token, storeUrl } = getState().login;
 
     const allWallboards = await WallboardsApi({
       type: DEFAULTS.WALLBOARDS.API.GET.ALL_WALLBOARDS,
       organizationId: userInfo.organisationId,
       token,
+      storeUrl,
     });
 
     await WallboardsApi({

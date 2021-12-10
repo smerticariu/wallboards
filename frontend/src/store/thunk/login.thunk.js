@@ -3,15 +3,23 @@ import { AgentsApi } from '../../common/api/agents.api';
 import { DEFAULTS } from '../../common/defaults/defaults';
 import jwtExtractor from '../../common/utils/jwtExtractor';
 import config from '../../config/auth/authConfig';
-import { setAccessTokenAC, setUserInfoAC, setUserTokenInfoAC } from '../actions/login.action';
+import { setAccessTokenAC, setUserInfoAC, setUserTokenInfoAC, setSapienUrlAC, setStoreUrlAC, setGatekeeperUrlAC } from '../actions/login.action';
 
 export const fetchUserInfoThunk = (token) => async (dispatch, getState) => {
   try {
     if (!token.length) throw new Error(DEFAULTS.GLOBAL.FAIL);
+    let sapienUrl = "";
 
+    await axios.get(`${config.envHost}/flightdeck/config`).then(res => {
+      sapienUrl = res.data.sapienUrl;
+      dispatch(setSapienUrlAC(res.data.sapienUrl));
+      dispatch(setStoreUrlAC(res.data.storeUrl));
+      dispatch(setGatekeeperUrlAC(res.data.gatekeeperUrl));
+    });
     const userInfo = await AgentsApi({
       type: DEFAULTS.AGENTS.API.GET.AGENT_INFO,
       token,
+      sapienUrl,
     });
     dispatch(setUserInfoAC(userInfo.data.data));
   } catch (error) {
@@ -21,10 +29,7 @@ export const fetchUserInfoThunk = (token) => async (dispatch, getState) => {
 
 export const fetchUserDataThunk = (sfToken) => async (dispatch, getState) => {
   try {
-    let gatekeeperUrl = "";
-
-    await axios.get(`${config.envHost}/flightdeck/config`).then(res => gatekeeperUrl = res.data.gatekeeperUrl);
-
+    const { gatekeeperUrl } = getState().login;
     const options = {
       method: 'get',
       url: `${gatekeeperUrl}/token/salesforce?scope=${config.scope}`,
