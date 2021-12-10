@@ -4,7 +4,7 @@ import { FetchStatus } from '../../..//store/reducers/wallboards.reducer';
 import { DEFAULTS } from '../../../common/defaults/defaults';
 import { handleWallboardActiveModalAC } from '../../../store/actions/modal.action';
 import { setWallboardIdForDeleteAC, setWallboardsByCategoryAC } from '../../../store/actions/wallboards.action';
-import { fetchAllWallboardsThunk, copyWallboardThunk } from '../../../store/thunk/wallboards.thunk'; // import syncWallboardsWithConfig when needed - do not delete
+import { fetchAllWallboardsThunk, copyWallboardThunk, copyWallboardGroupThunk } from '../../../store/thunk/wallboards.thunk'; // import syncWallboardsWithConfig when needed - do not delete
 
 const LandingTable = () => {
   const dispatch = useDispatch();
@@ -114,7 +114,10 @@ const LandingTable = () => {
   };
 
   const handleCopy = (wb) => {
-    dispatch(copyWallboardThunk({ wb }));
+    if(wb.id.includes('-w-')) {
+      dispatch(copyWallboardThunk({ wb }));
+      return;
+    } else dispatch(copyWallboardGroupThunk({ wb }))
   };
 
   const handleConvertDate = (date) => {

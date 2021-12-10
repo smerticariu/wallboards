@@ -1,7 +1,7 @@
 import { WallboardsApi } from '../../common/api/wallboards.api';
 import { DEFAULTS } from '../../common/defaults/defaults';
 import { checkIsAlphanumeric } from '../../common/utils/alphanumeric-validation';
-import { generateWallboardId } from '../../common/utils/generateId';
+import { generateWallboardGroupId, generateWallboardId } from '../../common/utils/generateId';
 import { handleWarningMessageAC } from '../actions/modal.action';
 import { handleIsNotificationShowAC } from '../actions/notification.action';
 import {
@@ -251,6 +251,50 @@ export const deleteWallboardThunk = (wbId) => async (dispatch, getState) => {
     console.log(error);
   }
 };
+
+export const copyWallboardGroupThunk =
+  ({ wb }) =>
+  async (dispatch, getState) => {
+    try {
+      const { userInfo, token, storeUrl } = getState().login;
+
+      const groupById = await WallboardsApi({
+        type: DEFAULTS.WALLBOARDS.API.GET.BY_ID,
+        organizationId: userInfo.organisationId,
+        wallboardId: wb.id,
+        token,
+        storeUrl,
+      });
+
+      const newGroup = groupById.data;
+
+      const currentDate = new Date().getTime();
+      const wbId = generateWallboardGroupId(userInfo.organisationId, userInfo.id);
+      newGroup.id = wbId;
+      newGroup.name = `${newGroup.name} Copy`;
+      newGroup.createdOn = currentDate + 1000; // add one second to timestamp;
+      newGroup.lastView = currentDate;
+
+      const data = {
+        ...newGroup,
+      };
+
+      await WallboardsApi({
+        type: DEFAULTS.WALLBOARDS.API.SAVE.WALLBOARD_GROUP,
+        organizationId: userInfo.organisationId,
+        token,
+        data,
+        wallboardId: wbId,
+        storeUrl,
+      });
+
+      dispatch(resetWallboardEditPageDataAC());
+      dispatch(updateConfig(data, DEFAULTS.WALLBOARDS.API.SAVE.WALLBOARD));
+    } catch (error) {
+      dispatch(saveWallboardGroupFailAC());
+      console.log(error);
+    }
+  };
 
 export const copyWallboardThunk =
   ({ wb }) =>
