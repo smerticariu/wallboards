@@ -2,7 +2,7 @@ const config = {
   domain:"redmatter-qa01.eu.auth0.com",
   clientId:"40leAQozuSfAQGf52Lf4JBeY6QIXBvmc",
   redirectUri: process.env.REACT_APP_ENV === "LOCAL" ? "http://localhost:3000" : `https://${window.location.host}`,
-  scope:"wallboards:admin wallboards:team-leader wallboards:basic",
+  scope:"flightdeck:admin flightdeck:team-leader flightdeck:basic",
   audience:"https://sapien-proxy.redmatter-qa01.pub/",
   responseType:"id_token",
   cacheLocation:"localstorage",
