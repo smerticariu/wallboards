@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { DEFAULTS } from '../defaults/defaults';
-import { generateSapienApi } from './generateSapienApi';
 
 export const CallsApi = async (props) => {
   const options = {
@@ -12,8 +11,7 @@ export const CallsApi = async (props) => {
     },
   };
 
-  const url = await generateSapienApi();
-  const baseUrl = `${url}/${props.organizationId}/call`;
+  const baseUrl = `${props.sapienUrl}/v1/organisation/${props.organizationId}/call`;
 
   switch (props.type) {
     case DEFAULTS.CALLS.API.SAVE.CALL_AGENT:

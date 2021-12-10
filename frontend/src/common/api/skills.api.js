@@ -1,7 +1,5 @@
 import axios from 'axios';
 import { DEFAULTS } from '../defaults/defaults';
-import { generateSapienApi } from './generateSapienApi';
-
 
 export const SkilsApi = async props => {
   const options = {
@@ -13,8 +11,7 @@ export const SkilsApi = async props => {
     },
   };
 
-  const url = await generateSapienApi();
-  const baseUrl = `${url}/${props.organizationId}/skill`;
+  const baseUrl = `${props.sapienUrl}/v1/organisation/${props.organizationId}/skill`;
 
   switch(props.type) {
     case DEFAULTS.SKILLS.API.GET.ALL_SKILLS:

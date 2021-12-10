@@ -80,7 +80,7 @@ const LandingTable = () => {
           } else return [];
           return wbsByDate;
         case 'Created By Me':
-          const wbsByUser = []; 
+          let wbsByUser = []; 
           if(wallboards.length) {
             const allWallboards = wallboards.filter(wb => wb.id.includes('-w-'));
             wbsByUser = allWallboards.filter((wb) => wb.natterboxUserId === userInfo.natterboxUserId);

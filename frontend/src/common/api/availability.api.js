@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { DEFAULTS } from '../defaults/defaults';
-import { generateSapienApi } from './generateSapienApi';
 
 export const AvailabilityApi = async (props) => {
   const options = {
@@ -12,9 +11,7 @@ export const AvailabilityApi = async (props) => {
     },
   };
 
-  const url = await generateSapienApi();
-
-  const baseUrl = `${url}/${props.organizationId}/availability`;
+  const baseUrl = `${props.sapienUrl}/v1/organisation/${props.organizationId}/availability`;
 
   switch (props.type) {
     case DEFAULTS.AVAILABILITY.API.GET.PROFILES:

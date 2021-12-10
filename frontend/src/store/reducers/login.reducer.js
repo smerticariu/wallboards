@@ -18,6 +18,21 @@ export const loginReducer = (state = loginInitialState, action) => {
         ...state,
         userTokenInfo: action.payload,
       };
+    case loginActions.SET_SAPIEN_URL:
+      return {
+        ...state,
+        sapienUrl: action.payload,
+      };
+    case loginActions.SET_STORE_URL:
+      return {
+        ...state,
+        storeUrl: action.payload,
+      };
+    case loginActions.SET_GATEKEEPER_URL:
+      return {
+        ...state,
+        gatekeeperUrl: action.payload,
+      };
     case loginActions.SET_USER_INFO:
       return {
         ...state,
