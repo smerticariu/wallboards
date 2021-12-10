@@ -52,7 +52,6 @@ const WallboardGroupReadOnly = () => {
       </div>
     );
   };
-
   return (
     <div className="c-wallboard--read-only">
       {fetchStatus === FetchStatus.SUCCESS &&
@@ -60,8 +59,7 @@ const WallboardGroupReadOnly = () => {
         ? true
         : adminPermissions || (teamleaderPermissions && wallboard.createdByUserId === userInfo.id)) ? (
         <>
-          <Toolbar template={DEFAULTS.TOOLBAR.NAME.WALLBOARD_READ_ONLY} wbName={noOfStepsWithWallboard ? wallboard.name : undefined} />
-
+          <Toolbar template={DEFAULTS.TOOLBAR.NAME.WALLBOARD_READ_ONLY} wbName={wallboard.id ? wallboard.name : ''} />
           <div className="c-wallboard--read-only__component">
             <div className="c-wallboard--read-only__cards">
               <GridResizeContainer isEditMode={false} widgets={wallboard.widgets} />
