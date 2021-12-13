@@ -9,6 +9,7 @@ import {
   setFiltredWallboardsAC,
   wallboardRedoAC,
   wallboardUndoAC,
+  handleSelectedWallboardCategoryAC,
 } from '../../store/actions/wallboards.action';
 import { RedoIcon } from '../../assets/static/icons/redo';
 import { UndoIcon } from '../../assets/static/icons/undo';
@@ -316,6 +317,8 @@ const Toolbar = (props) => {
   const handleBanner = () => {
     const onLogoClick = () => {
       if (props.template === DEFAULTS.TOOLBAR.NAME.NEW_WALLBOARD || props.template === DEFAULTS.TOOLBAR.NAME.NEW_WALLBOARD_GROUP) {
+        dispatch(handleSelectedWallboardCategoryAC('All Wallboards'));
+        dispatch(setFiltredWallboardsAC(''));
         return onClickCloseButton();
       }
       return history.push('/');
