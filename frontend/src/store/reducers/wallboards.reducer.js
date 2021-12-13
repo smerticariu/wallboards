@@ -130,7 +130,7 @@ export const wallboardsReducer = (state = { ...wallboardsInitialState }, action)
           ...state.wallboardGroup,
           wallboardGroup: { ...wallboardGroupInitialValues },
           fetchStatus: FetchStatus.FAIL,
-          fetchMessage: action.payload.errorMEssage,
+          fetchMessage: action.payload.errorMessage,
           statusCode: action.payload.statusCode,
         },
       };

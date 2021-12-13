@@ -201,7 +201,8 @@ export const MODAL = {
         {
           NAME: 'Agent status',
           ID: WIDGET_TYPE.AGENT_STATUS,
-          DESCRIPTION: 'Displays a table of every availability state change for all agents within a group along with options to download the data',
+          DESCRIPTION:
+            'Displays a table of every availability state change for all agents within a group along with options to download the data',
         },
       ],
     },
@@ -970,6 +971,10 @@ export const MODAL = {
     TITLE: 'Delete Wallboard',
     QUESTION: 'Are you sure you want to delete this wallboard?',
   },
+  DELETE_WALLBOARD_GROUP_MODAL: {
+    TITLE: 'Delete Wallboard Group',
+    QUESTION: 'Are you sure you want to delete this wallboard group?',
+  },
   REMOVE_STEP_MODAL: {
     TITLE: 'Removing Step - Warning!',
     QUESTION: `Are you sure you want to remove this wallboard from the Wallboard Group?
@@ -993,6 +998,16 @@ export const MODAL = {
     READ_ONLY_URL: 'Read-Only Wallboard URL',
     READ_ONLY_URL_INFO:
       'A read only Wallboard URL allows anyone to access this wallboard with the basic Chatter Free Salesforce licence. This is great for non-Salesforce users or putting wallboards on a TV',
+    COPY: 'Copy Link',
+  },
+  EDIT_WALLBOARD_GROUP: {
+    SETTINGS: 'Settings',
+    NAME: 'Wallboard Group Name:',
+    DESCRIPTION: 'Wallboard Group Description:',
+    DISPLAY_SETTINGS: 'Display Settings:',
+    READ_ONLY_URL: 'Read-Only Wallboard Group URL',
+    READ_ONLY_URL_INFO:
+      'A read only Wallboard Group URL allows anyone to access this wallboard with the basic Chatter Free Salesforce licence. This is great for non-Salesforce users or putting wallboards on a TV',
     COPY: 'Copy Link',
   },
   CONFIRM_SAVE_WALLBOARD: {

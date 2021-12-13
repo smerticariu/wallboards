@@ -74,21 +74,21 @@ const LandingTable = () => {
         case 'All Wallboards':
           let wbsByDate = [];
           setDataType('Wallboard');
-          if(wallboards.length) {
-            const allWallboards = wallboards.filter(wb => wb.id.includes('-w-'));
+          if (wallboards.length) {
+            const allWallboards = wallboards.filter((wb) => wb.id.includes(DEFAULTS.WALLBOARDS.WALLBOARD_SEPARATOR));
             wbsByDate = allWallboards.sort((a, b) => a.lastView.toString().localeCompare(b.lastView.toString())).reverse();
           } else return [];
           return wbsByDate;
         case 'Created By Me':
-          let wbsByUser = []; 
-          if(wallboards.length) {
-            const allWallboards = wallboards.filter(wb => wb.id.includes('-w-'));
+          let wbsByUser = [];
+          if (wallboards.length) {
+            const allWallboards = wallboards.filter((wb) => wb.id.includes(DEFAULTS.WALLBOARDS.WALLBOARD_SEPARATOR));
             wbsByUser = allWallboards.filter((wb) => wb.natterboxUserId === userInfo.natterboxUserId);
           } else return [];
           return wbsByUser;
         case 'All Wallboard Groups':
-          setDataType('Group')
-          const allGroups = wallboards.filter(wb => wb.id.includes('-g-'));
+          setDataType('Group');
+          const allGroups = wallboards.filter((wb) => wb.id.includes(DEFAULTS.WALLBOARDS.WALLBOARD_GROUP_SEPARATOR));
           return allGroups;
         default:
           return wallboards;
@@ -114,10 +114,10 @@ const LandingTable = () => {
   };
 
   const handleCopy = (wb) => {
-    if(wb.id.includes('-w-')) {
+    if (wb.id.includes(DEFAULTS.WALLBOARDS.WALLBOARD_SEPARATOR)) {
       dispatch(copyWallboardThunk({ wb }));
       return;
-    } else dispatch(copyWallboardGroupThunk({ wb }))
+    } else dispatch(copyWallboardGroupThunk({ wb }));
   };
 
   const handleConvertDate = (date) => {

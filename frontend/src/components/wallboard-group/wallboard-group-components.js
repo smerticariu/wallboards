@@ -194,6 +194,7 @@ const WallboardGroupComponents = () => {
               <svg
                 width={svgData.svgSize.x}
                 height={svgData.svgSize.y}
+                className="wb-group__last-line"
                 overflow="auto"
                 style={{ position: 'absolute', left: '0', top: '0', pointerEvents: 'none' }}
               >

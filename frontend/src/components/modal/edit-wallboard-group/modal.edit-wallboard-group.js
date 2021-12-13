@@ -5,12 +5,15 @@ import useOnClickOutside from '../../../common/hooks/useOnClickOutside';
 import { applyWallboardGroupSettingsAC } from '../../../store/actions/wallboards.action';
 import TextArea from 'src/components/textarea/textarea';
 import { DEFAULTS } from '../../../common/defaults/defaults';
+import { handleIsNotificationShowAC } from '../../../store/actions/notification.action';
+import config from '../../../config/auth/authConfig';
 
 const ModalEditWallboardGroup = ({ ...props }) => {
   const dispatch = useDispatch();
   const modalRef = useRef(null);
 
   const { wallboardGroupSettings } = useSelector((state) => state.modal);
+  const activeWallboardGroupId = useSelector((state) => state.wallboards.present.wallboardGroup.wallboardGroup.id);
 
   const closeModal = () => {
     dispatch(handleWallboardActiveModalAC(null));
@@ -54,18 +57,40 @@ const ModalEditWallboardGroup = ({ ...props }) => {
       })
     );
   };
+  const handleCreateWallboardURL = (e) => {
+    e.preventDefault();
+
+    dispatch(
+      handleWallboardGroupSettingsAC({
+        ...wallboardGroupSettings,
+        link: {
+          isReadOnlyEnabled: !wallboardGroupSettings.link.isReadOnlyEnabled,
+        },
+      })
+    );
+  };
+
+  const handleCopyLinkToClipoard = (e) => {
+    e.preventDefault();
+    dispatch(handleIsNotificationShowAC(true, false, 'Link was successfully copied'));
+    navigator.clipboard.writeText(wallboardLink);
+  };
+
+  const currentDate = new Date().getTime();
+  const wallboardLink = `${config.redirectUri}#/group/${activeWallboardGroupId}?d=${currentDate}`;
+
   return (
     <div className={`c-modal c-modal--open`}>
       <div ref={modalRef} className="c-modal__container c-modal__container--edit-wallboard ">
         <div className="c-modal__content">
           <div className="c-modal__header">
-            <div className="c-modal__title">{DEFAULTS.MODAL.EDIT_WALLBOARD.SETTINGS}</div>
+            <div className="c-modal__title">{DEFAULTS.MODAL.EDIT_WALLBOARD_GROUP.SETTINGS}</div>
           </div>
 
           <div className="c-modal__body--edit-wallboard">
             <form className="c-modal__form">
               <div className="c-modal__section">
-                <label className="c-modal__label">{DEFAULTS.MODAL.EDIT_WALLBOARD.NAME}</label>
+                <label className="c-modal__label">{DEFAULTS.MODAL.EDIT_WALLBOARD_GROUP.NAME}</label>
                 <input
                   className="c-input c-input--grey"
                   value={wallboardGroupSettings.name.value}
@@ -76,7 +101,7 @@ const ModalEditWallboardGroup = ({ ...props }) => {
               </div>
 
               <div className="c-modal__section">
-                <label className="c-modal__label">{DEFAULTS.MODAL.EDIT_WALLBOARD.DESCRIPTION}</label>
+                <label className="c-modal__label">{DEFAULTS.MODAL.EDIT_WALLBOARD_GROUP.DESCRIPTION}</label>
                 <TextArea
                   className="c-textarea"
                   value={wallboardGroupSettings.description.value}
@@ -84,6 +109,35 @@ const ModalEditWallboardGroup = ({ ...props }) => {
                   name="description"
                   onChange={handleInputChanges}
                 />
+              </div>
+              <div className="c-modal__section c-modal__section--read-only">
+                <button
+                  onClick={handleCreateWallboardURL}
+                  className={`c-button c-button--blue ${wallboardGroupSettings.link.isReadOnlyEnabled ? 'c-button--grey' : ''}`}
+                >
+                  {wallboardGroupSettings.link.isReadOnlyEnabled ? 'Disable ' : 'Create '}
+                  {DEFAULTS.MODAL.EDIT_WALLBOARD_GROUP.READ_ONLY_URL}
+                </button>
+              </div>
+
+              <div className="c-modal__section c-modal__section--read-only">
+                <p className="c-modal__text">{DEFAULTS.MODAL.EDIT_WALLBOARD_GROUP.READ_ONLY_URL}</p>
+              </div>
+
+              <div className="c-modal__section c-modal__section--read-only c-modal__section--read-only__generate-link">
+                <input
+                  onChange={() => {}}
+                  className="c-input c-input--grey"
+                  value={wallboardGroupSettings.link.isReadOnlyEnabled ? wallboardLink : ''}
+                  type="text"
+                />
+                <button
+                  onClick={handleCopyLinkToClipoard}
+                  disabled={!wallboardGroupSettings.link.isReadOnlyEnabled}
+                  className={`c-button c-button--blue ${!wallboardGroupSettings.link.isReadOnlyEnabled ? 'c-button--disabled' : ''}`}
+                >
+                  {DEFAULTS.MODAL.EDIT_WALLBOARD_GROUP.COPY}
+                </button>
               </div>
             </form>
           </div>

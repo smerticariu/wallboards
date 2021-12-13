@@ -6,6 +6,7 @@ import { fetchWallboardByIdThunk, fetchWallboardGroupByIdThunk } from 'src/store
 import { FetchStatus } from 'src/store/reducers/wallboards.reducer';
 import GridResizeContainer from '../grid/grid.resize-container';
 import { DEFAULTS } from '../../common/defaults/defaults';
+import { fetchAvailabilityProfilesThunk, fetchAvailabilityStatesThunk } from '../../store/thunk/agents.thunk';
 
 const WallboardGroupReadOnly = () => {
   const { id } = useParams();
@@ -16,6 +17,7 @@ const WallboardGroupReadOnly = () => {
   const wallboardFetchMessage = useSelector((state) => state.wallboards.present.activeWallboard.fetchMessage);
   const wallboardStatusCode = useSelector((state) => state.wallboards.present.activeWallboard.statusCode);
   const { wallboardGroup, fetchStatus, fetchMessage, statusCode } = useSelector((state) => state.wallboards.present.wallboardGroup);
+  const { availabilityProfiles } = useSelector((state) => state.agents);
   const adminPermissions = userInfo.isAdmin;
   const teamleaderPermissions = userInfo.isTeamLeader;
   const [nextStepIndex, handleNextStepIndex] = useState(0);
@@ -38,6 +40,21 @@ const WallboardGroupReadOnly = () => {
     return () => clearTimeout(timeout);
     // eslint-disable-next-line
   }, [wallboardGroup.steps, nextStepIndex]);
+
+  useEffect(() => {
+    dispatch(fetchAvailabilityProfilesThunk());
+
+    // eslint-disable-next-line
+  }, []);
+
+  useEffect(() => {
+    if (availabilityProfiles.length) {
+      availabilityProfiles.forEach((avProfile) => {
+        dispatch(fetchAvailabilityStatesThunk(avProfile.id));
+      });
+    }
+    // eslint-disable-next-line
+  }, [availabilityProfiles]);
 
   const handleErrors = () => {
     if (fetchStatus !== FetchStatus.SUCCESS) {
@@ -65,9 +82,9 @@ const WallboardGroupReadOnly = () => {
     );
   };
 
-  const isUserAllowedToViewWallboard = wallboard.settings.link.isReadOnlyEnabled
+  const isUserAllowedToViewWallboard = wallboardGroup.settings.link.isReadOnlyEnabled
     ? true
-    : adminPermissions || (teamleaderPermissions && wallboard.createdByUserId === userInfo.id);
+    : adminPermissions || (teamleaderPermissions && wallboardGroup.createdByUserId === userInfo.id);
 
   return (
     <div className="c-wallboard--read-only">
