@@ -300,24 +300,22 @@ const GridAgentList = ({ isEditMode, widget, ...props }) => {
                     columnsToView={widget.columnsToView.selectedItems}
                     availabilityStatesList={availabilityStatesList}
                     handleAgentAvailabilityState={handleAgentAvailabilityState}
-                    agents={JSON.parse(JSON.stringify(agentsForDisplay))
-                      .splice(startSlice, endSlice)
-                      .map((agent) => ({
-                        id: agent.userId,
-                        callStatusKey: agent.status,
-                        agentName: `${agent.firstName} ${agent.lastName}`,
-                        agentExtNo: agent.sipExtension ?? 'No data',
-                        currAvaiState: agent.availabilityState?.displayName ?? 'None',
-                        currPresState: agent.status,
-                        noCallsOffered: agent.callCount,
-                        noCallsAnswered: '0',
-                        noCallsMissed: '0',
-                        timeInCurrentPresenceState: 0,
-                        timeInCurrentAvailabilityState: agent.timeInCurrentAvailabilityState,
-                        timeInCurrentCall: agent.currentCallTimeSeconds,
-                        timeInCurrentWrapup: 0,
-                        listOfSkills: agent.agentSkills,
-                      }))}
+                    agents={[...agentsForDisplay].splice(startSlice, endSlice).map((agent) => ({
+                      id: agent.userId,
+                      callStatusKey: agent.status,
+                      agentName: `${agent.firstName} ${agent.lastName}`,
+                      agentExtNo: agent.sipExtension ?? 'No data',
+                      currAvaiState: agent.availabilityState?.displayName ?? 'None',
+                      currPresState: agent.status,
+                      noCallsOffered: agent.callCount,
+                      noCallsAnswered: '0',
+                      noCallsMissed: '0',
+                      timeInCurrentPresenceState: 0,
+                      timeInCurrentAvailabilityState: agent.timeInCurrentAvailabilityState,
+                      timeInCurrentCall: agent.currentCallTimeSeconds,
+                      timeInCurrentWrapup: 0,
+                      listOfSkills: agent.agentSkills,
+                    }))}
                   />
                 );
               }

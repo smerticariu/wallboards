@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { handleChangeSelectedWallboardSettingsAC, handleWallboardActiveModalAC } from 'src/store/actions/modal.action';
+import { handleWallboardSettingsAC, handleWallboardActiveModalAC } from 'src/store/actions/modal.action';
 import useOnClickOutside from '../../../common/hooks/useOnClickOutside';
 
 import CheckBox from 'src/components/checkbox/checkbox';
@@ -51,7 +51,7 @@ const ModalEditWallboard = ({ ...props }) => {
   const handleInputChanges = (e) => {
     const { value, name } = e.target;
     dispatch(
-      handleChangeSelectedWallboardSettingsAC({
+      handleWallboardSettingsAC({
         ...wallboardSettings,
         [name]: {
           value: value,
@@ -65,7 +65,7 @@ const ModalEditWallboard = ({ ...props }) => {
     switch (inputType) {
       case 'shrinkWidth':
         dispatch(
-          handleChangeSelectedWallboardSettingsAC({
+          handleWallboardSettingsAC({
             ...wallboardSettings,
             display: {
               shrinkHeight: wallboardSettings.display.shrinkHeight,
@@ -76,7 +76,7 @@ const ModalEditWallboard = ({ ...props }) => {
         break;
       case 'shrinkHeight':
         dispatch(
-          handleChangeSelectedWallboardSettingsAC({
+          handleWallboardSettingsAC({
             ...wallboardSettings,
             display: {
               shrinkHeight: e.target.checked,
@@ -94,7 +94,7 @@ const ModalEditWallboard = ({ ...props }) => {
     e.preventDefault();
 
     dispatch(
-      handleChangeSelectedWallboardSettingsAC({
+      handleWallboardSettingsAC({
         ...wallboardSettings,
         link: {
           isReadOnlyEnabled: !wallboardSettings.link.isReadOnlyEnabled,

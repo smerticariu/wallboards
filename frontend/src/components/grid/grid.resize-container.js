@@ -232,7 +232,7 @@ const GridResizeContainer = ({ isEditMode = true, widgets = [], ...props }) => {
 
     setGridComponents(gridItemsToTop);
 
-    syncDataWithRedux(JSON.parse(JSON.stringify(gridItemsToTop)));
+    syncDataWithRedux([...gridItemsToTop]);
   };
 
   //setting new positions
@@ -274,10 +274,10 @@ const GridResizeContainer = ({ isEditMode = true, widgets = [], ...props }) => {
   const translateItemsToTopOnTheGrid = (grid, activeGridItem) => {
     let isChanges = false;
     let isGlobalChanges = false;
-    let gridCopy = JSON.parse(JSON.stringify(grid));
+    let gridCopy = [...grid];
     do {
       isChanges = false;
-      gridCopy = JSON.parse(JSON.stringify(gridCopy))
+      gridCopy = [...gridCopy]
         .sort((a, b) => a.startY - b.startY)
         // eslint-disable-next-line
         .map((gridItem) => {
@@ -335,7 +335,7 @@ const GridResizeContainer = ({ isEditMode = true, widgets = [], ...props }) => {
     //active card coordinates
     let startX = activeGridItem.startX;
     let endX = activeGridItem.endX;
-    JSON.parse(JSON.stringify(grid))
+    [...grid]
       .sort((a, b) => a.startY - b.startY)
       .forEach((gridItem) => {
         if (gridItem.id === activeGridItem.id || gridItem.endY < activeGridItem.startY || gridItem.endX < startX || gridItem.startX > endX)
@@ -356,7 +356,7 @@ const GridResizeContainer = ({ isEditMode = true, widgets = [], ...props }) => {
   //we modify the coordinates of the elements that have been identified for translation
   const changeGridElementsYPosition = (grid, gridItemsToChange, activeGridItem) => {
     let pxToBottom = activeGridItem.height;
-    return JSON.parse(JSON.stringify(grid))
+    return [...grid]
       .sort((a, b) => a.startY - b.startY)
       .map((gridItem, _, gridArray) => {
         if (gridItemsToChange.includes(gridItem.id)) {

@@ -19,6 +19,7 @@ const StepWithWallboard = ({ handleChangeStepTime, handleScreenOptionClick, step
               <input
                 className="c-input c-input--seconds"
                 type="number"
+                min={1}
                 value={step.stepTime}
                 onChange={(e) => handleChangeStepTime(e, step.stepId)}
               />

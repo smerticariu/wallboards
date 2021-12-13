@@ -15,7 +15,7 @@ import {
 import { SCREEN_OPTIONS_ID } from '../../common/defaults/wallboards.defaults';
 import { DEFAULTS } from '../../common/defaults/defaults';
 
-const WallboardComponents = () => {
+const WallboardGroupComponents = () => {
   const wallboardGroup = useSelector((state) => state.wallboards.present.wallboardGroup.wallboardGroup);
   const dispatch = useDispatch();
   const [activeModal, handleActiveModal] = useState(null);
@@ -46,6 +46,7 @@ const WallboardComponents = () => {
     });
 
     setSteps([...stepsRowCopy].reverse());
+    // eslint-disable-next-line
   }, [wallboardGroup.steps, width]);
 
   const getStepsForOneRow = () => {
@@ -69,6 +70,7 @@ const WallboardComponents = () => {
               zIndex: 1,
               color: '#00a9ce',
               strokeWidth: 1,
+              headSize: 12,
             };
           })
           .filter((_, i, arr) => i < arr.length - 1)
@@ -94,8 +96,8 @@ const WallboardComponents = () => {
         points.push([svgEndPoint[0] - 30, points.slice(-1)[0][1]]);
         points.push([points.slice(-1)[0][0], svgEndPoint[1]]);
         arrowTranslate = {
-          x: svgEndPoint[0] - 6,
-          y: svgEndPoint[1] - 3,
+          x: svgEndPoint[0] - 10,
+          y: svgEndPoint[1] - 5,
           rotate: 0,
         };
       } else {
@@ -109,8 +111,8 @@ const WallboardComponents = () => {
         points.push([points.slice(-1)[0][0], svgEndPoint[1] + 30]);
         points.push([svgEndPoint[0], svgEndPoint[1] + 30]);
         arrowTranslate = {
-          x: svgEndPoint[0] - 3,
-          y: svgEndPoint[1] + 6,
+          x: svgEndPoint[0] - 5,
+          y: svgEndPoint[1] + 10,
           rotate: 270,
         };
       }
@@ -124,6 +126,7 @@ const WallboardComponents = () => {
     } else {
       setCoords([]);
     }
+    // eslint-disable-next-line
   }, [steps]);
 
   const handleChangeStepTime = (event, stepId) => {
@@ -186,7 +189,7 @@ const WallboardComponents = () => {
           {coords.map((coord) => {
             return <Xarrow key={new Date() * Math.random()} {...coord} />;
           })}
-          {!!svgData.points.length && (
+          {!!svgData.points.length && wallboardGroup.steps.length > 1 && (
             <div style={{ position: 'absolute', zIndex: 1 }}>
               <svg
                 width={svgData.svgSize.x}
@@ -205,10 +208,10 @@ const WallboardComponents = () => {
                 <g
                   fill="#00a9ce"
                   pointerEvents="auto"
-                  transform={`translate(${svgData.arrowTranslate.x},${svgData.arrowTranslate.y}) rotate(${svgData.arrowTranslate.rotate}) scale(6)`}
+                  transform={`translate(${svgData.arrowTranslate.x},${svgData.arrowTranslate.y}) rotate(${svgData.arrowTranslate.rotate}) scale(10)`}
                   opacity="1"
                 >
-                  <path d="M 0 0 L 1 0.5 L 0 1 L 0.25 0.5 z"></path>
+                  <path d="M 0 0 L 1 0.5 L 0 1 L 0.25 0.5 z" />
                 </g>
               </svg>
             </div>
@@ -241,4 +244,4 @@ const WallboardComponents = () => {
   );
 };
 
-export default WallboardComponents;
+export default WallboardGroupComponents;

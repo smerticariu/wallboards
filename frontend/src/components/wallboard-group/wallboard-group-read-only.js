@@ -12,6 +12,9 @@ const WallboardGroupReadOnly = () => {
   const dispatch = useDispatch();
   const { userInfo } = useSelector((state) => state.login);
   const wallboard = useSelector((state) => state.wallboards.present.activeWallboard.wallboard);
+  const wallboardFetchStatus = useSelector((state) => state.wallboards.present.activeWallboard.fetchStatus);
+  const wallboardFetchMessage = useSelector((state) => state.wallboards.present.activeWallboard.fetchMessage);
+  const wallboardStatusCode = useSelector((state) => state.wallboards.present.activeWallboard.statusCode);
   const { wallboardGroup, fetchStatus, fetchMessage, statusCode } = useSelector((state) => state.wallboards.present.wallboardGroup);
   const adminPermissions = userInfo.isAdmin;
   const teamleaderPermissions = userInfo.isTeamLeader;
@@ -33,6 +36,7 @@ const WallboardGroupReadOnly = () => {
       }, currentStep.stepTime * 1000);
     }
     return () => clearTimeout(timeout);
+    // eslint-disable-next-line
   }, [wallboardGroup.steps, nextStepIndex]);
 
   const handleErrors = () => {
@@ -44,6 +48,14 @@ const WallboardGroupReadOnly = () => {
         </div>
       );
     }
+    if (wallboardFetchStatus !== FetchStatus.SUCCESS) {
+      return (
+        <div className="error-message-container">
+          {wallboardFetchStatus === FetchStatus.FAIL && <h3 className="error-message--headline">Error {wallboardStatusCode}:</h3>}
+          <p className="error-message">{wallboardFetchMessage}</p>
+        </div>
+      );
+    }
 
     return (
       <div className="error-message-container">
@@ -52,12 +64,14 @@ const WallboardGroupReadOnly = () => {
       </div>
     );
   };
+
+  const isUserAllowedToViewWallboard = wallboard.settings.link.isReadOnlyEnabled
+    ? true
+    : adminPermissions || (teamleaderPermissions && wallboard.createdByUserId === userInfo.id);
+
   return (
     <div className="c-wallboard--read-only">
-      {fetchStatus === FetchStatus.SUCCESS &&
-      (wallboard.settings.link.isReadOnlyEnabled
-        ? true
-        : adminPermissions || (teamleaderPermissions && wallboard.createdByUserId === userInfo.id)) ? (
+      {fetchStatus === FetchStatus.SUCCESS && wallboardFetchStatus !== FetchStatus.FAIL && isUserAllowedToViewWallboard ? (
         <>
           <Toolbar template={DEFAULTS.TOOLBAR.NAME.WALLBOARD_READ_ONLY} wbName={wallboard.id ? wallboard.name : ''} />
           <div className="c-wallboard--read-only__component">

@@ -23,6 +23,7 @@ const NewEmptyStep = ({ isFirst, isLast, handleChangeStepTime, handleScreenOptio
           <input
             className="c-input c-input--seconds c-input--seconds--absolute"
             value={step.stepTime}
+            min={1}
             type="number"
             onChange={(e) => {
               handleChangeStepTime(e, step.stepId);

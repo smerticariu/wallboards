@@ -59,7 +59,7 @@ export const fetchWallboardByIdThunk =
 
       dispatch(fetchWallboardByIdSuccessAC({ widgets: [], ...wallboardById.data }));
     } catch (error) {
-      dispatch(fetchWallboardByIdFailAC(DEFAULTS.GLOBAL.FAIL, error.response.status));
+      dispatch(fetchWallboardByIdFailAC(DEFAULTS.GLOBAL.FAIL, error?.response?.status));
       console.log(error);
     }
   };
@@ -78,23 +78,23 @@ export const fetchWallboardGroupByIdThunk =
         token,
         storeUrl,
       });
+      if (!copyWb) {
+        await WallboardsApi({
+          type: DEFAULTS.WALLBOARDS.API.SAVE.WALLBOARD,
+          organizationId: userInfo.organisationId,
+          token,
+          data: {
+            ...wallboardById.data,
+            lastView: currentDate,
+          },
+          storeUrl,
+          wallboardId: id,
+        });
 
-      // if (!copyWb) {
-      //   await WallboardsApi({
-      //     type: DEFAULTS.WALLBOARDS.API.SAVE.WALLBOARD,
-      //     organizationId: userInfo.organisationId,
-      //     token,
-      //     data: {
-      //       ...wallboardById.data,
-      //       lastView: currentDate,
-      //     },
-      //     wallboardId: id,
-      //   });
-
-      //   dispatch(updateConfig({ ...wallboardById.data, lastView: currentDate }, DEFAULTS.WALLBOARDS.API.SAVE.WALLBOARD));
-      // } else {
-      //   dispatch(updateConfig(wallboardById.data, DEFAULTS.WALLBOARDS.API.SAVE.WALLBOARD));
-      // }
+        dispatch(updateConfig({ ...wallboardById.data, lastView: currentDate }, DEFAULTS.WALLBOARDS.API.SAVE.WALLBOARD));
+      } else {
+        dispatch(updateConfig(wallboardById.data, DEFAULTS.WALLBOARDS.API.SAVE.WALLBOARD));
+      }
 
       dispatch(fetchWallboardGroupByIdSuccessAC(wallboardById.data));
     } catch (error) {
@@ -184,6 +184,11 @@ export const saveWallboardGroupThunk = () => async (dispatch, getState) => {
   if (!checkIsAlphanumeric(wallboardGroup.name)) {
     return dispatch(handleWarningMessageAC(DEFAULTS.WALLBOARDS.MESSAGE.WALLBOARD_GROUP_NAME_WARNING));
   }
+
+  if (wallboardGroup.steps.some((step) => +step.stepTime < 1)) {
+    return dispatch(handleWarningMessageAC(DEFAULTS.WALLBOARDS.MESSAGE.WALLBOARD_GROUP_STEP_VALUE));
+  }
+
   try {
     dispatch(saveWallboardGroupAC());
     const currentDate = new Date().getTime();
