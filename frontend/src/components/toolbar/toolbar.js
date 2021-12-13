@@ -30,6 +30,7 @@ const Toolbar = (props) => {
   const dispatch = useDispatch();
   const [wbSearchValue, setWbSearchValue] = useState('');
   const wallboards = useSelector((state) => state.landing.wallboardsByCategory);
+  const { category } = useSelector((state) => state.landing);
   const { userInfo } = useSelector((state) => state.login);
   const activeWallboard = useSelector((state) => state.wallboards.present.activeWallboard.wallboard);
   const wallboardGroup = useSelector((state) => state.wallboards.present.wallboardGroup.wallboardGroup);
@@ -37,12 +38,13 @@ const Toolbar = (props) => {
   const wallboardStates = useSelector((state) => state.wallboards);
   const history = useHistory();
   const { logout } = useAuth0();
+  const isGroupsCategory = category === 'All Wallboard Groups';
 
   const heading = () => {
     return (
       <div className="c-toolbar-left__wrapper">
-        <h1 className="c-toolbar-left__heading">Recent Wallboards</h1>
-        <p className="c-toolbar-left__wb-no">{wallboards.length} Wallboards Items</p>
+        <h1 className="c-toolbar-left__heading">Recent {isGroupsCategory ? 'Groups' : 'Wallboards'}</h1>
+        <p className="c-toolbar-left__wb-no">{wallboards.length} {isGroupsCategory ? 'Groups' : 'Wallboards'} Items</p>
       </div>
     );
   };
@@ -99,7 +101,7 @@ const Toolbar = (props) => {
       <div className="c-toolbar-right__search-input">
         <CustomAutosuggest
           name="skill"
-          placeholder={DEFAULTS.WALLBOARDS.PLACEHOLDER.SEARCH_WALLBOARDS}
+          placeholder={isGroupsCategory ? DEFAULTS.WALLBOARDS.PLACEHOLDER.SEARCH_GROUPS : DEFAULTS.WALLBOARDS.PLACEHOLDER.SEARCH_WALLBOARDS}
           onChange={onChangeSearchInput}
           value={wbSearchValue}
           allTitles={allTitlesForAutocomplete}

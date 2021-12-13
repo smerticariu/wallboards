@@ -28,6 +28,7 @@ export const WALLBOARDS = {
   },
   PLACEHOLDER: {
     SEARCH_WALLBOARDS: 'Search Wallboards...',
+    SEARCH_GROUPS: 'Search Groups...',
   },
   API: {
     GET: {

@@ -38,8 +38,8 @@ export const loginReducer = (state = loginInitialState, action) => {
         ...state,
         userInfo: {
           ...action.payload,
-          isAdmin: action.payload.scopes.includes('wallboards:admin'),
-          isTeamLeader: action.payload.scopes.includes('wallboards:teamleader'),
+          isAdmin: action.payload.scopes.includes('flightdeck:admin'),
+          isTeamLeader: action.payload.scopes.includes('flightdeck:teamleader'),
         },
       };
     case loginActions.HANDLE_LOGOUT:

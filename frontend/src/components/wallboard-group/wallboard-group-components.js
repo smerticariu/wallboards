@@ -37,6 +37,11 @@ const WallboardGroupComponents = () => {
   });
   const containerRef = useRef();
   useEffect(() => {
+    const getStepsForOneRow = () => {
+    if (width > 1600) return 4;
+    if (width > 1200) return 3;
+    return 2;
+  };
     const stepsNo = wallboardGroup.steps.length;
     const spetsInRow = getStepsForOneRow();
     const rowNo = Math.ceil(stepsNo / spetsInRow);
@@ -49,11 +54,6 @@ const WallboardGroupComponents = () => {
     // eslint-disable-next-line
   }, [wallboardGroup.steps, width]);
 
-  const getStepsForOneRow = () => {
-    if (width > 1600) return 4;
-    if (width > 1200) return 3;
-    return 2;
-  };
   useEffect(() => {
     const stepsNo = wallboardGroup.steps.length;
     if (stepsNo > 1 && steps) {
