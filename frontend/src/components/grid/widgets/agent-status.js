@@ -23,10 +23,10 @@ const GridAgentStatus = ({ widget, ...props }) => {
     // eslint-disable-next-line
   }, []);
   useEffect(() => {
-    const userStatusDataForWidget = userStatusData.find((loginData) => loginData.widgetId === widget.id);
+    const userStatusDataForWidget = userStatusData[widget.id];
     if (userStatusDataForWidget && allAgents.length) {
       let users = [];
-      userStatusDataForWidget.userStatusData.forEach((user) => {
+      userStatusDataForWidget.forEach((user) => {
         const agent = allAgents.find((agent) => agent.id === user.userId);
         const timeInSecconds = moment().diff(moment(user.time), 'seconds');
         const time = moment(user.time).utcOffset(widget.timeZone.id).format('YYYY-MM-DD HH:mm:ss');

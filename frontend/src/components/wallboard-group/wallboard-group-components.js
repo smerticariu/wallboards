@@ -20,7 +20,7 @@ const WallboardComponents = () => {
   const dispatch = useDispatch();
   const [activeModal, handleActiveModal] = useState(null);
   const [selectedStep, handleSelectedStep] = useState(null);
-  const [steps, setSteps] = useState([]);
+  const [steps, setSteps] = useState(null);
   const [coords, setCoords] = useState([]);
   const { width } = useWindowSize();
   const [svgData, setSvgData] = useState({
@@ -28,14 +28,12 @@ const WallboardComponents = () => {
       x: 0,
       y: 0,
     },
-    svgStartPoint: {
+    arrowTranslate: {
       x: 0,
       y: 0,
+      rotate: 0,
     },
-    svgEndPoint: {
-      x: 0,
-      y: 0,
-    },
+    points: [],
   });
   const containerRef = useRef();
   useEffect(() => {
@@ -57,7 +55,7 @@ const WallboardComponents = () => {
   };
   useEffect(() => {
     const stepsNo = wallboardGroup.steps.length;
-    if (stepsNo > 1) {
+    if (stepsNo > 1 && steps) {
       setCoords(
         wallboardGroup.steps
           .map((step, index) => {
@@ -83,22 +81,45 @@ const WallboardComponents = () => {
       const firstElementLeft = firstStepPosition.left - containerPosition.left;
       const lastElementTop = lastStepPosition.top - containerPosition.top;
       const lastElementLeft = lastStepPosition.left - containerPosition.left;
-      const svgStartPoint = {
-        x: lastElementTop + lastStepPosition.height / 2,
-        y: lastElementLeft,
-      };
-      const svgEndPoint = {
-        x: firstElementTop,
-        y: firstElementLeft + firstStepPosition.height / 2,
-      };
       const svgSize = {
         x: containerPosition.width,
         y: containerPosition.height,
       };
+      let points = [];
+      let svgEndPoint = [];
+      let arrowTranslate;
+      if (steps.length % 2 === 0) {
+        points.push([lastElementLeft, lastElementTop + lastStepPosition.height / 2]);
+        svgEndPoint = [firstElementLeft, firstElementTop + firstStepPosition.height / 2];
+        points.push([svgEndPoint[0] - 30, points.slice(-1)[0][1]]);
+        points.push([points.slice(-1)[0][0], svgEndPoint[1]]);
+        arrowTranslate = {
+          x: svgEndPoint[0] - 6,
+          y: svgEndPoint[1] - 3,
+          rotate: 0,
+        };
+      } else {
+        points.push([lastElementLeft + lastStepPosition.width, lastElementTop + lastStepPosition.height / 2]);
+        if (steps.length > 1) {
+          points.push([containerPosition.width - 5, lastElementTop + lastStepPosition.height / 2]);
+        } else {
+          points.push([points.slice(-1)[0][0] + 50, lastElementTop + lastStepPosition.height / 2]);
+        }
+        svgEndPoint = [firstElementLeft + firstStepPosition.width / 2, firstElementTop + firstStepPosition.height];
+        points.push([points.slice(-1)[0][0], svgEndPoint[1] + 30]);
+        points.push([svgEndPoint[0], svgEndPoint[1] + 30]);
+        arrowTranslate = {
+          x: svgEndPoint[0] - 3,
+          y: svgEndPoint[1] + 6,
+          rotate: 270,
+        };
+      }
+
+      points.push(svgEndPoint);
       setSvgData({
         svgSize,
-        svgStartPoint,
-        svgEndPoint,
+        points,
+        arrowTranslate,
       });
     } else {
       setCoords([]);
@@ -134,7 +155,7 @@ const WallboardComponents = () => {
       <div className="wb-group__title">Wallboard group configuration setup</div>
       <div className="wb-group__wallboards">
         <div className="wb-group__steps" ref={containerRef}>
-          {steps.map((stepGroup, stepGropuIndex) => (
+          {steps?.map((stepGroup, stepGropuIndex) => (
             <div
               key={stepGropuIndex}
               tabIndex={stepGropuIndex}
@@ -165,7 +186,7 @@ const WallboardComponents = () => {
           {coords.map((coord) => {
             return <Xarrow key={new Date() * Math.random()} {...coord} />;
           })}
-          {svgData && (
+          {!!svgData.points.length && (
             <div style={{ position: 'absolute', zIndex: 1 }}>
               <svg
                 width={svgData.svgSize.x}
@@ -174,7 +195,7 @@ const WallboardComponents = () => {
                 style={{ position: 'absolute', left: '0', top: '0', pointerEvents: 'none' }}
               >
                 <path
-                  d={`M ${svgData.svgStartPoint.y} ${svgData.svgStartPoint.x} L ${svgData.svgEndPoint.y} ${svgData.svgEndPoint.x}`}
+                  d={`M ${svgData.points[0]} L ${svgData.points.slice(1)}`}
                   stroke="#00a9ce"
                   strokeDasharray="0 0"
                   strokeWidth="1"
@@ -184,10 +205,10 @@ const WallboardComponents = () => {
                 <g
                   fill="#00a9ce"
                   pointerEvents="auto"
-                  transform="translate(10.57679983529089,192.3212508946138) rotate(-195.20578048710772) scale(6)"
+                  transform={`translate(${svgData.arrowTranslate.x},${svgData.arrowTranslate.y}) rotate(${svgData.arrowTranslate.rotate}) scale(6)`}
                   opacity="1"
                 >
-                  <animate dur="0.4" attributeName="opacity" from="0" to="1" begin="indefinite" repeatCount="0" fill="freeze"></animate>
+                  <path d="M 0 0 L 1 0.5 L 0 1 L 0.25 0.5 z"></path>
                 </g>
               </svg>
             </div>

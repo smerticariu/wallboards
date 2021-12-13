@@ -298,6 +298,7 @@ export const modalReducer = (state = modalInitialState, action) => {
         queueTracking: { ...modalInitialState.queueTracking },
         agentLogin: { ...modalInitialState.agentLogin },
         queueList: { ...modalInitialState.queueList },
+        agentStatus: { ...modalInitialState.agentStatus },
       };
     case modalActions.SET_WALLBOARD_COMPONENT_FOR_DELETE:
       return {
