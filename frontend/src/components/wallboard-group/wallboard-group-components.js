@@ -38,10 +38,10 @@ const WallboardGroupComponents = () => {
   const containerRef = useRef();
   useEffect(() => {
     const getStepsForOneRow = () => {
-    if (width > 1600) return 4;
-    if (width > 1200) return 3;
-    return 2;
-  };
+      if (width > 1600) return 4;
+      if (width > 1200) return 3;
+      return 2;
+    };
     const stepsNo = wallboardGroup.steps.length;
     const spetsInRow = getStepsForOneRow();
     const rowNo = Math.ceil(stepsNo / spetsInRow);
@@ -66,7 +66,6 @@ const WallboardGroupComponents = () => {
               startAnchor: 'auto',
               endAnchor: index === stepsNo - 1 ? 'top' : 'auto',
               path: 'straight',
-              gridBreak: '50',
               zIndex: 1,
               color: '#00a9ce',
               strokeWidth: 1,
@@ -79,13 +78,15 @@ const WallboardGroupComponents = () => {
       const containerPosition = containerRef.current.getBoundingClientRect();
       const firstStepPosition = document.getElementById(wallboardGroup.steps[0].stepId).getBoundingClientRect();
       const lastStepPosition = document.getElementById(wallboardGroup.steps.slice(-1)[0]?.stepId).getBoundingClientRect();
+      const lastElementInRow = document.getElementById(steps.slice(-1)[0].slice(-1)[0]?.stepId).getBoundingClientRect();
+      const lastElementInRowEndPosition = lastElementInRow.left - containerPosition.left + lastElementInRow.width;
       const firstElementTop = firstStepPosition.top - containerPosition.top;
       const firstElementLeft = firstStepPosition.left - containerPosition.left;
       const lastElementTop = lastStepPosition.top - containerPosition.top;
       const lastElementLeft = lastStepPosition.left - containerPosition.left;
       const svgSize = {
-        x: containerPosition.width,
-        y: containerPosition.height,
+        x: containerPosition.width + 50,
+        y: containerPosition.height + 50,
       };
       let points = [];
       let svgEndPoint = [];
@@ -103,13 +104,13 @@ const WallboardGroupComponents = () => {
       } else {
         points.push([lastElementLeft + lastStepPosition.width, lastElementTop + lastStepPosition.height / 2]);
         if (steps.length > 1) {
-          points.push([containerPosition.width - 5, lastElementTop + lastStepPosition.height / 2]);
+          points.push([lastElementInRowEndPosition + 70, lastElementTop + lastStepPosition.height / 2]);
         } else {
           points.push([points.slice(-1)[0][0] + 50, lastElementTop + lastStepPosition.height / 2]);
         }
         svgEndPoint = [firstElementLeft + firstStepPosition.width / 2, firstElementTop + firstStepPosition.height];
-        points.push([points.slice(-1)[0][0], svgEndPoint[1] + 30]);
-        points.push([svgEndPoint[0], svgEndPoint[1] + 30]);
+        points.push([points.slice(-1)[0][0], svgEndPoint[1] + 50]);
+        points.push([svgEndPoint[0], svgEndPoint[1] + 50]);
         arrowTranslate = {
           x: svgEndPoint[0] - 5,
           y: svgEndPoint[1] + 10,
@@ -190,27 +191,12 @@ const WallboardGroupComponents = () => {
             return <Xarrow key={new Date() * Math.random()} {...coord} />;
           })}
           {!!svgData.points.length && wallboardGroup.steps.length > 1 && (
-            <div style={{ position: 'absolute', zIndex: 1 }}>
-              <svg
-                width={svgData.svgSize.x}
-                height={svgData.svgSize.y}
-                className="wb-group__last-line"
-                overflow="auto"
-                style={{ position: 'absolute', left: '0', top: '0', pointerEvents: 'none' }}
-              >
-                <path
-                  d={`M ${svgData.points[0]} L ${svgData.points.slice(1)}`}
-                  stroke="#00a9ce"
-                  strokeDasharray="0 0"
-                  strokeWidth="1"
-                  fill="transparent"
-                  pointerEvents="visibleStroke"
-                ></path>
+            <div className="wb-group__last-line">
+              <svg width={svgData.svgSize.x} height={svgData.svgSize.y} className="wb-group__last-line-svg">
+                <path className="wb-group__last-line-path" d={`M ${svgData.points[0]} L ${svgData.points.slice(1)}`} />
                 <g
-                  fill="#00a9ce"
-                  pointerEvents="auto"
+                  className="wb-group__last-line-arrow"
                   transform={`translate(${svgData.arrowTranslate.x},${svgData.arrowTranslate.y}) rotate(${svgData.arrowTranslate.rotate}) scale(10)`}
-                  opacity="1"
                 >
                   <path d="M 0 0 L 1 0.5 L 0 1 L 0.25 0.5 z" />
                 </g>
