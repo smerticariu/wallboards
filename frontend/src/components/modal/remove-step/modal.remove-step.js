@@ -1,6 +1,5 @@
 import React, { useRef } from 'react';
 import { useDispatch } from 'react-redux';
-import { DEFAULTS } from '../../../common/defaults/defaults';
 import useOnClickOutside from '../../../common/hooks/useOnClickOutside';
 
 const ModalRemoveStep = ({ onOkClick, id, description, title, onClose, ...props }) => {

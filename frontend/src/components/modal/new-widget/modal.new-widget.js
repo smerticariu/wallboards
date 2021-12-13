@@ -61,11 +61,7 @@ const ModalNewWidget = ({ ...props }) => {
           >
             <div className="c-modal--new-wallboard__list-title">{option.NAME}</div>
             <div className="c-modal--new-wallboard__list-subtitle">
-              <div className="c-modal--new-wallboard__list-text">{option.STATUS}</div>
-              <div className="c-modal--new-wallboard__list-separator">|</div>
-              <div className="c-modal--new-wallboard__list-text">{option.DATE}</div>
-              <div className="c-modal--new-wallboard__list-separator">|</div>
-              <div className="c-modal--new-wallboard__list-text">{option.SERVICE}</div>
+              <div className="c-modal--new-wallboard__list-text">{option.DESCRIPTION}</div>
             </div>
           </div>
         ))}

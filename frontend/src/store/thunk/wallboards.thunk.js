@@ -64,7 +64,7 @@ export const fetchWallboardByIdThunk =
     }
   };
 export const fetchWallboardGroupByIdThunk =
-  ({ id, copyWb }) =>
+  ({ id }) =>
   async (dispatch, getState) => {
     try {
       dispatch(fetchWallboardGroupByIdAC(DEFAULTS.WALLBOARDS.MESSAGE.LOADING));
@@ -79,22 +79,19 @@ export const fetchWallboardGroupByIdThunk =
         storeUrl,
       });
 
-      // if (!copyWb) {
-      //   await WallboardsApi({
-      //     type: DEFAULTS.WALLBOARDS.API.SAVE.WALLBOARD,
-      //     organizationId: userInfo.organisationId,
-      //     token,
-      //     data: {
-      //       ...wallboardById.data,
-      //       lastView: currentDate,
-      //     },
-      //     wallboardId: id,
-      //   });
 
-      //   dispatch(updateConfig({ ...wallboardById.data, lastView: currentDate }, DEFAULTS.WALLBOARDS.API.SAVE.WALLBOARD));
-      // } else {
-      //   dispatch(updateConfig(wallboardById.data, DEFAULTS.WALLBOARDS.API.SAVE.WALLBOARD));
-      // }
+      await WallboardsApi({
+        type: DEFAULTS.WALLBOARDS.API.SAVE.WALLBOARD_GROUP,
+        organizationId: userInfo.organisationId,
+        token,
+        data: {
+          ...wallboardById.data,
+          lastView: currentDate,
+        },
+        wallboardId: id,
+      });
+
+      dispatch(updateConfig({ ...wallboardById.data, lastView: currentDate }, DEFAULTS.WALLBOARDS.API.SAVE.WALLBOARD));
 
       dispatch(fetchWallboardGroupByIdSuccessAC(wallboardById.data));
     } catch (error) {
@@ -290,6 +287,7 @@ export const copyWallboardGroupThunk =
 
       dispatch(resetWallboardEditPageDataAC());
       dispatch(updateConfig(data, DEFAULTS.WALLBOARDS.API.SAVE.WALLBOARD));
+      dispatch(handleIsNotificationShowAC(true, false, DEFAULTS.WALLBOARDS.NOTIFICATION.SUCCESS.SAVE_WALLBOARD_GROUP));
     } catch (error) {
       dispatch(saveWallboardGroupFailAC());
       console.log(error);
@@ -326,6 +324,7 @@ export const copyWallboardThunk =
 
       dispatch(resetWallboardEditPageDataAC());
       dispatch(updateConfig(data, DEFAULTS.WALLBOARDS.API.SAVE.WALLBOARD));
+      dispatch(handleIsNotificationShowAC(true, false, DEFAULTS.WALLBOARDS.NOTIFICATION.SUCCESS.SAVE));
     } catch (error) {
       dispatch(saveWallboardFailAC());
       console.log(error);
