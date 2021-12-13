@@ -34,7 +34,6 @@ const AgentCard = ({
   const handleListenLive = () => {
     dispatch(listenLiveThunk(id));
   };
-
   return (
     <div className={`agent-c agent-c--${DEFAULTS.MODAL.ADD_COMPONENT.PRESENCE_STATE_KEYS_COLOR.CARD_BACKGROUND[callStatusKey]}`}>
       <div className="agent-c__header">
@@ -104,7 +103,7 @@ const AgentCard = ({
             <Dropdown
               className="c-dropdown--availability-state"
               closeOnClick={true}
-              isDisable={!(availabilityStatesList.length && canChangeAvailabilityState)}
+              isDisable={!(!!availabilityStatesList.length && canChangeAvailabilityState)}
               containerClassName="c-dropdown__container--availability"
               trigger={
                 <>

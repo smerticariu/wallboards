@@ -11,9 +11,9 @@ import QueueListTable from '../../tables/table.queue-list';
 const GridQueueList = ({ widget, ...props }) => {
   const allOrgUsers = useSelector((state) => state.agents.allAgents);
   const calls = useSelector((state) => state.agents.calls);
-  const agentQueues = useSelector((state) => state.agents.agentsQueues.find((queue) => queue.callQueueId === widget.callQueue.id));
+  const agentQueues = useSelector((state) => state.agents.agentsQueues);
 
-  const queuedCall = useSelector((state) => state.callsQueues.queuedCall[widget.callQueue.id] ?? []);
+  const queuedCall = useSelector((state) => state.callsQueues.queuedCall);
 
   const dispatch = useDispatch();
   const [tableData, setTableData] = useState([]);
@@ -33,8 +33,9 @@ const GridQueueList = ({ widget, ...props }) => {
 
   useEffect(() => {
     let activeCalls = { ...callsToObject(calls, 'uuid'), ...callsToObject(calls, 'originatorUuid') };
-    let queuedCallCopy = [...queuedCall];
-
+    const queueCall = queuedCall[widget.callQueue.id] ?? [];
+    let queuedCallCopy = [...queueCall];
+    const agentQueue = agentQueues?.find((queue) => queue.callQueueId === widget.callQueue.id);
     queuedCallCopy = queuedCallCopy.filter((call) => {
       const status = call.status.toLowerCase();
       if (status === 'ringing' || status === 'waiting') {
@@ -53,7 +54,7 @@ const GridQueueList = ({ widget, ...props }) => {
     });
     setTableData(
       queuedCallCopy.map((call) => {
-        const agent = agentQueues?.agents?.find((agent) => agent.callUuid === call.uuid);
+        const agent = agentQueue?.agents?.find((agent) => agent.callUuid === call.uuid);
         const user = allOrgUsers.find((user) => user.id === agent?.userId);
         return {
           [QUEUE_LIST_COLUMN_OPTIONS.CALLER_NUMBER]: call.callerIdNumber,

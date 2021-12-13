@@ -130,7 +130,7 @@ export const wallboardsReducer = (state = { ...wallboardsInitialState }, action)
           ...state.wallboardGroup,
           wallboardGroup: { ...wallboardGroupInitialValues },
           fetchStatus: FetchStatus.FAIL,
-          fetchMessage: action.payload.errorMEssage,
+          fetchMessage: action.payload.errorMessage,
           statusCode: action.payload.statusCode,
         },
       };
@@ -706,6 +706,24 @@ export const wallboardsReducer = (state = { ...wallboardsInitialState }, action)
           },
         },
       };
+    case wallboardsActions.APPLY_WALLBOARD_GROUP_SETTINGS: {
+      const settings = action.payload;
+      return {
+        ...state,
+        wallboardGroup: {
+          ...state.wallboardGroup,
+          wallboardGroup: {
+            ...state.wallboardGroup.wallboardGroup,
+            description: settings.description.value,
+            name: settings.name.value,
+            settings: {
+              display: settings.display,
+              link: settings.link,
+            },
+          },
+        },
+      };
+    }
 
     case wallboardsActions.RESET_WALLBOARD_EDIT_PAGE_DATA: {
       return {

@@ -26,7 +26,7 @@ export const agentsInitialState = {
 
   userLoginData: [],
 
-  userStatusData: [],
+  userStatusData: {},
 };
 
 export const agentsReducer = (state = agentsInitialState, action) => {
@@ -221,12 +221,12 @@ export const agentsReducer = (state = agentsInitialState, action) => {
     }
     case agentsActions.FETCH_USER_STATUS_DATA_SUCCESS: {
       const { widgetId, userStatusData } = action.payload;
-      const userStatusDataFromState = state.userStatusData.find((userData) => userData.widgetId === widgetId);
       return {
         ...state,
-        userStatusData: userStatusDataFromState
-          ? state.userStatusData.map((userData) => (userData.widgetId !== widgetId ? userData : { ...userData, userStatusData }))
-          : [...state.userStatusData, { widgetId, userStatusData }],
+        userStatusData: {
+          ...state.userStatusData,
+          [widgetId]: userStatusData,
+        },
       };
     }
     default:

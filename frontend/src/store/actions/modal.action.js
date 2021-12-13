@@ -10,9 +10,13 @@ export const modalActions = {
 
   HANDLE_WARNING_MESSAGE: 'HANDLE_WARNING_MESSAGE',
 
-  HANLE_SELECTED_WALLBOARD_SETTINGS: 'HANLE_SELECTED_WALLBOARD_SETTINGS',
+  HANLE_WALLBOARD_SETTINGS: 'HANLE_WALLBOARD_SETTINGS',
+
+  HANLE_WALLBOARD_GROUP_SETTINGS: 'HANLE_WALLBOARD_GROUP_SETTINGS',
 
   SET_WALLBOARD_SETTINGS: 'SET_WALLBOARD_SETTINGS',
+
+  SET_WALLBOARD_GROUP_SETTINGS: 'SET_WALLBOARD_GROUP_SETTINGS',
 
   HANDLE_CALL_STATUS_DATA: 'HANDLE_CALL_STATUS_DATA',
 
@@ -54,13 +58,23 @@ export const handleWarningMessageAC = (message) => ({
   payload: message,
 });
 
-export const handleChangeSelectedWallboardSettingsAC = (settings) => ({
-  type: modalActions.HANLE_SELECTED_WALLBOARD_SETTINGS,
+export const handleWallboardSettingsAC = (settings) => ({
+  type: modalActions.HANLE_WALLBOARD_SETTINGS,
   payload: settings,
 });
+
+export const handleWallboardGroupSettingsAC = (settings) => ({
+  type: modalActions.HANLE_WALLBOARD_GROUP_SETTINGS,
+  payload: settings,
+});
+
 export const setSelectedWallboardSettingsAC = (activeWallboard) => ({
   type: modalActions.SET_WALLBOARD_SETTINGS,
   payload: activeWallboard,
+});
+export const setSelectedWallboardGroupSettingsAC = (wallboardGroup) => ({
+  type: modalActions.SET_WALLBOARD_GROUP_SETTINGS,
+  payload: wallboardGroup,
 });
 
 export const handleCallStatusDataAC = (formData) => ({

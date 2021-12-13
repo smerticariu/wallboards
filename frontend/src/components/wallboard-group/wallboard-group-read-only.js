@@ -6,13 +6,18 @@ import { fetchWallboardByIdThunk, fetchWallboardGroupByIdThunk } from 'src/store
 import { FetchStatus } from 'src/store/reducers/wallboards.reducer';
 import GridResizeContainer from '../grid/grid.resize-container';
 import { DEFAULTS } from '../../common/defaults/defaults';
+import { fetchAvailabilityProfilesThunk, fetchAvailabilityStatesThunk } from '../../store/thunk/agents.thunk';
 
 const WallboardGroupReadOnly = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const { userInfo } = useSelector((state) => state.login);
   const wallboard = useSelector((state) => state.wallboards.present.activeWallboard.wallboard);
+  const wallboardFetchStatus = useSelector((state) => state.wallboards.present.activeWallboard.fetchStatus);
+  const wallboardFetchMessage = useSelector((state) => state.wallboards.present.activeWallboard.fetchMessage);
+  const wallboardStatusCode = useSelector((state) => state.wallboards.present.activeWallboard.statusCode);
   const { wallboardGroup, fetchStatus, fetchMessage, statusCode } = useSelector((state) => state.wallboards.present.wallboardGroup);
+  const { availabilityProfiles } = useSelector((state) => state.agents);
   const adminPermissions = userInfo.isAdmin;
   const teamleaderPermissions = userInfo.isTeamLeader;
   const [nextStepIndex, handleNextStepIndex] = useState(0);
@@ -33,7 +38,23 @@ const WallboardGroupReadOnly = () => {
       }, currentStep.stepTime * 1000);
     }
     return () => clearTimeout(timeout);
+    // eslint-disable-next-line
   }, [wallboardGroup.steps, nextStepIndex]);
+
+  useEffect(() => {
+    dispatch(fetchAvailabilityProfilesThunk());
+
+    // eslint-disable-next-line
+  }, []);
+
+  useEffect(() => {
+    if (availabilityProfiles.length) {
+      availabilityProfiles.forEach((avProfile) => {
+        dispatch(fetchAvailabilityStatesThunk(avProfile.id));
+      });
+    }
+    // eslint-disable-next-line
+  }, [availabilityProfiles]);
 
   const handleErrors = () => {
     if (fetchStatus !== FetchStatus.SUCCESS) {
@@ -41,6 +62,14 @@ const WallboardGroupReadOnly = () => {
         <div className="error-message-container">
           {fetchStatus === FetchStatus.FAIL && <h3 className="error-message--headline">Error {statusCode}:</h3>}
           <p className="error-message">{fetchMessage}</p>
+        </div>
+      );
+    }
+    if (wallboardFetchStatus !== FetchStatus.SUCCESS) {
+      return (
+        <div className="error-message-container">
+          {wallboardFetchStatus === FetchStatus.FAIL && <h3 className="error-message--headline">Error {wallboardStatusCode}:</h3>}
+          <p className="error-message">{wallboardFetchMessage}</p>
         </div>
       );
     }
@@ -52,12 +81,14 @@ const WallboardGroupReadOnly = () => {
       </div>
     );
   };
+
+  const isUserAllowedToViewWallboard = wallboardGroup.settings.link.isReadOnlyEnabled
+    ? true
+    : adminPermissions || (teamleaderPermissions && wallboardGroup.createdByUserId === userInfo.id);
+
   return (
     <div className="c-wallboard--read-only">
-      {fetchStatus === FetchStatus.SUCCESS &&
-      (wallboard.settings.link.isReadOnlyEnabled
-        ? true
-        : adminPermissions || (teamleaderPermissions && wallboard.createdByUserId === userInfo.id)) ? (
+      {fetchStatus === FetchStatus.SUCCESS && wallboardFetchStatus !== FetchStatus.FAIL && isUserAllowedToViewWallboard ? (
         <>
           <Toolbar template={DEFAULTS.TOOLBAR.NAME.WALLBOARD_READ_ONLY} wbName={wallboard.id ? wallboard.name : ''} />
           <div className="c-wallboard--read-only__component">

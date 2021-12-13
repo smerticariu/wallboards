@@ -1,10 +1,12 @@
+import { DEFAULTS } from '../defaults/defaults';
+
 export const generateWallboardId = (userOrgId, userId) => {
   const currentDate = new Date().getTime();
-  return `${userOrgId}-${userId}-w-${currentDate}`;
+  return `${userOrgId}-${userId}${DEFAULTS.WALLBOARDS.WALLBOARD_SEPARATOR}${currentDate}`;
 };
 export const generateWallboardGroupId = (userOrgId, userId) => {
   const currentDate = new Date().getTime();
-  return `${userOrgId}-${userId}-g-${currentDate}`;
+  return `${userOrgId}-${userId}${DEFAULTS.WALLBOARDS.WALLBOARD_GROUP_SEPARATOR}${currentDate}`;
 };
 
 export const generateWallboardWidgetId = (userOrgId, userId) => {

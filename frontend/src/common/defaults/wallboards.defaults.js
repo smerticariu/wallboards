@@ -4,18 +4,24 @@ export const WALLBOARDS = {
   NOTIFICATION: {
     SUCCESS: {
       DELETE: 'The wallboard was successfully deleted',
+      DELETE_WALLBOARD_GROUP: 'The wallboard Group was successfully deleted',
       SAVE: 'The Wallboard was successfully saved',
       SAVE_WALLBOARD_GROUP: 'The Wallboard Group was successfully saved',
     },
     FAIL: {
       DELETE: 'The Wallboard was not deleted',
+      DELETE_WALLBOARD_GROUP: 'The Wallboard Group was not deleted',
     },
   },
+  WALLBOARD_GROUP_SEPARATOR: '-g-',
+  WALLBOARD_SEPARATOR: '-w-',
   MESSAGE: {
     LOADING: 'Wallboard loading...',
     NAME_WARNING: 'Wallboard name must contain only alphanumeric characters',
     WALLBOARD_GROUP_NAME_WARNING: 'Wallboard Group name must contain only alphanumeric characters',
+    WALLBOARD_GROUP_STEP_VALUE: 'The minimum time value for one step is 1 second',
     NO_COMPONENTS: 'This wallboard has no components.',
+    WALLBOARD_NOT_FOUND: 'Wallboard not found',
     ADD_COMPONENTS: 'To start adding components, click the button below.',
     NOT_ALLOWED_EDIT: 'You are not allowed to edit this wallboard. Please contact your Administrator',
     NOT_ALLOWED_VIEW: "You don't have acces s to this wallboard! Please contact your Administrator.",

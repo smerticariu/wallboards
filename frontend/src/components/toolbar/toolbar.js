@@ -16,7 +16,11 @@ import { UndoIcon } from '../../assets/static/icons/undo';
 import CustomAutosuggest from '../autosuggest/autosuggest';
 import { useHistory } from 'react-router';
 import { generateWallboardGroupId, generateWallboardId } from '../../common/utils/generateId';
-import { handleWallboardActiveModalAC, setSelectedWallboardSettingsAC } from '../../store/actions/modal.action';
+import {
+  handleWallboardActiveModalAC,
+  setSelectedWallboardGroupSettingsAC,
+  setSelectedWallboardSettingsAC,
+} from '../../store/actions/modal.action';
 import { SettingsIcon } from '../../assets/static/icons/settings';
 import { DEFAULTS } from '../../common/defaults/defaults';
 import { useAuth0 } from '@auth0/auth0-react';
@@ -247,8 +251,20 @@ const Toolbar = (props) => {
 
   const handleSettingsIcon = () => {
     const onClikEditWallboardModal = () => {
-      dispatch(setSelectedWallboardSettingsAC(activeWallboard));
-      dispatch(handleWallboardActiveModalAC(DEFAULTS.MODAL.MODAL_NAMES.EDIT_WALLBOARD));
+      switch (props.template) {
+        case DEFAULTS.TOOLBAR.NAME.NEW_WALLBOARD: {
+          dispatch(setSelectedWallboardSettingsAC(activeWallboard));
+          dispatch(handleWallboardActiveModalAC(DEFAULTS.MODAL.MODAL_NAMES.EDIT_WALLBOARD));
+          break;
+        }
+        case DEFAULTS.TOOLBAR.NAME.NEW_WALLBOARD_GROUP: {
+          dispatch(setSelectedWallboardGroupSettingsAC(wallboardGroup));
+          dispatch(handleWallboardActiveModalAC(DEFAULTS.MODAL.MODAL_NAMES.EDIT_WALLBOARD_GROUP));
+          break;
+        }
+        default:
+          break;
+      }
     };
     return <SettingsIcon onClick={() => onClikEditWallboardModal()} className="i--settings i--settings--toolbar" />;
   };

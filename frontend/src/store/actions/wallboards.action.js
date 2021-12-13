@@ -63,6 +63,8 @@ export const wallboardsActions = {
 
   APPLY_WALLBOARD_SETTINGS: 'APPLY_WALLBOARD_SETTINGS',
 
+  APPLY_WALLBOARD_GROUP_SETTINGS: 'APPLY_WALLBOARD_GROUP_SETTINGS',
+
   SYNC_WIDGET_SIZE_FOR_NEW_SCREEN: 'SYNC_WIDGET_SIZE_FOR_NEW_SCREEN',
 
   ADD_WALLBOARD_FOR_WALLBOARD_GROUP: 'ADD_WALLBOARD_FOR_WALLBOARD_GROUP',
@@ -248,6 +250,11 @@ export const wallboardRedoAC = () => ({
 
 export const applyWallboardSettingsAC = (settings) => ({
   type: wallboardsActions.APPLY_WALLBOARD_SETTINGS,
+  payload: settings,
+});
+
+export const applyWallboardGroupSettingsAC = (settings) => ({
+  type: wallboardsActions.APPLY_WALLBOARD_GROUP_SETTINGS,
   payload: settings,
 });
 

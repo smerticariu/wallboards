@@ -15,12 +15,12 @@ import {
 import { SCREEN_OPTIONS_ID } from '../../common/defaults/wallboards.defaults';
 import { DEFAULTS } from '../../common/defaults/defaults';
 
-const WallboardComponents = () => {
+const WallboardGroupComponents = () => {
   const wallboardGroup = useSelector((state) => state.wallboards.present.wallboardGroup.wallboardGroup);
   const dispatch = useDispatch();
   const [activeModal, handleActiveModal] = useState(null);
   const [selectedStep, handleSelectedStep] = useState(null);
-  const [steps, setSteps] = useState([]);
+  const [steps, setSteps] = useState(null);
   const [coords, setCoords] = useState([]);
   const { width } = useWindowSize();
   const [svgData, setSvgData] = useState({
@@ -28,22 +28,20 @@ const WallboardComponents = () => {
       x: 0,
       y: 0,
     },
-    svgStartPoint: {
+    arrowTranslate: {
       x: 0,
       y: 0,
+      rotate: 0,
     },
-    svgEndPoint: {
-      x: 0,
-      y: 0,
-    },
+    points: [],
   });
   const containerRef = useRef();
   useEffect(() => {
     const getStepsForOneRow = () => {
-    if (width > 1600) return 4;
-    if (width > 1200) return 3;
-    return 2;
-  };
+      if (width > 1600) return 4;
+      if (width > 1200) return 3;
+      return 2;
+    };
     const stepsNo = wallboardGroup.steps.length;
     const spetsInRow = getStepsForOneRow();
     const rowNo = Math.ceil(stepsNo / spetsInRow);
@@ -53,11 +51,12 @@ const WallboardComponents = () => {
     });
 
     setSteps([...stepsRowCopy].reverse());
+    // eslint-disable-next-line
   }, [wallboardGroup.steps, width]);
 
   useEffect(() => {
     const stepsNo = wallboardGroup.steps.length;
-    if (stepsNo > 1) {
+    if (stepsNo > 1 && steps) {
       setCoords(
         wallboardGroup.steps
           .map((step, index) => {
@@ -67,10 +66,10 @@ const WallboardComponents = () => {
               startAnchor: 'auto',
               endAnchor: index === stepsNo - 1 ? 'top' : 'auto',
               path: 'straight',
-              gridBreak: '50',
               zIndex: 1,
               color: '#00a9ce',
               strokeWidth: 1,
+              headSize: 12,
             };
           })
           .filter((_, i, arr) => i < arr.length - 1)
@@ -79,30 +78,56 @@ const WallboardComponents = () => {
       const containerPosition = containerRef.current.getBoundingClientRect();
       const firstStepPosition = document.getElementById(wallboardGroup.steps[0].stepId).getBoundingClientRect();
       const lastStepPosition = document.getElementById(wallboardGroup.steps.slice(-1)[0]?.stepId).getBoundingClientRect();
+      const lastElementInRow = document.getElementById(steps.slice(-1)[0].slice(-1)[0]?.stepId).getBoundingClientRect();
+      const lastElementInRowEndPosition = lastElementInRow.left - containerPosition.left + lastElementInRow.width;
       const firstElementTop = firstStepPosition.top - containerPosition.top;
       const firstElementLeft = firstStepPosition.left - containerPosition.left;
       const lastElementTop = lastStepPosition.top - containerPosition.top;
       const lastElementLeft = lastStepPosition.left - containerPosition.left;
-      const svgStartPoint = {
-        x: lastElementTop + lastStepPosition.height / 2,
-        y: lastElementLeft,
-      };
-      const svgEndPoint = {
-        x: firstElementTop,
-        y: firstElementLeft + firstStepPosition.height / 2,
-      };
       const svgSize = {
-        x: containerPosition.width,
-        y: containerPosition.height,
+        x: containerPosition.width + 50,
+        y: containerPosition.height + 50,
       };
+      let points = [];
+      let svgEndPoint = [];
+      let arrowTranslate;
+      if (steps.length % 2 === 0) {
+        points.push([lastElementLeft, lastElementTop + lastStepPosition.height / 2]);
+        svgEndPoint = [firstElementLeft, firstElementTop + firstStepPosition.height / 2];
+        points.push([svgEndPoint[0] - 30, points.slice(-1)[0][1]]);
+        points.push([points.slice(-1)[0][0], svgEndPoint[1]]);
+        arrowTranslate = {
+          x: svgEndPoint[0] - 10,
+          y: svgEndPoint[1] - 5,
+          rotate: 0,
+        };
+      } else {
+        points.push([lastElementLeft + lastStepPosition.width, lastElementTop + lastStepPosition.height / 2]);
+        if (steps.length > 1) {
+          points.push([lastElementInRowEndPosition + 70, lastElementTop + lastStepPosition.height / 2]);
+        } else {
+          points.push([points.slice(-1)[0][0] + 50, lastElementTop + lastStepPosition.height / 2]);
+        }
+        svgEndPoint = [firstElementLeft + firstStepPosition.width / 2, firstElementTop + firstStepPosition.height];
+        points.push([points.slice(-1)[0][0], svgEndPoint[1] + 50]);
+        points.push([svgEndPoint[0], svgEndPoint[1] + 50]);
+        arrowTranslate = {
+          x: svgEndPoint[0] - 5,
+          y: svgEndPoint[1] + 10,
+          rotate: 270,
+        };
+      }
+
+      points.push(svgEndPoint);
       setSvgData({
         svgSize,
-        svgStartPoint,
-        svgEndPoint,
+        points,
+        arrowTranslate,
       });
     } else {
       setCoords([]);
     }
+    // eslint-disable-next-line
   }, [steps]);
 
   const handleChangeStepTime = (event, stepId) => {
@@ -134,7 +159,7 @@ const WallboardComponents = () => {
       <div className="wb-group__title">Wallboard group configuration setup</div>
       <div className="wb-group__wallboards">
         <div className="wb-group__steps" ref={containerRef}>
-          {steps.map((stepGroup, stepGropuIndex) => (
+          {steps?.map((stepGroup, stepGropuIndex) => (
             <div
               key={stepGropuIndex}
               tabIndex={stepGropuIndex}
@@ -165,29 +190,15 @@ const WallboardComponents = () => {
           {coords.map((coord) => {
             return <Xarrow key={new Date() * Math.random()} {...coord} />;
           })}
-          {svgData && (
-            <div style={{ position: 'absolute', zIndex: 1 }}>
-              <svg
-                width={svgData.svgSize.x}
-                height={svgData.svgSize.y}
-                overflow="auto"
-                style={{ position: 'absolute', left: '0', top: '0', pointerEvents: 'none' }}
-              >
-                <path
-                  d={`M ${svgData.svgStartPoint.y} ${svgData.svgStartPoint.x} L ${svgData.svgEndPoint.y} ${svgData.svgEndPoint.x}`}
-                  stroke="#00a9ce"
-                  strokeDasharray="0 0"
-                  strokeWidth="1"
-                  fill="transparent"
-                  pointerEvents="visibleStroke"
-                ></path>
+          {!!svgData.points.length && wallboardGroup.steps.length > 1 && (
+            <div className="wb-group__last-line">
+              <svg width={svgData.svgSize.x} height={svgData.svgSize.y} className="wb-group__last-line-svg">
+                <path className="wb-group__last-line-path" d={`M ${svgData.points[0]} L ${svgData.points.slice(1)}`} />
                 <g
-                  fill="#00a9ce"
-                  pointerEvents="auto"
-                  transform="translate(10.57679983529089,192.3212508946138) rotate(-195.20578048710772) scale(6)"
-                  opacity="1"
+                  className="wb-group__last-line-arrow"
+                  transform={`translate(${svgData.arrowTranslate.x},${svgData.arrowTranslate.y}) rotate(${svgData.arrowTranslate.rotate}) scale(10)`}
                 >
-                  <animate dur="0.4" attributeName="opacity" from="0" to="1" begin="indefinite" repeatCount="0" fill="freeze"></animate>
+                  <path d="M 0 0 L 1 0.5 L 0 1 L 0.25 0.5 z" />
                 </g>
               </svg>
             </div>
@@ -220,4 +231,4 @@ const WallboardComponents = () => {
   );
 };
 
-export default WallboardComponents;
+export default WallboardGroupComponents;

@@ -33,6 +33,7 @@ import WallboardGroupEdit from './components/wallboard-group/wallboard-group-edi
 import ModalConfirmSaveWallboardGroup from './components/modal/save-wallboard-group/modal.confirm-save-wallboard-group';
 import ModalSaveWallboardGroup from './components/modal/save-wallboard-group/modal.save-wallboard-group';
 import WallboardGroupReadOnly from './components/wallboard-group/wallboard-group-read-only';
+import ModalEditWallboardGroup from './components/modal/edit-wallboard-group/modal.edit-wallboard-group';
 
 function App() {
   const dispatch = useDispatch();
@@ -150,6 +151,7 @@ function App() {
           {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.SAVE_WALLBOARD_GROUP && <ModalSaveWallboardGroup />}
           {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.DELETE_WALLBOARD && <ModalDeleteWallboard />}
           {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.EDIT_WALLBOARD && <ModalEditWallboard />}
+          {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.EDIT_WALLBOARD_GROUP && <ModalEditWallboardGroup />}
           {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.DELETE_WALLBOARD_COMPONENT && <ModalDeleteWallboardComponent />}
           {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.CONFIRM_SAVE_WALLBOARD && <ModalConfirmSaveWallboard />}
           {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.CONFIRM_SAVE_WALLBOARD_GROUP && <ModalConfirmSaveWallboardGroup />}

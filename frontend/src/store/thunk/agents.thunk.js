@@ -370,7 +370,7 @@ export const exportCSVUserLoginDataThunk =
           const noOfDays = Math.floor(timeInSecconds / 86400); // 1 day === 86400 seconds
           const dateString = moment.utc(timeInSecconds * 1000).format('HH:mm:ss');
           users.push([
-            `${agent.firstName + ' ' + agent.lastName},${group.name},${user.event},${moment(user.time).format('YYYY-DD-MM HH:mm:ss')},${
+            `${agent.firstName + ' ' + agent.lastName},${group.name},${user.event},${moment(user.time).format('YYYY-MM-DD HH:mm:ss')},${
               noOfDays ? `${noOfDays} Day${noOfDays === 1 ? '' : 's'}` : dateString
             }`,
           ]);

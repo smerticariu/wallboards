@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import WallboardComponents from './wallboard-group-components';
 import Toolbar from '../toolbar/toolbar';
 import { fetchWallboardGroupByIdThunk } from 'src/store/thunk/wallboards.thunk';
 import { useParams } from 'react-router';
 import { FetchStatus } from 'src/store/reducers/wallboards.reducer';
 import { DEFAULTS } from '../../common/defaults/defaults';
+import WallboardGroupComponents from './wallboard-group-components';
 
 const WallboardGroupEdit = () => {
   const dispatch = useDispatch();
@@ -58,10 +58,9 @@ const WallboardGroupEdit = () => {
   return (
     <div className="c-wallboard--new">
       {adminPermissions && (fetchStatus === FetchStatus.SUCCESS || wallboardGroup.isNewWallboardGroup) ? (
-        // {true ? (
         <>
           <Toolbar template={DEFAULTS.TOOLBAR.NAME.NEW_WALLBOARD_GROUP} />
-          <WallboardComponents />
+          <WallboardGroupComponents />
         </>
       ) : (
         <Toolbar template={DEFAULTS.TOOLBAR.NAME.ERROR}>{handleErrors()}</Toolbar>

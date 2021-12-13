@@ -67,6 +67,19 @@ export const modalInitialState = {
       isReadOnlyEnabled: false,
     },
   },
+  wallboardGroupSettings: {
+    name: {
+      value: '',
+      errorMessage: '',
+    },
+    description: {
+      value: '',
+      errorMessage: '',
+    },
+    link: {
+      isReadOnlyEnabled: false,
+    },
+  },
   callStatus: {
     isEditMode: false,
     id: null,
@@ -79,7 +92,7 @@ export const modalInitialState = {
     isEditMode: false,
     id: null,
     title: {
-      value: 'Queue tracking',
+      value: 'Queue Tracking',
       errorMessage: '',
     },
     callQueue: {
@@ -298,6 +311,7 @@ export const modalReducer = (state = modalInitialState, action) => {
         queueTracking: { ...modalInitialState.queueTracking },
         agentLogin: { ...modalInitialState.agentLogin },
         queueList: { ...modalInitialState.queueList },
+        agentStatus: { ...modalInitialState.agentStatus },
       };
     case modalActions.SET_WALLBOARD_COMPONENT_FOR_DELETE:
       return {
@@ -619,12 +633,41 @@ export const modalReducer = (state = modalInitialState, action) => {
         },
       };
     }
+    case modalActions.SET_WALLBOARD_GROUP_SETTINGS: {
+      const wallboard = action.payload;
+      return {
+        ...state,
+        wallboardGroupSettings: {
+          ...state.wallboardGroupSettings,
+          name: {
+            value: wallboard.name,
+            errorMessage: '',
+          },
+          description: {
+            value: wallboard.description,
+            errorMessage: '',
+          },
+          link: {
+            isReadOnlyEnabled: wallboard.settings.link.isReadOnlyEnabled,
+          },
+        },
+      };
+    }
 
-    case modalActions.HANLE_SELECTED_WALLBOARD_SETTINGS: {
+    case modalActions.HANLE_WALLBOARD_SETTINGS: {
       return {
         ...state,
         wallboardSettings: {
           ...state.wallboardSettings,
+          ...action.payload,
+        },
+      };
+    }
+    case modalActions.HANLE_WALLBOARD_GROUP_SETTINGS: {
+      return {
+        ...state,
+        wallboardGroupSettings: {
+          ...state.wallboardGroupSettings,
           ...action.payload,
         },
       };

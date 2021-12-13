@@ -18,7 +18,7 @@ const GridQueueStatus = ({ isEditMode, widget, ...props }) => {
   const calls = useSelector((state) => state.agents.calls);
   const agentsQueues = useSelector((state) => state.agents.agentsQueues);
 
-  const queuedCall = useSelector((state) => state.callsQueues.queuedCall[widget.callQueue.id] ?? []);
+  const queuedCall = useSelector((state) => state.callsQueues.queuedCall);
   const [queueStatusValues, handleQueueStatusValues] = useState({ ...getQueueStatusInitialValues() });
   useEffect(() => {
     const interval = setInterval(() => {
@@ -49,8 +49,9 @@ const GridQueueStatus = ({ isEditMode, widget, ...props }) => {
         }
       });
     }
+    const queuedCalls = queuedCall[widget.callQueue.id] ?? [];
 
-    queuedCall.forEach((call) => {
+    queuedCalls.forEach((call) => {
       if (call.status.toLowerCase() !== 'connected' && call.status.toLowerCase() !== 'bridged') {
         queueStatusValuesCopy.totalCallsQueueing.value++;
       }

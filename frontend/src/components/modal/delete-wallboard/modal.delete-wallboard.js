@@ -9,6 +9,7 @@ const ModalDeleteWallboard = ({ ...props }) => {
   const modalRef = useRef(null);
   const dispatch = useDispatch();
   const { wallboardIdForDelete } = useSelector((state) => state.wallboards.present);
+  const isWallboardGroup = wallboardIdForDelete.includes(DEFAULTS.WALLBOARDS.WALLBOARD_GROUP_SEPARATOR);
   const closeModal = () => {
     dispatch(handleWallboardActiveModalAC(null));
   };
@@ -31,7 +32,7 @@ const ModalDeleteWallboard = ({ ...props }) => {
 
   const handleDeleteButton = () => {
     const onClickDeleteButton = () => {
-      dispatch(deleteWallboardThunk(wallboardIdForDelete));
+      dispatch(deleteWallboardThunk(wallboardIdForDelete, isWallboardGroup));
       closeModal();
     };
 
@@ -49,10 +50,14 @@ const ModalDeleteWallboard = ({ ...props }) => {
       <div ref={modalRef} className="c-modal__container c-modal__container--save-changes ">
         <div className="c-modal__content">
           <div className="c-modal__header">
-            <div className="c-modal__title c-modal__title--bold">{DEFAULTS.MODAL.DELETE_WALLBOARD_MODAL.TITLE}</div>
+            <div className="c-modal__title c-modal__title--bold">
+              {isWallboardGroup ? DEFAULTS.MODAL.DELETE_WALLBOARD_GROUP_MODAL.TITLE : DEFAULTS.MODAL.DELETE_WALLBOARD_MODAL.TITLE}
+            </div>
           </div>
           <div className="c-modal__body c-modal__body--save-changes">
-            <div className="c-modal__body--save-changes__phrase">{DEFAULTS.MODAL.DELETE_WALLBOARD_MODAL.QUESTION}</div>
+            <div className="c-modal__body--save-changes__phrase">
+              {isWallboardGroup ? DEFAULTS.MODAL.DELETE_WALLBOARD_GROUP_MODAL.QUESTION : DEFAULTS.MODAL.DELETE_WALLBOARD_MODAL.QUESTION}
+            </div>
           </div>
           <div className="c-modal__footer">
             <div className="c-modal__footer-left-side" />

@@ -54,7 +54,7 @@ const ModalNewWallboard = ({ stepId, selectedWallboardId, onClose, ...props }) =
     const filtredWallboards = wallboards
       .filter(
         (wb) =>
-          !wb.id.includes('-g-') &&
+          !wb.id.includes(DEFAULTS.WALLBOARDS.WALLBOARD_GROUP_SEPARATOR) &&
           wb.natterboxUserId === userInfo.natterboxUserId &&
           wb.name.toUpperCase().includes(newWbFilter.toUpperCase())
       )
