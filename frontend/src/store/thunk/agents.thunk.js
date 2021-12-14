@@ -391,7 +391,7 @@ export const exportCSVUserLoginDataThunk =
   };
 
 export const exportCSVUserStatusDataThunk =
-  ({ timeStart, timeEnd }, profileId, limitResult, timezone, isShowDisplayName, isShowStateName) =>
+  ({ timeStart, timeEnd }, profileId, timezone, isShowDisplayName, isShowStateName) =>
   async (dispatch, getState) => {
     try {
       const { userInfo, token, sapienUrl } = getState().login;
@@ -401,7 +401,6 @@ export const exportCSVUserStatusDataThunk =
         organizationId: userInfo.organisationId,
         token,
         profileId,
-        limitResult,
         timeStart,
         timeEnd,
         sapienUrl,

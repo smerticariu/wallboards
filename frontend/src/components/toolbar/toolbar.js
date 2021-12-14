@@ -44,7 +44,9 @@ const Toolbar = (props) => {
     return (
       <div className="c-toolbar-left__wrapper">
         <h1 className="c-toolbar-left__heading">Recent {isGroupsCategory ? 'Groups' : 'Wallboards'}</h1>
-        <p className="c-toolbar-left__wb-no">{wallboards.length} {isGroupsCategory ? 'Groups' : 'Wallboards'} Items</p>
+        <p className="c-toolbar-left__wb-no">
+          {wallboards.length} {isGroupsCategory ? 'Groups' : 'Wallboards'} Items
+        </p>
       </div>
     );
   };
@@ -181,23 +183,17 @@ const Toolbar = (props) => {
     );
   };
 
-  const handleSaveButton = () => {
+  const handleSaveButton = (functionForDispatch, isBtnDisabled) => {
     const handleClick = () => {
-      switch (props.template) {
-        case DEFAULTS.TOOLBAR.NAME.NEW_WALLBOARD:
-          return dispatch(handleWallboardActiveModalAC(DEFAULTS.MODAL.MODAL_NAMES.CONFIRM_SAVE_WALLBOARD));
-        case DEFAULTS.TOOLBAR.NAME.NEW_WALLBOARD_GROUP:
-          return dispatch(handleWallboardActiveModalAC(DEFAULTS.MODAL.MODAL_NAMES.CONFIRM_SAVE_WALLBOARD_GROUP));
-        default:
-          break;
-      }
+      return dispatch(functionForDispatch());
     };
     return (
       <button
         onClick={() => {
           handleClick();
         }}
-        className="c-button c-button--m-left"
+        disabled={isBtnDisabled}
+        className={`c-button c-button--m-left ${isBtnDisabled ? 'c-button--disabled' : ''}`}
       >
         Save
       </button>
@@ -225,23 +221,7 @@ const Toolbar = (props) => {
       </button>
     );
   };
-  const handleRunButton = () => {
-    let isLinkDisabled = true;
-    let url = '/wallboard/';
-    switch (props.template) {
-      case DEFAULTS.TOOLBAR.NAME.NEW_WALLBOARD:
-        isLinkDisabled = !activeWallboard?.widgets?.length || activeWallboard.isNewWallboard;
-        url += activeWallboard.id;
-        break;
-      case DEFAULTS.TOOLBAR.NAME.NEW_WALLBOARD_GROUP:
-        isLinkDisabled =
-          !wallboardGroup?.steps?.filter((step) => step.wallboardId)?.length || wallboardGroup.isNewWallboard || !!noOfSteptsForUndo;
-        url = '/group/' + wallboardGroup.id;
-        break;
-      default:
-        break;
-    }
-
+  const handleRunButton = (isLinkDisabled, url) => {
     return (
       <Link target="_blank" to={url} className={`c-button c-button--blue c-button--m-left ${isLinkDisabled ? 'c-button--disabled' : ''}`}>
         Run
@@ -279,29 +259,40 @@ const Toolbar = (props) => {
             {handleNewWallboardGroupButton()}
           </>
         );
-      case DEFAULTS.TOOLBAR.NAME.NEW_WALLBOARD_GROUP:
+      case DEFAULTS.TOOLBAR.NAME.NEW_WALLBOARD_GROUP: {
+        const isRunLinkDisabled =
+          !wallboardGroup?.steps?.filter((step) => step.wallboardId)?.length || wallboardGroup.isNewWallboard || !!noOfSteptsForUndo;
+        const runUrl = '/group/' + wallboardGroup.id;
+
+        const isSaveBtnDisabled = !wallboardGroup.steps?.some((step) => step.wallboardId);
         return (
           <>
             {handleBackToButton()}
-            {handleSaveButton()}
+            {handleSaveButton(
+              () => handleWallboardActiveModalAC(DEFAULTS.MODAL.MODAL_NAMES.CONFIRM_SAVE_WALLBOARD_GROUP),
+              isSaveBtnDisabled
+            )}
             {handleCloseButton()}
-            {handleRunButton()}
+            {handleRunButton(isRunLinkDisabled, runUrl)}
             {handleSettingsIcon()}
           </>
         );
+      }
 
-      case DEFAULTS.TOOLBAR.NAME.NEW_WALLBOARD:
+      case DEFAULTS.TOOLBAR.NAME.NEW_WALLBOARD: {
+        const isRunLinkDisabled = !activeWallboard?.widgets?.length || activeWallboard.isNewWallboard;
+        const runUrl = '/wallboard/' + activeWallboard.id;
         return (
           <>
             {handleNewComponentButton()}
             {handleBackToButton()}
-            {handleSaveButton()}
+            {handleSaveButton(() => handleWallboardActiveModalAC(DEFAULTS.MODAL.MODAL_NAMES.CONFIRM_SAVE_WALLBOARD))}
             {handleCloseButton()}
-            {handleRunButton()}
+            {handleRunButton(isRunLinkDisabled, runUrl)}
             {handleSettingsIcon()}
           </>
         );
-
+      }
       case DEFAULTS.TOOLBAR.NAME.ERROR:
       case DEFAULTS.TOOLBAR.NAME.WALLBOARD_READ_ONLY:
         return (

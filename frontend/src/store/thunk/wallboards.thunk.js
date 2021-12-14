@@ -86,22 +86,23 @@ export const fetchWallboardGroupByIdThunk =
         token,
         storeUrl,
       });
-      const stepsForDelete = wallboardById.steps.filter(
-        (step) => step.wallboardId && !allWallboards.data.some((wb) => wb.id === step.wallboardId)
-      );
 
-      if (stepsForDelete.length) {
-        wallboardById.steps = wallboardById.steps.map((step) =>
-          stepsForDelete.some((stepForDelete) => step.wallboardId === stepForDelete.wallboardId)
-            ? {
-                ...step,
-                wallboardId: null,
-                wallboardName: null,
-                wallboardDescription: null,
-              }
-            : step
-        );
-      }
+      wallboardById.steps = wallboardById.steps.map((step) => {
+        const wallboard = allWallboards.data.find((wb) => wb.id === step.wallboardId);
+        const isStepForDelete = step.wallboardId && !wallboard;
+        return isStepForDelete
+          ? {
+              ...step,
+              wallboardId: null,
+              wallboardName: null,
+              wallboardDescription: null,
+            }
+          : {
+              ...step,
+              wallboardName: wallboard ? wallboard.name : step.name,
+              wallboardDescription: wallboard ? wallboard.description : step.wallboardDescription,
+            };
+      });
 
       await WallboardsApi({
         type: DEFAULTS.WALLBOARDS.API.SAVE.WALLBOARD_GROUP,
