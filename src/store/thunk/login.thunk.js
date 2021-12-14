@@ -7,7 +7,8 @@ import { setAccessTokenAC, setUserInfoAC, setUserTokenInfoAC, setSapienUrlAC, se
 
 export const fetchUserInfoThunk = (token) => async (dispatch, getState) => {
   try {
-    if (!token.length) throw new Error(DEFAULTS.GLOBAL.FAIL);
+    console.log('fetchUserInfoThunk')
+    if (!token) throw new Error(DEFAULTS.GLOBAL.FAIL);
     let sapienUrl = "";
 
     await axios.get(`${config.envHost}/flightdeck/config`).then(res => {
@@ -29,6 +30,7 @@ export const fetchUserInfoThunk = (token) => async (dispatch, getState) => {
 
 export const fetchUserDataThunk = (sfToken) => async (dispatch, getState) => {
   try {
+    console.log('fetchUserDataThunk')
     const { gatekeeperUrl } = getState().login;
     const options = {
       method: 'get',

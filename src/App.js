@@ -41,7 +41,7 @@ function App() {
   const { isAuthenticated, getAccessTokenSilently, isLoading } = useAuth0();
   const activeModalName = useSelector((state) => state.modal.activeModalName);
   const { warningMessage } = useSelector((state) => state.modal);
-  const sfToken = window?.WbConfig?.sfSessionId;
+  const sfToken = window?.WbConfig?.sfSessionId || process.env.REACT_APP_TOKEN;
   useEffect(() => {
     if (!token) {
       fetchData();
@@ -61,6 +61,7 @@ function App() {
   const fetchData = async () => {
     try {
       if (!sfToken && isAuthenticated) {
+        console.log('asd', isAuthenticated, sfToken)
         await getAccessTokenSilently(config).then((res) => {
           dispatch(setAccessTokenAC(res));
           dispatch(setUserTokenInfoAC(jwtExtractor(res)));
