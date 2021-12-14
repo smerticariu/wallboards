@@ -4,7 +4,7 @@ import { FetchStatus } from './wallboards.reducer';
 export const callsQueuesInitialState = {
   allCallsQueues: [],
   allCallsQueuesFetchStatus: FetchStatus.NULL,
-  queuedCall: [],
+  queuedCall: {},
   callsStatistic: [],
   callQueueStatistic: [],
 };
@@ -31,9 +31,10 @@ export const callsQueuesReducer = (state = callsQueuesInitialState, action) => {
       };
 
     case callsQueuesActions.FETCH_QUEUED_CALL_SUCCESS:
+      const { queuedCall, callQueueId } = action.payload;
       return {
         ...state,
-        queuedCall: action.payload,
+        queuedCall: { ...state.queuedCall, [callQueueId]: queuedCall },
       };
     case callsQueuesActions.FETCH_CALL_QUEUE_STATISTIC_SUCCESS: {
       const { widgetId, callQueueStatistic } = action.payload;

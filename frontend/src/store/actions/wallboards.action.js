@@ -1,5 +1,8 @@
 export const wallboardsActions = {
   HANDLE_NEW_WALLBOARD_TITLE: 'HANDLE_NEW_WALLBOARD_TITLE',
+
+  HANDLE_NEW_WALLBOARD_GROUP_TITLE: 'HANDLE_NEW_WALLBOARD_GROUP_TITLE',
+
   HANDLE_SELECTED_WALLBOARD_DESCRIPTION: 'HANDLE_SELECTED_WALLBOARD_DESCRIPTION',
   LANDING_SELECTED_WALLBOARD_CATEGORY: 'LANDING_SELECTED_WALLBOARD_CATEGORY',
   SET_FILTERED_WALLBOARDS: 'SET_FILTERED_WALLBOARDS',
@@ -9,16 +12,27 @@ export const wallboardsActions = {
   FETCH_WALLBOARD_BY_ID_SUCCESS: 'FETCH_WALLBOARD_BY_ID_SUCCESS',
   FETCH_WALLBOARD_BY_ID_FAIL: 'FETCH_WALLBOARD_BY_ID_FAIL',
 
+  FETCH_WALLBOARD_GROUP_BY_ID: 'FETCH_WALLBOARD_GROUP_BY_ID',
+  FETCH_WALLBOARD_GROUP_BY_ID_SUCCESS: 'FETCH_WALLBOARD_GROUP_BY_ID_SUCCESS',
+  FETCH_WALLBOARD_GROUP_BY_ID_FAIL: 'FETCH_WALLBOARD_GROUP_BY_ID_FAIL',
+
   FETCH_ALL_WALLBOARDS: 'FETCH_ALL_WALLBOARDS',
   FETCH_ALL_WALLBOARDS_SUCCESS: 'FETCH_ALL_WALLBOARDS_SUCCESS',
   FETCH_ALL_WALLBOARDS_FAIL: 'FETCH_ALL_WALLBOARDS_FAIL',
 
   CREATE_LOCAL_NEW_EMPTY_WALLBOARD: 'CREATE_LOCAL_NEW_EMPTY_WALLBOARD',
 
+  CREATE_LOCAL_NEW_EMPTY_WALLBOARD_GROUP: 'CREATE_LOCAL_NEW_EMPTY_WALLBOARD_GROUP',
+
   SAVE_WALLBOARD: 'SAVE_WALLBOARD',
   SAVE_WALLBOARD_SUCCESS: 'SAVE_WALLBOARD_SUCCESS',
   SAVE_WALLBOARD_FAIL: 'SAVE_WALLBOARD_FAIL',
   SAVE_WALLBOARD_RESET_STATUS: 'SAVE_WALLBOARD_RESET_STATUS',
+
+  SAVE_WALLBOARD_GROUP: 'SAVE_WALLBOARD_GROUP',
+  SAVE_WALLBOARD_GROUP_SUCCESS: 'SAVE_WALLBOARD_GROUP_SUCCESS',
+  SAVE_WALLBOARD_GROUP_FAIL: 'SAVE_WALLBOARD_GROUP_FAIL',
+  SAVE_WALLBOARD_GROUP_RESET_STATUS: 'SAVE_WALLBOARD_GROUP_RESET_STATUS',
 
   ADD_WALLBOARD_AGENT_LIST: 'ADD_WALLBOARD_AGENT_LIST',
 
@@ -49,11 +63,25 @@ export const wallboardsActions = {
 
   APPLY_WALLBOARD_SETTINGS: 'APPLY_WALLBOARD_SETTINGS',
 
+  APPLY_WALLBOARD_GROUP_SETTINGS: 'APPLY_WALLBOARD_GROUP_SETTINGS',
+
   SYNC_WIDGET_SIZE_FOR_NEW_SCREEN: 'SYNC_WIDGET_SIZE_FOR_NEW_SCREEN',
+
+  ADD_WALLBOARD_FOR_WALLBOARD_GROUP: 'ADD_WALLBOARD_FOR_WALLBOARD_GROUP',
+
+  ADD_NEW_STEP_FOR_WALLBOARD_GROUP: 'ADD_NEW_STEP_FOR_WALLBOARD_GROUP',
+  REMOVE_NEW_STEP_FOR_WALLBOARD_GROUP: 'REMOVE_NEW_STEP_FOR_WALLBOARD_GROUP',
+  HANDLE_CHANGE_STEP_TIME: 'HANDLE_CHANGE_STEP_TIME',
+  REMOVE_WALLBOARD_FOR_WALLBOARD_GROUP: 'REMOVE_WALLBOARD_FOR_WALLBOARD_GROUP',
 };
 
 export const handleNewWallboardTitleAC = (title) => ({
   type: wallboardsActions.HANDLE_NEW_WALLBOARD_TITLE,
+  payload: title,
+});
+
+export const handleNewWallboardGroupTitleAC = (title) => ({
+  type: wallboardsActions.HANDLE_NEW_WALLBOARD_GROUP_TITLE,
   payload: title,
 });
 
@@ -90,6 +118,19 @@ export const fetchWallboardByIdFailAC = (errorMEssage, statusCode) => ({
   payload: { errorMEssage, statusCode },
 });
 
+export const fetchWallboardGroupByIdAC = (message) => ({
+  type: wallboardsActions.FETCH_WALLBOARD_GROUP_BY_ID,
+  payload: message,
+});
+export const fetchWallboardGroupByIdSuccessAC = (wallboardGroup) => ({
+  type: wallboardsActions.FETCH_WALLBOARD_GROUP_BY_ID_SUCCESS,
+  payload: wallboardGroup,
+});
+export const fetchWallboardGroupByIdFailAC = (errorMessage, statusCode) => ({
+  type: wallboardsActions.FETCH_WALLBOARD_GROUP_BY_ID_FAIL,
+  payload: { errorMessage, statusCode },
+});
+
 export const fetchAllWallboardsAC = () => ({
   type: wallboardsActions.FETCH_ALL_WALLBOARDS,
 });
@@ -107,6 +148,11 @@ export const createNewEmptyWallboardAC = (id) => ({
   payload: id,
 });
 
+export const createNewEmptyWallboardGroupAC = (id) => ({
+  type: wallboardsActions.CREATE_LOCAL_NEW_EMPTY_WALLBOARD_GROUP,
+  payload: id,
+});
+
 export const saveWallboardAC = () => ({
   type: wallboardsActions.SAVE_WALLBOARD,
 });
@@ -120,6 +166,21 @@ export const saveWallboardFailAC = (errorMEssage) => ({
 });
 export const saveWallboardResetStatusAC = (errorMEssage) => ({
   type: wallboardsActions.SAVE_WALLBOARD_RESET_STATUS,
+});
+
+export const saveWallboardGroupAC = () => ({
+  type: wallboardsActions.SAVE_WALLBOARD_GROUP,
+});
+export const saveWallboardGroupSuccessAC = (wallboardGroup) => ({
+  type: wallboardsActions.SAVE_WALLBOARD_GROUP_SUCCESS,
+  payload: wallboardGroup,
+});
+export const saveWallboardGroupFailAC = (errorMEssage) => ({
+  type: wallboardsActions.SAVE_WALLBOARD_GROUP_FAIL,
+  payload: errorMEssage,
+});
+export const saveWallboardGroupResetStatusAC = (errorMEssage) => ({
+  type: wallboardsActions.SAVE_WALLBOARD_GROUP_RESET_STATUS,
 });
 
 export const addWallboardAgentListAC = (userInfo, agentList) => ({
@@ -192,7 +253,36 @@ export const applyWallboardSettingsAC = (settings) => ({
   payload: settings,
 });
 
+export const applyWallboardGroupSettingsAC = (settings) => ({
+  type: wallboardsActions.APPLY_WALLBOARD_GROUP_SETTINGS,
+  payload: settings,
+});
+
 export const syncWidgetsSizeForNewScreenAC = (widgets) => ({
   type: wallboardsActions.SYNC_WIDGET_SIZE_FOR_NEW_SCREEN,
   payload: widgets,
+});
+
+export const addWallboardForWallboardGroupAC = (wallboard) => ({
+  type: wallboardsActions.ADD_WALLBOARD_FOR_WALLBOARD_GROUP,
+  payload: wallboard,
+});
+
+export const addStepForWallboardGroupAC = () => ({
+  type: wallboardsActions.ADD_NEW_STEP_FOR_WALLBOARD_GROUP,
+});
+
+export const removeStepForWallboardGroupAC = (stepId) => ({
+  type: wallboardsActions.REMOVE_NEW_STEP_FOR_WALLBOARD_GROUP,
+  payload: stepId,
+});
+
+export const handleChangeStepTimeAC = (stepId, stepTime) => ({
+  type: wallboardsActions.HANDLE_CHANGE_STEP_TIME,
+  payload: { stepId, stepTime },
+});
+
+export const removeWallboardForWallboardGroupAC = (stepId) => ({
+  type: wallboardsActions.REMOVE_WALLBOARD_FOR_WALLBOARD_GROUP,
+  payload: stepId,
 });

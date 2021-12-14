@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { DEFAULTS } from '../defaults/defaults';
-import { generateSapienApi } from './generateSapienApi';
 
 export const AvailabilityApi = async (props) => {
   const options = {
@@ -8,14 +7,11 @@ export const AvailabilityApi = async (props) => {
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${props.token}`,
-      'Access-Control-Allow-Origin': '*',
       Accept: 'application/json',
     },
   };
 
-  const url = await generateSapienApi();
-
-  const baseUrl = `${url}/${props.organizationId}/availability`;
+  const baseUrl = `${props.sapienUrl}/v1/organisation/${props.organizationId}/availability`;
 
   switch (props.type) {
     case DEFAULTS.AVAILABILITY.API.GET.PROFILES:
@@ -26,9 +22,9 @@ export const AvailabilityApi = async (props) => {
       break;
 
     case DEFAULTS.AVAILABILITY.API.GET.HISTORY:
-      options.url = `${baseUrl}/history?min-time=${encodeURIComponent(props.timeStart)}&max-time=${encodeURIComponent(
-        props.timeEnd
-      )}&_limit=${props.limitResult}${Number(props.profileId) === -1 ? '' : '&availability-profile-id=' + props.profileId}`;
+      options.url = `${baseUrl}/history?min-time=${encodeURIComponent(props.timeStart)}&max-time=${encodeURIComponent(props.timeEnd)}${
+        Number(props.profileId) === -1 ? '' : '&availability-profile-id=' + props.profileId
+      }`;
       break;
 
     default:

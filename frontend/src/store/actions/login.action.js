@@ -4,6 +4,9 @@ export const loginActions = {
   SET_USER_INFO: 'SET_USER_INFO',
   SET_USERS_AVATARS: 'SET_USERS_AVATARS',
   HANDLE_LOGOUT: 'HANDLE_LOGOUT',
+  SET_SAPIEN_URL: 'SET_SAPIEN_URL',
+  SET_STORE_URL: 'SET_STORE_URL',
+  SET_GATEKEEPER_URL: 'SET_GATEKEEPER_URL',
 };
 
 export const setUserTokenInfoAC = (userInfo) => ({
@@ -19,6 +22,21 @@ export const setUserInfoAC = (userInfo) => ({
 export const setAccessTokenAC = (accesToken) => ({
   type: loginActions.SET_ACCESS_TOKEN,
   payload: accesToken,
+});
+
+export const setSapienUrlAC = (sapienUrl) => ({
+  type: loginActions.SET_SAPIEN_URL,
+  payload: sapienUrl,
+});
+
+export const setStoreUrlAC = (storeUrl) => ({
+  type: loginActions.SET_STORE_URL,
+  payload: storeUrl,
+});
+
+export const setGatekeeperUrlAC = (gatekeeperUrl) => ({
+  type: loginActions.SET_GATEKEEPER_URL,
+  payload: gatekeeperUrl,
 });
 
 export const setUsersAvatarsAC = (usersAvatars) => ({

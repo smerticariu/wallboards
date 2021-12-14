@@ -104,10 +104,13 @@ export const QUEUE_LIST_INTERACTIVITY_OPTIONS_KEYS = {
   // DISCONNECT: 'DISCONNECT',
   LISTEN_LIVE: 'LISTEN_LIVE',
 };
-export const MODAL_NEW_WALLBOARD_SECITONS = {
+export const MODAL_NEW_WIDGET_SECITONS = {
   QUEUES: 'QUEUES',
   CALLS: 'CALLS',
   USERS: 'USERS',
+};
+export const MODAL_NEW_WALLBOARD_SECITONS = {
+  WALLBOARDS: 'WALLBOARDS',
 };
 
 export const CALL_DIRECTION = {
@@ -123,92 +126,94 @@ export const CALL_DIRECTION = {
 export const MODAL = {
   MODAL_NAMES: {
     SELECT_COMPONENT: 'SELECT_COMPONENT',
+    WALLBOARD_GROUP: 'WALLBOARD_GROUP',
     SAVE_WALLBOARD: 'SAVE_WALLBOARD',
+    SAVE_WALLBOARD_GROUP: 'SAVE_WALLBOARD_GROUP',
     CONFIRM_SAVE_WALLBOARD: 'CONFIRM_SAVE_WALLBOARD',
+    CONFIRM_SAVE_WALLBOARD_GROUP: 'CONFIRM_SAVE_WALLBOARD_GROUP',
     DELETE_WALLBOARD: 'DELETE_WALLBOARD',
     EDIT_WALLBOARD: 'EDIT_WALLBOARD',
+    EDIT_WALLBOARD_GROUP: 'EDIT_WALLBOARD_GROUP',
     DELETE_WALLBOARD_COMPONENT: 'DELETE_WALLBOARD_COMPONENT',
+    NEW_STEP_WALLBOARD: 'NEW_STEP_WALLBOARD',
+    REMOVE_STEP: 'REMOVE_STEP',
+    REMOVE_WALLBOARD: 'REMOVE_WALLBOARD',
     ...WIDGET_TYPE,
   },
-  NEW_WALLBOARD: {
+  NEW_WIDGET: {
     SELECT_COMPONENT: 'Select a component',
     CATEGORIES: 'Component Categories',
     SECTIONS: [
       {
         text: 'Queues',
-        value: MODAL_NEW_WALLBOARD_SECITONS.QUEUES,
+        value: MODAL_NEW_WIDGET_SECITONS.QUEUES,
       },
       {
         text: 'Calls',
-        value: MODAL_NEW_WALLBOARD_SECITONS.CALLS,
+        value: MODAL_NEW_WIDGET_SECITONS.CALLS,
       },
       {
         text: 'Users',
-        value: MODAL_NEW_WALLBOARD_SECITONS.USERS,
+        value: MODAL_NEW_WIDGET_SECITONS.USERS,
       },
     ],
+    ADD_COMPONENT_OPTIONS: {
+      [MODAL_NEW_WIDGET_SECITONS.QUEUES]: [
+        {
+          NAME: 'Agent list',
+          ID: WIDGET_TYPE.AGENT_LIST,
+          DESCRIPTION: 'Displays the status of all agents in a queue',
+        },
+        {
+          NAME: 'Queue list',
+          ID: WIDGET_TYPE.QUEUE_LIST,
+          DESCRIPTION: 'Displays all the details of calls that are waiting in a call queue',
+        },
+        {
+          NAME: 'Queue tracking',
+          ID: WIDGET_TYPE.QUEUE_TRACKING,
+          DESCRIPTION: 'Displays overview statistics for calls within a call queue, such as call abandonment rate',
+        },
+        {
+          NAME: 'Queue status',
+          ID: WIDGET_TYPE.QUEUE_STATUS,
+          DESCRIPTION: 'Displays overview statistics for all agents within a call queue, such such as how many agents are available',
+        },
+      ],
+      [MODAL_NEW_WIDGET_SECITONS.CALLS]: [
+        {
+          NAME: 'Call status',
+          ID: WIDGET_TYPE.CALL_STATUS,
+          DESCRIPTION: 'Displays an overview of all active calls within your organisation right now',
+        },
+        {
+          NAME: 'Call tracking',
+          ID: WIDGET_TYPE.CALL_TRACKING,
+          DESCRIPTION: 'Displays an overview of call volumes for a specific group of agents',
+        },
+      ],
+      [MODAL_NEW_WIDGET_SECITONS.USERS]: [
+        {
+          NAME: 'Agent login',
+          ID: WIDGET_TYPE.AGENT_LOGIN,
+          DESCRIPTION: 'Displays a table of login/out events for all agents within a group along with options to download the data',
+        },
+        {
+          NAME: 'Agent status',
+          ID: WIDGET_TYPE.AGENT_STATUS,
+          DESCRIPTION:
+            'Displays a table of every availability state change for all agents within a group along with options to download the data',
+        },
+      ],
+    },
   },
-  ADD_COMPONENT_OPTIONS: {
-    [MODAL_NEW_WALLBOARD_SECITONS.QUEUES]: [
+  NEW_WALLBOARD: {
+    SELECT_COMPONENT: 'Select A Wallboard',
+    CATEGORIES: 'Your Wallboards',
+    SECTIONS: [
       {
-        NAME: 'Agent list',
-        STATUS: 'Natterbox Admin',
-        DATE: '19/03/2021 at 14:19',
-        SERVICE: 'Customer Service Calls',
-        ID: WIDGET_TYPE.AGENT_LIST,
-      },
-      {
-        NAME: 'Queue list',
-        STATUS: 'Natterbox Admin',
-        DATE: '19/03/2021 at 14:19',
-        SERVICE: 'Customer Service Calls',
-        ID: WIDGET_TYPE.QUEUE_LIST,
-      },
-      {
-        NAME: 'Queue tracking',
-        STATUS: 'Natterbox Admin',
-        DATE: '19/03/2021 at 14:19',
-        SERVICE: 'Customer Service Calls',
-        ID: WIDGET_TYPE.QUEUE_TRACKING,
-      },
-      {
-        NAME: 'Queue status',
-        STATUS: 'Natterbox Admin',
-        DATE: '19/03/2021 at 14:19',
-        SERVICE: 'Customer Service Calls',
-        ID: WIDGET_TYPE.QUEUE_STATUS,
-      },
-    ],
-    [MODAL_NEW_WALLBOARD_SECITONS.CALLS]: [
-      {
-        NAME: 'Call status',
-        STATUS: 'Natterbox Admin',
-        DATE: '19/03/2021 at 14:19',
-        SERVICE: 'Customer Service Calls',
-        ID: WIDGET_TYPE.CALL_STATUS,
-      },
-      {
-        NAME: 'Call tracking',
-        STATUS: 'Natterbox Admin',
-        DATE: '19/03/2021 at 14:19',
-        SERVICE: 'Customer Service Calls',
-        ID: WIDGET_TYPE.CALL_TRACKING,
-      },
-    ],
-    [MODAL_NEW_WALLBOARD_SECITONS.USERS]: [
-      {
-        NAME: 'Agent login',
-        STATUS: 'Natterbox Admin',
-        DATE: '19/03/2021 at 14:19',
-        SERVICE: 'Customer Service Calls',
-        ID: WIDGET_TYPE.AGENT_LOGIN,
-      },
-      {
-        NAME: 'Agent status',
-        STATUS: 'Natterbox Admin',
-        DATE: '19/03/2021 at 14:19',
-        SERVICE: 'Customer Service Calls',
-        ID: WIDGET_TYPE.AGENT_STATUS,
+        text: 'Wallboards',
+        value: MODAL_NEW_WALLBOARD_SECITONS.WALLBOARDS,
       },
     ],
   },
@@ -508,7 +513,7 @@ export const MODAL = {
       PREVIEW: 'Preview',
     },
     PLACEHOLDER: {
-      COMPONENT_NAME: 'New Queue List',
+      COMPONENT_NAME: 'Queue List',
     },
     LABEL: {
       CONNECTED: 'Connected',
@@ -661,12 +666,12 @@ export const MODAL = {
         [QUEUE_LIST_COLUMN_OPTIONS.DIAL_ATTEMPTS]: 0,
         [QUEUE_LIST_COLUMN_OPTIONS.STATUS]: 'connected',
         [QUEUE_LIST_COLUMN_OPTIONS.AGENT_CONNECTED_TO]: 'Agent Name 0',
-        [QUEUE_LIST_COLUMN_OPTIONS.SKILLS_REQUESTED]: 'unknown',
-        [QUEUE_LIST_COLUMN_OPTIONS.SKILLS_SHORTAGE]: 'unknown',
+        [QUEUE_LIST_COLUMN_OPTIONS.SKILLS_REQUESTED]: 'none',
+        [QUEUE_LIST_COLUMN_OPTIONS.SKILLS_SHORTAGE]: 'none',
         [QUEUE_LIST_COLUMN_OPTIONS.TIME_AT_HEAD_OF_QUEUE]: 100,
         [QUEUE_LIST_COLUMN_OPTIONS.CALLBACK_REQUESTED]: false,
         [QUEUE_LIST_COLUMN_OPTIONS.CALLBACK_ATTEMPTS]: 8,
-        [QUEUE_LIST_COLUMN_OPTIONS.FLAGS]: 'unknown',
+        [QUEUE_LIST_COLUMN_OPTIONS.FLAGS]: 'none',
         uuid: 0,
       },
       {
@@ -678,12 +683,12 @@ export const MODAL = {
         [QUEUE_LIST_COLUMN_OPTIONS.DIAL_ATTEMPTS]: 2,
         [QUEUE_LIST_COLUMN_OPTIONS.STATUS]: 'connected',
         [QUEUE_LIST_COLUMN_OPTIONS.AGENT_CONNECTED_TO]: 'Agent Name 1',
-        [QUEUE_LIST_COLUMN_OPTIONS.SKILLS_REQUESTED]: 'unknown',
-        [QUEUE_LIST_COLUMN_OPTIONS.SKILLS_SHORTAGE]: 'unknown',
+        [QUEUE_LIST_COLUMN_OPTIONS.SKILLS_REQUESTED]: 'none',
+        [QUEUE_LIST_COLUMN_OPTIONS.SKILLS_SHORTAGE]: 'none',
         [QUEUE_LIST_COLUMN_OPTIONS.TIME_AT_HEAD_OF_QUEUE]: 111,
         [QUEUE_LIST_COLUMN_OPTIONS.CALLBACK_REQUESTED]: true,
         [QUEUE_LIST_COLUMN_OPTIONS.CALLBACK_ATTEMPTS]: 0,
-        [QUEUE_LIST_COLUMN_OPTIONS.FLAGS]: 'unknown',
+        [QUEUE_LIST_COLUMN_OPTIONS.FLAGS]: 'none',
         uuid: 1,
       },
       {
@@ -695,12 +700,12 @@ export const MODAL = {
         [QUEUE_LIST_COLUMN_OPTIONS.DIAL_ATTEMPTS]: 2,
         [QUEUE_LIST_COLUMN_OPTIONS.STATUS]: 'waiting',
         [QUEUE_LIST_COLUMN_OPTIONS.AGENT_CONNECTED_TO]: '',
-        [QUEUE_LIST_COLUMN_OPTIONS.SKILLS_REQUESTED]: 'unknown',
-        [QUEUE_LIST_COLUMN_OPTIONS.SKILLS_SHORTAGE]: 'unknown',
+        [QUEUE_LIST_COLUMN_OPTIONS.SKILLS_REQUESTED]: 'none',
+        [QUEUE_LIST_COLUMN_OPTIONS.SKILLS_SHORTAGE]: 'none',
         [QUEUE_LIST_COLUMN_OPTIONS.TIME_AT_HEAD_OF_QUEUE]: 222,
         [QUEUE_LIST_COLUMN_OPTIONS.CALLBACK_REQUESTED]: true,
         [QUEUE_LIST_COLUMN_OPTIONS.CALLBACK_ATTEMPTS]: 3,
-        [QUEUE_LIST_COLUMN_OPTIONS.FLAGS]: 'unknown',
+        [QUEUE_LIST_COLUMN_OPTIONS.FLAGS]: 'none',
         uuid: 2,
       },
     ],
@@ -959,10 +964,28 @@ export const MODAL = {
     MIN_VALUE: 'Min value is 1',
     MAX_VALUE: 'Max value is 100',
     MIN_SLA_TIME: 'Min value is 1',
+    NO_RESULTS: 'No data',
+    IN_PROGRESS: 'Fetching wallboards in progress',
   },
   DELETE_WALLBOARD_MODAL: {
     TITLE: 'Delete Wallboard',
     QUESTION: 'Are you sure you want to delete this wallboard?',
+  },
+  DELETE_WALLBOARD_GROUP_MODAL: {
+    TITLE: 'Delete Wallboard Group',
+    QUESTION: 'Are you sure you want to delete this wallboard group?',
+  },
+  REMOVE_STEP_MODAL: {
+    TITLE: 'Removing Step - Warning!',
+    QUESTION: `Are you sure you want to remove this wallboard from the Wallboard Group?
+
+    Depending on your permissions to wallboards, you may not be able to add it back again. `,
+  },
+  REMOVE_WALLBOARD_MODAL: {
+    TITLE: 'Removing Wallboard - Warning!',
+    QUESTION: `Are you sure you want to remove this wallboard from the Wallboard Group?
+    
+    Depending on your permissions to wallboards, you may not be able to add it back again. `,
   },
   DELETE_WALLBOARD_COMPONENT_MODAL: {
     QUESTION: 'Are you sure you want to delete this component?',
@@ -975,6 +998,16 @@ export const MODAL = {
     READ_ONLY_URL: 'Read-Only Wallboard URL',
     READ_ONLY_URL_INFO:
       'A read only Wallboard URL allows anyone to access this wallboard with the basic Chatter Free Salesforce licence. This is great for non-Salesforce users or putting wallboards on a TV',
+    COPY: 'Copy Link',
+  },
+  EDIT_WALLBOARD_GROUP: {
+    SETTINGS: 'Settings',
+    NAME: 'Wallboard Group Name:',
+    DESCRIPTION: 'Wallboard Group Description:',
+    DISPLAY_SETTINGS: 'Display Settings:',
+    READ_ONLY_URL: 'Read-Only Wallboard Group URL',
+    READ_ONLY_URL_INFO:
+      'A read only Wallboard Group URL allows anyone to access this wallboard with the basic Chatter Free Salesforce licence. This is great for non-Salesforce users or putting wallboards on a TV',
     COPY: 'Copy Link',
   },
   CONFIRM_SAVE_WALLBOARD: {

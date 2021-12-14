@@ -1,7 +1,5 @@
 import axios from 'axios';
 import { DEFAULTS } from '../defaults/defaults';
-import { generateSapienApi } from './generateSapienApi';
-
 
 export const AgentsApi = async props => {
   const options = {
@@ -9,14 +7,12 @@ export const AgentsApi = async props => {
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${props.token}`,
-      'Access-Control-Allow-Origin': '*',
       Accept: 'application/json',
     },
   };
 
-  const url = await generateSapienApi();
-  const baseUrl = `${url}/${props.organizationId}/user`;
-  const userInfoUrl = `${url}/user/me`;
+  const baseUrl = `${props.sapienUrl}/v1/organisation/${props.organizationId}/user`;
+  const userInfoUrl = `${props.sapienUrl}/v1/user/me`;
 
   switch(props.type) {
     case DEFAULTS.AGENTS.API.GET.ALL_AGENTS:

@@ -29,6 +29,11 @@ import jsforce from 'jsforce';
 import ModalAgentStatus from './components/modal/agent-status/modal.agent-status';
 import ModalQueueList from './components/modal/queue-list/modal.queue-list';
 import ModalNewWidget from './components/modal/new-widget/modal.new-widget';
+import WallboardGroupEdit from './components/wallboard-group/wallboard-group-edit';
+import ModalConfirmSaveWallboardGroup from './components/modal/save-wallboard-group/modal.confirm-save-wallboard-group';
+import ModalSaveWallboardGroup from './components/modal/save-wallboard-group/modal.save-wallboard-group';
+import WallboardGroupReadOnly from './components/wallboard-group/wallboard-group-read-only';
+import ModalEditWallboardGroup from './components/modal/edit-wallboard-group/modal.edit-wallboard-group';
 
 function App() {
   const dispatch = useDispatch();
@@ -36,16 +41,14 @@ function App() {
   const { isAuthenticated, getAccessTokenSilently, isLoading } = useAuth0();
   const activeModalName = useSelector((state) => state.modal.activeModalName);
   const { warningMessage } = useSelector((state) => state.modal);
-  const sfToken = window?.WbConfig?.sfSessionId;
+  const sfToken = window?.WbConfig?.sfSessionId || process.env.REACT_APP_TOKEN;
   useEffect(() => {
     if (!token) {
       fetchData();
     }
-
     // eslint-disable-next-line
   }, [isAuthenticated, token]);
   useEffect(() => {
-    // debugger
     let tokenExpiryTimeout = null;
     if (userTokenInfo?.expiry) {
       tokenExpiryTimeout = setTimeout(() => {
@@ -66,17 +69,17 @@ function App() {
         });
       } else if (sfToken) {
         dispatch(fetchUserDataThunk(sfToken));
-        dispatch(setUsersAvatarsAC(window.WbConfig.usersAvatars));
+        dispatch(setUsersAvatarsAC(window?.WbConfig?.usersAvatars));
       }
     } catch (err) {
       console.log(err);
     }
   };
 
-  const getUsersAvatars = async jwtDecoded => {
+  const getUsersAvatars = async (jwtDecoded) => {
     var conn = new jsforce.Connection({
       instanceUrl: jwtDecoded.salesforceRestUrl.split('/services')[0],
-      accessToken: jwtDecoded.salesforceAccessToken
+      accessToken: jwtDecoded.salesforceAccessToken,
     });
 
     conn.query(DEFAULTS.SOQL.GET_USERS_PHOTOS, (err, sfUsers) => {
@@ -130,6 +133,12 @@ function App() {
               <Route exact path="/wallboard/:id/edit">
                 <WallboardEdit />
               </Route>
+              <Route exact path="/group/:id/edit">
+                <WallboardGroupEdit />
+              </Route>
+              <Route exact path="/group/:id">
+                <WallboardGroupReadOnly userInfo={userTokenInfo} />
+              </Route>
               <Route path="/wallboard/:id">
                 <WallboardReadOnly userInfo={userTokenInfo} />
               </Route>
@@ -139,10 +148,13 @@ function App() {
           {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.SELECT_COMPONENT && <ModalNewWidget />}
           {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.AGENT_LIST && <ModalAgentList />}
           {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.SAVE_WALLBOARD && <ModalSaveWallboard />}
+          {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.SAVE_WALLBOARD_GROUP && <ModalSaveWallboardGroup />}
           {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.DELETE_WALLBOARD && <ModalDeleteWallboard />}
           {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.EDIT_WALLBOARD && <ModalEditWallboard />}
+          {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.EDIT_WALLBOARD_GROUP && <ModalEditWallboardGroup />}
           {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.DELETE_WALLBOARD_COMPONENT && <ModalDeleteWallboardComponent />}
           {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.CONFIRM_SAVE_WALLBOARD && <ModalConfirmSaveWallboard />}
+          {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.CONFIRM_SAVE_WALLBOARD_GROUP && <ModalConfirmSaveWallboardGroup />}
           {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.CALL_STATUS && <ModalCallStatus />}
           {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.QUEUE_TRACKING && <ModalQueueTracking />}
           {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.QUEUE_STATUS && <ModalQueueStatus />}

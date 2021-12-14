@@ -8,7 +8,6 @@ import {
 } from 'src/store/actions/modal.action';
 import moment from 'moment';
 import { DEFAULTS } from '../../../common/defaults/defaults';
-import { PRESENCE_STATE_KEYS } from '../../../common/defaults/modal.defaults';
 import { fetchQueuedCallThunk } from '../../../store/thunk/callsQueues.thunk';
 import { getQueueStatusInitialValues } from '../../../common/defaults/wallboards.defaults';
 import { fetchUsersCurrentCallTimeThunk } from '../../../store/thunk/agents.thunk';
@@ -34,46 +33,42 @@ const GridQueueStatus = ({ isEditMode, widget, ...props }) => {
     let queueStatusValuesCopy = { ...getQueueStatusInitialValues() };
     if (agentsQueues.length) {
       const agents = agentsQueues.find((agentQueue) => agentQueue.callQueueId === widget.callQueue.id);
-      agents?.agents.forEach((agent) => {
-        queueStatusValuesCopy.totalAgents.value++;
+
+      agents?.agents?.forEach((agent) => {
+        ++queueStatusValuesCopy.totalAgents.value;
         const userCurrentCall = calls.filter((call) => call.userId === agent.userId || call.deviceId === agent.deviceId).pop();
 
-        switch (agent.status.toLowerCase()) {
-          case PRESENCE_STATE_KEYS.AGENT_STATUS_LOGGED_OFF.toLowerCase():
-            queueStatusValuesCopy.loggedOffAgents.value++;
-            break;
-          case PRESENCE_STATE_KEYS.AGENT_STATUS_IDLE.toLowerCase():
-            if (userCurrentCall) {
-              queueStatusValuesCopy.busyAgents.value++;
-              break;
-            }
-            if (agent.inWrapUp) {
-              queueStatusValuesCopy.wrappedUpAgents.value++;
-              break;
-            }
-            queueStatusValuesCopy.availableAgents.value++;
-            break;
-          case PRESENCE_STATE_KEYS.AGENT_STATUS_BUSY.toLowerCase():
-            queueStatusValuesCopy.busyAgents.value++;
-            break;
-          default:
-            queueStatusValuesCopy.availableAgents.value++;
+        if (agent.status.toLowerCase() === 'loggedoff') {
+          ++queueStatusValuesCopy.loggedOffAgents.value;
+        } else if (agent.status.toLowerCase() === 'busy' || (agent.status.toLowerCase() === 'idle' && userCurrentCall)) {
+          ++queueStatusValuesCopy.busyAgents.value;
+        } else if (agent.status.toLowerCase() === 'idle' && agent.inWrapUp) {
+          ++queueStatusValuesCopy.wrappedUpAgents.value;
+        } else {
+          ++queueStatusValuesCopy.availableAgents.value;
         }
       });
     }
-    queuedCall.forEach((call) => {
+    const queuedCalls = queuedCall[widget.callQueue.id] ?? [];
+
+    queuedCalls.forEach((call) => {
       if (call.status.toLowerCase() !== 'connected' && call.status.toLowerCase() !== 'bridged') {
-        queueStatusValues.totalCallsQueueing.value++;
-        queueStatusValues.mostDialAttempts.value = Math.max(call.dialAttempts, queueStatusValues.mostDialAttempts.value);
-        queueStatusValues.longestTimeInQueue.value = Math.max(
-          findEndWait(call).diff(moment.utc(call.created), 'second'),
-          queueStatusValues.longestTimeInQueue.value
-        );
+        queueStatusValuesCopy.totalCallsQueueing.value++;
       }
+      queueStatusValuesCopy.mostDialAttempts.value = Math.max(call.dialAttempts, queueStatusValuesCopy.mostDialAttempts.value);
+      queueStatusValuesCopy.longestTimeInQueue.value = moment
+        .utc(
+          Math.max(
+            findEndWait(call).diff(moment.utc(call.created), 'seconds'),
+            moment(queueStatusValuesCopy.longestTimeInQueue.value, 'HH:mm:ss').diff(moment().startOf('day'), 'seconds')
+          ) * 1000
+        )
+        .format('HH:mm:ss');
     });
     handleQueueStatusValues(queueStatusValuesCopy);
     // eslint-disable-next-line
   }, [calls, agentsQueues]);
+
   const handleEditIcon = () => {
     const onEditClick = () => {
       dispatch(setWidgetComponentForEditAC(widget));

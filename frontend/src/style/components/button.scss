@@ -30,6 +30,10 @@
     background-color: $pinkish-grey;
     color: $white;
   }
+  &--red {
+    background-color: $natterbox-red;
+    color: $white;
+  }
 
   &--disabled {
     background-color: $pinkish-grey;
@@ -43,6 +47,9 @@
 
   &--m-left {
     margin-left: 16px;
+    &-large {
+      margin-left: 40px;
+    }
   }
   &--empty {
     color: inherit;

@@ -18,13 +18,28 @@ export const loginReducer = (state = loginInitialState, action) => {
         ...state,
         userTokenInfo: action.payload,
       };
+    case loginActions.SET_SAPIEN_URL:
+      return {
+        ...state,
+        sapienUrl: action.payload,
+      };
+    case loginActions.SET_STORE_URL:
+      return {
+        ...state,
+        storeUrl: action.payload,
+      };
+    case loginActions.SET_GATEKEEPER_URL:
+      return {
+        ...state,
+        gatekeeperUrl: action.payload,
+      };
     case loginActions.SET_USER_INFO:
       return {
         ...state,
         userInfo: {
           ...action.payload,
-          isAdmin: action.payload.scopes.includes('wallboards:admin'),
-          isTeamLeader: action.payload.scopes.includes('wallboards:teamleader'),
+          isAdmin: action.payload.scopes.includes('flightdeck:admin'),
+          isTeamLeader: action.payload.scopes.includes('flightdeck:teamleader'),
         },
       };
     case loginActions.HANDLE_LOGOUT:

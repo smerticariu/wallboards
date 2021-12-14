@@ -54,14 +54,15 @@ const WallboardReadOnly = () => {
     );
   };
 
+  const isUserAllowedToViewWallboard = wallboard.settings.link.isReadOnlyEnabled
+    ? true
+    : adminPermissions || (teamleaderPermissions && wallboard.createdByUserId === userInfo.id);
+
   return (
     <div className="c-wallboard--read-only">
-      {fetchStatus === FetchStatus.SUCCESS &&
-      (wallboard.settings.link.isReadOnlyEnabled
-        ? true
-        : adminPermissions || (teamleaderPermissions && wallboard.createdByUserId === userInfo.id)) ? (
+      {fetchStatus === FetchStatus.SUCCESS && isUserAllowedToViewWallboard ? (
         <>
-          <Toolbar template="wb-read-only" wbName={wallboard.name} />
+          <Toolbar template={DEFAULTS.TOOLBAR.NAME.WALLBOARD_READ_ONLY} wbName={wallboard.name} />
 
           <div className="c-wallboard--read-only__component">
             <div className="c-wallboard--read-only__cards">
@@ -70,7 +71,7 @@ const WallboardReadOnly = () => {
           </div>
         </>
       ) : (
-        <Toolbar template="error">{handleErrors()}</Toolbar>
+        <Toolbar template={DEFAULTS.TOOLBAR.NAME.ERROR}>{handleErrors()}</Toolbar>
       )}
     </div>
   );

@@ -12,7 +12,7 @@ export const AGENTS = {
     },
     ERROR: {
       NO_AGENTS: 'No agents',
-      NO_AGENTS_STATUS: 'No data',
+      NO_AGENTS_STATUS: 'No data for the selected interval.',
     },
   },
 };

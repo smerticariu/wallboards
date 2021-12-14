@@ -14,12 +14,13 @@ import { CallsApi } from '../../common/api/calls.api';
 export const fetchAllCallsQueuesThunk = () => async (dispatch, getState) => {
   dispatch(fetchAllCallsQueuesAC());
   try {
-    const { userInfo, token } = getState().login;
+    const { userInfo, token, sapienUrl } = getState().login;
 
     const allCallsQueues = await CallsQueuesApi({
       type: DEFAULTS.CALLS_QUEUES.API.GET.ALL_CALLS_QUEUES,
       organizationId: userInfo.organisationId,
       token,
+      sapienUrl,
     });
 
     dispatch(fetchAllCallsQueuesSuccessAC(allCallsQueues.data.data));
@@ -31,16 +32,17 @@ export const fetchAllCallsQueuesThunk = () => async (dispatch, getState) => {
 
 export const fetchQueuedCallThunk = (callQueueId) => async (dispatch, getState) => {
   try {
-    const { userInfo, token } = getState().login;
+    const { userInfo, token, sapienUrl } = getState().login;
 
     const allCallsQueues = await CallsQueuesApi({
       type: DEFAULTS.CALLS_QUEUES.API.GET.CALL_QUEUE,
       organizationId: userInfo.organisationId,
       callQueueId,
       token,
+      sapienUrl,
     });
 
-    dispatch(fetchQueuedCallSuccess(allCallsQueues.data.data));
+    dispatch(fetchQueuedCallSuccess(allCallsQueues.data.data, callQueueId));
   } catch (error) {
     console.log(error);
   }
@@ -50,15 +52,15 @@ export const fetchCallStatisticThunk =
   ({ timeStart, timeEnd }, widgetId) =>
   async (dispatch, getState) => {
     try {
-      const { userInfo, token } = getState().login;
+      const { userInfo, token, sapienUrl } = getState().login;
 
       const response = await CallsApi({
         type: DEFAULTS.CALLS.API.GET.CALLS_STATISTIC,
         organizationId: userInfo.organisationId,
         token,
         timeStart,
-
         timeEnd,
+        sapienUrl,
       });
 
       dispatch(fetchCallStatisticSuccessAC(response.data.data, widgetId));
@@ -71,7 +73,7 @@ export const fetchQueueStatisticsThunk =
   ({ timeStart, timeEnd }, widgetId, callQueueId) =>
   async (dispatch, getState) => {
     try {
-      const { userInfo, token } = getState().login;
+      const { userInfo, token, sapienUrl } = getState().login;
 
       const response = await CallsQueuesApi({
         type: DEFAULTS.CALLS_QUEUES.API.GET.CALL_QUEUE_STATISTICS,
@@ -80,6 +82,7 @@ export const fetchQueueStatisticsThunk =
         timeStart,
         callQueueId,
         timeEnd,
+        sapienUrl,
       });
 
       dispatch(fetchQueueStatisticsSuccessAC(response.data.data, widgetId));

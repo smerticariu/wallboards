@@ -110,9 +110,18 @@
     &--bold {
       font-family: $inter-bold;
     }
+    &--remove-step {
+      font-family: $public-sans-regular;
+    }
   }
 
   &__body {
+    &--remove-step {
+      white-space: pre-line;
+      font-size: 18px;
+      font-family: $public-sans-regular;
+      color: $slate-gray;
+    }
     &--add-component,
     &--new-wallboard {
       display: flex;
@@ -346,6 +355,11 @@
     align-items: center;
     justify-content: space-between;
     border-top: 3px solid $dark-white;
+    &--remove-step {
+      border: none;
+      background-color: transparent;
+      justify-content: center;
+    }
   }
   @media screen and (max-width: $md) {
     &__body {
@@ -373,6 +387,9 @@
     &--agent-login {
       transform: scale(0.4);
       margin: 0 -300px;
+    }
+    &--queue-list {
+      margin: 0 -90px;
     }
   }
 }
