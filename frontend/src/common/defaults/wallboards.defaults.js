@@ -4,7 +4,7 @@ export const WALLBOARDS = {
   NOTIFICATION: {
     SUCCESS: {
       DELETE: 'The wallboard was successfully deleted',
-      DELETE_WALLBOARD_GROUP: 'The wallboard Group was successfully deleted',
+      DELETE_WALLBOARD_GROUP: 'The Wallboard Group was successfully deleted',
       SAVE: 'The Wallboard was successfully saved',
       SAVE_WALLBOARD_GROUP: 'The Wallboard Group was successfully saved',
     },
