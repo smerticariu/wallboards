@@ -307,6 +307,8 @@ export const copyWallboardGroupThunk =
       newGroup.id = wbId;
       newGroup.name = `${newGroup.name} Copy`;
       newGroup.createdOn = currentDate + 1000; // add one second to timestamp;
+      newGroup.createdBy = `${userInfo.firstName} ${userInfo.lastName}`;
+      newGroup.lastEditedBy = `${userInfo.firstName} ${userInfo.lastName}`;
       newGroup.lastView = currentDate;
 
       const data = {
@@ -345,6 +347,8 @@ export const copyWallboardThunk =
       activeWallboard.name = `${activeWallboard.name} Copy`;
       activeWallboard.createdOn = currentDate + 1000; // add one second to timestamp;
       activeWallboard.lastView = currentDate;
+      activeWallboard.createdBy = `${userInfo.firstName} ${userInfo.lastName}`;
+      activeWallboard.lastEditedBy = `${userInfo.firstName} ${userInfo.lastName}`;
 
       const data = {
         ...activeWallboard,
