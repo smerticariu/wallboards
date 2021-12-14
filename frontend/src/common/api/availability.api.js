@@ -22,9 +22,9 @@ export const AvailabilityApi = async (props) => {
       break;
 
     case DEFAULTS.AVAILABILITY.API.GET.HISTORY:
-      options.url = `${baseUrl}/history?min-time=${encodeURIComponent(props.timeStart)}&max-time=${encodeURIComponent(
-        props.timeEnd
-      )}&_limit=${props.limitResult}${Number(props.profileId) === -1 ? '' : '&availability-profile-id=' + props.profileId}`;
+      options.url = `${baseUrl}/history?min-time=${encodeURIComponent(props.timeStart)}&max-time=${encodeURIComponent(props.timeEnd)}${
+        Number(props.profileId) === -1 ? '' : '&availability-profile-id=' + props.profileId
+      }`;
       break;
 
     default:

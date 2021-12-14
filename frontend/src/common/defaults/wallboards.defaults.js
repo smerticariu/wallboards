@@ -25,6 +25,7 @@ export const WALLBOARDS = {
     ADD_COMPONENTS: 'To start adding components, click the button below.',
     NOT_ALLOWED_EDIT: 'You are not allowed to edit this wallboard. Please contact your Administrator',
     NOT_ALLOWED_VIEW: "You don't have acces s to this wallboard! Please contact your Administrator.",
+    WALLBOARD_GROUP_NO_COMPONENTS: 'This Wallboard Group has no Wallboards.',
   },
   PLACEHOLDER: {
     SEARCH_WALLBOARDS: 'Search Wallboards...',

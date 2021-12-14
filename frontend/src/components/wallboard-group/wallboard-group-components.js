@@ -78,7 +78,8 @@ const WallboardGroupComponents = () => {
       const containerPosition = containerRef.current.getBoundingClientRect();
       const firstStepPosition = document.getElementById(wallboardGroup.steps[0].stepId).getBoundingClientRect();
       const lastStepPosition = document.getElementById(wallboardGroup.steps.slice(-1)[0]?.stepId).getBoundingClientRect();
-      const lastElementInRow = document.getElementById(steps.slice(-1)[0].slice(-1)[0]?.stepId).getBoundingClientRect();
+      const lastElementInRowData = steps.slice(-1)[0].slice(-1)[0];
+      const lastElementInRow = document.getElementById(lastElementInRowData?.stepId).getBoundingClientRect();
       const lastElementInRowEndPosition = lastElementInRow.left - containerPosition.left + lastElementInRow.width;
       const firstElementTop = firstStepPosition.top - containerPosition.top;
       const firstElementLeft = firstStepPosition.left - containerPosition.left;
@@ -104,7 +105,8 @@ const WallboardGroupComponents = () => {
       } else {
         points.push([lastElementLeft + lastStepPosition.width, lastElementTop + lastStepPosition.height / 2]);
         if (steps.length > 1) {
-          points.push([lastElementInRowEndPosition + 70, lastElementTop + lastStepPosition.height / 2]);
+          const distanceFromLastElementInRow = lastElementInRowData.wallboardId ? 20 : 70;
+          points.push([lastElementInRowEndPosition + distanceFromLastElementInRow, lastElementTop + lastStepPosition.height / 2]);
         } else {
           points.push([points.slice(-1)[0][0] + 50, lastElementTop + lastStepPosition.height / 2]);
         }
@@ -158,52 +160,54 @@ const WallboardGroupComponents = () => {
     <div className="wb-group">
       <div className="wb-group__title">Wallboard group configuration setup</div>
       <div className="wb-group__wallboards">
-        <div className="wb-group__steps" ref={containerRef}>
-          {steps?.map((stepGroup, stepGropuIndex) => (
-            <div
-              key={stepGropuIndex}
-              tabIndex={stepGropuIndex}
-              className={`wb-group__step-group ${steps.length % 2 === 0 ? 'wb-group__step-group--end' : ''}`}
-            >
-              {stepGroup.map((step) => (
-                <div key={step.stepId} className="wb-group__step">
-                  {step.wallboardId ? (
-                    <StepWithWallboard
-                      handleChangeStepTime={handleChangeStepTime}
-                      handleScreenOptionClick={handleScreenOptionClick}
-                      step={step}
-                    />
-                  ) : (
-                    <NewEmptyStep
-                      handleChangeStepTime={handleChangeStepTime}
-                      isFirst={step.stepId === wallboardGroup.steps[0]?.stepId}
-                      isLast={step.stepId === wallboardGroup.steps.slice(-1)[0]?.stepId}
-                      onPlusClick={onPlusClick}
-                      handleScreenOptionClick={handleScreenOptionClick}
-                      step={step}
-                    />
-                  )}
-                </div>
-              ))}
-            </div>
-          ))}
-          {coords.map((coord) => {
-            return <Xarrow key={new Date() * Math.random()} {...coord} />;
-          })}
-          {!!svgData.points.length && wallboardGroup.steps.length > 1 && (
-            <div className="wb-group__last-line">
-              <svg width={svgData.svgSize.x} height={svgData.svgSize.y} className="wb-group__last-line-svg">
-                <path className="wb-group__last-line-path" d={`M ${svgData.points[0]} L ${svgData.points.slice(1)}`} />
-                <g
-                  className="wb-group__last-line-arrow"
-                  transform={`translate(${svgData.arrowTranslate.x},${svgData.arrowTranslate.y}) rotate(${svgData.arrowTranslate.rotate}) scale(10)`}
-                >
-                  <path d="M 0 0 L 1 0.5 L 0 1 L 0.25 0.5 z" />
-                </g>
-              </svg>
-            </div>
-          )}
-        </div>
+        {!!wallboardGroup.steps.length && (
+          <div className="wb-group__steps" ref={containerRef}>
+            {steps?.map((stepGroup, stepGropuIndex) => (
+              <div
+                key={stepGropuIndex}
+                tabIndex={stepGropuIndex}
+                className={`wb-group__step-group ${steps.length % 2 === 0 ? 'wb-group__step-group--end' : ''}`}
+              >
+                {stepGroup.map((step) => (
+                  <div key={step.stepId} className="wb-group__step">
+                    {step.wallboardId ? (
+                      <StepWithWallboard
+                        handleChangeStepTime={handleChangeStepTime}
+                        handleScreenOptionClick={handleScreenOptionClick}
+                        step={step}
+                      />
+                    ) : (
+                      <NewEmptyStep
+                        handleChangeStepTime={handleChangeStepTime}
+                        isFirst={step.stepId === wallboardGroup.steps[0]?.stepId}
+                        isLast={step.stepId === wallboardGroup.steps.slice(-1)[0]?.stepId}
+                        onPlusClick={onPlusClick}
+                        handleScreenOptionClick={handleScreenOptionClick}
+                        step={step}
+                      />
+                    )}
+                  </div>
+                ))}
+              </div>
+            ))}
+            {coords.map((coord) => {
+              return <Xarrow key={new Date() * Math.random()} {...coord} />;
+            })}
+            {!!svgData.points.length && wallboardGroup.steps.length > 1 && (
+              <div className="wb-group__last-line">
+                <svg width={svgData.svgSize.x} height={svgData.svgSize.y} className="wb-group__last-line-svg">
+                  <path className="wb-group__last-line-path" d={`M ${svgData.points[0]} L ${svgData.points.slice(1)}`} />
+                  <g
+                    className="wb-group__last-line-arrow"
+                    transform={`translate(${svgData.arrowTranslate.x},${svgData.arrowTranslate.y}) rotate(${svgData.arrowTranslate.rotate}) scale(10)`}
+                  >
+                    <path d="M 0 0 L 1 0.5 L 0 1 L 0.25 0.5 z" />
+                  </g>
+                </svg>
+              </div>
+            )}
+          </div>
+        )}
         {wallboardGroup.steps.length < 10 && <NewStep />}
       </div>
       {activeModal === DEFAULTS.MODAL.MODAL_NAMES.NEW_STEP_WALLBOARD && (

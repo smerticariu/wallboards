@@ -23,6 +23,9 @@ const WallboardGroupReadOnly = () => {
   const [nextStepIndex, handleNextStepIndex] = useState(0);
   const stepsWithWallboard = wallboardGroup.steps.filter((step) => step.wallboardId !== null);
   const noOfStepsWithWallboard = stepsWithWallboard.length;
+  const isUserAllowedToViewWallboard = wallboardGroup.settings.link.isReadOnlyEnabled
+    ? true
+    : adminPermissions || (teamleaderPermissions && wallboardGroup.createdByUserId === userInfo.id);
   useEffect(() => {
     dispatch(fetchWallboardGroupByIdThunk({ id }));
     // eslint-disable-next-line
@@ -30,7 +33,7 @@ const WallboardGroupReadOnly = () => {
 
   useEffect(() => {
     let timeout = null;
-    if (noOfStepsWithWallboard) {
+    if (noOfStepsWithWallboard && isUserAllowedToViewWallboard) {
       const currentStep = stepsWithWallboard[nextStepIndex];
       dispatch(fetchWallboardByIdThunk({ id: currentStep.wallboardId }));
       timeout = setTimeout(() => {
@@ -57,11 +60,26 @@ const WallboardGroupReadOnly = () => {
   }, [availabilityProfiles]);
 
   const handleErrors = () => {
+    if (!isUserAllowedToViewWallboard) {
+      return (
+        <div className="error-message-container">
+          <h3 className="error-message--headline">Error 401:</h3>
+          <p className="error-message">{DEFAULTS.WALLBOARDS.MESSAGE.NOT_ALLOWED_VIEW}</p>
+        </div>
+      );
+    }
     if (fetchStatus !== FetchStatus.SUCCESS) {
       return (
         <div className="error-message-container">
           {fetchStatus === FetchStatus.FAIL && <h3 className="error-message--headline">Error {statusCode}:</h3>}
           <p className="error-message">{fetchMessage}</p>
+        </div>
+      );
+    }
+    if (!noOfStepsWithWallboard) {
+      return (
+        <div className="error-message-container">
+          <p className="error-message">{DEFAULTS.WALLBOARDS.MESSAGE.WALLBOARD_GROUP_NO_COMPONENTS}</p>
         </div>
       );
     }
@@ -73,22 +91,13 @@ const WallboardGroupReadOnly = () => {
         </div>
       );
     }
-
-    return (
-      <div className="error-message-container">
-        <h3 className="error-message--headline">Error 401:</h3>
-        <p className="error-message">{DEFAULTS.WALLBOARDS.MESSAGE.NOT_ALLOWED_VIEW}</p>
-      </div>
-    );
   };
-
-  const isUserAllowedToViewWallboard = wallboardGroup.settings.link.isReadOnlyEnabled
-    ? true
-    : adminPermissions || (teamleaderPermissions && wallboardGroup.createdByUserId === userInfo.id);
-
   return (
     <div className="c-wallboard--read-only">
-      {fetchStatus === FetchStatus.SUCCESS && wallboardFetchStatus !== FetchStatus.FAIL && isUserAllowedToViewWallboard ? (
+      {fetchStatus === FetchStatus.SUCCESS &&
+      wallboardFetchStatus !== FetchStatus.FAIL &&
+      isUserAllowedToViewWallboard &&
+      !!noOfStepsWithWallboard ? (
         <>
           <Toolbar template={DEFAULTS.TOOLBAR.NAME.WALLBOARD_READ_ONLY} wbName={wallboard.id ? wallboard.name : ''} />
           <div className="c-wallboard--read-only__component">
