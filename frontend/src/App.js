@@ -41,7 +41,10 @@ function App() {
   const { isAuthenticated, getAccessTokenSilently, isLoading } = useAuth0();
   const activeModalName = useSelector((state) => state.modal.activeModalName);
   const { warningMessage } = useSelector((state) => state.modal);
-  const sfToken = window?.WbConfig?.sfSessionId || process.env.REACT_APP_TOKEN;
+  let sfToken = window?.WbConfig?.sfSessionId;
+  if(!sfToken) {
+    sfToken = process.env.REACT_APP_TOKEN;
+  }
   useEffect(() => {
     if (!token) {
       fetchData();
