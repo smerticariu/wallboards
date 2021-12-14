@@ -16,6 +16,31 @@
     background-color: transparent;
     border-radius: 0px;
     width: 350px;
+    background-color: $white;
+  }
+  &--seconds {
+    color: $natterbox-grey-col;
+    font-size: 16px;
+    font-family: $inter-regular;
+    padding: 10px;
+    background-color: $light-grey;
+    border-radius: 6px;
+    width: 50px;
+    text-align: center;
+    background-color: $white;
+    &::-webkit-inner-spin-button,
+    &::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      margin: 0;
+    }
+    &--absolute {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
   }
 
   &:focus-visible {

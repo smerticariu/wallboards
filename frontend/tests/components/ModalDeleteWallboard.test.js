@@ -16,7 +16,7 @@ describe('Wallboard delete modal', () => {
       modal: { activeModalName: 'DELETE_WALLBOARD' },
       wallboards: {
         present: {
-          wallboardIdForDelete: 0,
+          wallboardIdForDelete: 'wallboard-id-4324234324234',
         },
       },
     });
@@ -34,7 +34,7 @@ describe('Wallboard delete modal', () => {
       modal: { activeModalName: null },
       wallboards: {
         present: {
-          wallboardIdForDelete: 0,
+          wallboardIdForDelete: 'wallboard-id-4324234324234',
         },
       },
     });
@@ -50,7 +50,7 @@ describe('Wallboard delete modal', () => {
       modal: { activeModalName: 'DELETE_WALLBOARD' },
       wallboards: {
         present: {
-          wallboardIdForDelete: 0,
+          wallboardIdForDelete: 'wallboard-id-4324234324234',
         },
       },
     });

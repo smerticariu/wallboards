@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { DEFAULTS } from '../defaults/defaults';
-import { generateWallboardsApi } from './generateWallboardsApi';
 
 export const WallboardsApi = async (props) => {
   const options = {
@@ -8,12 +7,12 @@ export const WallboardsApi = async (props) => {
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${props.token}`,
-      'Access-Control-Allow-Origin': '*',
       Accept: 'application/json',
     },
   };
 
-  const baseUrl = `${generateWallboardsApi()}/${props.organizationId}`;
+
+  const baseUrl = `${props.storeUrl}/organisation/${props.organizationId}`;
   const wallboarIdUrl = `${baseUrl}/key/${props.wallboardId}`;
   const configUrl = `${baseUrl}/key/config.json`;
 
@@ -29,6 +28,7 @@ export const WallboardsApi = async (props) => {
       break;
 
     case DEFAULTS.WALLBOARDS.API.SAVE.WALLBOARD:
+    case DEFAULTS.WALLBOARDS.API.SAVE.WALLBOARD_GROUP:
       options.method = 'put';
       options.url = wallboarIdUrl;
       options.data = props.data;

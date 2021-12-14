@@ -32,12 +32,13 @@ import moment from 'moment';
 export const fetchAllAgentsThunk = (callQueueId) => async (dispatch, getState) => {
   dispatch(fetchAllAgentsAC());
   try {
-    const { userInfo, token } = getState().login;
+    const { userInfo, token, sapienUrl } = getState().login;
     const allAgentsFromCallQueue = await CallsQueuesApi({
       type: DEFAULTS.CALLS_QUEUES.API.GET.AGENT_FROM_CALL_QUEUE,
       organizationId: userInfo.organisationId,
       token,
       callQueueId,
+      sapienUrl,
     });
     dispatch(fetchAllAgentsSuccessAC(allAgentsFromCallQueue.data.data, callQueueId));
   } catch (error) {
@@ -49,12 +50,13 @@ export const fetchAllAgentsThunk = (callQueueId) => async (dispatch, getState) =
 export const fetchOrganisationAgentsThunk = () => async (dispatch, getState) => {
   dispatch(fetchOrganisationUsersAC());
   try {
-    const { userInfo, token } = getState().login;
+    const { userInfo, token, sapienUrl } = getState().login;
 
     const allAgents = await AgentsApi({
       type: DEFAULTS.AGENTS.API.GET.ALL_AGENTS,
       organizationId: userInfo.organisationId,
       token,
+      sapienUrl,
     });
     dispatch(fetchOrganisationUsersSuccessAC(allAgents.data.data));
   } catch (error) {
@@ -66,12 +68,13 @@ export const fetchOrganisationAgentsThunk = () => async (dispatch, getState) => 
 export const fetchDevicesSipAgentsThunk = () => async (dispatch, getState) => {
   dispatch(fetchSipDevicesUsersAC());
   try {
-    const { userInfo, token } = getState().login;
+    const { userInfo, token, sapienUrl } = getState().login;
 
     const sipDevices = await MiscellaneousApi({
       type: DEFAULTS.MISCELLANEOUS.API.GET.SIP_DEVICE,
       organizationId: userInfo.organisationId,
       token,
+      sapienUrl,
     });
 
     dispatch(fetchSipDevicesUsersSuccessAC(sipDevices.data.data));
@@ -84,11 +87,12 @@ export const fetchDevicesSipAgentsThunk = () => async (dispatch, getState) => {
 export const fetchUserGroupsThunk = () => async (dispatch, getState) => {
   dispatch(fetchUserGroupsAC());
   try {
-    const { userInfo, token } = getState().login;
+    const { userInfo, token, sapienUrl } = getState().login;
     const userGroups = await MiscellaneousApi({
       type: DEFAULTS.MISCELLANEOUS.API.GET.USER_GROUPS,
       organizationId: userInfo.organisationId,
       token,
+      sapienUrl,
     });
 
     dispatch(fetchUserGroupsSuccessAC(userGroups.data.data));
@@ -101,12 +105,13 @@ export const fetchUserGroupsThunk = () => async (dispatch, getState) => {
 export const fetchAvailabilityProfilesThunk = () => async (dispatch, getState) => {
   dispatch(fetchAvailabilityProfilesAC());
   try {
-    const { userInfo, token } = getState().login;
+    const { userInfo, token, sapienUrl } = getState().login;
 
     const availabilityProfiles = await AvailabilityApi({
       type: DEFAULTS.AVAILABILITY.API.GET.PROFILES,
       organizationId: userInfo.organisationId,
       token,
+      sapienUrl,
     });
 
     dispatch(fetchAvailabilityProfilesSuccessAC(availabilityProfiles.data.data));
@@ -119,13 +124,14 @@ export const fetchAvailabilityProfilesThunk = () => async (dispatch, getState) =
 export const fetchAvailabilityStatesThunk = (availabilityId) => async (dispatch, getState) => {
   dispatch(fetchAvailabilityStatesAC());
   try {
-    const { userInfo, token } = getState().login;
+    const { userInfo, token, sapienUrl } = getState().login;
 
     const availabilityStates = await AvailabilityApi({
       type: DEFAULTS.AVAILABILITY.API.GET.STATES,
       organizationId: userInfo.organisationId,
       token,
       availabilityId,
+      sapienUrl,
     });
     dispatch(fetchAvailabilityStatesSuccessAC(availabilityStates.data.data, availabilityId));
   } catch (error) {
@@ -137,7 +143,7 @@ export const fetchAvailabilityStatesThunk = (availabilityId) => async (dispatch,
 export const changeAgentAvailabilityStateThunk =
   (agentId, availabilityProfileId, availabilityStateId, stateName) => async (dispatch, getState) => {
     try {
-      const { userInfo, token } = getState().login;
+      const { userInfo, token, sapienUrl } = getState().login;
 
       const data = {
         availabilityProfileId: availabilityProfileId,
@@ -150,6 +156,7 @@ export const changeAgentAvailabilityStateThunk =
         token,
         agentId,
         data,
+        sapienUrl,
       });
     } catch (error) {
       dispatch(handleIsNotificationShowAC(true, true, `Error: ${error.response.status ?? 'unknown'} - ${DEFAULTS.GLOBAL.FAIL}`));
@@ -159,12 +166,13 @@ export const changeAgentAvailabilityStateThunk =
 
 export const callAgentThunk = (id) => async (dispatch, getState) => {
   try {
-    const { userInfo, token } = getState().login;
+    const { userInfo, token, sapienUrl } = getState().login;
     const agent = await AgentsApi({
       type: DEFAULTS.AGENTS.API.GET.BY_ID,
       organizationId: userInfo.organisationId,
       token,
       agentId: id,
+      sapienUrl,
     });
 
     const userPhoneNumber = userInfo.sipExtension;
@@ -183,6 +191,7 @@ export const callAgentThunk = (id) => async (dispatch, getState) => {
       token,
       agentId: id,
       data,
+      sapienUrl,
     });
   } catch (error) {
     dispatch(handleIsNotificationShowAC(true, true, `Error: ${error.response.status ?? 'unknown'} - ${DEFAULTS.GLOBAL.FAIL}`));
@@ -192,12 +201,13 @@ export const callAgentThunk = (id) => async (dispatch, getState) => {
 
 export const fetchUsersCurrentCallTimeThunk = () => async (dispatch, getState) => {
   try {
-    const { userInfo, token } = getState().login;
+    const { userInfo, token, sapienUrl } = getState().login;
 
     const response = await CallsApi({
       type: DEFAULTS.CALLS.API.GET.CALLS,
       organizationId: userInfo.organisationId,
       token,
+      sapienUrl,
     });
 
     const callsWithLogicalDirection = response.data.data.reduce((data, callFullType) => {
@@ -213,12 +223,13 @@ export const fetchUsersCurrentCallTimeThunk = () => async (dispatch, getState) =
 
 export const listenLiveThunk = (id) => async (dispatch, getState) => {
   try {
-    const { userInfo, token } = getState().login;
+    const { userInfo, token, sapienUrl } = getState().login;
     const agent = await AgentsApi({
       type: DEFAULTS.AGENTS.API.GET.BY_ID,
       organizationId: userInfo.organisationId,
       token,
       agentId: id,
+      sapienUrl,
     });
 
     const userPhoneNumber = userInfo.sipExtension;
@@ -228,6 +239,7 @@ export const listenLiveThunk = (id) => async (dispatch, getState) => {
       organizationId: userInfo.organisationId,
       token,
       agentId: id,
+      sapienUrl,
     });
 
     const currentCall = calls.data.data.find((call) => {
@@ -259,6 +271,7 @@ export const listenLiveThunk = (id) => async (dispatch, getState) => {
       token,
       agentId: id,
       data,
+      sapienUrl,
     });
   } catch (error) {
     console.log(error.data);
@@ -271,7 +284,7 @@ export const fetchUserLoginDataThunk =
   ({ timeStart, timeEnd }, widgetId, groupId) =>
   async (dispatch, getState) => {
     try {
-      const { userInfo, token } = getState().login;
+      const { userInfo, token, sapienUrl } = getState().login;
 
       const response = await MiscellaneousApi({
         type: DEFAULTS.MISCELLANEOUS.API.GET.USER_LOGIN_DATA,
@@ -280,6 +293,7 @@ export const fetchUserLoginDataThunk =
         groupId,
         timeStart,
         timeEnd,
+        sapienUrl,
       });
 
       dispatch(fetchUserLoginDataSuccessAC(response.data.data, widgetId));
@@ -291,7 +305,7 @@ export const fetchUserStatusDataThunk =
   ({ timeStart, timeEnd }, profileId, limitResult, widgetId) =>
   async (dispatch, getState) => {
     try {
-      const { userInfo, token } = getState().login;
+      const { userInfo, token, sapienUrl } = getState().login;
 
       const responseAgentStatus = await AvailabilityApi({
         type: DEFAULTS.AVAILABILITY.API.GET.HISTORY,
@@ -301,6 +315,7 @@ export const fetchUserStatusDataThunk =
         limitResult,
         timeStart,
         timeEnd,
+        sapienUrl,
       });
 
       dispatch(fetchUserStatusDataSuccessAC(responseAgentStatus.data.data, widgetId));
@@ -313,7 +328,7 @@ export const exportCSVUserLoginDataThunk =
   ({ timeStart, timeEnd }, groupId, limitResult) =>
   async (dispatch, getState) => {
     try {
-      const { userInfo, token } = getState().login;
+      const { userInfo, token, sapienUrl } = getState().login;
 
       const responseAgentLogin = await MiscellaneousApi({
         type: DEFAULTS.MISCELLANEOUS.API.GET.USER_LOGIN_DATA,
@@ -322,6 +337,7 @@ export const exportCSVUserLoginDataThunk =
         groupId,
         timeStart,
         timeEnd,
+        sapienUrl,
       });
       const userLoginData = responseAgentLogin.data.data;
       if (!userLoginData.length) {
@@ -331,6 +347,7 @@ export const exportCSVUserLoginDataThunk =
         type: DEFAULTS.AGENTS.API.GET.ALL_AGENTS,
         organizationId: userInfo.organisationId,
         token,
+        sapienUrl,
       });
       const allAgents = responseAgents.data.data;
 
@@ -338,6 +355,7 @@ export const exportCSVUserLoginDataThunk =
         type: DEFAULTS.MISCELLANEOUS.API.GET.USER_GROUPS,
         organizationId: userInfo.organisationId,
         token,
+        sapienUrl,
       });
       const userGroups = userGroupsResponse.data.data;
       let users = ['Name,Group,Event,Date & Time,Elapsed'];
@@ -352,7 +370,7 @@ export const exportCSVUserLoginDataThunk =
           const noOfDays = Math.floor(timeInSecconds / 86400); // 1 day === 86400 seconds
           const dateString = moment.utc(timeInSecconds * 1000).format('HH:mm:ss');
           users.push([
-            `${agent.firstName + ' ' + agent.lastName},${group.name},${user.event},${moment(user.time).format('YYYY-DD-MM HH:mm:ss')},${
+            `${agent.firstName + ' ' + agent.lastName},${group.name},${user.event},${moment(user.time).format('YYYY-MM-DD HH:mm:ss')},${
               noOfDays ? `${noOfDays} Day${noOfDays === 1 ? '' : 's'}` : dateString
             }`,
           ]);
@@ -373,19 +391,19 @@ export const exportCSVUserLoginDataThunk =
   };
 
 export const exportCSVUserStatusDataThunk =
-  ({ timeStart, timeEnd }, profileId, limitResult, timezone) =>
+  ({ timeStart, timeEnd }, profileId, timezone, isShowDisplayName, isShowStateName) =>
   async (dispatch, getState) => {
     try {
-      const { userInfo, token } = getState().login;
+      const { userInfo, token, sapienUrl } = getState().login;
 
       const responseAgentStatus = await AvailabilityApi({
         type: DEFAULTS.AVAILABILITY.API.GET.HISTORY,
         organizationId: userInfo.organisationId,
         token,
         profileId,
-        limitResult,
         timeStart,
         timeEnd,
+        sapienUrl,
       });
       const agentStatusData = responseAgentStatus.data.data;
       if (!agentStatusData.length) {
@@ -395,22 +413,23 @@ export const exportCSVUserStatusDataThunk =
         type: DEFAULTS.AGENTS.API.GET.ALL_AGENTS,
         organizationId: userInfo.organisationId,
         token,
+        sapienUrl,
       });
       const allAgents = responseAgents.data.data;
-      let users = ['Name,Profile,State Name,State Display Name,Date & Time,Elapsed'];
+      let users = [
+        `Name,Profile,${isShowStateName ? 'State Name,' : ''}${isShowDisplayName ? 'State Display Name,' : ''}Date & Time,Elapsed`,
+      ];
       agentStatusData.forEach((user) => {
         const agent = allAgents.find((agent) => agent.id === user.userId);
         const timeInSecconds = moment().diff(moment(user.time), 'seconds');
         const noOfDays = Math.floor(timeInSecconds / 86400); // 1 day === 86400 seconds
         const dateString = moment.utc(timeInSecconds * 1000).format('HH:mm:ss');
         users.push([
-          `${agent.firstName + ' ' + agent.lastName},${user.availabilityProfileName},${user.availabilityStateDisplayName},${moment(
-            user.time
-          )
+          `${agent.firstName + ' ' + agent.lastName},${user.availabilityProfileName},${
+            isShowStateName ? user.availabilityStateName + ',' : ''
+          }${isShowDisplayName ? user.availabilityStateDisplayName + ',' : ''}${moment(user.time)
             .utcOffset(timezone)
-            .format('YYYY-MM-DD HH:mm:ss')},${moment(user.time).format('YYYY-DD-MM HH:mm:ss')},${
-            noOfDays ? `${noOfDays} Day${noOfDays === 1 ? '' : 's'}` : dateString
-          }`,
+            .format('YYYY-MM-DD HH:mm:ss')},${noOfDays ? `${noOfDays} Day${noOfDays === 1 ? '' : 's'}` : dateString}`,
         ]);
       });
       let csvContent = 'data:text/csv;charset=utf-8,' + users.map((user) => user).join('\n');

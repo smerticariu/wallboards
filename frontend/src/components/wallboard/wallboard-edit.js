@@ -84,12 +84,16 @@ const WallboardEdit = () => {
     <div className="c-wallboard--new">
       {adminPermissions && (fetchStatus === FetchStatus.SUCCESS || activeWallboard.isNewWallboard) ? (
         <>
-          <Toolbar template="new-wallboard" />
+          <Toolbar template={DEFAULTS.TOOLBAR.NAME.NEW_WALLBOARD} />
           {activeModalName === DEFAULTS.MODAL.MODAL_NAMES.SELECT_COMPONENT ||
           activeModalName === DEFAULTS.MODAL.MODAL_NAMES.AGENT_LIST ||
+          activeModalName === DEFAULTS.MODAL.MODAL_NAMES.AGENT_STATUS ||
+          activeModalName === DEFAULTS.MODAL.MODAL_NAMES.AGENT_LOGIN ||
           activeModalName === DEFAULTS.MODAL.MODAL_NAMES.CALL_STATUS ||
+          activeModalName === DEFAULTS.MODAL.MODAL_NAMES.CALL_TRACKING ||
           activeModalName === DEFAULTS.MODAL.MODAL_NAMES.QUEUE_TRACKING ||
           activeModalName === DEFAULTS.MODAL.MODAL_NAMES.QUEUE_STATUS ||
+          activeModalName === DEFAULTS.MODAL.MODAL_NAMES.QUEUE_LIST ||
           activeWallboard.widgets?.length ? (
             <GridPage />
           ) : (
@@ -97,7 +101,7 @@ const WallboardEdit = () => {
           )}
         </>
       ) : (
-        <Toolbar template="error">{handleErrors()}</Toolbar>
+        <Toolbar template={DEFAULTS.TOOLBAR.NAME.ERROR}>{handleErrors()}</Toolbar>
       )}
     </div>
   );

@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { DEFAULTS } from '../defaults/defaults';
-import { generateSapienApi } from './generateSapienApi';
 
 export const CallsQueuesApi = async (props) => {
   const options = {
@@ -8,12 +7,11 @@ export const CallsQueuesApi = async (props) => {
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${props.token}`,
-      'Access-Control-Allow-Origin': '*',
       Accept: 'application/json',
     },
   };
 
-  const baseUrl = `${generateSapienApi()}/${props.organizationId}/call-queue`;
+  const baseUrl = `${props.sapienUrl}/v1/organisation/${props.organizationId}/call-queue`;
 
   switch (props.type) {
     case DEFAULTS.CALLS_QUEUES.API.GET.ALL_CALLS_QUEUES:

@@ -100,16 +100,19 @@ const ModalAgentStatus = ({ ...props }) => {
 
   const handleExportButton = () => {
     const onClickExportButton = (e) => {
-      let timeStart = moment(agentStatus.from.value, 'YYYY-MM-DD');
-      let timeEnd = moment(agentStatus.to.value, 'YYYY-MM-DD').endOf('day');
+      let timeStart = moment(agentStatus.from.value, 'YYYY-MM-DD').utcOffset(+agentStatus.timeZone.id);
+      let timeEnd = moment(agentStatus.to.value, 'YYYY-MM-DD')
+        .utcOffset(+agentStatus.timeZone.id)
+        .endOf('day');
       timeStart = timeStart.format();
       timeEnd = timeEnd.format();
       dispatch(
         exportCSVUserStatusDataThunk(
           { timeStart, timeEnd },
           +agentStatus.profile.id,
-          +agentStatus.limitResult.value,
-          +agentStatus.timeZone.value
+          +agentStatus.timeZone.id,
+          agentStatus.isShowDisplayName,
+          agentStatus.isShowStateName
         )
       );
     };
@@ -332,7 +335,7 @@ const ModalAgentStatus = ({ ...props }) => {
       <div ref={modalRef} className="c-modal__container c-modal__container--add-component ">
         <div className="c-modal__content">
           <div className="c-modal__header">
-            <div className="c-modal__title">Configuration Options</div>
+            <div className="c-modal__title">{agentStatus.isEditMode ? 'Edit' : 'Add'} Component</div>
           </div>
 
           <div className="c-modal__body--add-component">

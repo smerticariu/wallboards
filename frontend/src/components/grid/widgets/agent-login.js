@@ -40,7 +40,7 @@ const GridAgentLogin = ({ widget, ...props }) => {
             event: user.event,
             userId: user.userId,
             isLogin: user.event.toLowerCase() === 'login',
-            time: moment(user.time).utcOffset(widget.timeZone.id).format('YYYY-DD-MM HH:mm:ss'),
+            time: moment(user.time).utcOffset(widget.timeZone.id).format('YYYY-MM-DD HH:mm:ss'),
             elapsed: moment().utcOffset(widget.timeZone.id).diff(moment(user.time), 'seconds'),
           });
         });

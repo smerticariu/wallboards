@@ -244,7 +244,7 @@ const ModalCallTracking = ({ ...props }) => {
       <div ref={modalRef} className="c-modal__container c-modal__container--add-component ">
         <div className="c-modal__content">
           <div className="c-modal__header">
-            <div className="c-modal__title">Configuration Options</div>
+            <div className="c-modal__title">{callTracking.isEditMode ? 'Edit' : 'Add'} Component</div>
           </div>
 
           <div className="c-modal__body--add-component">

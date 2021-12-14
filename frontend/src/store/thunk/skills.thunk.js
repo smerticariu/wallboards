@@ -14,12 +14,13 @@ import { AgentsApi } from '../../common/api/agents.api';
 export const fetchAllSkillsThunk = () => async (dispatch, getState) => {
   dispatch(fetchAllSkillsAC());
   try {
-    const { userInfo, token } = getState().login;
+    const { userInfo, token, sapienUrl } = getState().login;
 
     const allSkills = await SkilsApi({
       type: DEFAULTS.SKILLS.API.GET.ALL_SKILLS,
       organizationId: userInfo.organisationId,
       token,
+      sapienUrl,
     });
 
     dispatch(fetchAllSkillsSuccessAC(allSkills.data.data));
@@ -32,13 +33,14 @@ export const fetchAllSkillsThunk = () => async (dispatch, getState) => {
 export const fetchAgentSkillThunk = (userId) => async (dispatch, getState) => {
   dispatch(fetchAgentsSkillsAC());
   try {
-    const { userInfo, token } = getState().login;
+    const { userInfo, token, sapienUrl } = getState().login;
 
     const agentSkills = await AgentsApi({
       type: DEFAULTS.AGENTS.API.GET.AGENT_SKILLS,
       organizationId: userInfo.organisationId,
       token,
       agentId: userId,
+      sapienUrl,
     });
 
     dispatch(fetchAgentsSkillsSuccessAC(userId, agentSkills.data.data));

@@ -1,9 +1,9 @@
 import moment from 'moment';
 export const getTimes = (widget) => {
-  var period = { timeStart: 0, timeEnd: 0 };
+  let period = { timeStart: 0, timeEnd: 0 };
   const timeNow = moment.utc();
-  var start = moment.utc(timeNow);
-  var end = moment.utc(timeNow).utcOffset(widget.timeZone.id).endOf('day');
+  let start = moment.utc(timeNow);
+  let end = moment.utc(timeNow).utcOffset(widget.timeZone.id).endOf('day');
   switch (widget.period.id) {
     case 'hour':
       start.startOf('hour').format();

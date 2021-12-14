@@ -1,8 +1,9 @@
 export const callsToObject = (array, key) => {
   if (array.length > 0) {
-    var obj = array.reduce(function (o, v, i) {
+    let obj = array.reduce(function (o, v, i) {
       array.forEach((value, k) => {
         if (value[key] != null) {
+          value.logicalDirection = v.direction;
           o[value[key]] = value;
         }
       });

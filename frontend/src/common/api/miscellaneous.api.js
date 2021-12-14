@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { DEFAULTS } from '../defaults/defaults';
-import { generateSapienApi } from './generateSapienApi';
 
 export const MiscellaneousApi = async (props) => {
   const options = {
@@ -8,12 +7,11 @@ export const MiscellaneousApi = async (props) => {
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${props.token}`,
-      'Access-Control-Allow-Origin': '*',
       Accept: 'application/json',
     },
   };
 
-  const baseUrl = `${generateSapienApi()}/${props.organizationId}`;
+  const baseUrl = `${props.sapienUrl}/v1/organisation/${props.organizationId}`;
 
   switch (props.type) {
     case DEFAULTS.MISCELLANEOUS.API.GET.SIP_DEVICE:

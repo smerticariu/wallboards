@@ -59,14 +59,12 @@ export const QUEUE_LIST_COLUMN_OPTIONS = {
   DIAL_ATTEMPTS: 'DIAL_ATTEMPTS',
   STATUS: 'STATUS',
   AGENT_CONNECTED_TO: 'AGENT_CONNECTED_TO',
-  //do not remove
-  // SKILLS_REQUESTED: 'SKILLS_REQUESTED',
-  // SKILLS_SHORTAGE: 'SKILLS_SHORTAGE',
+  SKILLS_REQUESTED: 'SKILLS_REQUESTED',
+  SKILLS_SHORTAGE: 'SKILLS_SHORTAGE',
   TIME_AT_HEAD_OF_QUEUE: 'TIME_AT_HEAD_OF_QUEUE',
   CALLBACK_REQUESTED: 'CALLBACK_REQUESTED',
   CALLBACK_ATTEMPTS: 'CALLBACK_ATTEMPTS',
-  //do not remove
-  // FLAGS: 'FLAGS',
+  FLAGS: 'FLAGS',
   OPTIONS: 'OPTIONS',
   ID: 'ID',
 };
@@ -77,20 +75,6 @@ export const SORT_BY_VALUES = {
   TIME_CURRENT_CALL: 'TIME_CURRENT_CALL',
   TIME_CURRENT_AVAILABILITY_STATE: 'TIME_CURRENT_AVAILABILITY_STATE',
   TIME_PHONE_TODAY: 'TIME_PHONE_TODAY',
-};
-export const QUEUE_LIST_SORT_BY_VALUES = {
-  POSITION_IN_QUEUE: 'POSITION_IN_QUEUE',
-  CALLER_NAME: 'CALLER_NAME',
-  PRIORITY: 'PRIORITY',
-  TIME_WAITING_IN_QUEUE: 'TIME_WAITING_IN_QUEUE',
-  DIAL_ATTEMPTS: 'DIAL_ATTEMPTS',
-  STATUS: 'STATUS',
-  AGENT_CONNECTED_TO: 'AGENT_CONNECTED_TO',
-  SKILLS_REQUESTED: 'SKILLS_REQUESTED',
-  SKILLS_SHORTAGE: 'SKILLS_SHORTAGE',
-  TIME_AT_HEAD_OF_QUEUE: 'TIME_AT_HEAD_OF_QUEUE',
-  CALLBACK_REQUESTED: 'CALLBACK_REQUESTED',
-  CALLBACK_ATTEMPTS: 'CALLBACK_ATTEMPTS',
 };
 export const PRESENCE_STATE_KEYS = {
   AGENT_STATUS_INBOUND_CALL_QUEUE: 'onQCall',
@@ -113,17 +97,20 @@ export const INTERACTIVITY_OPTIONS_KEYS = {
   CALL_AGENTS: 'CALL_AGENTS',
 };
 export const QUEUE_LIST_INTERACTIVITY_OPTIONS_KEYS = {
-  // ALLOW_RE_SORTING: 'ALLOW_RE_SORTING',
-  // MOVE_CALL_TO_TOP: 'MOVE_CALL_TO_TOP',
-  // MOVE_CALL_TO_BOTTOM: 'MOVE_CALL_TO_BOTTOM',
-  // MOVE_CALL_TO_ANOTHER_QUEUE: 'MOVE_CALL_TO_ANOTHER_QUEUE',
+  ALLOW_RE_SORTING: 'ALLOW_RE_SORTING',
+  MOVE_CALL_TO_TOP: 'MOVE_CALL_TO_TOP',
+  MOVE_CALL_TO_BOTTOM: 'MOVE_CALL_TO_BOTTOM',
+  MOVE_CALL_TO_ANOTHER_QUEUE: 'MOVE_CALL_TO_ANOTHER_QUEUE',
   // DISCONNECT: 'DISCONNECT',
   LISTEN_LIVE: 'LISTEN_LIVE',
 };
-export const MODAL_NEW_WALLBOARD_SECITONS = {
+export const MODAL_NEW_WIDGET_SECITONS = {
   QUEUES: 'QUEUES',
   CALLS: 'CALLS',
   USERS: 'USERS',
+};
+export const MODAL_NEW_WALLBOARD_SECITONS = {
+  WALLBOARDS: 'WALLBOARDS',
 };
 
 export const CALL_DIRECTION = {
@@ -139,92 +126,94 @@ export const CALL_DIRECTION = {
 export const MODAL = {
   MODAL_NAMES: {
     SELECT_COMPONENT: 'SELECT_COMPONENT',
+    WALLBOARD_GROUP: 'WALLBOARD_GROUP',
     SAVE_WALLBOARD: 'SAVE_WALLBOARD',
+    SAVE_WALLBOARD_GROUP: 'SAVE_WALLBOARD_GROUP',
     CONFIRM_SAVE_WALLBOARD: 'CONFIRM_SAVE_WALLBOARD',
+    CONFIRM_SAVE_WALLBOARD_GROUP: 'CONFIRM_SAVE_WALLBOARD_GROUP',
     DELETE_WALLBOARD: 'DELETE_WALLBOARD',
     EDIT_WALLBOARD: 'EDIT_WALLBOARD',
+    EDIT_WALLBOARD_GROUP: 'EDIT_WALLBOARD_GROUP',
     DELETE_WALLBOARD_COMPONENT: 'DELETE_WALLBOARD_COMPONENT',
+    NEW_STEP_WALLBOARD: 'NEW_STEP_WALLBOARD',
+    REMOVE_STEP: 'REMOVE_STEP',
+    REMOVE_WALLBOARD: 'REMOVE_WALLBOARD',
     ...WIDGET_TYPE,
   },
-  NEW_WALLBOARD: {
+  NEW_WIDGET: {
     SELECT_COMPONENT: 'Select a component',
     CATEGORIES: 'Component Categories',
     SECTIONS: [
       {
         text: 'Queues',
-        value: MODAL_NEW_WALLBOARD_SECITONS.QUEUES,
+        value: MODAL_NEW_WIDGET_SECITONS.QUEUES,
       },
       {
         text: 'Calls',
-        value: MODAL_NEW_WALLBOARD_SECITONS.CALLS,
+        value: MODAL_NEW_WIDGET_SECITONS.CALLS,
       },
       {
         text: 'Users',
-        value: MODAL_NEW_WALLBOARD_SECITONS.USERS,
+        value: MODAL_NEW_WIDGET_SECITONS.USERS,
       },
     ],
+    ADD_COMPONENT_OPTIONS: {
+      [MODAL_NEW_WIDGET_SECITONS.QUEUES]: [
+        {
+          NAME: 'Agent list',
+          ID: WIDGET_TYPE.AGENT_LIST,
+          DESCRIPTION: 'Displays the status of all agents in a queue',
+        },
+        {
+          NAME: 'Queue list',
+          ID: WIDGET_TYPE.QUEUE_LIST,
+          DESCRIPTION: 'Displays all the details of calls that are waiting in a call queue',
+        },
+        {
+          NAME: 'Queue tracking',
+          ID: WIDGET_TYPE.QUEUE_TRACKING,
+          DESCRIPTION: 'Displays overview statistics for calls within a call queue, such as call abandonment rate',
+        },
+        {
+          NAME: 'Queue status',
+          ID: WIDGET_TYPE.QUEUE_STATUS,
+          DESCRIPTION: 'Displays overview statistics for all agents within a call queue, such such as how many agents are available',
+        },
+      ],
+      [MODAL_NEW_WIDGET_SECITONS.CALLS]: [
+        {
+          NAME: 'Call status',
+          ID: WIDGET_TYPE.CALL_STATUS,
+          DESCRIPTION: 'Displays an overview of all active calls within your organisation right now',
+        },
+        {
+          NAME: 'Call tracking',
+          ID: WIDGET_TYPE.CALL_TRACKING,
+          DESCRIPTION: 'Displays an overview of call volumes for a specific group of agents',
+        },
+      ],
+      [MODAL_NEW_WIDGET_SECITONS.USERS]: [
+        {
+          NAME: 'Agent login',
+          ID: WIDGET_TYPE.AGENT_LOGIN,
+          DESCRIPTION: 'Displays a table of login/out events for all agents within a group along with options to download the data',
+        },
+        {
+          NAME: 'Agent status',
+          ID: WIDGET_TYPE.AGENT_STATUS,
+          DESCRIPTION:
+            'Displays a table of every availability state change for all agents within a group along with options to download the data',
+        },
+      ],
+    },
   },
-  ADD_COMPONENT_OPTIONS: {
-    [MODAL_NEW_WALLBOARD_SECITONS.QUEUES]: [
+  NEW_WALLBOARD: {
+    SELECT_COMPONENT: 'Select A Wallboard',
+    CATEGORIES: 'Your Wallboards',
+    SECTIONS: [
       {
-        NAME: 'Agent list',
-        STATUS: 'Natterbox Admin',
-        DATE: '19/03/2021 at 14:19',
-        SERVICE: 'Customer Service Calls',
-        ID: WIDGET_TYPE.AGENT_LIST,
-      },
-      {
-        NAME: 'Queue list',
-        STATUS: 'Natterbox Admin',
-        DATE: '19/03/2021 at 14:19',
-        SERVICE: 'Customer Service Calls',
-        ID: WIDGET_TYPE.QUEUE_LIST,
-      },
-      {
-        NAME: 'Queue tracking',
-        STATUS: 'Natterbox Admin',
-        DATE: '19/03/2021 at 14:19',
-        SERVICE: 'Customer Service Calls',
-        ID: WIDGET_TYPE.QUEUE_TRACKING,
-      },
-      {
-        NAME: 'Queue status',
-        STATUS: 'Natterbox Admin',
-        DATE: '19/03/2021 at 14:19',
-        SERVICE: 'Customer Service Calls',
-        ID: WIDGET_TYPE.QUEUE_STATUS,
-      },
-    ],
-    [MODAL_NEW_WALLBOARD_SECITONS.CALLS]: [
-      {
-        NAME: 'Call status',
-        STATUS: 'Natterbox Admin',
-        DATE: '19/03/2021 at 14:19',
-        SERVICE: 'Customer Service Calls',
-        ID: WIDGET_TYPE.CALL_STATUS,
-      },
-      {
-        NAME: 'Call tracking',
-        STATUS: 'Natterbox Admin',
-        DATE: '19/03/2021 at 14:19',
-        SERVICE: 'Customer Service Calls',
-        ID: WIDGET_TYPE.CALL_TRACKING,
-      },
-    ],
-    [MODAL_NEW_WALLBOARD_SECITONS.USERS]: [
-      {
-        NAME: 'Agent login',
-        STATUS: 'Natterbox Admin',
-        DATE: '19/03/2021 at 14:19',
-        SERVICE: 'Customer Service Calls',
-        ID: WIDGET_TYPE.AGENT_LOGIN,
-      },
-      {
-        NAME: 'Agent status',
-        STATUS: 'Natterbox Admin',
-        DATE: '19/03/2021 at 14:19',
-        SERVICE: 'Customer Service Calls',
-        ID: WIDGET_TYPE.AGENT_STATUS,
+        text: 'Wallboards',
+        value: MODAL_NEW_WALLBOARD_SECITONS.WALLBOARDS,
       },
     ],
   },
@@ -524,7 +513,7 @@ export const MODAL = {
       PREVIEW: 'Preview',
     },
     PLACEHOLDER: {
-      COMPONENT_NAME: 'New Queue List',
+      COMPONENT_NAME: 'Queue List',
     },
     LABEL: {
       CONNECTED: 'Connected',
@@ -536,89 +525,101 @@ export const MODAL = {
       {
         text: 'Caller number',
         value: QUEUE_LIST_COLUMN_OPTIONS.CALLER_NUMBER,
+        sortBy: true,
         minWidth: 170,
         isInitialChecked: true,
       },
       {
         text: 'Caller name',
         value: QUEUE_LIST_COLUMN_OPTIONS.CALLER_NAME,
+        sortBy: true,
         minWidth: 110,
         isInitialChecked: true,
       },
       {
         text: 'Priority',
         value: QUEUE_LIST_COLUMN_OPTIONS.PRIORITY,
+        sortBy: true,
         minWidth: 130,
         isInitialChecked: true,
       },
       {
         text: 'Position in Queue',
         value: QUEUE_LIST_COLUMN_OPTIONS.POSITION_IN_QUEUE,
+        sortBy: true,
         minWidth: 130,
         isInitialChecked: true,
       },
       {
         text: 'Time waiting in queue',
         value: QUEUE_LIST_COLUMN_OPTIONS.TIME_WAITING_IN_QUEUE,
+        sortBy: true,
         minWidth: 170,
         isInitialChecked: true,
       },
       {
         text: 'Dial Attempts',
         value: QUEUE_LIST_COLUMN_OPTIONS.DIAL_ATTEMPTS,
+        sortBy: true,
         minWidth: 110,
         isInitialChecked: false,
       },
       {
         text: 'Status',
         value: QUEUE_LIST_COLUMN_OPTIONS.STATUS,
+        sortBy: true,
         minWidth: 90,
         isInitialChecked: false,
       },
       {
         text: 'Agent Connected to',
         value: QUEUE_LIST_COLUMN_OPTIONS.AGENT_CONNECTED_TO,
+        sortBy: true,
         minWidth: 160,
         isInitialChecked: true,
       },
-      //do not remove
-      // {
-      //   text: 'Skills requested',
-      //   value: QUEUE_LIST_COLUMN_OPTIONS.SKILLS_REQUESTED,
-      //   minWidth: 160,
-      //   isInitialChecked: false,
-      // },
-      // {
-      //   text: 'Skills shortage',
-      //   value: QUEUE_LIST_COLUMN_OPTIONS.SKILLS_SHORTAGE,
-      //   minWidth: 160,
-      //   isInitialChecked: false,
-      // },
       {
-        text: 'Time at Head of Queue',
-        value: QUEUE_LIST_COLUMN_OPTIONS.TIME_AT_HEAD_OF_QUEUE,
+        text: 'Skills requested',
+        value: QUEUE_LIST_COLUMN_OPTIONS.SKILLS_REQUESTED,
+        sortBy: true,
         minWidth: 160,
         isInitialChecked: false,
       },
       {
+        text: 'Skills shortage',
+        value: QUEUE_LIST_COLUMN_OPTIONS.SKILLS_SHORTAGE,
+        sortBy: true,
+        minWidth: 160,
+        isInitialChecked: false,
+      },
+      {
+        text: 'Time at Head of Queue',
+        value: QUEUE_LIST_COLUMN_OPTIONS.TIME_AT_HEAD_OF_QUEUE,
+        sortBy: true,
+        minWidth: 160,
+        isInitialChecked: true,
+      },
+      {
         text: 'Callback requested',
         value: QUEUE_LIST_COLUMN_OPTIONS.CALLBACK_REQUESTED,
+        sortBy: true,
         minWidth: 160,
         isInitialChecked: false,
       },
       {
         text: 'Callback attempts',
         value: QUEUE_LIST_COLUMN_OPTIONS.CALLBACK_ATTEMPTS,
+        sortBy: true,
         minWidth: 160,
         isInitialChecked: false,
       },
-      //do not remove
-      // {
-      //   text: 'Flags',
-      //   value: QUEUE_LIST_COLUMN_OPTIONS.FLAGS,
-      //   minWidth: 70,
-      //   isInitialChecked: false,
-      // },
+      {
+        text: 'Flags',
+        value: QUEUE_LIST_COLUMN_OPTIONS.FLAGS,
+        sortBy: true,
+        minWidth: 70,
+        isInitialChecked: false,
+      },
     ],
     PRIORITY_COLORS: {
       1: '#f8485e',
@@ -637,6 +638,7 @@ export const MODAL = {
     },
 
     QUEUE_POSITION_COLORS: {
+      0: '#059f5a',
       1: '#c4d600',
       2: '#d0de33',
       3: '#dce666',
@@ -650,30 +652,64 @@ export const MODAL = {
       default: '#f8485e',
       red: '#eb0c28',
       blue: '#0b5cab',
-      green: '#059f5a',
       textColorWhite: '#fff',
       textColorDark: '#49535c',
     },
 
-    MOCK_DATA: createArrayFromTo(1, 10).map((number) => ({
-      [QUEUE_LIST_COLUMN_OPTIONS.CALLER_NUMBER]: '+44 0203 436 3092 ' + (number % 3 ? '(UK)' : '(USA)'),
-      [QUEUE_LIST_COLUMN_OPTIONS.CALLER_NAME]: 'Agent Name ' + (number + 11),
-      [QUEUE_LIST_COLUMN_OPTIONS.POSITION_IN_QUEUE]: number,
-      [QUEUE_LIST_COLUMN_OPTIONS.PRIORITY]: number,
-      [QUEUE_LIST_COLUMN_OPTIONS.TIME_WAITING_IN_QUEUE]: number * 10,
-      [QUEUE_LIST_COLUMN_OPTIONS.DIAL_ATTEMPTS]: number,
-      [QUEUE_LIST_COLUMN_OPTIONS.STATUS]: number % 2 ? 'Connected' : 'Waiting',
-      [QUEUE_LIST_COLUMN_OPTIONS.AGENT_CONNECTED_TO]: number % 2 ? 'Agent Name ' + number : '',
-      [QUEUE_LIST_COLUMN_OPTIONS.SKILLS_REQUESTED]: 'unknown',
-      [QUEUE_LIST_COLUMN_OPTIONS.SKILLS_SHORTAGE]: 'unknown',
-      [QUEUE_LIST_COLUMN_OPTIONS.TIME_AT_HEAD_OF_QUEUE]: 100 - number * 10,
-      [QUEUE_LIST_COLUMN_OPTIONS.CALLBACK_REQUESTED]: number % 3,
-      [QUEUE_LIST_COLUMN_OPTIONS.CALLBACK_ATTEMPTS]: number % 4 ? undefined : number,
-      [QUEUE_LIST_COLUMN_OPTIONS.FLAGS]: 'unknown',
-      uuid: number,
-    })),
+    MOCK_DATA: [
+      {
+        [QUEUE_LIST_COLUMN_OPTIONS.CALLER_NUMBER]: '+44 0203 436 3090',
+        [QUEUE_LIST_COLUMN_OPTIONS.CALLER_NAME]: 'Agent Name 11',
+        [QUEUE_LIST_COLUMN_OPTIONS.POSITION_IN_QUEUE]: 0,
+        [QUEUE_LIST_COLUMN_OPTIONS.PRIORITY]: 5,
+        [QUEUE_LIST_COLUMN_OPTIONS.TIME_WAITING_IN_QUEUE]: 0 * 10,
+        [QUEUE_LIST_COLUMN_OPTIONS.DIAL_ATTEMPTS]: 0,
+        [QUEUE_LIST_COLUMN_OPTIONS.STATUS]: 'connected',
+        [QUEUE_LIST_COLUMN_OPTIONS.AGENT_CONNECTED_TO]: 'Agent Name 0',
+        [QUEUE_LIST_COLUMN_OPTIONS.SKILLS_REQUESTED]: 'none',
+        [QUEUE_LIST_COLUMN_OPTIONS.SKILLS_SHORTAGE]: 'none',
+        [QUEUE_LIST_COLUMN_OPTIONS.TIME_AT_HEAD_OF_QUEUE]: 100,
+        [QUEUE_LIST_COLUMN_OPTIONS.CALLBACK_REQUESTED]: false,
+        [QUEUE_LIST_COLUMN_OPTIONS.CALLBACK_ATTEMPTS]: 8,
+        [QUEUE_LIST_COLUMN_OPTIONS.FLAGS]: 'none',
+        uuid: 0,
+      },
+      {
+        [QUEUE_LIST_COLUMN_OPTIONS.CALLER_NUMBER]: '+44 0203 436 3091',
+        [QUEUE_LIST_COLUMN_OPTIONS.CALLER_NAME]: 'Agent Name 11',
+        [QUEUE_LIST_COLUMN_OPTIONS.POSITION_IN_QUEUE]: 3,
+        [QUEUE_LIST_COLUMN_OPTIONS.PRIORITY]: 3,
+        [QUEUE_LIST_COLUMN_OPTIONS.TIME_WAITING_IN_QUEUE]: 1 * 11,
+        [QUEUE_LIST_COLUMN_OPTIONS.DIAL_ATTEMPTS]: 2,
+        [QUEUE_LIST_COLUMN_OPTIONS.STATUS]: 'connected',
+        [QUEUE_LIST_COLUMN_OPTIONS.AGENT_CONNECTED_TO]: 'Agent Name 1',
+        [QUEUE_LIST_COLUMN_OPTIONS.SKILLS_REQUESTED]: 'none',
+        [QUEUE_LIST_COLUMN_OPTIONS.SKILLS_SHORTAGE]: 'none',
+        [QUEUE_LIST_COLUMN_OPTIONS.TIME_AT_HEAD_OF_QUEUE]: 111,
+        [QUEUE_LIST_COLUMN_OPTIONS.CALLBACK_REQUESTED]: true,
+        [QUEUE_LIST_COLUMN_OPTIONS.CALLBACK_ATTEMPTS]: 0,
+        [QUEUE_LIST_COLUMN_OPTIONS.FLAGS]: 'none',
+        uuid: 1,
+      },
+      {
+        [QUEUE_LIST_COLUMN_OPTIONS.CALLER_NUMBER]: '+44 0203 436 3091',
+        [QUEUE_LIST_COLUMN_OPTIONS.CALLER_NAME]: 'Agent Name 12',
+        [QUEUE_LIST_COLUMN_OPTIONS.POSITION_IN_QUEUE]: 3,
+        [QUEUE_LIST_COLUMN_OPTIONS.PRIORITY]: 2,
+        [QUEUE_LIST_COLUMN_OPTIONS.TIME_WAITING_IN_QUEUE]: 2 * 22,
+        [QUEUE_LIST_COLUMN_OPTIONS.DIAL_ATTEMPTS]: 2,
+        [QUEUE_LIST_COLUMN_OPTIONS.STATUS]: 'waiting',
+        [QUEUE_LIST_COLUMN_OPTIONS.AGENT_CONNECTED_TO]: '',
+        [QUEUE_LIST_COLUMN_OPTIONS.SKILLS_REQUESTED]: 'none',
+        [QUEUE_LIST_COLUMN_OPTIONS.SKILLS_SHORTAGE]: 'none',
+        [QUEUE_LIST_COLUMN_OPTIONS.TIME_AT_HEAD_OF_QUEUE]: 222,
+        [QUEUE_LIST_COLUMN_OPTIONS.CALLBACK_REQUESTED]: true,
+        [QUEUE_LIST_COLUMN_OPTIONS.CALLBACK_ATTEMPTS]: 3,
+        [QUEUE_LIST_COLUMN_OPTIONS.FLAGS]: 'none',
+        uuid: 2,
+      },
+    ],
     INTERACTIVIRY_OPTIONS: [
-      // do not remove
       // {
       //   text: 'Allow re-sorting of columns',
       //   value: QUEUE_LIST_INTERACTIVITY_OPTIONS_KEYS.ALLOW_RE_SORTING,
@@ -706,18 +742,18 @@ export const MODAL = {
       },
     ],
     SORT_BY: [
-      { text: 'Position in Queue', value: QUEUE_LIST_SORT_BY_VALUES.POSITION_IN_QUEUE },
-      { text: 'Caller Name (alphabetically)', value: QUEUE_LIST_SORT_BY_VALUES.CALLER_NAME },
-      { text: 'Priority (Highest First)', value: QUEUE_LIST_SORT_BY_VALUES.PRIORITY },
-      { text: 'Time waiting in Queue (Longest First)', value: QUEUE_LIST_SORT_BY_VALUES.TIME_WAITING_IN_QUEUE },
-      { text: 'Dial Attempts (Highest First)', value: QUEUE_LIST_SORT_BY_VALUES.DIAL_ATTEMPTS },
-      { text: 'Status (Connected,Waiting)', value: QUEUE_LIST_SORT_BY_VALUES.STATUS },
-      { text: 'Agent Connected to (alphabetically)', value: QUEUE_LIST_SORT_BY_VALUES.AGENT_CONNECTED_TO },
-      { text: 'Skills Requested (Calls with skills first)', value: QUEUE_LIST_SORT_BY_VALUES.SKILLS_REQUESTED },
-      { text: 'Skills shortage (Calls with shortages first)', value: QUEUE_LIST_SORT_BY_VALUES.SKILLS_SHORTAGE },
-      { text: 'Time at head of Queue (Longest first)', value: QUEUE_LIST_SORT_BY_VALUES.TIME_AT_HEAD_OF_QUEUE },
-      { text: 'Callback requested (Callback calls first)', value: QUEUE_LIST_SORT_BY_VALUES.CALLBACK_REQUESTED },
-      { text: 'Callback attempts (Highest first)', value: QUEUE_LIST_SORT_BY_VALUES.CALLBACK_ATTEMPTS },
+      { text: 'Position in Queue', value: QUEUE_LIST_COLUMN_OPTIONS.POSITION_IN_QUEUE },
+      { text: 'Caller Name (alphabetically)', value: QUEUE_LIST_COLUMN_OPTIONS.CALLER_NAME },
+      { text: 'Priority (Highest First)', value: QUEUE_LIST_COLUMN_OPTIONS.PRIORITY },
+      { text: 'Time waiting in Queue (Longest First)', value: QUEUE_LIST_COLUMN_OPTIONS.TIME_WAITING_IN_QUEUE },
+      { text: 'Dial Attempts (Highest First)', value: QUEUE_LIST_COLUMN_OPTIONS.DIAL_ATTEMPTS },
+      { text: 'Status (Connected,Waiting)', value: QUEUE_LIST_COLUMN_OPTIONS.STATUS },
+      { text: 'Agent Connected to (alphabetically)', value: QUEUE_LIST_COLUMN_OPTIONS.AGENT_CONNECTED_TO },
+      { text: 'Skills Requested (Calls with skills first)', value: QUEUE_LIST_COLUMN_OPTIONS.SKILLS_REQUESTED },
+      { text: 'Skills shortage (Calls with shortages first)', value: QUEUE_LIST_COLUMN_OPTIONS.SKILLS_SHORTAGE },
+      { text: 'Time at head of Queue (Longest first)', value: QUEUE_LIST_COLUMN_OPTIONS.TIME_AT_HEAD_OF_QUEUE },
+      { text: 'Callback requested (Callback calls first)', value: QUEUE_LIST_COLUMN_OPTIONS.CALLBACK_REQUESTED },
+      { text: 'Callback attempts (Highest first)', value: QUEUE_LIST_COLUMN_OPTIONS.CALLBACK_ATTEMPTS },
     ],
   },
   CALL_TRACKING: {
@@ -928,10 +964,28 @@ export const MODAL = {
     MIN_VALUE: 'Min value is 1',
     MAX_VALUE: 'Max value is 100',
     MIN_SLA_TIME: 'Min value is 1',
+    NO_RESULTS: 'No data',
+    IN_PROGRESS: 'Fetching wallboards in progress',
   },
   DELETE_WALLBOARD_MODAL: {
     TITLE: 'Delete Wallboard',
     QUESTION: 'Are you sure you want to delete this wallboard?',
+  },
+  DELETE_WALLBOARD_GROUP_MODAL: {
+    TITLE: 'Delete Wallboard Group',
+    QUESTION: 'Are you sure you want to delete this wallboard group?',
+  },
+  REMOVE_STEP_MODAL: {
+    TITLE: 'Removing Step - Warning!',
+    QUESTION: `Are you sure you want to remove this wallboard from the Wallboard Group?
+
+    Depending on your permissions to wallboards, you may not be able to add it back again. `,
+  },
+  REMOVE_WALLBOARD_MODAL: {
+    TITLE: 'Removing Wallboard - Warning!',
+    QUESTION: `Are you sure you want to remove this wallboard from the Wallboard Group?
+    
+    Depending on your permissions to wallboards, you may not be able to add it back again. `,
   },
   DELETE_WALLBOARD_COMPONENT_MODAL: {
     QUESTION: 'Are you sure you want to delete this component?',
@@ -944,6 +998,16 @@ export const MODAL = {
     READ_ONLY_URL: 'Read-Only Wallboard URL',
     READ_ONLY_URL_INFO:
       'A read only Wallboard URL allows anyone to access this wallboard with the basic Chatter Free Salesforce licence. This is great for non-Salesforce users or putting wallboards on a TV',
+    COPY: 'Copy Link',
+  },
+  EDIT_WALLBOARD_GROUP: {
+    SETTINGS: 'Settings',
+    NAME: 'Wallboard Group Name:',
+    DESCRIPTION: 'Wallboard Group Description:',
+    DISPLAY_SETTINGS: 'Display Settings:',
+    READ_ONLY_URL: 'Read-Only Wallboard Group URL',
+    READ_ONLY_URL_INFO:
+      'A read only Wallboard Group URL allows anyone to access this wallboard with the basic Chatter Free Salesforce licence. This is great for non-Salesforce users or putting wallboards on a TV',
     COPY: 'Copy Link',
   },
   CONFIRM_SAVE_WALLBOARD: {
