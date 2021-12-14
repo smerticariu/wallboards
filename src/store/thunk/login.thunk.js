@@ -37,7 +37,6 @@ export const fetchUserDataThunk = (sfToken) => async (dispatch, getState) => {
       dispatch(setGatekeeperUrlAC(res.data.gatekeeperUrl));
     });
     
-    const { gatekeeperUrl } = getState().login;
     const options = {
       method: 'get',
       url: `${gatekeeperUrl}/token/salesforce?scope=${config.scope}`,
