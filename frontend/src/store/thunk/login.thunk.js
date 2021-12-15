@@ -29,7 +29,14 @@ export const fetchUserInfoThunk = (token) => async (dispatch, getState) => {
 
 export const fetchUserDataThunk = (sfToken) => async (dispatch, getState) => {
   try {
-    const { gatekeeperUrl } = getState().login;
+    let gatekeeperUrl = "";
+    await axios.get(`${config.envHost}/flightdeck/config`).then(res => {
+      gatekeeperUrl = res.data.gatekeeperUrl;
+      dispatch(setSapienUrlAC(res.data.sapienUrl));
+      dispatch(setStoreUrlAC(res.data.storeUrl));
+      dispatch(setGatekeeperUrlAC(res.data.gatekeeperUrl));
+    });
+
     const options = {
       method: 'get',
       url: `${gatekeeperUrl}/token/salesforce?scope=${config.scope}`,
