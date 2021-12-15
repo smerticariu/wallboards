@@ -9,7 +9,7 @@ import { fetchAvailabilityProfilesThunk, fetchAvailabilityStatesThunk } from '..
 import { DEFAULTS } from '../../common/defaults/defaults';
 
 const WallboardReadOnly = () => {
-  const { id } = useParams();
+  const id = atob(useParams().id).split('?d=')[0];
   const dispatch = useDispatch();
   const { userInfo } = useSelector((state) => state.login);
   const { wallboard, fetchStatus, fetchMessage, statusCode } = useSelector((state) => state.wallboards.present.activeWallboard);
