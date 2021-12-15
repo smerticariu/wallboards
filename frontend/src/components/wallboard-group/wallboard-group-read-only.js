@@ -9,7 +9,7 @@ import { DEFAULTS } from '../../common/defaults/defaults';
 import { fetchAvailabilityProfilesThunk, fetchAvailabilityStatesThunk } from '../../store/thunk/agents.thunk';
 
 const WallboardGroupReadOnly = () => {
-  const { id } = useParams();
+  const id = atob(useParams().id).split('?d=')[0];
   const dispatch = useDispatch();
   const { userInfo } = useSelector((state) => state.login);
   const wallboard = useSelector((state) => state.wallboards.present.activeWallboard.wallboard);
