@@ -110,7 +110,7 @@ const ModalEditWallboard = ({ ...props }) => {
   };
 
   const currentDate = new Date().getTime();
-  const wallboardLink = `${config.redirectUri}#/wallboard/${activeWallboardId}?d=${currentDate}`;
+  const wallboardLink = `${config.envHost}#/wallboard/${activeWallboardId}?d=${currentDate}`;
 
   return (
     <div className={`c-modal c-modal--open`}>
