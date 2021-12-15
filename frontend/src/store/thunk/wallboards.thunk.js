@@ -29,6 +29,7 @@ export const fetchWallboardByIdThunk =
     try {
       dispatch(fetchWallboardByIdAC(DEFAULTS.WALLBOARDS.MESSAGE.LOADING));
       const { userInfo, token, storeUrl } = getState().login;
+      
       const currentDate = new Date().getTime();
 
       const wallboardById = await WallboardsApi({
@@ -381,6 +382,7 @@ export const syncWallboardsWithConfig = () => async (dispatch, getState) => {
       type: DEFAULTS.WALLBOARDS.API.GET.ALL_WALLBOARDS,
       organizationId: userInfo.organisationId,
       token,
+      storeUrl,
     });
 
     let configWbs = [];

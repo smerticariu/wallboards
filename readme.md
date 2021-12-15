@@ -5,6 +5,7 @@
 ###### 1.2 Running Wallboards on local machine
 ###### 1.3 Sign In
 ## 2. How to use
+## 3. How to create/edit configuration file
 
 ## 1. Technical details
 Wallboards App was created with **ReactJs** library without any style frameworks.
@@ -31,7 +32,7 @@ The script *start:local* contains the environment variable value hardcoded for u
 ### 1.3 Sign In
 Wallboards provides access only by using Salesforce credentials.
 There are two ways to have access to Wallboards data:
-- By accessing the original host(e.g. https://wbapp.natterbox.com)
+- By accessing the original host(e.g. https://flightdeck.natterbox.com)
 - By accessing the Salesforce account
 
  For Signing in from the original host, the application will process the login using **https://auth0.com** services, which generates the **JWT token** based on access token.
@@ -54,13 +55,37 @@ Each Wallboard has three actions:
 - Copy: duplicates the selected wallboard, the new wallboard having the original wallboard name and have added Copy at the end of the name: e.g. My New Wallboard Copy
 - Delete: deletes the selected wallboard
 
-Each wallboard can be accessed manually by introducing the ID of the wallboard.
+Each wallboard/wallboard group can be accessed manually by introducing the ID(coded in Base64) of the wallboard.
 E.g.:
-- Edit mode wallboard:https://wbapp.natterbox.com/#/wallboard/id-of-the-wallboard/edit
-- Read-only wallboard: https://wbapp.natterbox.com/#/wallboard/id-of-the-wallboard
+- Edit mode wallboard:https://flightdeck.natterbox.com/#/wallboard/id-coded-in-base64/edit
+- Read-only wallboard: https://flightdeck.natterbox.com/#/wallboard/id-coded-in-base64
+
+Identical to wallboards:
+- Edit mode wallboards group:https://flightdeck.natterbox.com/#/group/id-coded-in-base64/edit
+- Read-only wallboards group: https://flightdeck.natterbox.com/#/group/id-coded-in-base64
 
 If the user does not have access to the wallboard, a notification will be displayed with **Access Denied**
 
+
+
+
+
+## 3.How to create/edit configuration file
+In order to display wallboards and wallboards groups in the table from landing page, there is needed a configuration file to store minimal data for each wallboard/wallboards group to avoid getting all data for all wallboard/wallboard group - this will take too many unnecessary server requests.
+
+The method ```syncWallboardsWithConfig``` will create the configuration file(*config.json*), or if it does exist, the method will update the *config.json*.
+The configuration file will not need an update because at each update to server(*post* or *put* requests) the *config.json* file will be updated.
+
+The ```syncWallboardsWithConfig``` method will be called at the start of the ```fetchAllWallboardsThunk``` function from the ```wallboards.thunk.js``` file which can be found  at ```wallboards/frontend/src/store/thunk/wallboards.thunk.js```.
+Being a *redux* method, ```syncWallboardsWithConfig``` will be *dispatched*.
+Usage:
+```dispatch(syncWallboardsWithConfig());```
+The manual select the environment (dev, qa, stage, prod) it can be done from *authConfig.js* file and edited the *envHost* property with the desired host.
+**Notes:**
+- The configuration file must be *not* be deleted, otherwise the table from landing page will not work properly anymore.
+- This operation should be done once per *Organization*, after that, the method call should be removed.
+- This operation should be done only from a local machine(localhost).
+- The method call should never be deployed to production and it should never end up to the end-user part.
 ## Extra
 The code that will be added to the Visualforce page can be find in the **salesforce.html** file.
 The host url of the **bundle.min.js** script depends on where the **Wallboards** app was deployed.
