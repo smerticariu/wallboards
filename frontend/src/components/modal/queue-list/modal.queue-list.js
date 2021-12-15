@@ -290,7 +290,7 @@ const ModalQueueList = ({ ...props }) => {
         <div className="c-modal--add-component__input-label c-modal--add-component__input-label--grey">
           {DEFAULTS.MODAL.QUEUE_LIST.NAMES.PREVIEW}
         </div>
-        <div>
+        <div className="c-modal__preview">
           <div className="c-modal__preview-section c-modal__preview-section--queue-list">
             <QueueListTable
               isPreviewMode={true}

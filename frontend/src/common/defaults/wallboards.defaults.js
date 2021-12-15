@@ -480,3 +480,25 @@ export const COUNTRY_CODE = [
   { name: 'Virgin Islands, British', dial_code: '+1 284', code: 'VG' },
   { name: 'Virgin Islands, U.S.', dial_code: '+1 340', code: 'VI' },
 ];
+
+export const getSvgLastLineInitialValues = () => ({
+  svgSize: {
+    x: 0,
+    y: 0,
+  },
+  arrowTranslate: {
+    x: 0,
+    y: 0,
+    rotate: 0,
+  },
+  points: [],
+});
+
+export const WALLBOARD_SVG_VALUES = {
+  startAnchor: 'auto',
+  path: 'straight',
+  zIndex: 1,
+  color: '#00a9ce',
+  strokeWidth: 1,
+  headSize: 12,
+};

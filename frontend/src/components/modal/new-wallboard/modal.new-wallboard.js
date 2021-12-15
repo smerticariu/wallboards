@@ -5,7 +5,7 @@ import { MODAL_NEW_WALLBOARD_SECITONS } from '../../../common/defaults/modal.def
 import useOnClickOutside from '../../../common/hooks/useOnClickOutside';
 import { addWallboardForWallboardGroupAC } from '../../../store/actions/wallboards.action';
 import { FetchStatus } from '../../../store/reducers/wallboards.reducer';
-import { fetchAllWallboardsThunk } from '../../../store/thunk/wallboards.thunk';
+import { fetchAllWallboardsThunk, fetchWallboardForWallboardGroupThunk } from '../../../store/thunk/wallboards.thunk';
 
 const ModalNewWallboard = ({ stepId, selectedWallboardId, onClose, ...props }) => {
   const modalRef = useRef(null);
@@ -122,9 +122,11 @@ const ModalNewWallboard = ({ stepId, selectedWallboardId, onClose, ...props }) =
           wallboardName: wallboard.name,
           wallboardId: wallboard.id,
           wallboardDescription: wallboard.description,
+          wallboardFulData: null,
           stepId: stepId,
         })
       );
+      dispatch(fetchWallboardForWallboardGroupThunk(wallboard.id, stepId));
       onClose(null);
     };
 

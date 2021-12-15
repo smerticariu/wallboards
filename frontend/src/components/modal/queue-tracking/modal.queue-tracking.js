@@ -308,7 +308,7 @@ const ModalqueueTracking = ({ ...props }) => {
         <div className="c-modal--add-component__input-label c-modal--add-component__input-label--grey">
           {DEFAULTS.MODAL.QUEUE_TRACKING.NAMES.PREVIEW}
         </div>
-        <div>
+        <div className="c-modal__preview">
           <div className="c-modal__preview-section">
             <GridQueueTracking isPreview={true} widget={{ ...queueTracking, title: queueTracking.title.value }} />
           </div>

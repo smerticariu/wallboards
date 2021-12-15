@@ -9,6 +9,7 @@
     }
   }
   &--arrow {
+    stroke: $white;
     &--down {
       transform: rotate(180deg);
       stroke: $white;
@@ -26,6 +27,32 @@
         transform: rotate(180deg) translateY(50%);
         right: 10px;
       }
+    }
+    &--left,
+    &--right {
+      position: absolute;
+      top: 50%;
+      width: 30px;
+      height: 30px;
+      background-color: $turquoise-blue;
+      border-radius: 50%;
+      padding: 10px;
+      box-sizing: content-box;
+      cursor: pointer;
+    }
+    &--left {
+      transform: rotate(-90deg);
+      &:hover {
+        transform: scale(1.2) rotate(-90deg);
+      }
+      left: 15px;
+    }
+    &--right {
+      transform: rotate(90deg);
+      &:hover {
+        transform: scale(1.2) rotate(90deg);
+      }
+      right: 15px;
     }
   }
   &--checkmark {

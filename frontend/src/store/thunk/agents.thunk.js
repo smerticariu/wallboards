@@ -325,7 +325,7 @@ export const fetchUserStatusDataThunk =
   };
 
 export const exportCSVUserLoginDataThunk =
-  ({ timeStart, timeEnd }, groupId, limitResult) =>
+  ({ timeStart, timeEnd }, timezone, groupId) =>
   async (dispatch, getState) => {
     try {
       const { userInfo, token, sapienUrl } = getState().login;
@@ -362,15 +362,17 @@ export const exportCSVUserLoginDataThunk =
       userLoginData
         .sort((user1, user2) => new Date(user2.time).getTime() - new Date(user1.time).getTime())
         .filter((user) => Number(groupId) === -1 || user.groupId === groupId)
-        .slice(0, +limitResult)
         .forEach((user) => {
           const group = userGroups.find((group) => user.groupId === group.id);
           const agent = allAgents.find((agent) => agent.id === user.userId);
-          const timeInSecconds = moment().diff(moment(user.time), 'seconds');
+          const timeInSecconds = moment().utcOffset(timezone).diff(moment(user.time), 'seconds');
           const noOfDays = Math.floor(timeInSecconds / 86400); // 1 day === 86400 seconds
           const dateString = moment.utc(timeInSecconds * 1000).format('HH:mm:ss');
+
+          const time = moment(user.time).utcOffset(timezone).format('YYYY-MM-DD HH:mm:ss');
+
           users.push([
-            `${agent.firstName + ' ' + agent.lastName},${group.name},${user.event},${moment(user.time).format('YYYY-MM-DD HH:mm:ss')},${
+            `${agent.firstName + ' ' + agent.lastName},${group.name},${user.event},${time},${
               noOfDays ? `${noOfDays} Day${noOfDays === 1 ? '' : 's'}` : dateString
             }`,
           ]);

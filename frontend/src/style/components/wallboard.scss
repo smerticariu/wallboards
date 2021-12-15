@@ -4,6 +4,8 @@
     display: flex;
     flex-direction: column;
     padding-bottom: 15px;
+    position: relative;
+    overflow: hidden;
     &__component {
       width: calc(100% - 30px);
       margin: 0 auto;
@@ -58,4 +60,13 @@
       margin-bottom: 40px;
     }
   }
+}
+
+.slider {
+  position: relative;
+  height: 100%;
+  width: 100vw;
+  margin: 0 auto;
+  overflow: auto;
+  white-space: nowrap;
 }

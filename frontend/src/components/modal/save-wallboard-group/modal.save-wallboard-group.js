@@ -78,12 +78,12 @@ const ModalSaveWallboardGroup = ({ ...props }) => {
           </div>
           <div className="c-modal__body c-modal__body--save-changes">
             <div className="c-modal__body--save-changes__phrase">
-              {DEFAULTS.MODAL.SAVE_WALLBOARD.UNSAVED_CHANGES}
+              {DEFAULTS.MODAL.SAVE_WALLBOARD_GROUP.UNSAVED_CHANGES}
               <span className="c-modal__body--save-changes__phrase"> Wallboard Group. </span>
 
-              {DEFAULTS.MODAL.SAVE_WALLBOARD.LOST_CHANGES}
+              {DEFAULTS.MODAL.SAVE_WALLBOARD_GROUP.LOST_CHANGES}
             </div>
-            <div className="c-modal__body--save-changes__phrase">{DEFAULTS.MODAL.SAVE_WALLBOARD.SAVE_AND_CLOSE}</div>
+            <div className="c-modal__body--save-changes__phrase">{DEFAULTS.MODAL.SAVE_WALLBOARD_GROUP.SAVE_AND_CLOSE}</div>
           </div>
           <div className="c-modal__footer">
             <div className="c-modal__footer-left-side">{handleCancelButton()}</div>
