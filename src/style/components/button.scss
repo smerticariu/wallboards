@@ -1,0 +1,93 @@
+.c-button {
+  padding: 7px 19px;
+  border-radius: 5px;
+  border: solid 1px $pinkish-grey;
+  background-color: $white;
+  font-family: $poppins-regular;
+  font-size: 14px;
+  color: $sf-brand-blue;
+  cursor: pointer;
+  max-width: max-content;
+  text-decoration: none;
+  min-width: fit-content;
+  background: transparent;
+  font-weight: normal;
+
+  &:hover {
+    background-position: 0;
+  }
+
+  &--blue {
+    background-color: $sf-brand-blue;
+    color: $white;
+  }
+
+  &--green {
+    background-color: $natterbox-green;
+    color: $white;
+  }
+  &--grey {
+    background-color: $pinkish-grey;
+    color: $white;
+  }
+  &--red {
+    background-color: $natterbox-red;
+    color: $white;
+  }
+
+  &--disabled {
+    background-color: $pinkish-grey;
+    color: $white;
+    cursor: default;
+    pointer-events: none;
+  }
+  &--m-auto {
+    margin: 0 auto;
+  }
+
+  &--m-left {
+    margin-left: 16px;
+    &-large {
+      margin-left: 40px;
+    }
+  }
+  &--empty {
+    color: inherit;
+    padding: 0;
+    border: none;
+    font-size: inherit;
+    text-align: start;
+  }
+}
+
+.c-arrow-button {
+  border-radius: 5px;
+  border: solid 1px $pinkish-grey;
+  background-color: $white;
+  font-family: $poppins-regular;
+  font-size: 14px;
+  color: $sf-brand-blue;
+  cursor: pointer;
+  width: fit-content;
+  height: 38px;
+  display: flex;
+  width: 90px;
+  justify-content: space-evenly;
+  cursor: pointer;
+  &__arrow {
+    border: none;
+    background-color: $white;
+    border: none;
+    width: 40px;
+    background: transparent;
+  }
+  &__separator {
+    display: flex;
+    height: 100%;
+    width: 1px;
+    background-color: $pinkish-grey;
+  }
+  &--m-left {
+    margin-left: 16px;
+  }
+}

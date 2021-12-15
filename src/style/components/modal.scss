@@ -1,0 +1,415 @@
+.c-modal {
+  display: none;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 10;
+  width: 100%;
+  height: 100%;
+  background-color: rgba($slate-gray, 0.28);
+
+  &__container {
+    width: 100%;
+    max-height: 95vh;
+    background-color: $white;
+    border-radius: 12px;
+    -webkit-animation-name: animatetop;
+    -webkit-animation-duration: 0.4s;
+    animation-name: animatetop;
+    animation-duration: 0.4s;
+    overflow: auto;
+
+    &--new-wallboard {
+      max-width: 1450px;
+    }
+    &--save-changes,
+    &--add-component {
+      width: 800px;
+    }
+    &--edit-wallboard {
+      width: 650px;
+    }
+    &--call-status {
+      width: 500px;
+    }
+  }
+
+  &--open {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__section {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+
+    &--read-only {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 30px 0;
+
+      &__generate-link {
+        width: 80%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        margin: auto;
+
+        input {
+          width: 70%;
+          margin-right: 20px;
+        }
+      }
+    }
+  }
+
+  &__text {
+    font-family: $public-sans-thin;
+    font-size: 16px;
+    color: $slate-gray;
+    margin-bottom: 8px;
+    text-align: center;
+    font-weight: 300;
+  }
+
+  &__subsection {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  &__subsection--small {
+    width: 90% !important;
+  }
+
+  &__label {
+    font-family: $public-sans-bold;
+    font-size: 16px;
+    color: $slate-gray;
+    margin-bottom: 8px;
+  }
+
+  &__header {
+    display: flex;
+    width: 100%;
+    height: 55px;
+    justify-content: center;
+    align-items: center;
+    border-bottom: solid 1px $pinkish-grey;
+  }
+
+  &__title {
+    font-family: $inter-regular;
+    font-size: 18px;
+    color: $slate-gray;
+    &--bold {
+      font-family: $inter-bold;
+    }
+    &--remove-step {
+      font-family: $public-sans-regular;
+    }
+  }
+
+  &__body {
+    &--remove-step {
+      white-space: pre-line;
+      font-size: 18px;
+      font-family: $public-sans-regular;
+      color: $slate-gray;
+    }
+    &--add-component,
+    &--new-wallboard {
+      display: flex;
+      width: 100%;
+    }
+    &--call-status,
+    &--save-changes,
+    &--add-component,
+    &--edit-wallboard {
+      padding: 20px;
+    }
+
+    &--save-changes {
+      text-align: center;
+      &__phrase {
+        font-family: $public-sans-regular;
+        color: $natterbox-dark-blue-grey;
+        font-size: 15px;
+        &--bold {
+          font-family: $public-sans-bold;
+        }
+      }
+    }
+  }
+
+  &--new-wallboard {
+    &__categories {
+      display: flex;
+      flex-direction: column;
+      flex-wrap: wrap;
+      width: 25%;
+      min-width: 100px;
+      max-width: 300px;
+      background-color: $dark-grey;
+    }
+
+    &__header {
+      font-family: $inter-bold;
+      font-size: 20px;
+      color: $turquoise-blue;
+      margin: 8px 0 11px 15px;
+    }
+
+    &__nav-item {
+      display: flex;
+      width: 100%;
+      align-items: center;
+      padding-left: 15px;
+      font-family: $public-sans-regular;
+      font-size: 16px;
+      font-weight: 500;
+      color: $input-text-colour;
+      height: 40px;
+      user-select: none;
+      cursor: pointer;
+
+      &--selected {
+        background-color: $turquoise-blue;
+        color: $white;
+      }
+    }
+
+    &__form {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      padding: 20px;
+    }
+
+    &__list {
+      display: flex;
+      flex-direction: column;
+      overflow: auto;
+      width: 100%;
+      margin-bottom: 20px;
+      margin-top: 16px;
+      height: 425px;
+      padding-right: 10px;
+    }
+
+    &__list-item {
+      display: flex;
+      width: 100%;
+      flex-direction: column;
+      cursor: pointer;
+
+      &--selected {
+        background-color: #f4f2f2;
+      }
+
+      &:not(:last-child) {
+        &:after {
+          content: '';
+          display: block;
+          width: 100%;
+          height: 1px;
+          background-color: $pinkish-grey;
+        }
+      }
+    }
+
+    &__list-title {
+      font-family: $inter-bold;
+      font-size: 16px;
+      color: $input-text-colour;
+      margin-top: 16px;
+      margin-bottom: 2px;
+      padding-left: 5px;
+    }
+
+    &__list-subtitle {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 15px;
+      padding-left: 5px;
+    }
+
+    &__list-text {
+      font-family: $public-sans-regular;
+      font-size: 14px;
+      color: $turquoise-blue;
+    }
+
+    &__list-separator {
+      color: $pinkish-grey;
+      font-size: 10px;
+      margin: 0 2px;
+    }
+  }
+  &__buttons {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: flex-end;
+    margin: auto 0 0 0;
+    &--settings {
+      margin-top: 50px;
+      margin-bottom: 25px;
+      padding-right: 25px;
+    }
+  }
+  &--add-component {
+    &__left-side {
+      width: 40%;
+      max-width: 350px;
+      max-height: 600px;
+      min-width: 300px;
+      overflow: auto;
+      padding-right: 18px;
+    }
+    &__right-side {
+      display: flex;
+      flex-direction: column;
+      width: 60%;
+      padding-left: 11px;
+    }
+    &__input-section {
+      margin-bottom: 15px;
+    }
+    &__input-label {
+      font-family: $public-sans-regular;
+
+      font-size: 16px;
+      font-weight: 900;
+      color: $turquoise-blue;
+      margin-bottom: 5px;
+    }
+    &__sort-radio {
+      margin: 3px 0;
+    }
+    &__main-radio {
+      display: inline-block;
+      margin-left: 10px;
+      margin-bottom: 10px;
+    }
+    &__av-state-container {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      max-height: 150px;
+      overflow: auto;
+      padding: 3px 5px;
+      border: solid 1px $pinkish-grey;
+      margin-top: 5px;
+    }
+    &__select-checkbox {
+      display: flex;
+    }
+    &__preview-container {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      border: dashed 1px $pinkish-grey;
+      height: 360px;
+      padding: 19px 17px;
+      margin-top: 20px;
+    }
+    &__preview-title {
+      font-family: $public-sans-regular;
+      font-size: 14px;
+      color: $slate-gray;
+      margin-bottom: 10px;
+      &--bold {
+        font-family: $public-sans-bold;
+      }
+    }
+    &__agent-card {
+      display: flex;
+      width: 100%;
+      height: 100%;
+      margin: 0 auto;
+      overflow: auto;
+      justify-content: center;
+      align-items: center;
+    }
+    &__agent-table {
+      display: flex;
+      overflow: auto;
+      max-width: 1000px;
+      .agent-list-table:nth-child(2) {
+        margin-left: 15px;
+      }
+    }
+  }
+  &__footer {
+    background-color: $dark-grey;
+    padding: 13px 20px;
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 3px solid $dark-white;
+    &--remove-step {
+      border: none;
+      background-color: transparent;
+      justify-content: center;
+    }
+  }
+  @media screen and (max-width: $md) {
+    &__body {
+      &--new-wallboard {
+        flex-direction: column;
+      }
+    }
+
+    &--new-wallboard {
+      &__categories {
+        width: 100%;
+        max-width: 100%;
+      }
+    }
+  }
+  &__preview-container {
+    max-height: 350px;
+    overflow: auto;
+    margin-bottom: 10px;
+  }
+  &__preview-section {
+    transform: scale(0.7);
+    transform-origin: top;
+    max-height: 500px;
+    &--agent-login {
+      transform: scale(0.4);
+      margin: 0 -300px;
+    }
+    &--queue-list {
+      margin: 0 -90px;
+    }
+  }
+}
+@-webkit-keyframes animatetop {
+  from {
+    top: -300px;
+    opacity: 0;
+  }
+  to {
+    top: 0;
+    opacity: 1;
+  }
+}
+@keyframes animatetop {
+  from {
+    top: -300px;
+    opacity: 0;
+  }
+  to {
+    top: 0;
+    opacity: 1;
+  }
+}
