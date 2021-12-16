@@ -9,7 +9,7 @@ import { fetchAvailabilityProfilesThunk, fetchAvailabilityStatesThunk } from '..
 import Slider from '../slider/slider';
 
 const WallboardGroupReadOnly = () => {
-  const { id } = useParams();
+  const id = atob(useParams().id).split('?d=')[0];
   const dispatch = useDispatch();
   const { userInfo } = useSelector((state) => state.login);
   const { wallboardGroup, fetchStatus, fetchMessage, statusCode } = useSelector((state) => state.wallboards.present.wallboardGroup);

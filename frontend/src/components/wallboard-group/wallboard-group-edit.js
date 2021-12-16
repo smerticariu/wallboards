@@ -9,7 +9,7 @@ import WallboardGroupComponents from './wallboard-group-components';
 
 const WallboardGroupEdit = () => {
   const dispatch = useDispatch();
-  const { id } = useParams();
+  const id = atob(useParams().id).split('?d=')[0];
   const { fetchStatus, fetchMessage, statusCode, wallboardGroup } = useSelector((state) => state.wallboards.present.wallboardGroup);
 
   const { userInfo } = useSelector((state) => state.login);

@@ -115,7 +115,7 @@ const Toolbar = (props) => {
     const onNewWallboardClick = () => {
       const newWallboardId = generateWallboardId(userInfo.organisationId, userInfo.id);
       dispatch(createNewEmptyWallboardAC(newWallboardId));
-      history.push(`/wallboard/${newWallboardId}/edit`);
+      history.push(`/wallboard/${btoa(newWallboardId)}/edit`);
     };
     return (
       <button onClick={onNewWallboardClick} className="c-button c-button--m-left">
@@ -127,7 +127,7 @@ const Toolbar = (props) => {
     const onClickNewWallboardGroupButton = (e) => {
       const newWallboardGroupId = generateWallboardGroupId(userInfo.organisationId, userInfo.id);
       dispatch(createNewEmptyWallboardGroupAC(newWallboardGroupId));
-      history.push(`/group/${newWallboardGroupId}/edit`);
+      history.push(`/group/${btoa(newWallboardGroupId)}/edit`);
     };
 
     return (
@@ -213,6 +213,8 @@ const Toolbar = (props) => {
           break;
       }
     }
+    dispatch(handleSelectedWallboardCategoryAC('All Wallboards'));
+    dispatch(setFiltredWallboardsAC(''));
     return history.push('/');
   };
 
@@ -264,7 +266,7 @@ const Toolbar = (props) => {
       case DEFAULTS.TOOLBAR.NAME.NEW_WALLBOARD_GROUP: {
         const isRunLinkDisabled =
           !wallboardGroup?.steps?.filter((step) => step.wallboardId)?.length || wallboardGroup.isNewWallboard || !!noOfSteptsForUndo;
-        const runUrl = '/group/' + wallboardGroup.id;
+        const runUrl = '/group/' + btoa(wallboardGroup.id);
 
         const isSaveBtnDisabled = !wallboardGroup.steps?.some((step) => step.wallboardId);
         return (
@@ -283,7 +285,7 @@ const Toolbar = (props) => {
 
       case DEFAULTS.TOOLBAR.NAME.NEW_WALLBOARD: {
         const isRunLinkDisabled = !activeWallboard?.widgets?.length || activeWallboard.isNewWallboard;
-        const runUrl = '/wallboard/' + activeWallboard.id;
+        const runUrl = '/wallboard/' + btoa(activeWallboard.id);
         return (
           <>
             {handleNewComponentButton()}
