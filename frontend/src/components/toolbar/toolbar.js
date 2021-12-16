@@ -116,7 +116,7 @@ const Toolbar = (props) => {
     const onNewWallboardClick = () => {
       const newWallboardId = generateWallboardId(userInfo.organisationId, userInfo.id);
       dispatch(createNewEmptyWallboardAC(newWallboardId));
-      history.push(`/wallboard/${newWallboardId}/edit`);
+      history.push(`/wallboard/${btoa(newWallboardId)}/edit`);
     };
     return (
       <button onClick={onNewWallboardClick} className="c-button c-button--m-left">
@@ -128,7 +128,7 @@ const Toolbar = (props) => {
     const onClickNewWallboardGroupButton = (e) => {
       const newWallboardGroupId = generateWallboardGroupId(userInfo.organisationId, userInfo.id);
       dispatch(createNewEmptyWallboardGroupAC(newWallboardGroupId));
-      history.push(`/group/${newWallboardGroupId}/edit`);
+      history.push(`/group/${btoa(newWallboardGroupId)}/edit`);
     };
 
     return (
