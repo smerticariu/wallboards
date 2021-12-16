@@ -111,7 +111,7 @@ const ModalEditWallboard = ({ ...props }) => {
 
   const currentDate = new Date().getTime();
   const wbId = btoa(`${activeWallboardId}?d=${currentDate}`);
-  const wallboardLink = `${config.redirectUri}#/wallboard/${wbId}`;
+  const wallboardLink = `${config.envHost}#/wallboard/${wbId}`;
 
   return (
     <div className={`c-modal c-modal--open`}>
