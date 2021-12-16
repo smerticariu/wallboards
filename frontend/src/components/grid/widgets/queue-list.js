@@ -9,10 +9,9 @@ import { fetchQueuedCallThunk } from '../../../store/thunk/callsQueues.thunk';
 import QueueListTable from '../../tables/table.queue-list';
 
 const GridQueueList = ({ widget, ...props }) => {
-  const allOrgUsers = useSelector((state) => state.agents.allAgents);
+  const organisationUsers = useSelector((state) => state.agents.organisationUsers);
   const calls = useSelector((state) => state.agents.calls);
   const agentQueues = useSelector((state) => state.agents.agentsQueues);
-
   const queuedCall = useSelector((state) => state.callsQueues.queuedCall);
 
   const dispatch = useDispatch();
@@ -35,7 +34,7 @@ const GridQueueList = ({ widget, ...props }) => {
     let activeCalls = { ...callsToObject(calls, 'uuid'), ...callsToObject(calls, 'originatorUuid') };
     const queueCall = queuedCall[widget.callQueue.id] ?? [];
     let queuedCallCopy = [...queueCall];
-    const agentQueue = agentQueues?.find((queue) => queue.callQueueId === widget.callQueue.id);
+    const agentQueue = agentQueues[widget.callQueue.id] ?? [];
     queuedCallCopy = queuedCallCopy.filter((call) => {
       const status = call.status.toLowerCase();
       if (status === 'ringing' || status === 'waiting') {
@@ -54,8 +53,8 @@ const GridQueueList = ({ widget, ...props }) => {
     });
     setTableData(
       queuedCallCopy.map((call) => {
-        const agent = agentQueue?.agents?.find((agent) => agent.callUuid === call.uuid);
-        const user = allOrgUsers.find((user) => user.id === agent?.userId);
+        const agent = agentQueue.find((agent) => agent.callUuid === call.uuid);
+        const user = organisationUsers.find((user) => user.id === agent?.userId);
         return {
           [QUEUE_LIST_COLUMN_OPTIONS.CALLER_NUMBER]: call.callerIdNumber,
           [QUEUE_LIST_COLUMN_OPTIONS.CALLER_NAME]: call.callerIdName,
@@ -72,12 +71,12 @@ const GridQueueList = ({ widget, ...props }) => {
           [QUEUE_LIST_COLUMN_OPTIONS.CALLBACK_ATTEMPTS]: call.callbackAttempts,
           [QUEUE_LIST_COLUMN_OPTIONS.FLAGS]: 'none',
           uuid: call.uuid,
-          agentId: call.userId,
+          agentId: user?.id,
         };
       })
     );
     // eslint-disable-next-line
-  }, [allOrgUsers, calls, queuedCall]);
+  }, [organisationUsers, calls, queuedCall]);
 
   return <QueueListTable {...props} isPreviewMode={false} widget={widget} tableData={tableData} />;
 };

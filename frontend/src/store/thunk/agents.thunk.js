@@ -30,17 +30,26 @@ import { AvailabilityApi } from '../../common/api/availability.api';
 import { CallsApi } from '../../common/api/calls.api';
 import moment from 'moment';
 export const fetchAllAgentsThunk = (callQueueId) => async (dispatch, getState) => {
-  dispatch(fetchAllAgentsAC());
   try {
-    const { userInfo, token, sapienUrl } = getState().login;
-    const allAgentsFromCallQueue = await CallsQueuesApi({
+    const state = getState();
+    const { userInfo, token, sapienUrl } = state.login;
+    const agentsQueues = state.agents.agentsQueues[callQueueId] ?? [];
+    if (!agentsQueues.length) {
+      dispatch(fetchAllAgentsAC());
+    }
+    const response = await CallsQueuesApi({
       type: DEFAULTS.CALLS_QUEUES.API.GET.AGENT_FROM_CALL_QUEUE,
       organizationId: userInfo.organisationId,
       token,
       callQueueId,
       sapienUrl,
     });
-    dispatch(fetchAllAgentsSuccessAC(allAgentsFromCallQueue.data.data, callQueueId));
+    const allAgentsFromCallQueue = response.data.data;
+    const agentsQueuesSort = [...agentsQueues].sort((agent1, agent2) => agent1.userId - agent2.userId);
+    const allAgentsFromCallQueueSort = [...allAgentsFromCallQueue].sort((agent1, agent2) => agent1.userId - agent2.userId);
+    if (JSON.stringify(agentsQueuesSort) !== JSON.stringify(allAgentsFromCallQueueSort)) {
+      dispatch(fetchAllAgentsSuccessAC(allAgentsFromCallQueue, callQueueId));
+    }
   } catch (error) {
     dispatch(fetchAllAgentsFailAC(DEFAULTS.GLOBAL.FAIL));
     console.log(error);
@@ -159,7 +168,7 @@ export const changeAgentAvailabilityStateThunk =
         sapienUrl,
       });
     } catch (error) {
-      dispatch(handleIsNotificationShowAC(true, true, `Error: ${error.response.status ?? 'unknown'} - ${DEFAULTS.GLOBAL.FAIL}`));
+      dispatch(handleIsNotificationShowAC(true, true, `Error: ${error?.response?.status ?? 'unknown'} - ${DEFAULTS.GLOBAL.FAIL}`));
       console.log(error);
     }
   };
@@ -201,7 +210,9 @@ export const callAgentThunk = (id) => async (dispatch, getState) => {
 
 export const fetchUsersCurrentCallTimeThunk = () => async (dispatch, getState) => {
   try {
-    const { userInfo, token, sapienUrl } = getState().login;
+    const state = getState();
+    const { userInfo, token, sapienUrl } = state.login;
+    const reduxCallsWithGroup = state.agents.callsWithGroup;
 
     const response = await CallsApi({
       type: DEFAULTS.CALLS.API.GET.CALLS,
@@ -213,10 +224,15 @@ export const fetchUsersCurrentCallTimeThunk = () => async (dispatch, getState) =
     const callsWithLogicalDirection = response.data.data.reduce((data, callFullType) => {
       return [...data, ...callFullType.channels.map((call) => ({ ...call, logicalDirection: callFullType.direction }))];
     }, []);
-    dispatch(fetchUsersCurrentCallTimeSuccessAC(callsWithLogicalDirection, response.data.data));
+
+    const callsSorted = [...callsWithLogicalDirection].sort((call1, call2) => call1.uuid - call2.uuid);
+    const reduxCallsWithGroupSorted = [...reduxCallsWithGroup].sort((call1, call2) => call1.uuid - call2.uuid);
+    if (JSON.stringify(callsSorted) !== JSON.stringify(reduxCallsWithGroupSorted)) {
+      dispatch(fetchUsersCurrentCallTimeSuccessAC(callsWithLogicalDirection, response.data.data));
+    }
   } catch (error) {
     console.log(error.response);
-    dispatch(handleIsNotificationShowAC(true, true, `Error: ${error.response.status ?? 'unknown'} - ${DEFAULTS.GLOBAL.FAIL}`));
+    dispatch(handleIsNotificationShowAC(true, true, `Error: ${error?.response?.status ?? 'unknown'} - ${DEFAULTS.GLOBAL.FAIL}`));
     console.log(error);
   }
 };
@@ -275,7 +291,7 @@ export const listenLiveThunk = (id) => async (dispatch, getState) => {
     });
   } catch (error) {
     console.log(error.data);
-    dispatch(handleIsNotificationShowAC(true, true, `Error: 400 - ${DEFAULTS.GLOBAL.FAIL}`));
+    dispatch(handleIsNotificationShowAC(true, true, `Error: ${error?.response?.status ?? 400} - ${DEFAULTS.GLOBAL.FAIL}`));
     console.log(error);
   }
 };

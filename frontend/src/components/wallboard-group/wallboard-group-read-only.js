@@ -1,10 +1,9 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import Toolbar from '../toolbar/toolbar';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchWallboardGroupByIdThunk } from 'src/store/thunk/wallboards.thunk';
 import { FetchStatus } from 'src/store/reducers/wallboards.reducer';
-import GridResizeContainer from '../grid/grid.resize-container';
 import { DEFAULTS } from '../../common/defaults/defaults';
 import { fetchAvailabilityProfilesThunk, fetchAvailabilityStatesThunk } from '../../store/thunk/agents.thunk';
 import Slider from '../slider/slider';
@@ -19,25 +18,10 @@ const WallboardGroupReadOnly = () => {
   const teamleaderPermissions = userInfo.isTeamLeader;
   const stepsWithWallboard = useMemo(() => wallboardGroup.steps.filter((step) => step.wallboardId !== null), [wallboardGroup]);
   const noOfStepsWithWallboard = stepsWithWallboard.length;
-  // const [activeStepIndex, handleActiveIndex] = useState(0);
   const isUserAllowedToViewWallboard = wallboardGroup.settings.link.isReadOnlyEnabled
     ? true
     : adminPermissions || (teamleaderPermissions && wallboardGroup.createdByUserId === userInfo.id);
 
-  // useEffect(() => {
-  //   let timeout = null;
-  //   if (noOfStepsWithWallboard) {
-  //     timeout = setTimeout(() => {
-  //       if (activeStepIndex === noOfStepsWithWallboard - 1) {
-  //         handleActiveIndex(0);
-  //       } else {
-  //         handleActiveIndex(activeStepIndex + 1);
-  //       }
-  //       document.querySelector('.c-wallboard--read-only__containner');
-  //     }, stepsWithWallboard[activeStepIndex].stepTime * 1000);
-  //   }
-  //   return () => clearTimeout(timeout);
-  // }, [activeStepIndex, noOfStepsWithWallboard]);
   useEffect(() => {
     dispatch(fetchWallboardGroupByIdThunk({ id }));
     // eslint-disable-next-line

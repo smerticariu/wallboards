@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { CloseIcon } from 'src/assets/static/icons/close';
 import { EditIcon } from 'src/assets/static/icons/edit';
@@ -7,28 +7,25 @@ import {
   setWallboardComponentForDeleteAC,
   setWidgetComponentForEditAC,
 } from 'src/store/actions/modal.action';
-import {
-  changeAgentAvailabilityStateThunk,
-  fetchDevicesSipAgentsThunk,
-  fetchOrganisationAgentsThunk,
-  fetchUserGroupsThunk,
-} from 'src/store/thunk/agents.thunk';
+import { changeAgentAvailabilityStateThunk, fetchOrganisationAgentsThunk, fetchUserGroupsThunk } from 'src/store/thunk/agents.thunk';
 import AgentCard from '../../agent-card/agent-card';
 import AgentListTable from '../../tables/agent-list';
 import { FetchStatus } from 'src/store/reducers/wallboards.reducer';
-import { fetchAgentSkillThunk } from 'src/store/thunk/skills.thunk';
 import moment from 'moment';
 import { DEFAULTS } from '../../../common/defaults/defaults';
 import { PRESENCE_STATE_KEYS, SORT_BY_VALUES } from '../../../common/defaults/modal.defaults';
 const GridAgentList = ({ isEditMode, widget, ...props }) => {
   const dispatch = useDispatch();
-  const agentQueues = useSelector((state) => state.agents.agentsQueues.find((queue) => queue.callQueueId === widget.callQueue.id));
+  const agentsQueues = useSelector((state) => state.agents.agentsQueues);
+  const agentQueues = useMemo(() => agentsQueues[widget.callQueue.id] ?? [], [agentsQueues, widget.callQueue.id]);
+  const organisationUsers = useSelector((state) => state.agents.organisationUsers);
   const agents = useSelector((state) => state.agents);
-  const calls = useSelector((state) => state.agents.calls);
-  const { agentsSkill } = useSelector((state) => state.skills);
+  const callsWithGroup = useSelector((state) => state.agents.callsWithGroup);
+  const agentsSkill = useSelector((state) => state.skills.agentsSkill);
   const [agentsForDisplay, setAgentsForDisplay] = useState([]);
 
-  const { availabilityStates, availabilityProfiles } = useSelector((state) => state.agents);
+  const availabilityStates = useSelector((state) => state.agents.availabilityStates);
+  const availabilityProfiles = useSelector((state) => state.agents.availabilityProfiles);
   const [availabilityStatesList, handleAvailabilityStatesList] = useState([]);
 
   useEffect(() => {
@@ -53,35 +50,27 @@ const GridAgentList = ({ isEditMode, widget, ...props }) => {
       );
     }
   }, [availabilityProfiles, availabilityStates]);
+
   useEffect(() => {
-    dispatch(fetchDevicesSipAgentsThunk());
     dispatch(fetchUserGroupsThunk());
     // eslint-disable-next-line
   }, [widget.callQueue.id]);
 
   useEffect(() => {
-    if (agentQueues?.agents?.length) {
-      agentQueues.agents.forEach((agent) => {
-        dispatch(fetchAgentSkillThunk(agent.userId));
-      });
-    }
-    // eslint-disable-next-line
-  }, [agentQueues]);
-  useEffect(() => {
     dispatch(fetchOrganisationAgentsThunk());
     // eslint-disable-next-line
-  }, [agentQueues?.agents?.length]);
+  }, [agentQueues]);
   useEffect(() => {
     if (
       agents.agentsQueuesFetchStatus === FetchStatus.SUCCESS &&
       agents.organisationUsersFetchStatus === FetchStatus.SUCCESS &&
-      agents.sipDevicesFetchStatus === FetchStatus.SUCCESS &&
       agents.userGroupsFetchStatus === FetchStatus.SUCCESS
     ) {
-      const agentsWithFullInfo = agentQueues?.agents?.map((agentQueue) => {
+      const agentsWithFullInfo = agentQueues.map((agentQueue) => {
         const agentSkills = agentsSkill.find((agentSkills) => agentSkills.agentId === agentQueue.userId);
-        const userCurrentCall = calls.filter((call) => call.userId === agentQueue.userId || call.deviceId === agentQueue.deviceId).pop();
-
+        const userCurrentCall = callsWithGroup
+          .filter((call) => call.userId === agentQueue.userId || call.deviceId === agentQueue.deviceId)
+          .pop();
         const lastAvailabilityStateChangeSeconds = agentQueue.lastAvailabilityStateChange
           ? moment().diff(moment(agentQueue.lastAvailabilityStateChange), 'seconds')
           : 0;
@@ -150,14 +139,15 @@ const GridAgentList = ({ isEditMode, widget, ...props }) => {
             agentStatus = PRESENCE_STATE_KEYS.AGENT_STATUS_IDLE;
         }
 
+        const organisationUser = organisationUsers.find((user) => user.id === agentQueue.userId);
         return {
           ...agentQueue,
           status: agentStatus,
           agentSkills: agentSkills?.skills?.map((skill) => ({ description: skill.description, name: skill.name })) ?? [],
-          sipExtension: agentQueue.organisationUserData?.sipExtension,
-          userName: agentQueue.organisationUserData?.userName,
-          firstName: agentQueue.organisationUserData?.firstName,
-          lastName: agentQueue.organisationUserData?.lastName,
+          sipExtension: organisationUser.sipExtension,
+          userName: organisationUser.userName,
+          firstName: organisationUser.firstName,
+          lastName: organisationUser.lastName,
           timeInCurrentAvailabilityState: lastAvailabilityStateChangeSeconds ?? 0,
           currentCallTimeSeconds:
             userCurrentCall?.answerTime && PRESENCE_STATE_KEYS.AGENT_STATUS_LOGGED_OFF !== agentStatus
@@ -201,8 +191,8 @@ const GridAgentList = ({ isEditMode, widget, ...props }) => {
       });
       setAgentsForDisplay(sortedAgents);
     }
-    // eslint-disable-next-line
-  }, [agents, agentsSkill]);
+  }, [agents, agentQueues, agentsSkill, organisationUsers, callsWithGroup, widget]);
+  // eslint-disable-next-line
 
   const handleEditIcon = () => {
     const onEditClick = () => {

@@ -31,24 +31,22 @@ const GridQueueStatus = ({ isEditMode, widget, ...props }) => {
 
   useEffect(() => {
     let queueStatusValuesCopy = { ...getQueueStatusInitialValues() };
-    if (agentsQueues.length) {
-      const agents = agentsQueues.find((agentQueue) => agentQueue.callQueueId === widget.callQueue.id);
+    const agents = agentsQueues[widget.callQueue.id] ?? [];
 
-      agents?.agents?.forEach((agent) => {
-        ++queueStatusValuesCopy.totalAgents.value;
-        const userCurrentCall = calls.filter((call) => call.userId === agent.userId || call.deviceId === agent.deviceId).pop();
+    agents.forEach((agent) => {
+      ++queueStatusValuesCopy.totalAgents.value;
+      const userCurrentCall = calls.filter((call) => call.userId === agent.userId || call.deviceId === agent.deviceId).pop();
 
-        if (agent.status.toLowerCase() === 'loggedoff') {
-          ++queueStatusValuesCopy.loggedOffAgents.value;
-        } else if (agent.status.toLowerCase() === 'busy' || (agent.status.toLowerCase() === 'idle' && userCurrentCall)) {
-          ++queueStatusValuesCopy.busyAgents.value;
-        } else if (agent.status.toLowerCase() === 'idle' && agent.inWrapUp) {
-          ++queueStatusValuesCopy.wrappedUpAgents.value;
-        } else {
-          ++queueStatusValuesCopy.availableAgents.value;
-        }
-      });
-    }
+      if (agent.status.toLowerCase() === 'loggedoff') {
+        ++queueStatusValuesCopy.loggedOffAgents.value;
+      } else if (agent.status.toLowerCase() === 'busy' || (agent.status.toLowerCase() === 'idle' && userCurrentCall)) {
+        ++queueStatusValuesCopy.busyAgents.value;
+      } else if (agent.status.toLowerCase() === 'idle' && agent.inWrapUp) {
+        ++queueStatusValuesCopy.wrappedUpAgents.value;
+      } else {
+        ++queueStatusValuesCopy.availableAgents.value;
+      }
+    });
     const queuedCalls = queuedCall[widget.callQueue.id] ?? [];
 
     queuedCalls.forEach((call) => {

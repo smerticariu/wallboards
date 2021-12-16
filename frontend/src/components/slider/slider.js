@@ -1,157 +1,86 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ArrowDownIcon } from '../../assets/static/icons/arrow-down';
 import { DEFAULTS } from '../../common/defaults/defaults';
 import GridResizeContainer from '../grid/grid.resize-container';
 import Toolbar from '../toolbar/toolbar';
-import SliderContent from './slider-content';
-
-const getWidth = () => window.innerWidth;
 
 const Slider = ({ slides, ...props }) => {
-  const firstSlide = slides[0];
-  const secondSlide = slides[1];
-  const lastSlide = slides[slides.length - 1];
-
-  const [state, setState] = useState({
-    activeSlide: 0,
-    translate: getWidth(),
-    transition: 0.45,
-    transitioning: false,
-    _slides: [lastSlide, firstSlide, secondSlide],
-  });
-
-  const { activeSlide, translate, _slides, transition, transitioning } = state;
-
-  const autoPlayRef = useRef();
-  const transitionRef = useRef();
-  const resizeRef = useRef();
-  const sliderRef = useRef();
-  const throttleRef = useRef();
-
+  const [activeSlideIndex, setActiveSlideIndex] = useState(0);
+  const [isShowNextAndPrevSlide, handleIsShowNextAndPrevSlide] = useState(false);
   useEffect(() => {
-    autoPlayRef.current = nextSlide;
-    transitionRef.current = smoothTransition;
-    resizeRef.current = handleResize;
-    throttleRef.current = throttleArrows;
-  });
-
-  useEffect(() => {
-    const slider = sliderRef.current;
-
-    const smooth = (e) => {
-      if (e.target.className.includes('slider__content')) {
-        transitionRef.current();
-      }
-    };
-
-    const resize = () => {
-      resizeRef.current();
-    };
-
-    const throttle = (e) => {
-      if (e.target.className.includes('slider__content')) {
-        throttleRef.current();
-      }
-    };
-
-    const transitionStart = slider.addEventListener('transitionstart', throttle);
-    const transitionEnd = slider.addEventListener('transitionend', smooth);
-    const onResize = window.addEventListener('resize', resize);
-
+    handleIsShowNextAndPrevSlide(false);
+    const changeSlideIndexTimeout = setTimeout(nextSlide, slides[activeSlideIndex].stepTime * 1000);
+    const showNextSlideTimeout = setTimeout(() => handleIsShowNextAndPrevSlide(true), (slides[activeSlideIndex].stepTime - 1) * 1000);
     return () => {
-      slider.removeEventListener('transitionend', transitionStart);
-      slider.removeEventListener('transitionend', transitionEnd);
-      window.removeEventListener('resize', onResize);
+      clearTimeout(changeSlideIndexTimeout);
+      clearTimeout(showNextSlideTimeout);
     };
-  }, []);
-
-  useEffect(() => {
-    const play = () => {
-      autoPlayRef.current();
-    };
-
-    let interval = null;
-
-    // if (props.autoPlay) {
-    interval = setInterval(play, slides[activeSlide].stepTime * 1000);
-    // }
-
-    return () => {
-      // if (props.autoPlay) {
-      clearInterval(interval);
-      // }
-    };
-  }, [activeSlide]);
-
-  useEffect(() => {
-    if (transition === 0) setState({ ...state, transition: 0.45, transitioning: false });
-  }, [transition]);
-
-  const throttleArrows = () => {
-    setState({ ...state, transitioning: true });
-  };
-
-  const handleResize = () => {
-    setState({ ...state, translate: getWidth(), transition: 0 });
-  };
-
+    // eslint-disable-next-line
+  }, [activeSlideIndex]);
   const nextSlide = () => {
-    if (transitioning) return;
+    if (!isShowNextAndPrevSlide) handleIsShowNextAndPrevSlide(true);
 
-    setState({
-      ...state,
-      translate: translate + getWidth(),
-      activeSlide: activeSlide === slides.length - 1 ? 0 : activeSlide + 1,
-    });
+    setTimeout(() => {
+      if (activeSlideIndex !== slides.length - 1) {
+        setActiveSlideIndex(activeSlideIndex + 1);
+      } else if (activeSlideIndex === slides.length - 1) {
+        setActiveSlideIndex(0);
+      }
+    }, 0);
   };
 
   const prevSlide = () => {
-    if (transitioning) return;
-
-    setState({
-      ...state,
-      translate: 0,
-      activeSlide: activeSlide === 0 ? slides.length - 1 : activeSlide - 1,
-    });
+    if (!isShowNextAndPrevSlide) handleIsShowNextAndPrevSlide(true);
+    setTimeout(() => {
+      if (activeSlideIndex !== 0) {
+        setActiveSlideIndex(activeSlideIndex - 1);
+      } else if (activeSlideIndex === 0) {
+        setActiveSlideIndex(slides.length - 1);
+      }
+    }, 0);
   };
 
-  const smoothTransition = () => {
-    let _slides = [];
+  const getNewSlide = (stepId, wallboarDId, index, widgets) => (
+    <div
+      key={stepId + wallboarDId}
+      className={
+        activeSlideIndex === index
+          ? 'c-wallboard--read-only__cards c-wallboard--read-only__cards--slider c-wallboard--read-only__cards--slider--active'
+          : 'c-wallboard--read-only__cards c-wallboard--read-only__cards--slider'
+      }
+    >
+      <GridResizeContainer isEditMode={false} widgets={widgets} />
+    </div>
+  );
+  const checkIsStepShow = (index) => {
+    if (index === activeSlideIndex) {
+      return true;
+    }
+    if (!isShowNextAndPrevSlide) return false;
 
-    // We're at the last slide.
-    if (activeSlide === slides.length - 1) _slides = [slides[slides.length - 2], lastSlide, firstSlide];
-    // We're back at the first slide. Just reset to how it was on initial render
-    else if (activeSlide === 0) _slides = [lastSlide, firstSlide, secondSlide];
-    // Create an array of the previous last slide, and the next two slides that follow it.
-    else _slides = slides.slice(activeSlide - 1, activeSlide + 2);
+    if (activeSlideIndex === slides.length - 1 && index === 0) return true;
+    if (index === activeSlideIndex + 1) return true;
 
-    setState({
-      ...state,
-      _slides,
-      transition: 0,
-      translate: getWidth(),
-    });
+    if (activeSlideIndex === 0 && index === slides.length - 1) return true;
+    if (index === activeSlideIndex - 1) return true;
+
+    return false;
   };
   return (
-    <div className="c-wallboard--read-only" ref={sliderRef}>
-      <Toolbar template={DEFAULTS.TOOLBAR.NAME.WALLBOARD_READ_ONLY} wbName={slides[activeSlide].wallboardFulData.name} />
+    <div className="c-wallboard--read-only c-wallboard--read-only--slider">
+      <Toolbar template={DEFAULTS.TOOLBAR.NAME.WALLBOARD_READ_ONLY} wbName={slides[activeSlideIndex].wallboardFulData.name} />
+      <div className="c-wallboard--read-only__component c-wallboard--read-only__component--slider">
+        {slides.reduce((slidesLocal, slide, index) => {
+          if (!checkIsStepShow(index)) {
+            return slidesLocal;
+          }
+          const newSlide = getNewSlide(slide.stepId, slide.wallboardFulData.id, index, slide.wallboardFulData.widgets);
+          return [...slidesLocal, newSlide];
+        }, [])}
+      </div>
 
-      <SliderContent translate={translate} transition={transition} width={getWidth() * _slides.length}>
-        {_slides.map((_slide, i) => (
-          <div
-            key={_slide.stepId + _slide.wallboardFulData.id}
-            className="c-wallboard--read-only__component"
-            style={{ marginLeft: '15px' }}
-          >
-            <div className="c-wallboard--read-only__cards">
-              <GridResizeContainer isEditMode={false} widgets={_slide.wallboardFulData.widgets} />
-            </div>
-          </div>
-        ))}
-      </SliderContent>
-
-      <ArrowDownIcon className="i--arrow i--arrow--left" onClick={prevSlide} />
-      <ArrowDownIcon className="i--arrow i--arrow--right" onClick={nextSlide} />
+      <ArrowDownIcon className="i--arrow i--arrow--slider i--arrow--left" onClick={prevSlide} />
+      <ArrowDownIcon className="i--arrow i--arrow--slider i--arrow--right" onClick={nextSlide} />
     </div>
   );
 };

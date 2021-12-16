@@ -28,6 +28,9 @@
         right: 10px;
       }
     }
+    &--slider {
+      opacity: 0;
+    }
     &--left,
     &--right {
       position: absolute;
