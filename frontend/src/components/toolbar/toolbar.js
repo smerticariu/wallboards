@@ -211,6 +211,8 @@ const Toolbar = (props) => {
           break;
       }
     }
+    dispatch(handleSelectedWallboardCategoryAC('All Wallboards'));
+    dispatch(setFiltredWallboardsAC(''));
     return history.push('/');
   };
 
@@ -262,7 +264,7 @@ const Toolbar = (props) => {
       case DEFAULTS.TOOLBAR.NAME.NEW_WALLBOARD_GROUP: {
         const isRunLinkDisabled =
           !wallboardGroup?.steps?.filter((step) => step.wallboardId)?.length || wallboardGroup.isNewWallboard || !!noOfSteptsForUndo;
-        const runUrl = '/group/' + wallboardGroup.id;
+        const runUrl = '/group/' + btoa(wallboardGroup.id);
 
         const isSaveBtnDisabled = !wallboardGroup.steps?.some((step) => step.wallboardId);
         return (
@@ -281,7 +283,7 @@ const Toolbar = (props) => {
 
       case DEFAULTS.TOOLBAR.NAME.NEW_WALLBOARD: {
         const isRunLinkDisabled = !activeWallboard?.widgets?.length || activeWallboard.isNewWallboard;
-        const runUrl = '/wallboard/' + activeWallboard.id;
+        const runUrl = '/wallboard/' + btoa(activeWallboard.id);
         return (
           <>
             {handleNewComponentButton()}
