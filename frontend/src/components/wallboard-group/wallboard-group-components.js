@@ -12,8 +12,10 @@ import {
   removeStepForWallboardGroupAC,
   removeWallboardForWallboardGroupAC,
 } from '../../store/actions/wallboards.action';
-import { SCREEN_OPTIONS_ID } from '../../common/defaults/wallboards.defaults';
+import { getSvgLastLineInitialValues, SCREEN_OPTIONS_ID, WALLBOARD_SVG_VALUES } from '../../common/defaults/wallboards.defaults';
 import { DEFAULTS } from '../../common/defaults/defaults';
+import SVGLastLine from './common/svg-last-line';
+import { getWallboardGroupLastSvgLineData } from '../../common/utils/getWallboardGroupLastSvgLineData';
 
 const WallboardGroupComponents = () => {
   const wallboardGroup = useSelector((state) => state.wallboards.present.wallboardGroup.wallboardGroup);
@@ -23,18 +25,7 @@ const WallboardGroupComponents = () => {
   const [steps, setSteps] = useState(null);
   const [coords, setCoords] = useState([]);
   const { width } = useWindowSize();
-  const [svgData, setSvgData] = useState({
-    svgSize: {
-      x: 0,
-      y: 0,
-    },
-    arrowTranslate: {
-      x: 0,
-      y: 0,
-      rotate: 0,
-    },
-    points: [],
-  });
+  const [svgData, setSvgData] = useState(getSvgLastLineInitialValues());
   const containerRef = useRef();
   useEffect(() => {
     const getStepsForOneRow = () => {
@@ -61,71 +52,16 @@ const WallboardGroupComponents = () => {
         wallboardGroup.steps
           .map((step, index) => {
             return {
+              ...WALLBOARD_SVG_VALUES,
               start: `${step.stepId}`,
               end: `${index + 1 === stepsNo ? wallboardGroup.steps[0].stepId : wallboardGroup.steps[index + 1].stepId}`,
-              startAnchor: 'auto',
               endAnchor: index === stepsNo - 1 ? 'top' : 'auto',
-              path: 'straight',
-              zIndex: 1,
-              color: '#00a9ce',
-              strokeWidth: 1,
-              headSize: 12,
             };
           })
-          .filter((_, i, arr) => i < arr.length - 1)
+          .filter((_, i, arr) => i < arr.length - 1) // remove last line
       );
 
-      const containerPosition = containerRef.current.getBoundingClientRect();
-      const firstStepPosition = document.getElementById(wallboardGroup.steps[0].stepId).getBoundingClientRect();
-      const lastStepPosition = document.getElementById(wallboardGroup.steps.slice(-1)[0]?.stepId).getBoundingClientRect();
-      const lastElementInRowData = steps.slice(-1)[0].slice(-1)[0];
-      const lastElementInRow = document.getElementById(lastElementInRowData?.stepId).getBoundingClientRect();
-      const lastElementInRowEndPosition = lastElementInRow.left - containerPosition.left + lastElementInRow.width;
-      const firstElementTop = firstStepPosition.top - containerPosition.top;
-      const firstElementLeft = firstStepPosition.left - containerPosition.left;
-      const lastElementTop = lastStepPosition.top - containerPosition.top;
-      const lastElementLeft = lastStepPosition.left - containerPosition.left;
-      const svgSize = {
-        x: containerPosition.width + 50,
-        y: containerPosition.height + 50,
-      };
-      let points = [];
-      let svgEndPoint = [];
-      let arrowTranslate;
-      if (steps.length % 2 === 0) {
-        points.push([lastElementLeft, lastElementTop + lastStepPosition.height / 2]);
-        svgEndPoint = [firstElementLeft, firstElementTop + firstStepPosition.height / 2];
-        points.push([svgEndPoint[0] - 30, points.slice(-1)[0][1]]);
-        points.push([points.slice(-1)[0][0], svgEndPoint[1]]);
-        arrowTranslate = {
-          x: svgEndPoint[0] - 10,
-          y: svgEndPoint[1] - 5,
-          rotate: 0,
-        };
-      } else {
-        points.push([lastElementLeft + lastStepPosition.width, lastElementTop + lastStepPosition.height / 2]);
-        if (steps.length > 1) {
-          const distanceFromLastElementInRow = lastElementInRowData.wallboardId ? 20 : 70;
-          points.push([lastElementInRowEndPosition + distanceFromLastElementInRow, lastElementTop + lastStepPosition.height / 2]);
-        } else {
-          points.push([points.slice(-1)[0][0] + 50, lastElementTop + lastStepPosition.height / 2]);
-        }
-        svgEndPoint = [firstElementLeft + firstStepPosition.width / 2, firstElementTop + firstStepPosition.height];
-        points.push([points.slice(-1)[0][0], svgEndPoint[1] + 50]);
-        points.push([svgEndPoint[0], svgEndPoint[1] + 50]);
-        arrowTranslate = {
-          x: svgEndPoint[0] - 5,
-          y: svgEndPoint[1] + 10,
-          rotate: 270,
-        };
-      }
-
-      points.push(svgEndPoint);
-      setSvgData({
-        svgSize,
-        points,
-        arrowTranslate,
-      });
+      setSvgData(getWallboardGroupLastSvgLineData(containerRef, wallboardGroup, steps));
     } else {
       setCoords([]);
     }
@@ -193,23 +129,12 @@ const WallboardGroupComponents = () => {
             {coords.map((coord) => {
               return <Xarrow key={new Date() * Math.random()} {...coord} />;
             })}
-            {!!svgData.points.length && wallboardGroup.steps.length > 1 && (
-              <div className="wb-group__last-line">
-                <svg width={svgData.svgSize.x} height={svgData.svgSize.y} className="wb-group__last-line-svg">
-                  <path className="wb-group__last-line-path" d={`M ${svgData.points[0]} L ${svgData.points.slice(1)}`} />
-                  <g
-                    className="wb-group__last-line-arrow"
-                    transform={`translate(${svgData.arrowTranslate.x},${svgData.arrowTranslate.y}) rotate(${svgData.arrowTranslate.rotate}) scale(10)`}
-                  >
-                    <path d="M 0 0 L 1 0.5 L 0 1 L 0.25 0.5 z" />
-                  </g>
-                </svg>
-              </div>
-            )}
+            {!!svgData.points.length && wallboardGroup.steps.length > 1 && <SVGLastLine svgData={svgData} />}
           </div>
         )}
         {wallboardGroup.steps.length < 10 && <NewStep />}
       </div>
+
       {activeModal === DEFAULTS.MODAL.MODAL_NAMES.NEW_STEP_WALLBOARD && (
         <ModalNewWallboard selectedWallboardId={selectedStep.wallboardId} onClose={handleActiveModal} stepId={selectedStep.stepId} />
       )}

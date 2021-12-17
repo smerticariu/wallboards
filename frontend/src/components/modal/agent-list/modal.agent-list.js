@@ -111,7 +111,7 @@ const ModalAgentList = ({ ...props }) => {
     };
 
     return (
-      <button className={`c-button c-button--m-left c-button--green`} onClick={onClickAddButton}>
+      <button className={`c-button c-button--m-left c-button--blue`} onClick={onClickAddButton}>
         {agentList.isEditMode ? 'Save' : 'Add'}
       </button>
     );

@@ -8,7 +8,7 @@ const StepWithWallboard = ({ handleChangeStepTime, handleScreenOptionClick, step
   return (
     <div className="step" id={step.stepId}>
       <div className="step__container">
-        <StepWallboard />
+        <StepWallboard wallboardFulData={step.wallboardFulData} />
         <div className="step__footer">
           <div className="step__footer-walboard">
             <div className="step__footer-wallboard-name">{step.wallboardName}</div>

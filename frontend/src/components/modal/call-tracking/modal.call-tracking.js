@@ -14,25 +14,9 @@ const ModalCallTracking = ({ ...props }) => {
   const modalRef = useRef(null);
   const dispatch = useDispatch();
   const callTracking = useSelector((state) => state.modal.callTracking);
-  const { allCallsQueues } = useSelector((state) => state.callsQueues);
   const { userInfo } = useSelector((state) => state.login);
   const userGroups = useSelector((state) => state.agents.userGroups);
   const [userGroupsLocal, setUserGroupsLocal] = useState([{ ...DEFAULTS.MODAL.CALL_TRACKING.USER_GROUP }]);
-  useEffect(() => {
-    if (callTracking.isEditMode) return;
-    if (allCallsQueues.length) {
-      dispatch(
-        handleCallTrackingDataAC({
-          callQueue: {
-            id: allCallsQueues[0].id,
-            value: allCallsQueues[0].name,
-            errorMessage: '',
-          },
-        })
-      );
-    }
-    // eslint-disable-next-line
-  }, [allCallsQueues]);
   useEffect(() => {
     if (userGroups.length) {
       setUserGroupsLocal([{ ...DEFAULTS.MODAL.CALL_TRACKING.USER_GROUP }, ...userGroups]);
@@ -138,22 +122,6 @@ const ModalCallTracking = ({ ...props }) => {
           <div className="c-modal--add-component__input-label">{DEFAULTS.MODAL.CALL_TRACKING.SECTION_TITLE.GROUP}</div>
           <select name="group" className="c-select" onChange={(e) => handleInputAndSelect(e, 'select')} value={callTracking.group.id}>
             {userGroupsLocal.map((option) => (
-              <option key={option.id} value={option.id}>
-                {option.name}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div className="c-modal--add-component__input-section">
-          <div className="c-modal--add-component__input-label">{DEFAULTS.MODAL.CALL_TRACKING.SECTION_TITLE.CALL_QUEUE}</div>
-          <select
-            name="callQueue"
-            className="c-select"
-            onChange={(e) => handleInputAndSelect(e, 'select')}
-            value={callTracking.callQueue.id}
-          >
-            {allCallsQueues.map((option) => (
               <option key={option.id} value={option.id}>
                 {option.name}
               </option>

@@ -73,7 +73,7 @@ const QueueListTable = ({ isPreviewMode, isEditMode, tableData, widget, ...props
             .localeCompare(call2[QUEUE_LIST_COLUMN_OPTIONS.CALLER_NAME].toUpperCase());
           break;
         case QUEUE_LIST_COLUMN_OPTIONS.PRIORITY:
-          compareRespone = call2[QUEUE_LIST_COLUMN_OPTIONS.PRIORITY] - call1[QUEUE_LIST_COLUMN_OPTIONS.PRIORITY];
+          compareRespone = call1[QUEUE_LIST_COLUMN_OPTIONS.PRIORITY] - call2[QUEUE_LIST_COLUMN_OPTIONS.PRIORITY];
           break;
         case QUEUE_LIST_COLUMN_OPTIONS.TIME_WAITING_IN_QUEUE:
           compareRespone = call2[QUEUE_LIST_COLUMN_OPTIONS.TIME_WAITING_IN_QUEUE] - call1[QUEUE_LIST_COLUMN_OPTIONS.TIME_WAITING_IN_QUEUE];

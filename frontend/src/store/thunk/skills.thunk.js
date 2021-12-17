@@ -31,19 +31,29 @@ export const fetchAllSkillsThunk = () => async (dispatch, getState) => {
 };
 
 export const fetchAgentSkillThunk = (userId) => async (dispatch, getState) => {
-  dispatch(fetchAgentsSkillsAC());
   try {
-    const { userInfo, token, sapienUrl } = getState().login;
+    const state = getState();
+    const { userInfo, token, sapienUrl } = state.login;
+    const allSkills = state.skills.agentsSkill;
+    const reduxAgentSkills = allSkills.find((agentSkills) => agentSkills.agentId === userId);
+    if (!reduxAgentSkills) {
+      dispatch(fetchAgentsSkillsAC());
+    }
 
-    const agentSkills = await AgentsApi({
+    const response = await AgentsApi({
       type: DEFAULTS.AGENTS.API.GET.AGENT_SKILLS,
       organizationId: userInfo.organisationId,
       token,
       agentId: userId,
       sapienUrl,
     });
+    const agentSkills = response.data.data;
+    const reduxAgentSkillSorted = reduxAgentSkills ? [...reduxAgentSkills.skills].sort((skill1, skill2) => skill1.id - skill2.id) : null;
+    const agentSkillsSorted = [...agentSkills].sort((skill1, skill2) => skill1.id - skill2.id);
 
-    dispatch(fetchAgentsSkillsSuccessAC(userId, agentSkills.data.data));
+    if (JSON.stringify(reduxAgentSkillSorted) !== JSON.stringify(agentSkillsSorted)) {
+      dispatch(fetchAgentsSkillsSuccessAC(userId, agentSkills));
+    }
   } catch (error) {
     dispatch(fetchAgentsSkillsFailAC(userId, DEFAULTS.GLOBAL.FAIL));
     console.log(error);

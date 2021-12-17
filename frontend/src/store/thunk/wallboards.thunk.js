@@ -2,6 +2,7 @@ import { WallboardsApi } from '../../common/api/wallboards.api';
 import { DEFAULTS } from '../../common/defaults/defaults';
 import { checkIsAlphanumeric } from '../../common/utils/alphanumeric-validation';
 import { generateWallboardGroupId, generateWallboardId } from '../../common/utils/generateId';
+import { getWallboardPrintScreen } from '../../common/utils/getWallboardPrintScreen';
 import { handleWarningMessageAC } from '../actions/modal.action';
 import { handleIsNotificationShowAC } from '../actions/notification.action';
 import {
@@ -11,6 +12,7 @@ import {
   fetchWallboardByIdAC,
   fetchWallboardByIdFailAC,
   fetchWallboardByIdSuccessAC,
+  fetchWallboardForWallboardGroupAC,
   fetchWallboardGroupByIdAC,
   fetchWallboardGroupByIdFailAC,
   fetchWallboardGroupByIdSuccessAC,
@@ -64,6 +66,25 @@ export const fetchWallboardByIdThunk =
       console.log(error);
     }
   };
+export const fetchWallboardForWallboardGroupThunk = (id, stepId) => async (dispatch, getState) => {
+  try {
+    const { userInfo, token, storeUrl } = getState().login;
+
+    const response = await WallboardsApi({
+      type: DEFAULTS.WALLBOARDS.API.GET.BY_ID,
+      organizationId: userInfo.organisationId,
+      wallboardId: id,
+      token,
+      storeUrl,
+    });
+    const wallboardById = response.data;
+
+    dispatch(fetchWallboardForWallboardGroupAC(wallboardById, stepId));
+  } catch (error) {
+    dispatch(fetchWallboardForWallboardGroupAC(null, stepId));
+    console.log(error);
+  }
+};
 export const fetchWallboardGroupByIdThunk =
   ({ id }) =>
   async (dispatch, getState) => {
@@ -79,47 +100,58 @@ export const fetchWallboardGroupByIdThunk =
         token,
         storeUrl,
       });
-      let wallboardById = response.data;
+      let wallboardGroupById = response.data;
 
-      const allWallboards = await WallboardsApi({
-        type: DEFAULTS.WALLBOARDS.API.GET.ALL_WALLBOARDS_VIA_CONFIG,
-        organizationId: userInfo.organisationId,
-        token,
-        storeUrl,
-      });
+      wallboardGroupById.steps = await Promise.all(
+        wallboardGroupById.steps.map(async (step) => {
+          if (!step.wallboardId) {
+            return step;
+          }
 
-      wallboardById.steps = wallboardById.steps.map((step) => {
-        const wallboard = allWallboards.data.find((wb) => wb.id === step.wallboardId);
-        const isStepForDelete = step.wallboardId && !wallboard;
-        return isStepForDelete
-          ? {
+          try {
+            const responseWallboard = await WallboardsApi({
+              type: DEFAULTS.WALLBOARDS.API.GET.BY_ID,
+              organizationId: userInfo.organisationId,
+              wallboardId: step.wallboardId,
+              token,
+              storeUrl,
+            });
+            return {
+              ...step,
+              wallboardName: responseWallboard.data.name,
+              wallboardFulData: responseWallboard.data,
+              wallboardDescription: responseWallboard.data.description,
+            };
+          } catch (wallboardError) {
+            return {
               ...step,
               wallboardId: null,
               wallboardName: null,
               wallboardDescription: null,
-            }
-          : {
-              ...step,
-              wallboardName: wallboard ? wallboard.name : step.name,
-              wallboardDescription: wallboard ? wallboard.description : step.wallboardDescription,
             };
-      });
+          }
+        })
+      );
 
-      await WallboardsApi({
+      WallboardsApi({
         type: DEFAULTS.WALLBOARDS.API.SAVE.WALLBOARD_GROUP,
         organizationId: userInfo.organisationId,
         token,
         data: {
-          ...wallboardById,
+          ...wallboardGroupById,
+          steps: wallboardGroupById.steps.map((step) => {
+            const { wallboardFulData, ...stepWithoutWallboard } = step;
+            return stepWithoutWallboard;
+          }),
           lastView: currentDate,
         },
         storeUrl,
         wallboardId: id,
       });
 
-      dispatch(updateConfig({ ...wallboardById, lastView: currentDate }, DEFAULTS.WALLBOARDS.API.SAVE.WALLBOARD));
+      dispatch(updateConfig({ ...wallboardGroupById, lastView: currentDate }, DEFAULTS.WALLBOARDS.API.SAVE.WALLBOARD));
 
-      dispatch(fetchWallboardGroupByIdSuccessAC(wallboardById));
+      dispatch(fetchWallboardGroupByIdSuccessAC(wallboardGroupById));
     } catch (error) {
       console.log(error);
       dispatch(fetchWallboardGroupByIdFailAC(DEFAULTS.GLOBAL.FAIL, error?.response?.status));
@@ -158,6 +190,7 @@ export const saveWallboardThunk = () => async (dispatch, getState) => {
   if (!checkIsAlphanumeric(activeWallboard.name)) {
     return dispatch(handleWarningMessageAC(DEFAULTS.WALLBOARDS.MESSAGE.NAME_WARNING));
   }
+  const wallboardPrintScreen = await getWallboardPrintScreen();
   try {
     dispatch(saveWallboardAC());
     const currentDate = new Date().getTime();
@@ -172,6 +205,7 @@ export const saveWallboardThunk = () => async (dispatch, getState) => {
       lastView: currentDate,
       description: activeWallboard.description,
       widgets: activeWallboard.widgets,
+      imageBase64: wallboardPrintScreen,
       settings: activeWallboard.settings,
     };
 
