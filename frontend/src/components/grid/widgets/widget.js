@@ -1,6 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchAllAgentsThunk, fetchUsersCurrentCallTimeThunk } from '../../../store/thunk/agents.thunk';
+import {
+  fetchAllAgentsThunk,
+  fetchUserLoginDataThunk,
+  fetchUsersCurrentCallTimeThunk,
+  fetchUserStatusDataThunk,
+} from '../../../store/thunk/agents.thunk';
 import GridAgentList from './agent-list';
 import GridAgentLogin from './agent-login';
 import GridCallStatus from './call-status';
@@ -11,9 +16,13 @@ import { WIDGET_TYPE } from '../../../common/defaults/modal.defaults';
 import GridAgentStatus from './agent-status';
 import GridQueueList from './queue-list';
 import { fetchAgentSkillThunk } from '../../../store/thunk/skills.thunk';
+import { getTimes } from '../../../common/utils/getTimes';
+import { getTimesAgentstatus } from '../../../common/utils/getTimesAgentstatus';
+import { fetchCallStatisticThunk, fetchQueuedCallThunk, fetchQueueStatisticsThunk } from '../../../store/thunk/callsQueues.thunk';
+import { getTimesCallTracking } from '../../../common/utils/getTimesCallTracking';
 const Widget = ({ widget, isEditMode, ...props }) => {
   const agentsQueues = useSelector((state) => state.agents.agentsQueues);
-  const agentQueues = agentsQueues[widget?.callQueue?.id] ?? [];
+  const agentQueues = useMemo(() => agentsQueues[widget?.callQueue?.id] ?? [], [agentsQueues, widget?.callQueue?.id]);
 
   const dispatch = useDispatch();
 
@@ -24,14 +33,35 @@ const Widget = ({ widget, isEditMode, ...props }) => {
     }, 2000);
     return () => clearInterval(agentsInterval);
     // eslint-disable-next-line
-  }, [widget, agentsQueues]);
+  }, [widget, agentQueues.length]);
 
   const fetchData = () => {
-    if (widget.type === WIDGET_TYPE.AGENT_LIST || widget.type === WIDGET_TYPE.CALL_STATUS || widget.type === WIDGET_TYPE.QUEUE_LIST)
+    if (
+      widget.type === WIDGET_TYPE.AGENT_LIST ||
+      widget.type === WIDGET_TYPE.CALL_STATUS ||
+      widget.type === WIDGET_TYPE.QUEUE_LIST ||
+      widget.type === WIDGET_TYPE.QUEUE_STATUS
+    )
       dispatch(fetchUsersCurrentCallTimeThunk());
     if (widget.type === WIDGET_TYPE.QUEUE_STATUS || widget.type === WIDGET_TYPE.AGENT_LIST || widget.type === WIDGET_TYPE.QUEUE_LIST) {
       dispatch(fetchAllAgentsThunk(widget.callQueue.id));
     }
+    if (widget.type === WIDGET_TYPE.AGENT_LOGIN) {
+      dispatch(fetchUserLoginDataThunk(getTimes(widget), widget.id, widget.group.id));
+    }
+    if (widget.type === WIDGET_TYPE.AGENT_STATUS) {
+      dispatch(fetchUserStatusDataThunk(getTimesAgentstatus(widget), widget.profile.id, widget.limitResult.value, widget.id));
+    }
+    if (widget.type === WIDGET_TYPE.CALL_TRACKING) {
+      dispatch(fetchCallStatisticThunk(getTimesCallTracking(widget), widget.id));
+    }
+    if (widget.type === WIDGET_TYPE.QUEUE_LIST || widget.type === WIDGET_TYPE.QUEUE_STATUS) {
+      dispatch(fetchQueuedCallThunk(widget.callQueue.id));
+    }
+    if (widget.type === WIDGET_TYPE.QUEUE_TRACKING) {
+      dispatch(fetchQueueStatisticsThunk(getTimesCallTracking(widget), widget.id, widget.callQueue.id));
+    }
+
     if (widget.type === WIDGET_TYPE.AGENT_LIST) {
       if (agentQueues.length) {
         agentQueues.forEach((agent) => {

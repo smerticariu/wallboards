@@ -5,7 +5,6 @@ import { callsToObject } from '../../../common/utils/callsToObject';
 import { findTimeAtHeadOfQueue } from '../../../common/utils/findTimeAtHeadOfQueue';
 import { findTimeInQueue } from '../../../common/utils/findTimeInQueue';
 import { fetchOrganisationAgentsThunk } from '../../../store/thunk/agents.thunk';
-import { fetchQueuedCallThunk } from '../../../store/thunk/callsQueues.thunk';
 import QueueListTable from '../../tables/table.queue-list';
 
 const GridQueueList = ({ widget, ...props }) => {
@@ -16,14 +15,6 @@ const GridQueueList = ({ widget, ...props }) => {
 
   const dispatch = useDispatch();
   const [tableData, setTableData] = useState([]);
-  useEffect(() => {
-    dispatch(fetchQueuedCallThunk(widget.callQueue.id));
-    const interval = setInterval(() => {
-      dispatch(fetchQueuedCallThunk(widget.callQueue.id));
-    }, [2000]);
-    return () => clearInterval(interval);
-    // eslint-disable-next-line
-  }, [widget]);
 
   useEffect(() => {
     dispatch(fetchOrganisationAgentsThunk());

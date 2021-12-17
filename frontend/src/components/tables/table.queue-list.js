@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { CloseIcon } from 'src/assets/static/icons/close';
 import {
@@ -10,6 +10,7 @@ import { EditIcon } from '../../assets/static/icons/edit';
 import { SettingsIcon } from '../../assets/static/icons/settings';
 import { DEFAULTS } from '../../common/defaults/defaults';
 import { QUEUE_LIST_COLUMN_OPTIONS, QUEUE_LIST_INTERACTIVITY_OPTIONS_KEYS } from '../../common/defaults/modal.defaults';
+import { sortQueueList } from '../../common/sort/sort.queue-list';
 import { findCountruByPhoneNo } from '../../common/utils/findCountruByPhoneNo';
 import { listenLiveThunk } from '../../store/thunk/agents.thunk';
 import Dropdown from '../dropdown/dropdown';
@@ -19,6 +20,8 @@ import TimeInterval from '../time-interval/time-interval';
 const QueueListTable = ({ isPreviewMode, isEditMode, tableData, widget, ...props }) => {
   const dispatch = useDispatch();
   const [sortByOption, handleSortByOption] = useState({ sortBy: widget.sortBy, descending: false });
+  const sortedTableData = useMemo(() => sortQueueList(sortByOption, tableData), [sortByOption, tableData]);
+
   useEffect(() => {
     handleSortByOption({ sortBy: widget.sortBy, descending: false });
   }, [widget.sortBy]);
@@ -59,72 +62,6 @@ const QueueListTable = ({ isPreviewMode, isEditMode, tableData, widget, ...props
     if (isPreviewMode) return;
     dispatch(listenLiveThunk(agentId));
   };
-
-  const sortData = ({ sortBy, descending }) => {
-    const sortedTableData = [...tableData].sort((call1, call2) => {
-      let compareRespone = 0;
-      switch (sortBy) {
-        case QUEUE_LIST_COLUMN_OPTIONS.POSITION_IN_QUEUE:
-          compareRespone = call1[QUEUE_LIST_COLUMN_OPTIONS.POSITION_IN_QUEUE] - call2[QUEUE_LIST_COLUMN_OPTIONS.POSITION_IN_QUEUE];
-          break;
-        case QUEUE_LIST_COLUMN_OPTIONS.CALLER_NAME:
-          compareRespone = call1[QUEUE_LIST_COLUMN_OPTIONS.CALLER_NAME]
-            .toUpperCase()
-            .localeCompare(call2[QUEUE_LIST_COLUMN_OPTIONS.CALLER_NAME].toUpperCase());
-          break;
-        case QUEUE_LIST_COLUMN_OPTIONS.PRIORITY:
-          compareRespone = call1[QUEUE_LIST_COLUMN_OPTIONS.PRIORITY] - call2[QUEUE_LIST_COLUMN_OPTIONS.PRIORITY];
-          break;
-        case QUEUE_LIST_COLUMN_OPTIONS.TIME_WAITING_IN_QUEUE:
-          compareRespone = call2[QUEUE_LIST_COLUMN_OPTIONS.TIME_WAITING_IN_QUEUE] - call1[QUEUE_LIST_COLUMN_OPTIONS.TIME_WAITING_IN_QUEUE];
-          break;
-        case QUEUE_LIST_COLUMN_OPTIONS.DIAL_ATTEMPTS:
-          compareRespone = call2[QUEUE_LIST_COLUMN_OPTIONS.DIAL_ATTEMPTS] - call1[QUEUE_LIST_COLUMN_OPTIONS.DIAL_ATTEMPTS];
-          break;
-        case QUEUE_LIST_COLUMN_OPTIONS.CALLER_NUMBER:
-          compareRespone =
-            +call2[QUEUE_LIST_COLUMN_OPTIONS.CALLER_NUMBER].replace(/\s/g, '') -
-            +call1[QUEUE_LIST_COLUMN_OPTIONS.CALLER_NUMBER].replace(/\s/g, '');
-          break;
-        case QUEUE_LIST_COLUMN_OPTIONS.STATUS:
-          compareRespone = call1[QUEUE_LIST_COLUMN_OPTIONS.STATUS]
-            .toUpperCase()
-            .localeCompare(call2[QUEUE_LIST_COLUMN_OPTIONS.STATUS].toUpperCase());
-          break;
-        case QUEUE_LIST_COLUMN_OPTIONS.AGENT_CONNECTED_TO:
-          if (!call1[QUEUE_LIST_COLUMN_OPTIONS.AGENT_CONNECTED_TO]) compareRespone = 1;
-          if (!call2[QUEUE_LIST_COLUMN_OPTIONS.AGENT_CONNECTED_TO]) compareRespone = -1;
-          compareRespone = call1[QUEUE_LIST_COLUMN_OPTIONS.AGENT_CONNECTED_TO]
-            .toUpperCase()
-            .localeCompare(call2[QUEUE_LIST_COLUMN_OPTIONS.AGENT_CONNECTED_TO].toUpperCase());
-          break;
-        case QUEUE_LIST_COLUMN_OPTIONS.TIME_AT_HEAD_OF_QUEUE:
-          compareRespone = call2[QUEUE_LIST_COLUMN_OPTIONS.TIME_AT_HEAD_OF_QUEUE] - call1[QUEUE_LIST_COLUMN_OPTIONS.TIME_AT_HEAD_OF_QUEUE];
-          break;
-        case QUEUE_LIST_COLUMN_OPTIONS.CALLBACK_REQUESTED:
-          compareRespone =
-            call1[QUEUE_LIST_COLUMN_OPTIONS.CALLBACK_REQUESTED] === call2[QUEUE_LIST_COLUMN_OPTIONS.CALLBACK_REQUESTED]
-              ? 0
-              : call1[QUEUE_LIST_COLUMN_OPTIONS.CALLBACK_REQUESTED]
-              ? -1
-              : 1;
-          break;
-        case QUEUE_LIST_COLUMN_OPTIONS.CALLBACK_ATTEMPTS:
-          compareRespone = call2[QUEUE_LIST_COLUMN_OPTIONS.CALLBACK_ATTEMPTS] - call1[QUEUE_LIST_COLUMN_OPTIONS.CALLBACK_ATTEMPTS];
-
-          break;
-        default:
-          compareRespone = 0;
-      }
-      if (descending) {
-        return 0 - compareRespone;
-      }
-      return compareRespone;
-    });
-    return sortedTableData;
-  };
-
-  const sortedTableData = sortData(sortByOption);
 
   return (
     <div className="widget">

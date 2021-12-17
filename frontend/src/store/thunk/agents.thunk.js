@@ -212,7 +212,7 @@ export const fetchUsersCurrentCallTimeThunk = () => async (dispatch, getState) =
   try {
     const state = getState();
     const { userInfo, token, sapienUrl } = state.login;
-    const reduxCallsWithGroup = state.agents.callsWithGroup;
+    const reduxcallsWithLogicalDirection = state.agents.callsWithLogicalDirection;
 
     const response = await CallsApi({
       type: DEFAULTS.CALLS.API.GET.CALLS,
@@ -226,7 +226,7 @@ export const fetchUsersCurrentCallTimeThunk = () => async (dispatch, getState) =
     }, []);
 
     const callsSorted = [...callsWithLogicalDirection].sort((call1, call2) => call1.uuid - call2.uuid);
-    const reduxCallsWithGroupSorted = [...reduxCallsWithGroup].sort((call1, call2) => call1.uuid - call2.uuid);
+    const reduxCallsWithGroupSorted = [...reduxcallsWithLogicalDirection].sort((call1, call2) => call1.uuid - call2.uuid);
     if (JSON.stringify(callsSorted) !== JSON.stringify(reduxCallsWithGroupSorted)) {
       dispatch(fetchUsersCurrentCallTimeSuccessAC(callsWithLogicalDirection, response.data.data));
     }

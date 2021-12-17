@@ -8,9 +8,7 @@ import {
 } from 'src/store/actions/modal.action';
 import moment from 'moment';
 import { DEFAULTS } from '../../../common/defaults/defaults';
-import { fetchQueuedCallThunk } from '../../../store/thunk/callsQueues.thunk';
 import { getQueueStatusInitialValues } from '../../../common/defaults/wallboards.defaults';
-import { fetchUsersCurrentCallTimeThunk } from '../../../store/thunk/agents.thunk';
 import { EditIcon } from '../../../assets/static/icons/edit';
 
 const GridQueueStatus = ({ isEditMode, widget, ...props }) => {
@@ -20,15 +18,6 @@ const GridQueueStatus = ({ isEditMode, widget, ...props }) => {
 
   const queuedCall = useSelector((state) => state.callsQueues.queuedCall);
   const [queueStatusValues, handleQueueStatusValues] = useState({ ...getQueueStatusInitialValues() });
-  useEffect(() => {
-    const interval = setInterval(() => {
-      dispatch(fetchQueuedCallThunk(widget.callQueue.id));
-      dispatch(fetchUsersCurrentCallTimeThunk());
-    }, [2000]);
-    return () => clearInterval(interval);
-    // eslint-disable-next-line
-  }, [widget.callQueue.id]);
-
   useEffect(() => {
     let queueStatusValuesCopy = { ...getQueueStatusInitialValues() };
     const agents = agentsQueues[widget.callQueue.id] ?? [];
