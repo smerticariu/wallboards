@@ -44,7 +44,7 @@ const ModalAgentStatus = ({ ...props }) => {
     };
 
     return (
-      <button className="c-button  c-button--m-left" onClick={onClickCancelButton}>
+      <button className="c-button" onClick={onClickCancelButton}>
         Cancel
       </button>
     );
@@ -92,7 +92,7 @@ const ModalAgentStatus = ({ ...props }) => {
     };
 
     return (
-      <button className={`c-button c-button--blue`} onClick={onClickAddButton}>
+      <button className="c-button c-button--blue c-button--m-left" onClick={onClickAddButton}>
         {agentStatus.isEditMode ? 'Save' : 'Add'}
       </button>
     );
@@ -323,8 +323,8 @@ const ModalAgentStatus = ({ ...props }) => {
           </div>
         </div>
         <div className="c-modal__buttons">
-          {handleAddButton()}
           {handleCancelButton()}
+          {handleAddButton()}
         </div>
       </div>
     );

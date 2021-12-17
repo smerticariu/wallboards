@@ -7,7 +7,7 @@ import AgentLoginTable from '../../tables/table.agent-login';
 
 const GridAgentLogin = ({ widget, ...props }) => {
   const userLoginData = useSelector((state) => state.agents.userLoginData);
-  const allAgents = useSelector((state) => state.agents.allAgents);
+  const organisationUsers = useSelector((state) => state.agents.organisationUsers);
   const userGroups = useSelector((state) => state.agents.userGroups);
   const dispatch = useDispatch();
   const [tableData, setTableData] = useState([]);
@@ -26,14 +26,14 @@ const GridAgentLogin = ({ widget, ...props }) => {
   }, []);
   useEffect(() => {
     const userLoginDataForWidget = userLoginData.find((loginData) => loginData.widgetId === widget.id);
-    if (userLoginDataForWidget && allAgents.length && userGroups.length) {
+    if (userLoginDataForWidget && organisationUsers.length && userGroups.length) {
       let users = [];
       [...userLoginDataForWidget.userLoginData]
         .sort((user1, user2) => new Date(user2.time).getTime() - new Date(user1.time).getTime())
         .filter((user) => Number(widget.group.id) === -1 || user.groupId === widget.group.id)
         .forEach((user) => {
           const group = userGroups.find((group) => user.groupId === group.id);
-          const agent = allAgents.find((agent) => agent.id === user.userId);
+          const agent = organisationUsers.find((agent) => agent.id === user.userId);
           users.push({
             groupName: group.name,
             name: agent.firstName + ' ' + agent.lastName,
@@ -47,7 +47,7 @@ const GridAgentLogin = ({ widget, ...props }) => {
       setTableData(users);
     }
     // eslint-disable-next-line
-  }, [allAgents, userGroups, userLoginData]);
+  }, [organisationUsers, userGroups, userLoginData]);
 
   return <AgentLoginTable {...props} widget={widget} tableData={tableData} />;
 };

@@ -25,7 +25,6 @@ import { SettingsIcon } from '../../assets/static/icons/settings';
 import { DEFAULTS } from '../../common/defaults/defaults';
 import { useAuth0 } from '@auth0/auth0-react';
 import AutoWidthInput from '../input/AutoWidthInput';
-
 const Toolbar = (props) => {
   const dispatch = useDispatch();
   const [wbSearchValue, setWbSearchValue] = useState('');
@@ -187,6 +186,7 @@ const Toolbar = (props) => {
     const handleClick = () => {
       return dispatch(functionForDispatch());
     };
+
     return (
       <button
         onClick={() => {
@@ -206,7 +206,9 @@ const Toolbar = (props) => {
         case DEFAULTS.TOOLBAR.NAME.NEW_WALLBOARD:
           return dispatch(handleWallboardActiveModalAC(DEFAULTS.MODAL.MODAL_NAMES.SAVE_WALLBOARD));
         case DEFAULTS.TOOLBAR.NAME.NEW_WALLBOARD_GROUP:
-          return dispatch(handleWallboardActiveModalAC(DEFAULTS.MODAL.MODAL_NAMES.SAVE_WALLBOARD_GROUP));
+          const isBtnDisabled = !wallboardGroup.steps?.some((step) => step.wallboardId);
+          if (!isBtnDisabled) return dispatch(handleWallboardActiveModalAC(DEFAULTS.MODAL.MODAL_NAMES.SAVE_WALLBOARD_GROUP));
+          break;
         default:
           break;
       }

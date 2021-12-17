@@ -43,7 +43,7 @@ const ModalAgentLogin = ({ ...props }) => {
     };
 
     return (
-      <button className="c-button  c-button--m-left" onClick={onClickCancelButton}>
+      <button className="c-button" onClick={onClickCancelButton}>
         Cancel
       </button>
     );
@@ -91,7 +91,7 @@ const ModalAgentLogin = ({ ...props }) => {
     };
 
     return (
-      <button className={`c-button c-button--blue`} onClick={onClickAddButton}>
+      <button className="c-button c-button--blue c-button--m-left" onClick={onClickAddButton}>
         {agentLogin.isEditMode ? 'Save' : 'Add'}
       </button>
     );
@@ -103,7 +103,7 @@ const ModalAgentLogin = ({ ...props }) => {
       let timeEnd = moment(agentLogin.to.value).utcOffset(agentLogin.timeZone.id).endOf('day');
       timeStart = timeStart.format();
       timeEnd = timeEnd.format();
-      dispatch(exportCSVUserLoginDataThunk({ timeStart, timeEnd }, +agentLogin.group.id, +agentLogin.limitResult.value));
+      dispatch(exportCSVUserLoginDataThunk({ timeStart, timeEnd }, +agentLogin.timeZone.id, +agentLogin.group.id));
     };
 
     return (
@@ -281,8 +281,8 @@ const ModalAgentLogin = ({ ...props }) => {
           />
         </div>
         <div className="c-modal__buttons">
-          {handleAddButton()}
           {handleCancelButton()}
+          {handleAddButton()}
         </div>
       </div>
     );

@@ -78,7 +78,7 @@ const ModalEditWallboardGroup = ({ ...props }) => {
 
   const currentDate = new Date().getTime();
   const groupId = btoa(`${activeWallboardGroupId}?d=${currentDate}`);
-  const wallboardLink = `${config.redirectUri}#/group/${groupId}`;
+  const wallboardLink = `${config.envHost}#/group/${groupId}`;
 
   return (
     <div className={`c-modal c-modal--open`}>
