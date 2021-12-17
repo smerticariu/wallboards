@@ -15,7 +15,7 @@ import { EditIcon } from '../../../assets/static/icons/edit';
 
 const GridQueueStatus = ({ isEditMode, widget, ...props }) => {
   const dispatch = useDispatch();
-  const calls = useSelector((state) => state.agents.calls);
+  const callsWithLogicalDirection = useSelector((state) => state.agents.callsWithLogicalDirection);
   const agentsQueues = useSelector((state) => state.agents.agentsQueues);
 
   const queuedCall = useSelector((state) => state.callsQueues.queuedCall);
@@ -35,7 +35,9 @@ const GridQueueStatus = ({ isEditMode, widget, ...props }) => {
 
     agents.forEach((agent) => {
       ++queueStatusValuesCopy.totalAgents.value;
-      const userCurrentCall = calls.filter((call) => call.userId === agent.userId || call.deviceId === agent.deviceId).pop();
+      const userCurrentCall = callsWithLogicalDirection
+        .filter((call) => call.userId === agent.userId || call.deviceId === agent.deviceId)
+        .pop();
 
       if (agent.status.toLowerCase() === 'loggedoff') {
         ++queueStatusValuesCopy.loggedOffAgents.value;
@@ -65,7 +67,7 @@ const GridQueueStatus = ({ isEditMode, widget, ...props }) => {
     });
     handleQueueStatusValues(queueStatusValuesCopy);
     // eslint-disable-next-line
-  }, [calls, agentsQueues]);
+  }, [callsWithLogicalDirection, agentsQueues]);
 
   const handleEditIcon = () => {
     const onEditClick = () => {
@@ -82,7 +84,7 @@ const GridQueueStatus = ({ isEditMode, widget, ...props }) => {
   const findEndWait = (call) => {
     let end = moment.utc();
     if (call.status.toLowerCase() === 'bridged' || call.status.toLowerCase() === 'connected') {
-      const findCall = calls.find((callFromBE) => callFromBE.uuid === call.uuid);
+      const findCall = callsWithLogicalDirection.find((callFromBE) => callFromBE.uuid === call.uuid);
       if (findCall?.answerTime) {
         end = moment.utc(findCall.answerTime);
       }

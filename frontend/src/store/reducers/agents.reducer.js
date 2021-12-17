@@ -21,7 +21,7 @@ export const agentsInitialState = {
   availabilityStates: [],
   availabilityStatesFetchStatus: FetchStatus.NULL,
 
-  calls: [],
+  callsWithLogicalDirection: [],
   callsWithGroup: [],
 
   userLoginData: [],
@@ -170,10 +170,10 @@ export const agentsReducer = (state = agentsInitialState, action) => {
         })),
       };
     case agentsActions.FETCH_USERS_CURRENT_CALL_TIME_SUCCESS:
-      const { calls, callsWithGroup } = action.payload;
+      const { callsWithLogicalDirection, callsWithGroup } = action.payload;
       return {
         ...state,
-        calls,
+        callsWithLogicalDirection,
         callsWithGroup,
       };
 

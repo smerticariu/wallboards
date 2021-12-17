@@ -78,9 +78,12 @@ const Slider = ({ slides, ...props }) => {
           return [...slidesLocal, newSlide];
         }, [])}
       </div>
-
-      <ArrowDownIcon className="i--arrow i--arrow--slider i--arrow--left" onClick={prevSlide} />
-      <ArrowDownIcon className="i--arrow i--arrow--slider i--arrow--right" onClick={nextSlide} />
+      {slides.length > 1 && (
+        <>
+          <ArrowDownIcon className="i--arrow i--arrow--slider i--arrow--left" onClick={prevSlide} />
+          <ArrowDownIcon className="i--arrow i--arrow--slider i--arrow--right" onClick={nextSlide} />
+        </>
+      )}
     </div>
   );
 };

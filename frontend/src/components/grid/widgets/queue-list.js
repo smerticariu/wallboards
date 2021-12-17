@@ -10,7 +10,7 @@ import QueueListTable from '../../tables/table.queue-list';
 
 const GridQueueList = ({ widget, ...props }) => {
   const organisationUsers = useSelector((state) => state.agents.organisationUsers);
-  const calls = useSelector((state) => state.agents.calls);
+  const callsWithGroup = useSelector((state) => state.agents.callsWithGroup);
   const agentQueues = useSelector((state) => state.agents.agentsQueues);
   const queuedCall = useSelector((state) => state.callsQueues.queuedCall);
 
@@ -31,7 +31,10 @@ const GridQueueList = ({ widget, ...props }) => {
   }, []);
 
   useEffect(() => {
-    let activeCalls = { ...callsToObject(calls, 'uuid'), ...callsToObject(calls, 'originatorUuid') };
+    let activeCalls = {
+      ...callsToObject(callsWithGroup, 'uuid'),
+      ...callsToObject(callsWithGroup, 'originatorUuid'),
+    };
     const queueCall = queuedCall[widget.callQueue.id] ?? [];
     let queuedCallCopy = [...queueCall];
     const agentQueue = agentQueues[widget.callQueue.id] ?? [];
@@ -76,7 +79,7 @@ const GridQueueList = ({ widget, ...props }) => {
       })
     );
     // eslint-disable-next-line
-  }, [organisationUsers, calls, queuedCall]);
+  }, [organisationUsers, callsWithGroup, queuedCall]);
 
   return <QueueListTable {...props} isPreviewMode={false} widget={widget} tableData={tableData} />;
 };
