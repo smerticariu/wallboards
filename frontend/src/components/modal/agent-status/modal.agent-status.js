@@ -300,7 +300,7 @@ const ModalAgentStatus = ({ ...props }) => {
         <div className="c-modal--add-component__input-label c-modal--add-component__input-label--grey">
           {DEFAULTS.MODAL.AGENT_STATUS.SECTION_TITLE.PREVIEW}
         </div>
-        <div>
+        <div className="c-modal__preview">
           <div className="c-modal__preview-section c-modal__preview-section--agent-login">
             <AgentStatusTable
               isEditMode={false}

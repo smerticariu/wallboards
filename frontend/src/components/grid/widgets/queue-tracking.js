@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { CloseIcon } from 'src/assets/static/icons/close';
 import {
@@ -11,24 +11,12 @@ import { getQueueTrackingInitialValues, getQueueTrackingUtilityFields } from '..
 import { averageValue } from '../../../common/utils/averageValue';
 import { maxValue } from '../../../common/utils/maxValueValue';
 import { percentValue } from '../../../common/utils/percentValue';
-import { fetchQueueStatisticsThunk } from '../../../store/thunk/callsQueues.thunk';
 import TimeInterval from '../../time-interval/time-interval';
 import moment from 'moment';
-import { getTimesCallTracking } from '../../../common/utils/getTimesCallTracking';
 import { EditIcon } from '../../../assets/static/icons/edit';
 const GridQueueTracking = ({ isEditMode, isPreview, widget, ...props }) => {
   const dispatch = useDispatch();
   const callQueueStatistic = useSelector((state) => state.callsQueues.callQueueStatistic);
-  useEffect(() => {
-    if (!isPreview) {
-      dispatch(fetchQueueStatisticsThunk(getTimesCallTracking(widget), widget.id, widget.callQueue.id));
-      const interval = setInterval(() => {
-        dispatch(fetchQueueStatisticsThunk(getTimesCallTracking(widget), widget.id, widget.callQueue.id));
-      }, [2000]);
-      return () => clearInterval(interval);
-    }
-    // eslint-disable-next-line
-  }, [widget]);
 
   const getQueueTrackingStatistic = () => {
     let queueTrackingInitialValues = { ...getQueueTrackingInitialValues() };

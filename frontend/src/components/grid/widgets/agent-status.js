@@ -1,23 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
-import { fetchOrganisationAgentsThunk, fetchUserStatusDataThunk } from '../../../store/thunk/agents.thunk';
+import { fetchOrganisationAgentsThunk } from '../../../store/thunk/agents.thunk';
 import AgentStatusTable from '../../agent-status-table/agent-status-table';
-import { getTimesAgentstatus } from '../../../common/utils/getTimesAgentstatus';
 
 const GridAgentStatus = ({ widget, ...props }) => {
   const userStatusData = useSelector((state) => state.agents.userStatusData);
   const organisationUsers = useSelector((state) => state.agents.organisationUsers);
   const dispatch = useDispatch();
   const [tableData, setTableData] = useState([]);
-  useEffect(() => {
-    dispatch(fetchUserStatusDataThunk(getTimesAgentstatus(widget), widget.profile.id, widget.limitResult.value, widget.id));
-    const interval = setInterval(() => {
-      dispatch(fetchUserStatusDataThunk(getTimesAgentstatus(widget), widget.profile.id, widget.limitResult.value, widget.id));
-    }, [2000]);
-    return () => clearInterval(interval);
-    // eslint-disable-next-line
-  }, [widget]);
+
   useEffect(() => {
     dispatch(fetchOrganisationAgentsThunk());
     // eslint-disable-next-line

@@ -13,17 +13,30 @@ import AgentListTable from '../../tables/agent-list';
 import { FetchStatus } from 'src/store/reducers/wallboards.reducer';
 import moment from 'moment';
 import { DEFAULTS } from '../../../common/defaults/defaults';
-import { PRESENCE_STATE_KEYS, SORT_BY_VALUES } from '../../../common/defaults/modal.defaults';
+import { PRESENCE_STATE_KEYS } from '../../../common/defaults/modal.defaults';
 import { callsToObject } from '../../../common/utils/callsToObject';
+import { sortAgentList } from '../../../common/sort/sort.agent-list';
+import { filterAgentList } from '../../../common/filter/filter.agent-list';
+import { findAgentStatus } from '../../../common/utils/findAgentStatus';
+
 const GridAgentList = ({ isEditMode, widget, ...props }) => {
   const dispatch = useDispatch();
+  //fetch status
+  const agentsQueuesFetchStatus = useSelector((state) => state.agents.agentsQueuesFetchStatus);
+  const organisationUsersFetchStatus = useSelector((state) => state.agents.organisationUsersFetchStatus);
+  const userGroupsFetchStatus = useSelector((state) => state.agents.userGroupsFetchStatus);
+
+  //agents
   const agentsQueues = useSelector((state) => state.agents.agentsQueues);
   const agentsFromCurrentCallQueue = useMemo(() => agentsQueues[widget.callQueue.id] ?? [], [agentsQueues, widget.callQueue.id]);
   const organisationUsers = useSelector((state) => state.agents.organisationUsers);
-  const agents = useSelector((state) => state.agents);
+
+  //calls
   const callsWithGroup = useSelector((state) => state.agents.callsWithGroup);
-  const agentsSkill = useSelector((state) => state.skills.agentsSkill);
   const [agentsForDisplay, setAgentsForDisplay] = useState([]);
+
+  //skills
+  const agentsSkill = useSelector((state) => state.skills.agentsSkill);
 
   const availabilityStates = useSelector((state) => state.agents.availabilityStates);
   const availabilityProfiles = useSelector((state) => state.agents.availabilityProfiles);
@@ -63,9 +76,9 @@ const GridAgentList = ({ isEditMode, widget, ...props }) => {
   }, [agentsFromCurrentCallQueue]);
   useEffect(() => {
     if (
-      agents.agentsQueuesFetchStatus === FetchStatus.SUCCESS &&
-      agents.organisationUsersFetchStatus === FetchStatus.SUCCESS &&
-      agents.userGroupsFetchStatus === FetchStatus.SUCCESS
+      agentsQueuesFetchStatus === FetchStatus.SUCCESS &&
+      organisationUsersFetchStatus === FetchStatus.SUCCESS &&
+      userGroupsFetchStatus === FetchStatus.SUCCESS
     ) {
       const agentsWithFullInfo = agentsFromCurrentCallQueue.map((agentQueue) => {
         const agentSkills = agentsSkill.find((agentSkills) => agentSkills.agentId === agentQueue.userId);
@@ -73,73 +86,9 @@ const GridAgentList = ({ isEditMode, widget, ...props }) => {
           ? moment().diff(moment(agentQueue.lastAvailabilityStateChange), 'seconds')
           : 0;
 
-        // const userCurrentCall = callsWithGroup
-        // .filter((call) => call.userId === agentQueue.userId || call.deviceId === agentQueue.deviceId)
-        // .pop();
-
         const usersOnCall = callsToObject(callsWithGroup, 'userId');
         const devicesOnCall = callsToObject(callsWithGroup, 'deviceId');
-        let agentStatus = agentQueue.status;
-        switch (agentQueue.status.toLowerCase()) {
-          case PRESENCE_STATE_KEYS.AGENT_STATUS_LOGGED_OFF:
-            agentStatus = PRESENCE_STATE_KEYS.AGENT_STATUS_LOGGED_OFF;
-            break;
-          case PRESENCE_STATE_KEYS.AGENT_STATUS_BUSY:
-            agentStatus = PRESENCE_STATE_KEYS.AGENT_STATUS_INBOUND_CALL_QUEUE;
-            //try to detect RINGING state
-            if (agentQueue.userId != null) {
-              if (usersOnCall[agentQueue.userId]?.state === 'RINGING') {
-                agentStatus = PRESENCE_STATE_KEYS.AGENT_STATUS_RINGING;
-              }
-              break;
-            }
-            //try to find the device in the active calls
-            if (agentQueue.deviceId != null) {
-              if (devicesOnCall[agentQueue.deviceId]?.state === 'RINGING') {
-                agentStatus = PRESENCE_STATE_KEYS.AGENT_STATUS_RINGING;
-              }
-              break;
-            }
-            break;
-          case PRESENCE_STATE_KEYS.AGENT_STATUS_IDLE:
-            //try to find the user in the active calls
-            if (agentQueue.userId != null) {
-              if (usersOnCall[agentQueue.userId]) {
-                agentStatus =
-                  ['INBOUND', 'INCOMING'].indexOf(usersOnCall[agentQueue.userId].logicalDirection) !== -1
-                    ? PRESENCE_STATE_KEYS.AGENT_STATUS_INBOUND_CALL_OTHER
-                    : PRESENCE_STATE_KEYS.AGENT_STATUS_OUTBOUND;
-                agentQueue.answerTime = usersOnCall[agentQueue.userId].answerTime;
-
-                if (usersOnCall[agentQueue.userId].state === 'RINGING') {
-                  agentStatus = PRESENCE_STATE_KEYS.AGENT_STATUS_RINGING;
-                }
-                break;
-              }
-            }
-            // try to find the device in the active calls
-            if (agentQueue.deviceId != null) {
-              if (devicesOnCall[agentQueue.deviceId]) {
-                agentStatus =
-                  ['INBOUND', 'INCOMING'].indexOf(devicesOnCall[agentQueue.deviceId].logicalDirection) !== -1
-                    ? PRESENCE_STATE_KEYS.AGENT_STATUS_INBOUND_CALL_OTHER
-                    : PRESENCE_STATE_KEYS.AGENT_STATUS_OUTBOUND;
-                agentQueue.answerTime = devicesOnCall[agentQueue.deviceId].answerTime;
-                if (devicesOnCall[agentQueue.deviceId].state === 'RINGING') {
-                  agentStatus = PRESENCE_STATE_KEYS.AGENT_STATUS_RINGING;
-                }
-                break;
-              }
-            }
-            //check is agent is inWrapUp
-            if (agentQueue.inWrapUp === true) {
-              agentStatus = PRESENCE_STATE_KEYS.AGENT_STATUS_IN_WRAP_UP;
-              break;
-            }
-            break;
-          default:
-            agentStatus = PRESENCE_STATE_KEYS.AGENT_STATUS_IDLE;
-        }
+        const agentStatus = findAgentStatus(agentQueue, usersOnCall, devicesOnCall);
 
         const organisationUser = organisationUsers.find((user) => user.id === agentQueue.userId);
         return {
@@ -159,41 +108,21 @@ const GridAgentList = ({ isEditMode, widget, ...props }) => {
       });
       if (!agentsWithFullInfo) return;
 
-      const filtredAgentsWithFullInfo = agentsWithFullInfo.filter((agent) => {
-        let isSkill =
-          agent.agentSkills.length === 0
-            ? false
-            : widget.skills.selectAll || agent.agentSkills.some((agentSkill) => widget.skills.selectedItems.includes(agentSkill.name));
-        isSkill = widget.view === DEFAULTS.MODAL.ADD_COMPONENT.MAIN_VIEWING_OPTIONS.CARD ? true : isSkill;
-        isSkill =
-          widget.skills.selectNone || (!widget.skills.selectAll && !widget.skills.selectedItems.length)
-            ? agent.agentSkills.length === 0
-              ? true
-              : false
-            : isSkill;
-        const isPresenceState = widget.presenceStates.selectAll || widget.presenceStates.selectedItems.includes(agent.status);
-        const isAvailabilityState =
-          widget.availabilityStates.selectAll ||
-          widget.availabilityStates.selectedItems.some((state) => state.availabilityStateId === agent.availabilityState?.id);
-        return isSkill && isPresenceState && isAvailabilityState;
-      });
+      const filtredAgentsWithFullInfo = filterAgentList(agentsWithFullInfo, widget);
+      const sortedAgents = sortAgentList(filtredAgentsWithFullInfo, widget);
 
-      const sortedAgents = filtredAgentsWithFullInfo.sort((agent1, agent2) => {
-        if (widget.sortBy === SORT_BY_VALUES.AGENT_NAME)
-          return `${agent1.firstName} ${agent1.lastName}`
-            .toUpperCase()
-            .localeCompare(`${agent2.firstName} ${agent2.lastName}`.toUpperCase());
-        if (widget.sortBy === SORT_BY_VALUES.AVAILABILITY_STATE)
-          return agent1?.availabilityState?.displayName.localeCompare(agent2?.availabilityState?.displayName);
-        if (widget.sortBy === SORT_BY_VALUES.PRESENCE_STATE) return agent1.status.localeCompare(agent2.status);
-        if (widget.sortBy === SORT_BY_VALUES.TIME_CURRENT_AVAILABILITY_STATE)
-          return agent2.timeInCurrentAvailabilityState - agent1.timeInCurrentAvailabilityState;
-        if (widget.sortBy === SORT_BY_VALUES.TIME_CURRENT_CALL) return agent2.currentCallTimeSeconds - agent1.currentCallTimeSeconds;
-        return 0;
-      });
       setAgentsForDisplay(sortedAgents);
     }
-  }, [agents, agentsFromCurrentCallQueue, agentsSkill, organisationUsers, callsWithGroup, widget]);
+  }, [
+    userGroupsFetchStatus,
+    organisationUsersFetchStatus,
+    agentsQueuesFetchStatus,
+    agentsFromCurrentCallQueue,
+    agentsSkill,
+    organisationUsers,
+    callsWithGroup,
+    widget,
+  ]);
   // eslint-disable-next-line
 
   const handleEditIcon = () => {

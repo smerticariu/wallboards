@@ -265,21 +265,24 @@ const ModalAgentLogin = ({ ...props }) => {
         <div className="c-modal--add-component__input-label c-modal--add-component__input-label--grey">
           {DEFAULTS.MODAL.AGENT_LOGIN.SECTION_TITLE.PREVIEW}
         </div>
-        <div className="c-modal__preview-section c-modal__preview-section--agent-login">
-          <AgentLoginTable
-            isEditMode={false}
-            widget={{
-              title: agentLogin.title.value,
-              group: {
-                value: agentLogin.group.value,
-              },
-              limitResult: {
-                value: agentLogin.limitResult.value,
-              },
-            }}
-            tableData={DEFAULTS.MODAL.AGENT_LOGIN.TABLE_MOCK_DATA}
-          />
+        <div className="c-modal__preview">
+          <div className="c-modal__preview-section c-modal__preview-section--agent-login">
+            <AgentLoginTable
+              isEditMode={false}
+              widget={{
+                title: agentLogin.title.value,
+                group: {
+                  value: agentLogin.group.value,
+                },
+                limitResult: {
+                  value: agentLogin.limitResult.value,
+                },
+              }}
+              tableData={DEFAULTS.MODAL.AGENT_LOGIN.TABLE_MOCK_DATA}
+            />
+          </div>
         </div>
+
         <div className="c-modal__buttons">
           {handleCancelButton()}
           {handleAddButton()}
