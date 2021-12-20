@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { CloseIcon } from 'src/assets/static/icons/close';
 import {
@@ -7,28 +7,15 @@ import {
   setWidgetComponentForEditAC,
 } from 'src/store/actions/modal.action';
 import { DEFAULTS } from '../../../common/defaults/defaults';
-import { fetchCallStatisticThunk } from '../../../store/thunk/callsQueues.thunk';
 import { CALL_CATEGORY_OPTIONS } from '../../../common/defaults/modal.defaults';
 import { averageValue } from '../../../common/utils/averageValue';
 import TimeInterval from '../../time-interval/time-interval';
 import { getCallTrackingInitialValues } from '../../../common/defaults/wallboards.defaults';
-import { getTimesCallTracking } from '../../../common/utils/getTimesCallTracking';
 import { EditIcon } from '../../../assets/static/icons/edit';
 const GridCallTracking = ({ isPreview, isEditMode, widget, ...props }) => {
   const dispatch = useDispatch();
 
   const callsStatistic = useSelector((state) => state.callsQueues.callsStatistic);
-
-  useEffect(() => {
-    if (!isPreview) {
-      dispatch(fetchCallStatisticThunk(getTimesCallTracking(widget), widget.id));
-      const interval = setInterval(() => {
-        dispatch(fetchCallStatisticThunk(getTimesCallTracking(widget), widget.id));
-      }, [2000]);
-      return () => clearInterval(interval);
-    }
-    // eslint-disable-next-line
-  }, [widget]);
 
   const getTimesData = () => {
     let aggregateData = getCallTrackingInitialValues();
