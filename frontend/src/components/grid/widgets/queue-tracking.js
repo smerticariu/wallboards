@@ -1,21 +1,14 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { CloseIcon } from 'src/assets/static/icons/close';
-import {
-  handleWallboardActiveModalAC,
-  setWallboardComponentForDeleteAC,
-  setWidgetComponentForEditAC,
-} from 'src/store/actions/modal.action';
-import { DEFAULTS } from '../../../common/defaults/defaults';
+import { useSelector } from 'react-redux';
 import { getQueueTrackingInitialValues, getQueueTrackingUtilityFields } from '../../../common/defaults/wallboards.defaults';
 import { averageValue } from '../../../common/utils/averageValue';
 import { maxValue } from '../../../common/utils/maxValueValue';
 import { percentValue } from '../../../common/utils/percentValue';
 import TimeInterval from '../../time-interval/time-interval';
 import moment from 'moment';
-import { EditIcon } from '../../../assets/static/icons/edit';
+import WidgetContainer from './widget-container';
+
 const GridQueueTracking = ({ isEditMode, isPreview, widget, ...props }) => {
-  const dispatch = useDispatch();
   const callQueueStatistic = useSelector((state) => state.callsQueues.callQueueStatistic);
 
   const getQueueTrackingStatistic = () => {
@@ -107,47 +100,9 @@ const GridQueueTracking = ({ isEditMode, isPreview, widget, ...props }) => {
     return queueTrackingInitialValues;
   };
   const queueTrackingStatistic = getQueueTrackingStatistic();
-  const handleEditIcon = () => {
-    const onEditClick = () => {
-      dispatch(setWidgetComponentForEditAC(widget));
-      dispatch(handleWallboardActiveModalAC(DEFAULTS.MODAL.MODAL_NAMES.QUEUE_TRACKING));
-    };
-
-    return (
-      <div onClick={onEditClick} className="widget__edit-icon">
-        <EditIcon className="i--edit i--edit--margin-right" />
-      </div>
-    );
-  };
-
-  const handleDeleteIcon = () => {
-    const onDeleteClick = () => {
-      dispatch(setWallboardComponentForDeleteAC(widget));
-      dispatch(handleWallboardActiveModalAC(DEFAULTS.MODAL.MODAL_NAMES.DELETE_WALLBOARD_COMPONENT));
-    };
-    return (
-      <div onClick={onDeleteClick} className="widget__delete-icon">
-        <CloseIcon className="i--close i--close--small" />
-      </div>
-    );
-  };
 
   return (
-    <div className="widget">
-      <div className="widget__header">
-        <div className="widget__title">
-          <div className="widget__title--bold">{widget.title}:</div>
-          {widget.callQueue.value}
-        </div>
-        <div className="widget__icons">
-          {isEditMode && (
-            <>
-              {handleEditIcon()}
-              {handleDeleteIcon()}
-            </>
-          )}
-        </div>
-      </div>
+    <WidgetContainer isEditMode={isEditMode} widget={widget}>
       <div className={`widget__body widget__body--call-status`}>
         {Object.keys(queueTrackingStatistic)
           .filter((key) => widget.columnsToViewOptions.selectedItems.includes(queueTrackingStatistic[key].id))
@@ -178,7 +133,7 @@ const GridQueueTracking = ({ isEditMode, isPreview, widget, ...props }) => {
             </div>
           ))}
       </div>
-    </div>
+    </WidgetContainer>
   );
 };
 export default GridQueueTracking;

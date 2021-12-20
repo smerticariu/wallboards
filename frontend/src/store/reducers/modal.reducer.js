@@ -332,7 +332,7 @@ export const modalReducer = (state = modalInitialState, action) => {
             ...state,
             agentList: {
               title: {
-                value: widgetForEdit.name,
+                value: widgetForEdit.title,
                 errorMessage: '',
               },
               callQueue: {

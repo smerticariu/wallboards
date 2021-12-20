@@ -9,6 +9,7 @@ import { DEFAULTS } from '../../../common/defaults/defaults';
 import { fetchUserGroupsThunk } from '../../../store/thunk/agents.thunk';
 import CheckBox from '../../checkbox/checkbox';
 import QueueListTable from '../../tables/table.queue-list';
+import { WIDGET_TYPE } from '../../../common/defaults/modal.defaults';
 
 const ModalQueueList = ({ ...props }) => {
   const modalRef = useRef(null);
@@ -297,6 +298,7 @@ const ModalQueueList = ({ ...props }) => {
               tableData={DEFAULTS.MODAL.QUEUE_LIST.MOCK_DATA}
               widget={{
                 title: queueList.title.value,
+                type: WIDGET_TYPE.QUEUE_LIST,
                 sortBy: queueList.sortBy.value,
                 columnsToViewOptions: queueList.columnsToViewOptions,
                 interactivityOptions: queueList.interactivityOptions,
