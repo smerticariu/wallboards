@@ -25,15 +25,16 @@ const Widget = ({ widget, isEditMode, ...props }) => {
   const agentQueues = useMemo(() => agentsQueues[widget?.callQueue?.id] ?? [], [agentsQueues, widget?.callQueue?.id]);
 
   const dispatch = useDispatch();
-
+  console.log('rerender outside');
   useEffect(() => {
+    console.log('rerender');
     fetchData();
     const agentsInterval = setInterval(() => {
       fetchData();
     }, 2000);
     return () => clearInterval(agentsInterval);
     // eslint-disable-next-line
-  }, [widget, agentQueues.length]);
+  }, [widget, agentsQueues, widget, isEditMode]);
 
   const fetchData = () => {
     if (
@@ -70,6 +71,7 @@ const Widget = ({ widget, isEditMode, ...props }) => {
       }
     }
   };
+
   return (
     <>
       {widget.type === WIDGET_TYPE.AGENT_LIST && <GridAgentList isEditMode={isEditMode} widget={widget} />}
