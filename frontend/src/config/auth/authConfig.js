@@ -8,7 +8,7 @@ const config = {
   cacheLocation:"localstorage",
   instanceUrl: process.env.REACT_APP_ENV === "LOCAL" ? 'https://natterbox-3c-dev-ed--c.visualforce.com' : `https://${window.location.host}`,
   envHost: process.env.REACT_APP_ENV === "LOCAL" ? "https://flightdeck.natterbox-qa01.net" : window?.WbConfig?.host || `https://${window.location.host}`,
-  localHost: 'https://localhost:3000',
+  localHost: 'http://localhost:3000',
 }
 
 export default config;
