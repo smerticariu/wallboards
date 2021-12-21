@@ -7,7 +7,7 @@ import moment from 'moment';
 import { checkIsAlphanumeric } from '../../../common/utils/alphanumeric-validation';
 import { DEFAULTS } from '../../../common/defaults/defaults';
 import { exportCSVUserLoginDataThunk, fetchUserGroupsThunk } from '../../../store/thunk/agents.thunk';
-import { CALL_STATISTIC_PERIOD } from '../../../common/defaults/modal.defaults';
+import { CALL_STATISTIC_PERIOD, WIDGET_TYPE } from '../../../common/defaults/modal.defaults';
 import AgentLoginTable from '../../tables/table.agent-login';
 
 const ModalAgentLogin = ({ ...props }) => {
@@ -271,6 +271,7 @@ const ModalAgentLogin = ({ ...props }) => {
               isEditMode={false}
               widget={{
                 title: agentLogin.title.value,
+                type: WIDGET_TYPE.AGENT_LOGIN,
                 group: {
                   value: agentLogin.group.value,
                 },

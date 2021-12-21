@@ -11,24 +11,17 @@ const mockStore = createMockStore([thunk]);
 Enzyme.configure({ adapter: new Adapter() });
 
 describe('Wallboard Components', () => {
+  const store = mockStore({});
+  let wrapper = mount(
+    <Provider store={store}>
+      <WallboardComponents />
+    </Provider>,
+  );
   test('Wallboard Components should be rendered', () => {
-    const store = mockStore({});
-    let wrapper = mount(
-      <Provider store={store}>
-        <WallboardComponents />
-      </Provider>,
-    );
-
     expect(wrapper.find('.c-panel').length).toBe(1);
   });
 
   test('Dispatch on click Add Component', () => {
-    const store = mockStore({});
-    let wrapper = mount(
-      <Provider store={store}>
-        <WallboardComponents />
-      </Provider>,
-    );
     expect(store.getActions().length).toBe(0);
     wrapper.find('.c-button').simulate('click');
     expect(store.getActions().length).toBe(1);

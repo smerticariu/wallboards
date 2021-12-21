@@ -1,12 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { CloseIcon } from 'src/assets/static/icons/close';
-import { EditIcon } from 'src/assets/static/icons/edit';
-import {
-  handleWallboardActiveModalAC,
-  setWallboardComponentForDeleteAC,
-  setWidgetComponentForEditAC,
-} from 'src/store/actions/modal.action';
+
 import { changeAgentAvailabilityStateThunk, fetchOrganisationAgentsThunk, fetchUserGroupsThunk } from 'src/store/thunk/agents.thunk';
 import AgentCard from '../../agent-card/agent-card';
 import AgentListTable from '../../tables/agent-list';
@@ -18,6 +12,7 @@ import { callsToObject } from '../../../common/utils/callsToObject';
 import { sortAgentList } from '../../../common/sort/sort.agent-list';
 import { filterAgentList } from '../../../common/filter/filter.agent-list';
 import { findAgentStatus } from '../../../common/utils/findAgentStatus';
+import WidgetContainer from './widget-container';
 
 const GridAgentList = ({ isEditMode, widget, ...props }) => {
   const dispatch = useDispatch();
@@ -125,49 +120,12 @@ const GridAgentList = ({ isEditMode, widget, ...props }) => {
   ]);
   // eslint-disable-next-line
 
-  const handleEditIcon = () => {
-    const onEditClick = () => {
-      dispatch(setWidgetComponentForEditAC(widget));
-      dispatch(handleWallboardActiveModalAC(DEFAULTS.MODAL.MODAL_NAMES.AGENT_LIST));
-    };
-
-    return (
-      <div onClick={onEditClick} className="widget__edit-icon">
-        <EditIcon className="i--edit i--edit--margin-right" />
-      </div>
-    );
-  };
-
-  const handleDeleteIcon = () => {
-    const onDeleteClick = () => {
-      dispatch(setWallboardComponentForDeleteAC(widget));
-      dispatch(handleWallboardActiveModalAC(DEFAULTS.MODAL.MODAL_NAMES.DELETE_WALLBOARD_COMPONENT));
-    };
-    return (
-      <div onClick={onDeleteClick} className="widget__delete-icon">
-        <CloseIcon className="i--close i--close--small" />
-      </div>
-    );
-  };
   const handleAgentAvailabilityState = (agentId, profileId, stateId, availabilityStateName) => {
     dispatch(changeAgentAvailabilityStateThunk(agentId, profileId, stateId, availabilityStateName));
   };
+
   return (
-    <div className="widget">
-      <div className="widget__header">
-        <div className="widget__title">
-          <div className="widget__title--bold">{widget.name}:</div>
-          {widget.callQueue.name}
-        </div>
-        <div className="widget__icons">
-          {isEditMode && (
-            <>
-              {handleEditIcon()}
-              {handleDeleteIcon()}
-            </>
-          )}
-        </div>
-      </div>
+    <WidgetContainer widget={widget} isEditMode={isEditMode}>
       <div
         className={`widget__body ${widget.view === DEFAULTS.MODAL.ADD_COMPONENT.MAIN_VIEWING_OPTIONS.TABLE ? 'widget__body--table' : ''}`}
       >
@@ -244,7 +202,7 @@ const GridAgentList = ({ isEditMode, widget, ...props }) => {
           </>
         )}
       </div>
-    </div>
+    </WidgetContainer>
   );
 };
 export default GridAgentList;

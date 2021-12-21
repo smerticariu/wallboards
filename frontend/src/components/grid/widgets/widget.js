@@ -32,7 +32,7 @@ const Widget = ({ widget, isEditMode, ...props }) => {
     }, 2000);
     return () => clearInterval(agentsInterval);
     // eslint-disable-next-line
-  }, [widget, agentsQueues, widget, isEditMode]);
+  }, [widget, agentQueues.length]);
 
   const fetchData = () => {
     if (
@@ -69,7 +69,6 @@ const Widget = ({ widget, isEditMode, ...props }) => {
       }
     }
   };
-
   return (
     <>
       {widget.type === WIDGET_TYPE.AGENT_LIST && <GridAgentList isEditMode={isEditMode} widget={widget} />}

@@ -258,7 +258,7 @@ export const wallboardsReducer = (state = { ...wallboardsInitialState }, action)
       const { agentList, userInfo } = action.payload;
 
       const newWidget = {
-        name: agentList.title.value,
+        title: agentList.title.value,
         callQueue: {
           id: agentList.callQueue.id,
           name: agentList.callQueue.name,
