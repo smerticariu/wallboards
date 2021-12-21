@@ -29,12 +29,14 @@ import { MiscellaneousApi } from '../../common/api/miscellaneous.api';
 import { AvailabilityApi } from '../../common/api/availability.api';
 import { CallsApi } from '../../common/api/calls.api';
 import moment from 'moment';
+
 export const fetchAllAgentsThunk = (callQueueId) => async (dispatch, getState) => {
   try {
     const state = getState();
     const { userInfo, token, sapienUrl } = state.login;
+    const existAgentsFromQueue = state.agents.agentsQueues[callQueueId];
     const agentsQueues = state.agents.agentsQueues[callQueueId] ?? [];
-    if (!agentsQueues.length) {
+    if (!existAgentsFromQueue) {
       dispatch(fetchAllAgentsAC());
     }
     const response = await CallsQueuesApi({
@@ -47,7 +49,7 @@ export const fetchAllAgentsThunk = (callQueueId) => async (dispatch, getState) =
     const allAgentsFromCallQueue = response.data.data;
     const agentsQueuesSort = [...agentsQueues].sort((agent1, agent2) => agent1.userId - agent2.userId);
     const allAgentsFromCallQueueSort = [...allAgentsFromCallQueue].sort((agent1, agent2) => agent1.userId - agent2.userId);
-    if (JSON.stringify(agentsQueuesSort) !== JSON.stringify(allAgentsFromCallQueueSort)) {
+    if (!existAgentsFromQueue || JSON.stringify(agentsQueuesSort) !== JSON.stringify(allAgentsFromCallQueueSort)) {
       dispatch(fetchAllAgentsSuccessAC(allAgentsFromCallQueue, callQueueId));
     }
   } catch (error) {

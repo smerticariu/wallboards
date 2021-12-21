@@ -25,7 +25,6 @@ const GridAgentList = ({ isEditMode, widget, ...props }) => {
   const agentsQueues = useSelector((state) => state.agents.agentsQueues);
   const agentsFromCurrentCallQueue = useMemo(() => agentsQueues[widget.callQueue.id] ?? [], [agentsQueues, widget.callQueue.id]);
   const organisationUsers = useSelector((state) => state.agents.organisationUsers);
-
   //calls
   const callsWithGroup = useSelector((state) => state.agents.callsWithGroup);
   const [agentsForDisplay, setAgentsForDisplay] = useState([]);
@@ -77,28 +76,32 @@ const GridAgentList = ({ isEditMode, widget, ...props }) => {
     ) {
       const agentsWithFullInfo = agentsFromCurrentCallQueue.map((agentQueue) => {
         const agentSkills = agentsSkill.find((agentSkills) => agentSkills.agentId === agentQueue.userId);
-        const lastAvailabilityStateChangeSeconds = agentQueue.lastAvailabilityStateChange
-          ? moment().diff(moment(agentQueue.lastAvailabilityStateChange), 'seconds')
-          : 0;
+
+        const lastAvailabilityStateChangeSeconds =
+          agentQueue.lastAvailabilityStateChange ?? 0 ? moment().diff(moment(agentQueue.lastAvailabilityStateChange), 'seconds') : 0;
 
         const usersOnCall = callsToObject(callsWithGroup, 'userId');
         const devicesOnCall = callsToObject(callsWithGroup, 'deviceId');
         const agentStatus = findAgentStatus(agentQueue, usersOnCall, devicesOnCall);
 
         const organisationUser = organisationUsers.find((user) => user.id === agentQueue.userId);
+        const skills = agentSkills?.skills?.map((skill) => ({ description: skill.description, name: skill.name })) ?? [];
+
+        const currentCallTimeSeconds =
+          usersOnCall[agentQueue.userId]?.answerTime && PRESENCE_STATE_KEYS.AGENT_STATUS_LOGGED_OFF !== agentStatus
+            ? moment().diff(moment(usersOnCall[agentQueue.userId].answerTime), 'seconds')
+            : 0;
+
         return {
           ...agentQueue,
           status: agentStatus,
-          agentSkills: agentSkills?.skills?.map((skill) => ({ description: skill.description, name: skill.name })) ?? [],
+          agentSkills: skills,
           sipExtension: organisationUser.sipExtension,
           userName: organisationUser.userName,
           firstName: organisationUser.firstName,
           lastName: organisationUser.lastName,
-          timeInCurrentAvailabilityState: lastAvailabilityStateChangeSeconds ?? 0,
-          currentCallTimeSeconds:
-            usersOnCall[agentQueue.userId]?.answerTime && PRESENCE_STATE_KEYS.AGENT_STATUS_LOGGED_OFF !== agentStatus
-              ? moment().diff(moment(usersOnCall[agentQueue.userId].answerTime), 'seconds')
-              : 0,
+          timeInCurrentAvailabilityState: lastAvailabilityStateChangeSeconds,
+          currentCallTimeSeconds: currentCallTimeSeconds,
         };
       });
       if (!agentsWithFullInfo) return;
@@ -117,6 +120,7 @@ const GridAgentList = ({ isEditMode, widget, ...props }) => {
     organisationUsers,
     callsWithGroup,
     widget,
+    widget.callQueue.id,
   ]);
   // eslint-disable-next-line
 

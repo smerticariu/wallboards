@@ -26,14 +26,18 @@ const GridAgentLogin = ({ widget, ...props }) => {
         .forEach((user) => {
           const group = userGroups.find((group) => user.groupId === group.id);
           const agent = organisationUsers.find((agent) => agent.id === user.userId);
+          const isLogin = user.event.toLowerCase() === 'login';
+          const time = moment(user.time).utcOffset(widget.timeZone.id).format('YYYY-MM-DD HH:mm:ss');
+          const elapsed = moment().utcOffset(widget.timeZone.id).diff(moment(user.time), 'seconds');
+
           users.push({
             groupName: group.name,
             name: agent.firstName + ' ' + agent.lastName,
             event: user.event,
             userId: user.userId,
-            isLogin: user.event.toLowerCase() === 'login',
-            time: moment(user.time).utcOffset(widget.timeZone.id).format('YYYY-MM-DD HH:mm:ss'),
-            elapsed: moment().utcOffset(widget.timeZone.id).diff(moment(user.time), 'seconds'),
+            isLogin,
+            time,
+            elapsed,
           });
         });
       setTableData(users);
