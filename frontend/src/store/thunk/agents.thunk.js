@@ -34,9 +34,9 @@ export const fetchAllAgentsThunk = (callQueueId) => async (dispatch, getState) =
   try {
     const state = getState();
     const { userInfo, token, sapienUrl } = state.login;
-    const existAgentsFromQueue = state.agents.agentsQueues[callQueueId];
+    const existAgentsInQueue = state.agents.agentsQueues[callQueueId];
     const agentsQueues = state.agents.agentsQueues[callQueueId] ?? [];
-    if (!existAgentsFromQueue) {
+    if (!existAgentsInQueue) {
       dispatch(fetchAllAgentsAC());
     }
     const response = await CallsQueuesApi({
@@ -49,7 +49,7 @@ export const fetchAllAgentsThunk = (callQueueId) => async (dispatch, getState) =
     const allAgentsFromCallQueue = response.data.data;
     const agentsQueuesSort = [...agentsQueues].sort((agent1, agent2) => agent1.userId - agent2.userId);
     const allAgentsFromCallQueueSort = [...allAgentsFromCallQueue].sort((agent1, agent2) => agent1.userId - agent2.userId);
-    if (!existAgentsFromQueue || JSON.stringify(agentsQueuesSort) !== JSON.stringify(allAgentsFromCallQueueSort)) {
+    if (!existAgentsInQueue || JSON.stringify(agentsQueuesSort) !== JSON.stringify(allAgentsFromCallQueueSort)) {
       dispatch(fetchAllAgentsSuccessAC(allAgentsFromCallQueue, callQueueId));
     }
   } catch (error) {
