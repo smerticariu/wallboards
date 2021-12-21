@@ -328,7 +328,7 @@ const ModalAgentList = ({ ...props }) => {
               />
               <div className="c-modal--add-component__av-state-container">
                 {allSkils
-                  .filter((skill) => skill.description.toLowerCase().includes(searchInputValues.skill.toLowerCase()))
+                  .filter((skill) => skill.description ? skill.description.toLowerCase().includes(searchInputValues.skill.toLowerCase()) : skill)
                   .map((skill) => (
                     <CheckBox
                       key={skill.id}
