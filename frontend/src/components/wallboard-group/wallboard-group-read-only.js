@@ -42,19 +42,19 @@ const WallboardGroupReadOnly = () => {
   }, [availabilityProfiles]);
 
   const handleErrors = () => {
-    if (!isUserAllowedToViewWallboard) {
-      return (
-        <div className="error-message-container">
-          <h3 className="error-message--headline">Error 401:</h3>
-          <p className="error-message">{DEFAULTS.WALLBOARDS.MESSAGE.NOT_ALLOWED_VIEW}</p>
-        </div>
-      );
-    }
     if (fetchStatus !== FetchStatus.SUCCESS) {
       return (
         <div className="error-message-container">
           {fetchStatus === FetchStatus.FAIL && <h3 className="error-message--headline">Error {statusCode}:</h3>}
           <p className="error-message">{fetchMessage}</p>
+        </div>
+      );
+    }
+    if (!isUserAllowedToViewWallboard) {
+      return (
+        <div className="error-message-container">
+          <h3 className="error-message--headline">Error 401:</h3>
+          <p className="error-message">{DEFAULTS.WALLBOARDS.MESSAGE.WALLBOARD_GROUP_NOT_ALLOWED_VIEW}</p>
         </div>
       );
     }

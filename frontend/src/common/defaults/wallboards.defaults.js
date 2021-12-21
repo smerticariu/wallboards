@@ -18,13 +18,15 @@ export const WALLBOARDS = {
   MESSAGE: {
     LOADING: 'Wallboard loading...',
     NAME_WARNING: 'Wallboard name must contain only alphanumeric characters',
-    WALLBOARD_GROUP_NAME_WARNING: 'Wallboard Group name must contain only alphanumeric characters',
-    WALLBOARD_GROUP_STEP_VALUE: 'The minimum time value for one step is 1 second',
     NO_COMPONENTS: 'This wallboard has no components.',
     WALLBOARD_NOT_FOUND: 'Wallboard not found',
     ADD_COMPONENTS: 'To start adding components, click the button below.',
     NOT_ALLOWED_EDIT: 'You are not allowed to edit this wallboard. Please contact your Administrator',
-    NOT_ALLOWED_VIEW: "You don't have acces s to this wallboard! Please contact your Administrator.",
+    NOT_ALLOWED_VIEW: "You don't have access to this wallboard! Please contact your Administrator.",
+    WALLBOARD_GROUP_NOT_ALLOWED_EDIT: 'You are not allowed to edit this wallboard group. Please contact your Administrator',
+    WALLBOARD_GROUP_NOT_ALLOWED_VIEW: "You don't have access to this wallboard group! Please contact your Administrator.",
+    WALLBOARD_GROUP_STEP_VALUE: 'The minimum time value for one step is 1 second',
+    WALLBOARD_GROUP_NAME_WARNING: 'Wallboard Group name must contain only alphanumeric characters',
     WALLBOARD_GROUP_NO_COMPONENTS: 'This Wallboard Group has no Wallboards.',
   },
   PLACEHOLDER: {

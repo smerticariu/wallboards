@@ -7,7 +7,7 @@ import moment from 'moment';
 import { checkIsAlphanumeric } from '../../../common/utils/alphanumeric-validation';
 import { DEFAULTS } from '../../../common/defaults/defaults';
 import { exportCSVUserStatusDataThunk, fetchAvailabilityProfilesThunk } from '../../../store/thunk/agents.thunk';
-import { CALL_STATISTIC_PERIOD } from '../../../common/defaults/modal.defaults';
+import { CALL_STATISTIC_PERIOD, WIDGET_TYPE } from '../../../common/defaults/modal.defaults';
 import CheckBox from '../../checkbox/checkbox';
 import AgentStatusTable from '../../agent-status-table/agent-status-table';
 
@@ -306,6 +306,7 @@ const ModalAgentStatus = ({ ...props }) => {
               isEditMode={false}
               widget={{
                 title: agentStatus.title.value,
+                type: WIDGET_TYPE.AGENT_STATUS,
                 profile: {
                   value: agentStatus.profile.value,
                 },

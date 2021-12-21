@@ -1,19 +1,20 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { CloseIcon } from 'src/assets/static/icons/close';
-import {
-  handleWallboardActiveModalAC,
-  setWallboardComponentForDeleteAC,
-  setWidgetComponentForEditAC,
-} from 'src/store/actions/modal.action';
+import { CloseIcon } from '../../assets/static/icons/close';
 import { EditIcon } from '../../assets/static/icons/edit';
 import { SettingsIcon } from '../../assets/static/icons/settings';
 import { DEFAULTS } from '../../common/defaults/defaults';
 import { QUEUE_LIST_COLUMN_OPTIONS, QUEUE_LIST_INTERACTIVITY_OPTIONS_KEYS } from '../../common/defaults/modal.defaults';
 import { sortQueueList } from '../../common/sort/sort.queue-list';
 import { findCountruByPhoneNo } from '../../common/utils/findCountruByPhoneNo';
+import {
+  handleWallboardActiveModalAC,
+  setWallboardComponentForDeleteAC,
+  setWidgetComponentForEditAC,
+} from '../../store/actions/modal.action';
 import { listenLiveThunk } from '../../store/thunk/agents.thunk';
 import Dropdown from '../dropdown/dropdown';
+import WidgetContainer from '../grid/widgets/widget-container';
 import { ProgressBar } from '../progress-bar/progress-bar';
 import TimeInterval from '../time-interval/time-interval';
 
@@ -64,23 +65,7 @@ const QueueListTable = ({ isPreviewMode, isEditMode, tableData, widget, ...props
   };
 
   return (
-    <div className="widget">
-      <div className="widget__header">
-        <div className="widget__title">
-          <div className="widget__title--bold">{widget.title}: </div>
-          {widget.callQueue.value} - {widget.isCallStatusConnected && widget.isCallStatusWaiting && 'All Calls'}
-          {widget.isCallStatusConnected && !widget.isCallStatusWaiting && 'Connected'}
-          {!widget.isCallStatusConnected && widget.isCallStatusWaiting && 'Waiting'}
-        </div>
-        <div className="widget__icons">
-          {isEditMode && (
-            <>
-              {handleEditIcon()}
-              {handleDeleteIcon()}
-            </>
-          )}
-        </div>
-      </div>
+    <WidgetContainer widget={widget} isEditMode={isEditMode}>
       {tableData.length && widget.columnsToViewOptions.selectedItems.length ? (
         <div className="widget__body widget__body--table">
           <div className="agent-login">
@@ -237,7 +222,7 @@ const QueueListTable = ({ isPreviewMode, isEditMode, tableData, widget, ...props
       ) : (
         <div className="empty-message empty-message--agents">No Calls</div>
       )}
-    </div>
+    </WidgetContainer>
   );
 };
 export default QueueListTable;

@@ -7,7 +7,7 @@ import { handleCallTrackingDataAC, handleWallboardActiveModalAC, resetNewWidgetM
 import { checkIsAlphanumeric } from '../../../common/utils/alphanumeric-validation';
 import { DEFAULTS } from '../../../common/defaults/defaults';
 import { fetchUserGroupsThunk } from '../../../store/thunk/agents.thunk';
-import { CALL_STATISTIC_PERIOD } from '../../../common/defaults/modal.defaults';
+import { CALL_STATISTIC_PERIOD, WIDGET_TYPE } from '../../../common/defaults/modal.defaults';
 import GridCallTracking from '../../grid/widgets/call-tracking';
 
 const ModalCallTracking = ({ ...props }) => {
@@ -195,7 +195,10 @@ const ModalCallTracking = ({ ...props }) => {
         </div>
         <div className="c-modal__preview">
           <div className="c-modal__preview-section">
-            <GridCallTracking isPreview={true} widget={{ ...callTracking, title: callTracking.title.value }} />
+            <GridCallTracking
+              isPreview={true}
+              widget={{ ...callTracking, type: WIDGET_TYPE.CALL_TRACKING, title: callTracking.title.value }}
+            />
           </div>
         </div>
 
