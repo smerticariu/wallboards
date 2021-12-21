@@ -25,7 +25,6 @@ const Widget = ({ widget, isEditMode, ...props }) => {
   const agentQueues = useMemo(() => agentsQueues[widget?.callQueue?.id] ?? [], [agentsQueues, widget?.callQueue?.id]);
 
   const dispatch = useDispatch();
-
   useEffect(() => {
     fetchData();
     const agentsInterval = setInterval(() => {
