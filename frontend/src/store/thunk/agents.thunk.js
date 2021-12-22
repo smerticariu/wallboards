@@ -29,6 +29,7 @@ import { MiscellaneousApi } from '../../common/api/miscellaneous.api';
 import { AvailabilityApi } from '../../common/api/availability.api';
 import { CallsApi } from '../../common/api/calls.api';
 import moment from 'moment';
+import { exportToCSV } from '../../common/utils/exportToCSV';
 
 export const fetchAllAgentsThunk = (callQueueId) => async (dispatch, getState) => {
   try {
@@ -395,16 +396,9 @@ export const exportCSVUserLoginDataThunk =
             }`,
           ]);
         });
-      let csvContent = 'data:text/csv;charset=utf-8,' + users.map((user) => user).join('\n');
-      let encodedUri = encodeURI(csvContent);
-      let link = document.createElement('a');
-      link.setAttribute('href', encodedUri);
-      link.setAttribute(
-        'download',
-        `Export_Agent_Login_Report_${moment(timeStart).format('YYYY-MM-DD')}-${moment(timeEnd).format('YYYY-MM-DD')}.csv`
-      );
-      document.body.appendChild(link);
-      link.click();
+      const fileData = users.map((user) => user).join('\n');
+      const fileName = `Export_Agent_Login_Report_${moment(timeStart).format('YYYY-MM-DD')}-${moment(timeEnd).format('YYYY-MM-DD')}.csv`;
+      exportToCSV(fileData, fileName);
     } catch (error) {
       console.log(error);
     }
@@ -452,16 +446,12 @@ export const exportCSVUserStatusDataThunk =
             .format('YYYY-MM-DD HH:mm:ss')},${noOfDays ? `${noOfDays} Day${noOfDays === 1 ? '' : 's'}` : dateString}`,
         ]);
       });
-      let csvContent = 'data:text/csv;charset=utf-8,' + users.map((user) => user).join('\n');
-      let encodedUri = encodeURI(csvContent);
-      let link = document.createElement('a');
-      link.setAttribute('href', encodedUri);
-      link.setAttribute(
-        'download',
-        `Export_Agent_Availability_State_Report_${moment(timeStart).format('YYYY-MM-DD')}-${moment(timeEnd).format('YYYY-MM-DD')}.csv`
-      );
-      document.body.appendChild(link);
-      link.click();
+
+      const fileData = users.map((user) => user).join('\n');
+      const fileName = `Export_Agent_Availability_State_Report_${moment(timeStart).format('YYYY-MM-DD')}-${moment(timeEnd).format(
+        'YYYY-MM-DD'
+      )}.csv`;
+      exportToCSV(fileData, fileName);
     } catch (error) {
       console.log(error);
     }

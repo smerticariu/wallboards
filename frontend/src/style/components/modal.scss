@@ -394,6 +394,9 @@
   }
   &__preview {
     margin-top: 25px;
+    &--call-tracking {
+      margin-bottom: -50px;
+    }
   }
 }
 @-webkit-keyframes animatetop {

@@ -193,7 +193,7 @@ const ModalCallTracking = ({ ...props }) => {
         <div className="c-modal--add-component__input-label c-modal--add-component__input-label--grey">
           {DEFAULTS.MODAL.CALL_TRACKING.SECTION_TITLE.PREVIEW}
         </div>
-        <div className="c-modal__preview">
+        <div className="c-modal__preview c-modal__preview--call-tracking">
           <div className="c-modal__preview-section">
             <GridCallTracking
               isPreview={true}
