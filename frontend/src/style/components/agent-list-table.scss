@@ -134,7 +134,7 @@
         height: 100%;
         padding-left: 10px;
         text-align: start;
-        white-space: normal;
+        white-space: normal !important;
         &--preview {
           font-size: 7px;
           padding-left: 10px;
@@ -151,7 +151,7 @@
         -webkit-background-clip: padding-box;
         background-clip: padding-box;
         border-radius: 50%;
-        width: 20px;
+        min-width: 20px;
         height: 20px;
         &--sun-yellow {
           background-color: $sun-yellow;

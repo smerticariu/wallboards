@@ -977,7 +977,7 @@ export const MODAL = {
   },
   REMOVE_STEP_MODAL: {
     TITLE: 'Removing Step',
-    QUESTION: `Are you sure you want to remove this wallboard from the Wallboard Group?`,
+    QUESTION: `Are you sure you want to remove this step from the Wallboard Group?`,
   },
   REMOVE_WALLBOARD_MODAL: {
     TITLE: 'Removing Wallboard',

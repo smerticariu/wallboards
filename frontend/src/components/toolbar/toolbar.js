@@ -264,8 +264,7 @@ const Toolbar = (props) => {
           </>
         );
       case DEFAULTS.TOOLBAR.NAME.NEW_WALLBOARD_GROUP: {
-        const isRunLinkDisabled =
-          !wallboardGroup?.steps?.filter((step) => step.wallboardId)?.length || wallboardGroup.isNewWallboard || !!noOfSteptsForUndo;
+        const isRunLinkDisabled = !wallboardGroup?.steps?.filter((step) => step.wallboardId)?.length || wallboardGroup.isNewWallboard;
         const runUrl = '/group/' + btoa(wallboardGroup.id);
 
         const isSaveBtnDisabled = !wallboardGroup.steps?.some((step) => step.wallboardId);
