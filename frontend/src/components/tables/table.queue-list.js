@@ -150,6 +150,18 @@ const QueueListTable = ({ isPreviewMode, isEditMode, tableData, widget, ...props
                         }
                         break;
                       }
+                      case QUEUE_LIST_COLUMN_OPTIONS.SKILLS_REQUESTED: {
+                        content = content ? 'true' : 'false';
+                        break;
+                      }
+                      case QUEUE_LIST_COLUMN_OPTIONS.FLAGS: {
+                        content = content ? 'true' : 'false';
+                        break;
+                      }
+                      case QUEUE_LIST_COLUMN_OPTIONS.SKILLS_SHORTAGE: {
+                        content = content ? 'true' : 'false';
+                        break;
+                      }
                       case QUEUE_LIST_COLUMN_OPTIONS.OPTIONS: {
                         content = (
                           <Dropdown
