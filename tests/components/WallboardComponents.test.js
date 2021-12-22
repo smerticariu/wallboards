@@ -1,0 +1,29 @@
+import React from 'react';
+import Enzyme, { mount } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
+import '@testing-library/jest-dom/extend-expect';
+import { Provider } from 'react-redux';
+import createMockStore from 'redux-mock-store';
+import thunk from 'redux-thunk';
+import WallboardComponents from '../../src/components/wallboard/wallboard-components';
+
+const mockStore = createMockStore([thunk]);
+Enzyme.configure({ adapter: new Adapter() });
+
+describe('Wallboard Components', () => {
+  const store = mockStore({});
+  let wrapper = mount(
+    <Provider store={store}>
+      <WallboardComponents />
+    </Provider>,
+  );
+  test('Wallboard Components should be rendered', () => {
+    expect(wrapper.find('.c-panel').length).toBe(1);
+  });
+
+  test('Dispatch on click Add Component', () => {
+    expect(store.getActions().length).toBe(0);
+    wrapper.find('.c-button').simulate('click');
+    expect(store.getActions().length).toBe(1);
+  });
+});
