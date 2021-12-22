@@ -3,10 +3,7 @@ import UndoRedo_PO from '../../support/PageObjects/UndoRedo_PO';
 
 
 beforeEach(() => {
-
-    //cy.clearLocalStorage()
     cy.login()
-    //cy.log("Login Successful")
 })
 
 

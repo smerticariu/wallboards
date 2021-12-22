@@ -7,7 +7,7 @@ class UndoRedo_PO {
         cy.visit('http://localhost:3000/', {timeout:5000});
         cy.get('.c-toolbar-right').contains('+ New Wallboard').click();
         cy.get('div.c-toolbar-left > div > input').clear().type('Undo Redo ');
-        cy.get('button.c-button--blue').contains('+ Add Component').click();
+        cy.get('.c-toolbar-right').contains('+ Add Component').click();
         cy.get('.c-modal--new-wallboard__list').contains('Agent list').click();
         cy.get('.c-modal__buttons').contains('Select').click();
         cy.get('.c-radio__label').contains('Card').click();
@@ -31,13 +31,13 @@ class UndoRedo_PO {
     }
 
     editComponentView() {
-        cy.get('div.agent-list__edit-icon > svg').click();
+        cy.get('.widget__edit-icon').click();
         cy.get('.c-radio__label').contains('Table').click();
         cy.get('.c-modal__buttons').contains('Save').click();
     }
 
     addComponent() {
-        cy.get('button.c-button--blue').contains('+ Add Component').click();
+        cy.get('.c-toolbar-right').contains('+ Add Component').click();
         cy.get('.c-modal--new-wallboard__list').contains('Agent list').click();
         cy.get('.c-modal__buttons').contains('Select').click();
         cy.get('.c-modal__buttons').contains('Add').click();
@@ -63,7 +63,7 @@ class UndoRedo_PO {
     }
 
     removeComponent() {
-        cy.get('div.agent-list__delete-icon > svg').first().click();
+        cy.get('.widget__delete-icon').first().click();
         cy.get('.c-modal__footer-right-side').contains('Delete').click();
     }
 
@@ -72,7 +72,7 @@ class UndoRedo_PO {
     }
 
     getComponents() {
-        return cy.get('.agent-list__body ');
+        return cy.get('.widget');
     }
 
     redoButton() {
@@ -84,7 +84,7 @@ class UndoRedo_PO {
     }
 
     tableBody() {
-        return cy.get('.agent-t__body')
+        return cy.get('.widget__body.widget__body--table')
     }
 
 }

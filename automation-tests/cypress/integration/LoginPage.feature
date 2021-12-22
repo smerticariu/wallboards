@@ -27,7 +27,7 @@ Feature: Login Page
 #         When the user restores down the window
 #         Then all elements are visible and aligned with the page
 
-#     Scenario: Login page is responsive for tablet view in portrait mode
+#     Scenario: Login page is responsive for tablet view in portrait / landscape mode
 #         Given the wallboards login page is displayed on a tablet device
 #         When the user inspects the page
 #         Then all elements are visible and aligned with the page in both portrait and landscape mode

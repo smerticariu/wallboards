@@ -15,7 +15,7 @@ Feature: Interactivity Options
             | table | admin |
             | card  | basic |
             | table | basic |
-            
+          
     Scenario Outline: The user is not allowed to change agents' availability state when associated interactivity option is disabled
         Given the add component modal for agent list is displayed
         And the '<view>' is selected

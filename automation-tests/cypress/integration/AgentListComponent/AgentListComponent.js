@@ -15,7 +15,6 @@ var current_state = ''
 
 beforeEach(()=>{
     cy.login()
-    cy.log('Login successful')
 })
 
 // Scenario: The agent list component name allows alphanumeric characters
@@ -38,7 +37,7 @@ And('the user saves the component', () =>{
 })
 
 Then ('the new component name is displayed', () => {
-    agent.titleWallboardlist().contains(agentTitle)
+    agent.titleWallboardlist().should('contain', agentTitle)
 })
 
 
@@ -61,7 +60,7 @@ And('the user saves the component', () =>{
 })
 
 Then ('the user is informed that the component name allows only alphanumeric characters', () => {
-    agent.inputError().contains('Component name must be alphanumeric')
+    agent.inputError().contains('must be alphanumeric')
 })
 
 //Scenario: The agent list component name cannot be empty
@@ -83,7 +82,7 @@ And('the user saves the component', () =>{
 })
 
 Then ('the user is informed that the component name cannot be empty', () => {
-    agent.inputError().contains('Component name must be alphanumeric')
+    agent.inputError().contains('must be alphanumeric')
 })
 
 //Scenario: Selecting the Card view mode displays a preview in card format
@@ -216,23 +215,17 @@ And('the Table view is selected', () =>{
 })
 
 When ('the user saves the wallboard', () => {
-    agent.modalTitle();
-    agent.sortDefaultTableView();
-    agent.availabilityCheckboxTable();
-    agent.presenceCheckboxTable();
-    agent.interactivityCheckboxes();
     agent.addButton().click();
     agent.saveButton().click();
     agent.saveButtonAlert().click();
 })
-
 
 And('the user opens the wallboard saved in view mode', () =>{
     agent.runButton().invoke('removeAttr', 'target').click({force:true});
 })
 
 Then ('the selected settings for the agent list component is displayed in table view mode', () => {
-    agent.tableCheck();
+    cy.get('.agent-list-table').should('be.visible');
 })
 
 // Scenario Outline: Agents displayed on the wallboard are sorted alphabetically by agent’s name
@@ -357,11 +350,11 @@ Then ('the agents in the list are displayed alphabetically by the availability s
     unsorted = []
     if(preview == 'table'){
         var i = 0;
-        agent.availabilityStatusSort().each(($name)=>{
+        agent.getTableName().each(($name)=>{
             unsorted.push($name.text().toLowerCase())
         })
         sorted = unsorted.sort()
-        agent.availabilityStatusSort().each(()=>{
+        agent.getTableName().each(()=>{
             expect(unsorted[i]).to.include(sorted[i])
             i+=1;
         })
@@ -464,57 +457,7 @@ Then ('the agents in the list are displayed by the presence state in the followi
 
 })
    
-    
-
-// Scenario Outline: Agents displayed on the wallboard are sorted by the time on current call*
-Given('the add component modal for agent list is displayed', () => {
-    agent.visitLandingPage();
-    agent.newWallButton().click();
-    agent.addComponent().click();
-    agent.selectAgentList().click();
-    agent.selectButton().click()
-})
-
-
-And('the {string} is selected', (view) =>{
-    preview = view;
-    if(view == 'card'){
-        agent.cardView().click({force:true})
-    }
-    else if(view == 'table'){
-        agent.tableView().click({force:true})
-    }
-})
-
-
-And('the Time on current call sort option is selected', () =>{
-    if(preview == 'card'){
-        cy.log(preview)
-        agent.timeoncurrentcallcard();
-    }
-    else if(preview == 'table'){
-        cy.log(preview)
-        agent.timeoncurrentcalltable();
-    }
-})
-
-And('the new wallboard configuration is saved', () => {
-    agent.addButton().click();
-    agent.saveButton().click();
-    agent.saveButtonAlert().click();
-})
-
-
-When('the user opens the wallboard', () =>{
-    agent.runButton().invoke('removeAttr', 'target').click({force:true});
-})
-
-Then ('the first agents in the list are displayed based on the most time on the phone', () => {
-    //not implemented
-})
-
-
-// Scenario Outline: Agents displayed on the wallboard are sorted by the time spent in current availability state*//
+// Scenario Outline: Agents displayed on the wallboard are sorted by the time spent in current availability state
 Given('the add component modal for agent list is displayed', () => {
     agent.visitLandingPage();
     agent.newWallButton().click();
@@ -585,53 +528,6 @@ Then ('the first agents in the list are displayed based on the most time in the 
     }
 })
 
-// Scenario Outline: Agents displayed on the wallboard are sorted by the total time spent on the phone today*
-Given('the add component modal for agent list is displayed', () => {
-    agent.visitLandingPage();
-    agent.newWallButton().click();
-    agent.addComponent().click();
-    agent.selectAgentList().click();
-    agent.selectButton().click()
-})
-
-
-And('the {string} is selected', (view) =>{
-    preview = view;
-    if(view == 'card'){
-        agent.cardView().click({force:true})
-    }
-    else if(view == 'table'){
-        agent.tableView().click({force:true})
-    }
-})
-
-
-And('the Total time spent on the phone today sort option', () =>{
-    if(preview == 'card'){
-        cy.log(preview)
-        agent.timephonetodaycard();
-    }
-    else if(preview == 'table'){
-        cy.log(preview)
-        agent.timephonetodaytable();
-    }
-})
-
-And('the new wallboard configuration is saved', () => {
-    agent.addButton().click();
-    agent.saveButton().click();
-    agent.saveButtonAlert().click();
-})
-
-
-When('the user opens the wallboard', () =>{
-    agent.runButton().invoke('removeAttr', 'target').click({force:true});
-})
-
-Then ('the first agents in the list are displayed based on the most time on the phone today', () =>{
-    //not implemented
-})
-
 // Scenario Outline: Agents possessing the selected skill to view are displayed on the wallboard
 Given('the add component modal for agent list is displayed', () => {
     agent.visitLandingPage();
@@ -663,13 +559,13 @@ And('the wallboard is saved', () => {
 When('the user opens the wallboard', () => {
     agent.runButton().invoke('removeAttr', 'target'). click();
 })
-Then('the agents possessing the selected {string} are displayed', () => {
+Then('the agents possessing the selected skill are displayed', () => {
     agent.viewSkills().each(($skills) => {
         cy.get($skills).click({force: true})
         agent.skillsList().then((allskills) => {
             expect(allskills.text()).to.include(skillText)
-            cy.log(allskills.text())
         })
+        agent.clickOutside().click();
     })
 })
 
@@ -701,7 +597,7 @@ And('the user navigates to save the wallboard', () => {
 When('the user runs the wallboard', () => {
     agent.runButton().invoke('removeAttr', 'target').click();
 })
-Then('none of the one-skill-agents displayed possess the disabled {string}', () => {
+Then('none of the one-skill-agents displayed possess the disabled skill', () => {
     agent.viewSkills().each(($skills) => {
         cy.get($skills).click({ force: true })
         agent.individualSkill().then((skillsAssigned) => {
@@ -780,7 +676,7 @@ Then('the agent with no skills assigned is displayed', () => {
 
         let i = 1
         for (i; i <= newNumber; i++) {
-            cy.get('div.agent-list__body.agent-list__body--table > div > div.agent-t__body > div:nth-child(' + i + ') > div:nth-child(5)').should('contain.text', 'None')
+            cy.get('div > div > div:nth-child(' + i + ') > div > div.widget__body.widget__body--table > div > div.agent-list-table__body > div > div:nth-child(5)').should('contain.text', 'None')
         }
     })
 })
@@ -808,7 +704,6 @@ When ('the user enables the {string} column to view', (option) => {
 
 Then ('the selected {string} column is displayed in the table preview', (column) => {
     agent.tablePreviewHeader().invoke('text').then((text) => {
-        cy.log(text)
         expect(text).to.contain(column)
     })
 })
@@ -958,7 +853,7 @@ When ('the user runs the wallboard in view mode', () => {
     agent.runButton().invoke('removeAttr', 'target').click();
 })
 Then ('the agents list is displayed under 1 column', () => {
-    agent.items().then((number) => {
+    agent.tablePreviewHeader().then((number) => {
         expect(number.length).to.eq(1);
     })
 })
@@ -982,7 +877,7 @@ When ('the user opens the wallboard in view mode', () => {
     agent.runButton().invoke('removeAttr', 'target').click();
 })
 Then ('the agents list is displayed under 2 columns', () => {
-    agent.items().then((number) => {
+    agent.tablePreviewHeader().then((number) => {
         expect(number.length).to.eq(2);
     })
 })
@@ -1075,7 +970,7 @@ When ('the user adds the card component configured', () => {
     cy.wait(3000)
 })
 Then ('the agents with the selected presence state are displayed', () => {
-    cy.get('.agent-list__body').invoke('text').then((text) => {
+    agent.bodyMessage().invoke('text').then((text) => {
         cy.log(text)
         if (text == 'No agents') {
             cy.log('There are no agents with the ' + state +' presence status.')
@@ -1113,13 +1008,12 @@ When ('the user navigates to add the component configured', () => {
     cy.wait(3000)
 })
 Then ('the agents with the enabled presence_state are displayed', () => {
-    cy.get('.agent-list__body').invoke('text').then((text) => {
-        cy.log(text)
+    agent.bodyMessage().invoke('text').then((text) => {
         if (text == 'No agents') {
             cy.log('There are no agents with the ' + state +' presence status.')
         }
         else {
-            agent.tablePresenceState().each((text) => {
+            agent.tableStatus().each((text) => {
                 expect(text.text()).to.eq(state)
             })
         }
@@ -1151,7 +1045,7 @@ When ('the configured component is added', () => {
     cy.wait(3000)
 })
 Then ('no agents with the disabled presence state are displayed', () => {
-    cy.get('.agent-list__body').invoke('text').then((text) => {
+    agent.bodyMessage().invoke('text').then((text) => {
         cy.log(text)
         if (text == 'No agents') {
             cy.log('All agents have the disabled ' + state + ' presence status.')
@@ -1189,13 +1083,13 @@ When ('the user adds the table configured component', () => {
     cy.wait(3000)
 })
 Then ('no agents with the disabled presence state are displayed on the table', () => {
-    cy.get('.agent-list__body').invoke('text').then((text) => {
+    agent.bodyMessage().invoke('text').then((text) => {
         cy.log(text)
         if (text == 'No agents') {
             cy.log('All agents have the disabled ' + state + ' presence status.')
         }
         else {
-            agent.tablePresenceState().each((text) => {
+            agent.tableStatus().each((text) => {
                 expect(text.text()).not.eq(state)
             })
         }
@@ -1227,7 +1121,7 @@ When ('the user adds the component on the wallboard', () => {
     cy.wait(3000)
 })
 Then ('agents with the selected availability state state are displayed', () => {
-    cy.get('.agent-list__body').invoke('text').then((text) => {
+    agent.bodyMessage().invoke('text').then((text) => {
         cy.log(text)
         if (text == 'No agents') {
             cy.log('No agents have the selected ' + state + ' availability status.')
@@ -1265,8 +1159,7 @@ When('the user adds the component on the wallboard configured', () => {
     cy.wait(3000)
 })
 Then('agents with the selected availability state state are displayed on the table', () => {
-    cy.get('.agent-list__body').invoke('text').then((text) => {
-        cy.log(text)
+    agent.bodyMessage().invoke('text').then((text) => {
         if (text == 'No agents') {
             cy.log('No agents have the selected ' + state + ' availability status.')
         }
@@ -1303,7 +1196,7 @@ When ('the component is added on the wallboard', () => {
     cy.wait(3000)
 })
 Then ('no agents with the disabled availability state are displayed on the card', () => {
-    cy.get('.agent-list__body').invoke('text').then((text) => {
+    agent.bodyMessage().invoke('text').then((text) => {
         cy.log(text)
         if (text == 'No agents') {
             cy.log('All agents have the disabled ' + state + ' availability status.')
@@ -1341,7 +1234,7 @@ When ('the component is added on the wallboard', () => {
     cy.wait(3000)
 })
 Then ('no agents with the disabled availability state are displayed on the table', () => {
-    cy.get('.agent-list__body').invoke('text').then((text) => {
+    agent.bodyMessage().invoke('text').then((text) => {
         cy.log(text)
         if (text == 'No agents') {
             cy.log('All agents have the disabled ' + state + ' availability status.')
@@ -1370,11 +1263,10 @@ When ('the user selects a given call queue', () => {
             callQText = text.text()
             cy.log(callQText)
         })
-        agent.addButton().click();
+        agent.forAdd().click();
         cy.wait(3000);
 
-        cy.get('.agent-list__body').invoke('text').then((text) => {
-            cy.log(text)
+        cy.get('.widget__body').invoke('text').then((text) => {
             if (text == 'No agents') {
                 cy.log('There are no agents in the selected' + callQText + ' call queue.')
                 agent.editComponentButton().click();
