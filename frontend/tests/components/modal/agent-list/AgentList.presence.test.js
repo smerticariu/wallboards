@@ -5,18 +5,18 @@ import '@testing-library/jest-dom/extend-expect';
 import { Provider } from 'react-redux';
 import createMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import ModalAgentList from '../../src/components/modal/agent-list/modal.agent-list';
-import { modalInitialState } from '../../src/store/reducers/modal.reducer';
-import { skillsInitialState } from '../../src/store/reducers/skills.reducer';
-import { callsQueuesInitialState } from '../../src/store/reducers/callsQueues.reducer';
-import { loginInitialState } from '../../src/store/reducers/login.reducer';
-import { agentsInitialState } from '../../src/store/reducers/agents.reducer';
-import { DEFAULTS } from '../../src/common/defaults/defaults';
+import { modalInitialState } from '../../../../src/store/reducers/modal.reducer';
+import { skillsInitialState } from '../../../../src/store/reducers/skills.reducer';
+import { callsQueuesInitialState } from '../../../../src/store/reducers/callsQueues.reducer';
+import { loginInitialState } from '../../../../src/store/reducers/login.reducer';
+import { agentsInitialState } from '../../../../src/store/reducers/agents.reducer';
+import ModalAgentList from '../../../../src/components/modal/agent-list/modal.agent-list';
+import { DEFAULTS } from '../../../../src/common/defaults/defaults';
 
 const mockStore = createMockStore([thunk]);
 Enzyme.configure({ adapter: new Adapter() });
 
-describe('Modal: Add Component -- presence state', () => {
+describe('Modal: Agent List -- presence state', () => {
   const initialStoreValues = {
     modal: { ...modalInitialState },
     skills: { ...skillsInitialState },
@@ -29,28 +29,19 @@ describe('Modal: Add Component -- presence state', () => {
       },
     },
   };
-
+  const store = mockStore({
+    ...initialStoreValues,
+  });
+  let wrapper = mount(
+    <Provider store={store}>
+      <ModalAgentList />
+    </Provider>,
+  );
   test('Presence State section should be rendered', () => {
-    const store = mockStore({
-      ...initialStoreValues,
-    });
-    let wrapper = mount(
-      <Provider store={store}>
-        <ModalAgentList />
-      </Provider>,
-    );
     expect(wrapper.find('.c-modal--add-component__input-section--presence-state').length).toBe(1);
   });
 
   test('Select all shuld be checked', () => {
-    const store = mockStore({
-      ...initialStoreValues,
-    });
-    let wrapper = mount(
-      <Provider store={store}>
-        <ModalAgentList />
-      </Provider>,
-    );
     expect(
       wrapper
         .find('.c-modal--add-component__input-section--presence-state')

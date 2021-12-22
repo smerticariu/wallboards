@@ -19,6 +19,7 @@ const LandingTable = () => {
   const { category, searchedWallboards } = useSelector((state) => state.landing);
 
   const [dataType, setDataType] = useState('Wallboard');
+  const currentDate = new Date();
   useEffect(() => {
     // dispatch(syncWallboardsWithConfig()); // import and use it when needed - do not delete
     dispatch(fetchAllWallboardsThunk());
@@ -162,11 +163,12 @@ const LandingTable = () => {
             {filteredWbs.length > 0 &&
               filteredWbs.map((wb, index) => {
                 const path = dataType === 'Wallboard' ? 'wallboard' : 'group';
+                const wbId = btoa(`${wb.id}?d=${currentDate}`);
                 return (
                   <tr key={index}>
                     <td className="c-landing-table__wb-name">
                       <p>
-                        <a target="_blank" href={`#/${path}/${wb.id}`} rel="noreferrer">
+                        <a target="_blank" href={`#/${path}/${wbId}`} rel="noreferrer">
                           {wb.name}
                         </a>
                       </p>
@@ -179,7 +181,7 @@ const LandingTable = () => {
                       <p>{handleConvertDate(wb.createdOn)}</p>
                     </td>
                     <td className="c-landing-table__wb-actions">
-                      <a target="_blank" rel="noreferrer" href={`#/${path}/${wb.id}/edit`} className="c-landing-table__edit-btn">
+                      <a target="_blank" rel="noreferrer" href={`#/${path}/${wbId}/edit`} className="c-landing-table__edit-btn">
                         {' '}
                       </a>
                       <button

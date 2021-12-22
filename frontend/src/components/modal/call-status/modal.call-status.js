@@ -25,7 +25,7 @@ const ModalCallStatus = ({ ...props }) => {
     };
 
     return (
-      <button className="c-button c-button--grey c-button--m-left" onClick={onClickCancelButton}>
+      <button className="c-button" onClick={onClickCancelButton}>
         Cancel
       </button>
     );
@@ -50,8 +50,8 @@ const ModalCallStatus = ({ ...props }) => {
     };
 
     return (
-      <button className="c-button c-button--white" onClick={onClickDeleteButton}>
-        Save
+      <button className="c-button c-button--blue c-button--m-left" onClick={onClickDeleteButton}>
+        {callStatus.isEditMode ? 'Save' : 'Add'}
       </button>
     );
   };
@@ -93,8 +93,8 @@ const ModalCallStatus = ({ ...props }) => {
           <div className="c-modal__body c-modal__body--call-status">
             {handleTitleInput()}
             <div className="c-modal__buttons">
-              {handleSaveButton()}
               {handleCancelButton()}
+              {handleSaveButton()}
             </div>
           </div>
         </div>

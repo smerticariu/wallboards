@@ -11,7 +11,7 @@ import {
 import { checkIsAlphanumeric } from '../../../common/utils/alphanumeric-validation';
 import { DEFAULTS } from '../../../common/defaults/defaults';
 import { fetchUserGroupsThunk } from '../../../store/thunk/agents.thunk';
-import { CALL_STATISTIC_PERIOD } from '../../../common/defaults/modal.defaults';
+import { CALL_STATISTIC_PERIOD, WIDGET_TYPE } from '../../../common/defaults/modal.defaults';
 import CheckBox from '../../checkbox/checkbox';
 import TimePicker from '../../time-picker/time-picker';
 import GridQueueTracking from '../../grid/widgets/queue-tracking';
@@ -308,9 +308,12 @@ const ModalqueueTracking = ({ ...props }) => {
         <div className="c-modal--add-component__input-label c-modal--add-component__input-label--grey">
           {DEFAULTS.MODAL.QUEUE_TRACKING.NAMES.PREVIEW}
         </div>
-        <div>
+        <div className="c-modal__preview">
           <div className="c-modal__preview-section">
-            <GridQueueTracking isPreview={true} widget={{ ...queueTracking, title: queueTracking.title.value }} />
+            <GridQueueTracking
+              isPreview={true}
+              widget={{ ...queueTracking, title: queueTracking.title.value, type: WIDGET_TYPE.QUEUE_TRACKING }}
+            />
           </div>
         </div>
         <div className="c-modal__buttons">

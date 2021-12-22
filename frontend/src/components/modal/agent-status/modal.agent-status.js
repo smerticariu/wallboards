@@ -7,7 +7,7 @@ import moment from 'moment';
 import { checkIsAlphanumeric } from '../../../common/utils/alphanumeric-validation';
 import { DEFAULTS } from '../../../common/defaults/defaults';
 import { exportCSVUserStatusDataThunk, fetchAvailabilityProfilesThunk } from '../../../store/thunk/agents.thunk';
-import { CALL_STATISTIC_PERIOD } from '../../../common/defaults/modal.defaults';
+import { CALL_STATISTIC_PERIOD, WIDGET_TYPE } from '../../../common/defaults/modal.defaults';
 import CheckBox from '../../checkbox/checkbox';
 import AgentStatusTable from '../../agent-status-table/agent-status-table';
 
@@ -44,7 +44,7 @@ const ModalAgentStatus = ({ ...props }) => {
     };
 
     return (
-      <button className="c-button  c-button--m-left" onClick={onClickCancelButton}>
+      <button className="c-button" onClick={onClickCancelButton}>
         Cancel
       </button>
     );
@@ -92,7 +92,7 @@ const ModalAgentStatus = ({ ...props }) => {
     };
 
     return (
-      <button className={`c-button c-button--blue`} onClick={onClickAddButton}>
+      <button className="c-button c-button--blue c-button--m-left" onClick={onClickAddButton}>
         {agentStatus.isEditMode ? 'Save' : 'Add'}
       </button>
     );
@@ -300,12 +300,13 @@ const ModalAgentStatus = ({ ...props }) => {
         <div className="c-modal--add-component__input-label c-modal--add-component__input-label--grey">
           {DEFAULTS.MODAL.AGENT_STATUS.SECTION_TITLE.PREVIEW}
         </div>
-        <div>
+        <div className="c-modal__preview">
           <div className="c-modal__preview-section c-modal__preview-section--agent-login">
             <AgentStatusTable
               isEditMode={false}
               widget={{
                 title: agentStatus.title.value,
+                type: WIDGET_TYPE.AGENT_STATUS,
                 profile: {
                   value: agentStatus.profile.value,
                 },
@@ -323,8 +324,8 @@ const ModalAgentStatus = ({ ...props }) => {
           </div>
         </div>
         <div className="c-modal__buttons">
-          {handleAddButton()}
           {handleCancelButton()}
+          {handleAddButton()}
         </div>
       </div>
     );

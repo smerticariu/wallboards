@@ -1,10 +1,12 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import LandingSidebar from './sidebar/landing.sidebar';
 import LandingTable from './table/landing.table';
 import Toolbar from '../toolbar/toolbar';
 import useOnClickOutside from '../../common/hooks/useOnClickOutside';
 import { DEFAULTS } from '../../common/defaults/defaults';
+import useWindowSize from '../../common/hooks/useWindowSize';
+import { fixLandingScrollBar } from '../../common/utils/fixLandingScrollbar';
 
 const Landing = () => {
   const [isSidebarOpen, handleIsSidebarOpen] = useState(false);
@@ -14,6 +16,12 @@ const Landing = () => {
   const adminPermissions = userInfo.isAdmin;
   const teamleaderPermissions = userInfo.isTeamLeader;
 
+  const { width } = useWindowSize();
+  useEffect(() => {
+    if (width) {
+      fixLandingScrollBar();
+    }
+  }, [width]);
   if (!adminPermissions || teamleaderPermissions) {
     return (
       <Toolbar template={DEFAULTS.TOOLBAR.NAME.ERROR}>

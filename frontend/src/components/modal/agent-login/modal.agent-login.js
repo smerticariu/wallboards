@@ -7,7 +7,7 @@ import moment from 'moment';
 import { checkIsAlphanumeric } from '../../../common/utils/alphanumeric-validation';
 import { DEFAULTS } from '../../../common/defaults/defaults';
 import { exportCSVUserLoginDataThunk, fetchUserGroupsThunk } from '../../../store/thunk/agents.thunk';
-import { CALL_STATISTIC_PERIOD } from '../../../common/defaults/modal.defaults';
+import { CALL_STATISTIC_PERIOD, WIDGET_TYPE } from '../../../common/defaults/modal.defaults';
 import AgentLoginTable from '../../tables/table.agent-login';
 
 const ModalAgentLogin = ({ ...props }) => {
@@ -43,7 +43,7 @@ const ModalAgentLogin = ({ ...props }) => {
     };
 
     return (
-      <button className="c-button  c-button--m-left" onClick={onClickCancelButton}>
+      <button className="c-button" onClick={onClickCancelButton}>
         Cancel
       </button>
     );
@@ -91,7 +91,7 @@ const ModalAgentLogin = ({ ...props }) => {
     };
 
     return (
-      <button className={`c-button c-button--blue`} onClick={onClickAddButton}>
+      <button className="c-button c-button--blue c-button--m-left" onClick={onClickAddButton}>
         {agentLogin.isEditMode ? 'Save' : 'Add'}
       </button>
     );
@@ -103,7 +103,7 @@ const ModalAgentLogin = ({ ...props }) => {
       let timeEnd = moment(agentLogin.to.value).utcOffset(agentLogin.timeZone.id).endOf('day');
       timeStart = timeStart.format();
       timeEnd = timeEnd.format();
-      dispatch(exportCSVUserLoginDataThunk({ timeStart, timeEnd }, +agentLogin.group.id, +agentLogin.limitResult.value));
+      dispatch(exportCSVUserLoginDataThunk({ timeStart, timeEnd }, +agentLogin.timeZone.id, +agentLogin.group.id));
     };
 
     return (
@@ -265,24 +265,28 @@ const ModalAgentLogin = ({ ...props }) => {
         <div className="c-modal--add-component__input-label c-modal--add-component__input-label--grey">
           {DEFAULTS.MODAL.AGENT_LOGIN.SECTION_TITLE.PREVIEW}
         </div>
-        <div className="c-modal__preview-section c-modal__preview-section--agent-login">
-          <AgentLoginTable
-            isEditMode={false}
-            widget={{
-              title: agentLogin.title.value,
-              group: {
-                value: agentLogin.group.value,
-              },
-              limitResult: {
-                value: agentLogin.limitResult.value,
-              },
-            }}
-            tableData={DEFAULTS.MODAL.AGENT_LOGIN.TABLE_MOCK_DATA}
-          />
+        <div className="c-modal__preview">
+          <div className="c-modal__preview-section c-modal__preview-section--agent-login">
+            <AgentLoginTable
+              isEditMode={false}
+              widget={{
+                title: agentLogin.title.value,
+                type: WIDGET_TYPE.AGENT_LOGIN,
+                group: {
+                  value: agentLogin.group.value,
+                },
+                limitResult: {
+                  value: agentLogin.limitResult.value,
+                },
+              }}
+              tableData={DEFAULTS.MODAL.AGENT_LOGIN.TABLE_MOCK_DATA}
+            />
+          </div>
         </div>
+
         <div className="c-modal__buttons">
-          {handleAddButton()}
           {handleCancelButton()}
+          {handleAddButton()}
         </div>
       </div>
     );

@@ -7,32 +7,16 @@ import { handleCallTrackingDataAC, handleWallboardActiveModalAC, resetNewWidgetM
 import { checkIsAlphanumeric } from '../../../common/utils/alphanumeric-validation';
 import { DEFAULTS } from '../../../common/defaults/defaults';
 import { fetchUserGroupsThunk } from '../../../store/thunk/agents.thunk';
-import { CALL_STATISTIC_PERIOD } from '../../../common/defaults/modal.defaults';
+import { CALL_STATISTIC_PERIOD, WIDGET_TYPE } from '../../../common/defaults/modal.defaults';
 import GridCallTracking from '../../grid/widgets/call-tracking';
 
 const ModalCallTracking = ({ ...props }) => {
   const modalRef = useRef(null);
   const dispatch = useDispatch();
   const callTracking = useSelector((state) => state.modal.callTracking);
-  const { allCallsQueues } = useSelector((state) => state.callsQueues);
   const { userInfo } = useSelector((state) => state.login);
   const userGroups = useSelector((state) => state.agents.userGroups);
   const [userGroupsLocal, setUserGroupsLocal] = useState([{ ...DEFAULTS.MODAL.CALL_TRACKING.USER_GROUP }]);
-  useEffect(() => {
-    if (callTracking.isEditMode) return;
-    if (allCallsQueues.length) {
-      dispatch(
-        handleCallTrackingDataAC({
-          callQueue: {
-            id: allCallsQueues[0].id,
-            value: allCallsQueues[0].name,
-            errorMessage: '',
-          },
-        })
-      );
-    }
-    // eslint-disable-next-line
-  }, [allCallsQueues]);
   useEffect(() => {
     if (userGroups.length) {
       setUserGroupsLocal([{ ...DEFAULTS.MODAL.CALL_TRACKING.USER_GROUP }, ...userGroups]);
@@ -146,22 +130,6 @@ const ModalCallTracking = ({ ...props }) => {
         </div>
 
         <div className="c-modal--add-component__input-section">
-          <div className="c-modal--add-component__input-label">{DEFAULTS.MODAL.CALL_TRACKING.SECTION_TITLE.CALL_QUEUE}</div>
-          <select
-            name="callQueue"
-            className="c-select"
-            onChange={(e) => handleInputAndSelect(e, 'select')}
-            value={callTracking.callQueue.id}
-          >
-            {allCallsQueues.map((option) => (
-              <option key={option.id} value={option.id}>
-                {option.name}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div className="c-modal--add-component__input-section">
           <div className="c-modal--add-component__input-label">{DEFAULTS.MODAL.CALL_TRACKING.SECTION_TITLE.CALL_CATEGORY}</div>
           <select
             name="callCategory"
@@ -225,9 +193,12 @@ const ModalCallTracking = ({ ...props }) => {
         <div className="c-modal--add-component__input-label c-modal--add-component__input-label--grey">
           {DEFAULTS.MODAL.CALL_TRACKING.SECTION_TITLE.PREVIEW}
         </div>
-        <div className="c-modal__preview-container">
+        <div className="c-modal__preview c-modal__preview--call-tracking">
           <div className="c-modal__preview-section">
-            <GridCallTracking isPreview={true} widget={{ ...callTracking, title: callTracking.title.value }} />
+            <GridCallTracking
+              isPreview={true}
+              widget={{ ...callTracking, type: WIDGET_TYPE.CALL_TRACKING, title: callTracking.title.value }}
+            />
           </div>
         </div>
 
