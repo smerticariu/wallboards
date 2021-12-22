@@ -16,6 +16,8 @@ export const wallboardsActions = {
   FETCH_WALLBOARD_GROUP_BY_ID_SUCCESS: 'FETCH_WALLBOARD_GROUP_BY_ID_SUCCESS',
   FETCH_WALLBOARD_GROUP_BY_ID_FAIL: 'FETCH_WALLBOARD_GROUP_BY_ID_FAIL',
 
+  FETCH_WALLBOARD_FOR_WALLBOARD_GROUP: 'FETCH_WALLBOARD_FOR_WALLBOARD_GROUP',
+
   FETCH_ALL_WALLBOARDS: 'FETCH_ALL_WALLBOARDS',
   FETCH_ALL_WALLBOARDS_SUCCESS: 'FETCH_ALL_WALLBOARDS_SUCCESS',
   FETCH_ALL_WALLBOARDS_FAIL: 'FETCH_ALL_WALLBOARDS_FAIL',
@@ -116,6 +118,11 @@ export const fetchWallboardByIdSuccessAC = (wallboard) => ({
 export const fetchWallboardByIdFailAC = (errorMEssage, statusCode) => ({
   type: wallboardsActions.FETCH_WALLBOARD_BY_ID_FAIL,
   payload: { errorMEssage, statusCode },
+});
+
+export const fetchWallboardForWallboardGroupAC = (wallboard, stepId) => ({
+  type: wallboardsActions.FETCH_WALLBOARD_FOR_WALLBOARD_GROUP,
+  payload: { wallboard, stepId },
 });
 
 export const fetchWallboardGroupByIdAC = (message) => ({

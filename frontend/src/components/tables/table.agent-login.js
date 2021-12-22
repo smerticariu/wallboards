@@ -1,58 +1,10 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
-import { CloseIcon } from 'src/assets/static/icons/close';
-import {
-  handleWallboardActiveModalAC,
-  setWallboardComponentForDeleteAC,
-  setWidgetComponentForEditAC,
-} from 'src/store/actions/modal.action';
-import { EditIcon } from '../../assets/static/icons/edit';
-import { DEFAULTS } from '../../common/defaults/defaults';
+import WidgetContainer from '../grid/widgets/widget-container';
 import TimeInterval from '../time-interval/time-interval';
 
 const AgentLoginTable = ({ isEditMode, tableData, widget, ...props }) => {
-  const dispatch = useDispatch();
-
-  const handleDeleteIcon = () => {
-    const onDeleteClick = () => {
-      dispatch(setWallboardComponentForDeleteAC(widget));
-      dispatch(handleWallboardActiveModalAC(DEFAULTS.MODAL.MODAL_NAMES.DELETE_WALLBOARD_COMPONENT));
-    };
-    return (
-      <div onClick={onDeleteClick} className="widget__delete-icon">
-        <CloseIcon className="i--close i--close--small" />
-      </div>
-    );
-  };
-
-  const handleEditIcon = () => {
-    const onEditClick = () => {
-      dispatch(setWidgetComponentForEditAC(widget));
-      dispatch(handleWallboardActiveModalAC(DEFAULTS.MODAL.MODAL_NAMES.AGENT_LOGIN));
-    };
-    return (
-      <div onClick={onEditClick} className="widget__edit-icon">
-        <EditIcon className="i--edit i--edit--margin-right" />
-      </div>
-    );
-  };
-
   return (
-    <div className="widget">
-      <div className="widget__header">
-        <div className="widget__title">
-          <div className="widget__title--bold">{widget.title}: </div>
-          {widget.group.value}
-        </div>
-        <div className="widget__icons">
-          {isEditMode && (
-            <>
-              {handleEditIcon()}
-              {handleDeleteIcon()}
-            </>
-          )}
-        </div>
-      </div>
+    <WidgetContainer widget={widget} isEditMode={isEditMode}>
       {tableData.length ? (
         <div className="widget__body widget__body--table">
           <div className="agent-login">
@@ -83,7 +35,7 @@ const AgentLoginTable = ({ isEditMode, tableData, widget, ...props }) => {
       ) : (
         <div className="empty-message empty-message--agents">No agents</div>
       )}
-    </div>
+    </WidgetContainer>
   );
 };
 export default AgentLoginTable;

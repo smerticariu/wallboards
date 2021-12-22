@@ -976,16 +976,12 @@ export const MODAL = {
     QUESTION: 'Are you sure you want to delete this wallboard group?',
   },
   REMOVE_STEP_MODAL: {
-    TITLE: 'Removing Step - Warning!',
-    QUESTION: `Are you sure you want to remove this wallboard from the Wallboard Group?
-
-    Depending on your permissions to wallboards, you may not be able to add it back again. `,
+    TITLE: 'Removing Step',
+    QUESTION: `Are you sure you want to remove this step from the Wallboard Group?`,
   },
   REMOVE_WALLBOARD_MODAL: {
-    TITLE: 'Removing Wallboard - Warning!',
-    QUESTION: `Are you sure you want to remove this wallboard from the Wallboard Group?
-    
-    Depending on your permissions to wallboards, you may not be able to add it back again. `,
+    TITLE: 'Removing Wallboard',
+    QUESTION: `Are you sure you want to remove this wallboard from the Wallboard Group?`,
   },
   DELETE_WALLBOARD_COMPONENT_MODAL: {
     QUESTION: 'Are you sure you want to delete this component?',
@@ -1016,6 +1012,11 @@ export const MODAL = {
   SAVE_WALLBOARD: {
     UNSAVED_CHANGES: 'There are unsaved changes in your',
     LOST_CHANGES: 'If you close the wallboard, these changes are lost.',
+    SAVE_AND_CLOSE: `To preserve your changes, click Save & Close`,
+  },
+  SAVE_WALLBOARD_GROUP: {
+    UNSAVED_CHANGES: 'There are unsaved changes in your',
+    LOST_CHANGES: 'If you close the wallboard group, these changes are lost.',
     SAVE_AND_CLOSE: `To preserve your changes, click Save & Close`,
   },
   WARNING: {

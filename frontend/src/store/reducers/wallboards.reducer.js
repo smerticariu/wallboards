@@ -258,7 +258,7 @@ export const wallboardsReducer = (state = { ...wallboardsInitialState }, action)
       const { agentList, userInfo } = action.payload;
 
       const newWidget = {
-        name: agentList.title.value,
+        title: agentList.title.value,
         callQueue: {
           id: agentList.callQueue.id,
           name: agentList.callQueue.name,
@@ -772,6 +772,7 @@ export const wallboardsReducer = (state = { ...wallboardsInitialState }, action)
                 wallboardId: null,
                 wallboardName: null,
                 wallboardDescription: null,
+                wallboardFulData: null,
               },
             ],
           },
@@ -817,6 +818,7 @@ export const wallboardsReducer = (state = { ...wallboardsInitialState }, action)
                     wallboardId: null,
                     wallboardName: null,
                     wallboardDescription: null,
+                    wallboardFulData: null,
                   }
                 : step
             ),
@@ -843,6 +845,32 @@ export const wallboardsReducer = (state = { ...wallboardsInitialState }, action)
         },
       };
     }
+    case wallboardsActions.FETCH_WALLBOARD_FOR_WALLBOARD_GROUP:
+      const { wallboard, stepId } = action.payload;
+      return {
+        ...state,
+        wallboardGroup: {
+          ...state.wallboardGroup,
+          wallboardGroup: {
+            ...state.wallboardGroup.wallboardGroup,
+            steps: state.wallboardGroup.wallboardGroup.steps.map((step) => {
+              if (step.stepId !== stepId) return step;
+              if (!wallboard)
+                return {
+                  ...step,
+                  wallboardId: null,
+                  wallboardName: null,
+                  wallboardDescription: null,
+                  wallboardFulData: null,
+                };
+              return {
+                ...step,
+                wallboardFulData: wallboard,
+              };
+            }),
+          },
+        },
+      };
 
     default:
       return state;

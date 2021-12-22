@@ -19,20 +19,20 @@
 
   &--blue {
     background-color: $sf-brand-blue;
-    color: $white;
+    color: $white !important;
   }
 
   &--green {
     background-color: $natterbox-green;
-    color: $white;
+    color: $white !important;
   }
   &--grey {
     background-color: $pinkish-grey;
-    color: $white;
+    color: $white !important;
   }
   &--red {
     background-color: $natterbox-red;
-    color: $white;
+    color: $white !important;
   }
 
   &--disabled {

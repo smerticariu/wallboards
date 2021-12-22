@@ -18,7 +18,7 @@ const CustomAutosuggest = ({ allTitles, value, name, placeholder = '', isSmallSi
     }
     return allTitles
       .filter((title) => {
-        return title.toLowerCase().includes(escapedValue.toLowerCase());
+        return title?.toLowerCase().includes(escapedValue.toLowerCase());
       })
       .slice(0, 8); // show only first 8 suggestions
   }

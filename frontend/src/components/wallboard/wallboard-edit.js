@@ -15,7 +15,7 @@ import { DEFAULTS } from '../../common/defaults/defaults';
 const WallboardEdit = () => {
   const activeModalName = useSelector((state) => state.modal.activeModalName);
   const dispatch = useDispatch();
-  const { id } = useParams();
+  const id = atob(useParams().id).split('?d=')[0];
   const { fetchStatus, fetchMessage, statusCode } = useSelector((state) => state.wallboards.present.activeWallboard);
   const activeWallboard = useSelector((state) => state.wallboards.present.activeWallboard.wallboard);
   const { availabilityProfiles } = useSelector((state) => state.agents);

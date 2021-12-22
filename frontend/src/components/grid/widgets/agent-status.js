@@ -1,33 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
-import { fetchOrganisationAgentsThunk, fetchUserStatusDataThunk } from '../../../store/thunk/agents.thunk';
+import { fetchOrganisationAgentsThunk } from '../../../store/thunk/agents.thunk';
 import AgentStatusTable from '../../agent-status-table/agent-status-table';
-import { getTimesAgentstatus } from '../../../common/utils/getTimesAgentstatus';
 
 const GridAgentStatus = ({ widget, ...props }) => {
   const userStatusData = useSelector((state) => state.agents.userStatusData);
-  const allAgents = useSelector((state) => state.agents.allAgents);
+  const organisationUsers = useSelector((state) => state.agents.organisationUsers);
   const dispatch = useDispatch();
   const [tableData, setTableData] = useState([]);
-  useEffect(() => {
-    dispatch(fetchUserStatusDataThunk(getTimesAgentstatus(widget), widget.profile.id, widget.limitResult.value, widget.id));
-    const interval = setInterval(() => {
-      dispatch(fetchUserStatusDataThunk(getTimesAgentstatus(widget), widget.profile.id, widget.limitResult.value, widget.id));
-    }, [2000]);
-    return () => clearInterval(interval);
-    // eslint-disable-next-line
-  }, [widget]);
+
   useEffect(() => {
     dispatch(fetchOrganisationAgentsThunk());
     // eslint-disable-next-line
   }, []);
   useEffect(() => {
     const userStatusDataForWidget = userStatusData[widget.id];
-    if (userStatusDataForWidget && allAgents.length) {
+    if (userStatusDataForWidget && organisationUsers.length) {
       let users = [];
       userStatusDataForWidget.forEach((user) => {
-        const agent = allAgents.find((agent) => agent.id === user.userId);
+        const agent = organisationUsers.find((agent) => agent.id === user.userId);
         const timeInSecconds = moment().diff(moment(user.time), 'seconds');
         const time = moment(user.time).utcOffset(widget.timeZone.id).format('YYYY-MM-DD HH:mm:ss');
         const elapsed = timeInSecconds;
@@ -45,7 +37,7 @@ const GridAgentStatus = ({ widget, ...props }) => {
       setTableData(users);
     }
     // eslint-disable-next-line
-  }, [allAgents, userStatusData]);
+  }, [organisationUsers, userStatusData]);
 
   return <AgentStatusTable {...props} widget={widget} tableData={tableData} />;
 };

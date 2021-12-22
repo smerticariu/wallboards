@@ -1,54 +1,35 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { CloseIcon } from 'src/assets/static/icons/close';
-import {
-  handleWallboardActiveModalAC,
-  setWallboardComponentForDeleteAC,
-  setWidgetComponentForEditAC,
-} from 'src/store/actions/modal.action';
+import { useSelector } from 'react-redux';
 import moment from 'moment';
-import { DEFAULTS } from '../../../common/defaults/defaults';
-import { fetchQueuedCallThunk } from '../../../store/thunk/callsQueues.thunk';
 import { getQueueStatusInitialValues } from '../../../common/defaults/wallboards.defaults';
-import { fetchUsersCurrentCallTimeThunk } from '../../../store/thunk/agents.thunk';
-import { EditIcon } from '../../../assets/static/icons/edit';
+import WidgetContainer from './widget-container';
 
 const GridQueueStatus = ({ isEditMode, widget, ...props }) => {
-  const dispatch = useDispatch();
-  const calls = useSelector((state) => state.agents.calls);
+  const callsWithLogicalDirection = useSelector((state) => state.agents.callsWithLogicalDirection);
   const agentsQueues = useSelector((state) => state.agents.agentsQueues);
 
   const queuedCall = useSelector((state) => state.callsQueues.queuedCall);
   const [queueStatusValues, handleQueueStatusValues] = useState({ ...getQueueStatusInitialValues() });
   useEffect(() => {
-    const interval = setInterval(() => {
-      dispatch(fetchQueuedCallThunk(widget.callQueue.id));
-      dispatch(fetchUsersCurrentCallTimeThunk());
-    }, [2000]);
-    return () => clearInterval(interval);
-    // eslint-disable-next-line
-  }, [widget.callQueue.id]);
-
-  useEffect(() => {
     let queueStatusValuesCopy = { ...getQueueStatusInitialValues() };
-    if (agentsQueues.length) {
-      const agents = agentsQueues.find((agentQueue) => agentQueue.callQueueId === widget.callQueue.id);
+    const agents = agentsQueues[widget.callQueue.id] ?? [];
 
-      agents?.agents?.forEach((agent) => {
-        ++queueStatusValuesCopy.totalAgents.value;
-        const userCurrentCall = calls.filter((call) => call.userId === agent.userId || call.deviceId === agent.deviceId).pop();
+    agents.forEach((agent) => {
+      ++queueStatusValuesCopy.totalAgents.value;
+      const userCurrentCall = callsWithLogicalDirection
+        .filter((call) => call.userId === agent.userId || call.deviceId === agent.deviceId)
+        .pop();
 
-        if (agent.status.toLowerCase() === 'loggedoff') {
-          ++queueStatusValuesCopy.loggedOffAgents.value;
-        } else if (agent.status.toLowerCase() === 'busy' || (agent.status.toLowerCase() === 'idle' && userCurrentCall)) {
-          ++queueStatusValuesCopy.busyAgents.value;
-        } else if (agent.status.toLowerCase() === 'idle' && agent.inWrapUp) {
-          ++queueStatusValuesCopy.wrappedUpAgents.value;
-        } else {
-          ++queueStatusValuesCopy.availableAgents.value;
-        }
-      });
-    }
+      if (agent.status.toLowerCase() === 'loggedoff') {
+        ++queueStatusValuesCopy.loggedOffAgents.value;
+      } else if (agent.status.toLowerCase() === 'busy' || (agent.status.toLowerCase() === 'idle' && userCurrentCall)) {
+        ++queueStatusValuesCopy.busyAgents.value;
+      } else if (agent.status.toLowerCase() === 'idle' && agent.inWrapUp) {
+        ++queueStatusValuesCopy.wrappedUpAgents.value;
+      } else {
+        ++queueStatusValuesCopy.availableAgents.value;
+      }
+    });
     const queuedCalls = queuedCall[widget.callQueue.id] ?? [];
 
     queuedCalls.forEach((call) => {
@@ -67,58 +48,20 @@ const GridQueueStatus = ({ isEditMode, widget, ...props }) => {
     });
     handleQueueStatusValues(queueStatusValuesCopy);
     // eslint-disable-next-line
-  }, [calls, agentsQueues]);
+  }, [callsWithLogicalDirection, agentsQueues]);
 
-  const handleEditIcon = () => {
-    const onEditClick = () => {
-      dispatch(setWidgetComponentForEditAC(widget));
-      dispatch(handleWallboardActiveModalAC(DEFAULTS.MODAL.MODAL_NAMES.QUEUE_STATUS));
-    };
-
-    return (
-      <div onClick={onEditClick} className="widget__edit-icon">
-        <EditIcon className="i--edit i--edit--margin-right" />
-      </div>
-    );
-  };
   const findEndWait = (call) => {
     let end = moment.utc();
     if (call.status.toLowerCase() === 'bridged' || call.status.toLowerCase() === 'connected') {
-      const findCall = calls.find((callFromBE) => callFromBE.uuid === call.uuid);
+      const findCall = callsWithLogicalDirection.find((callFromBE) => callFromBE.uuid === call.uuid);
       if (findCall?.answerTime) {
         end = moment.utc(findCall.answerTime);
       }
     }
     return moment(end);
   };
-
-  const handleDeleteIcon = () => {
-    const onDeleteClick = () => {
-      dispatch(setWallboardComponentForDeleteAC(widget));
-      dispatch(handleWallboardActiveModalAC(DEFAULTS.MODAL.MODAL_NAMES.DELETE_WALLBOARD_COMPONENT));
-    };
-    return (
-      <div onClick={onDeleteClick} className="widget__delete-icon">
-        <CloseIcon className="i--close i--close--small" />
-      </div>
-    );
-  };
   return (
-    <div className="widget">
-      <div className="widget__header">
-        <div className="widget__title">
-          <div className="widget__title--bold">{widget.title}: </div>
-          {widget.callQueue.value}
-        </div>
-        <div className="widget__icons">
-          {isEditMode && (
-            <>
-              {handleEditIcon()}
-              {handleDeleteIcon()}
-            </>
-          )}
-        </div>
-      </div>
+    <WidgetContainer widget={widget} isEditMode={isEditMode}>
       <div className={`widget__body widget__body--call-status`}>
         {Object.keys(queueStatusValues).map((key) => (
           <div key={key} className="widget__call-status-row">
@@ -134,7 +77,7 @@ const GridQueueStatus = ({ isEditMode, widget, ...props }) => {
           </div>
         ))}
       </div>
-    </div>
+    </WidgetContainer>
   );
 };
 export default GridQueueStatus;

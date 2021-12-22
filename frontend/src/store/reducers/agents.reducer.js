@@ -2,10 +2,10 @@ import { agentsActions } from '../actions/agents.action';
 import { FetchStatus } from './wallboards.reducer';
 
 export const agentsInitialState = {
-  agentsQueues: [],
+  agentsQueues: {},
   agentsQueuesFetchStatus: FetchStatus.NULL,
 
-  allAgents: [],
+  organisationUsers: [],
 
   organisationUsersFetchStatus: FetchStatus.NULL,
 
@@ -21,7 +21,7 @@ export const agentsInitialState = {
   availabilityStates: [],
   availabilityStatesFetchStatus: FetchStatus.NULL,
 
-  calls: [],
+  callsWithLogicalDirection: [],
   callsWithGroup: [],
 
   userLoginData: [],
@@ -38,33 +38,14 @@ export const agentsReducer = (state = agentsInitialState, action) => {
       };
 
     case agentsActions.FETCH_ALL_AGENTS_SUCCESS:
+      const { callQueueId, agents } = action.payload;
+
       return {
         ...state,
-        agentsQueues: state.agentsQueues.some((agentQueue) => agentQueue.callQueueId === action.payload.callQueueId)
-          ? state.agentsQueues.map((agentQueue) =>
-              agentQueue.callQueueId !== action.payload.callQueueId
-                ? agentQueue
-                : {
-                    ...agentQueue,
-                    agents: action.payload.agent.map((agent) => {
-                      const agentFromRedux = agentQueue.agents.find((reduxAgent) => reduxAgent.userId === agent.userId);
-                      if (agentFromRedux) {
-                        return {
-                          ...agentFromRedux,
-                          ...agent,
-                        };
-                      }
-                      return agent;
-                    }),
-                  }
-            )
-          : [
-              ...state.agentsQueues,
-              {
-                callQueueId: action.payload.callQueueId,
-                agents: action.payload.agent,
-              },
-            ],
+        agentsQueues: {
+          ...state.agentsQueues,
+          [callQueueId]: agents,
+        },
         agentsQueuesFetchStatus: FetchStatus.SUCCESS,
       };
 
@@ -84,20 +65,7 @@ export const agentsReducer = (state = agentsInitialState, action) => {
       const agents = action.payload;
       return {
         ...state,
-        allAgents: agents,
-        agentsQueues: state.agentsQueues.map((agentQueue) => ({
-          ...agentQueue,
-          agents: agentQueue.agents.map((agent) => {
-            const agentFromRequest = agents.find((agentFromRequest) => agentFromRequest.id === agent.userId);
-            if (agentFromRequest) {
-              return {
-                ...agent,
-                organisationUserData: { ...agentFromRequest },
-              };
-            }
-            return agent;
-          }),
-        })),
+        organisationUsers: agents,
         organisationUsersFetchStatus: FetchStatus.SUCCESS,
       };
     }
@@ -202,10 +170,10 @@ export const agentsReducer = (state = agentsInitialState, action) => {
         })),
       };
     case agentsActions.FETCH_USERS_CURRENT_CALL_TIME_SUCCESS:
-      const { calls, callsWithGroup } = action.payload;
+      const { callsWithLogicalDirection, callsWithGroup } = action.payload;
       return {
         ...state,
-        calls,
+        callsWithLogicalDirection,
         callsWithGroup,
       };
 

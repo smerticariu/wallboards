@@ -36,9 +36,9 @@ export const agentsActions = {
 export const fetchAllAgentsAC = () => ({
   type: agentsActions.FETCH_ALL_AGENTS,
 });
-export const fetchAllAgentsSuccessAC = (agent, callQueueId) => ({
+export const fetchAllAgentsSuccessAC = (agents, callQueueId) => ({
   type: agentsActions.FETCH_ALL_AGENTS_SUCCESS,
-  payload: { agent, callQueueId },
+  payload: { agents, callQueueId },
 });
 export const fetchAllAgentsFailAC = (errorMessage) => ({
   type: agentsActions.FETCH_ALL_AGENTS_FAIL,
@@ -117,9 +117,9 @@ export const changeAgentAvailabilityStateFailAC = (errorMessage) => ({
   payload: errorMessage,
 });
 
-export const fetchUsersCurrentCallTimeSuccessAC = (calls, callsWithGroup) => ({
+export const fetchUsersCurrentCallTimeSuccessAC = (callsWithLogicalDirection, callsWithGroup) => ({
   type: agentsActions.FETCH_USERS_CURRENT_CALL_TIME_SUCCESS,
-  payload: { calls, callsWithGroup },
+  payload: { callsWithLogicalDirection, callsWithGroup },
 });
 export const fetchUserLoginDataSuccessAC = (userLoginData, widgetId) => ({
   type: agentsActions.FETCH_USER_LOGIN_DATA_SUCCESS,

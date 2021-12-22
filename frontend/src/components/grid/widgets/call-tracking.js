@@ -1,34 +1,12 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { CloseIcon } from 'src/assets/static/icons/close';
-import {
-  handleWallboardActiveModalAC,
-  setWallboardComponentForDeleteAC,
-  setWidgetComponentForEditAC,
-} from 'src/store/actions/modal.action';
-import { DEFAULTS } from '../../../common/defaults/defaults';
-import { fetchCallStatisticThunk } from '../../../store/thunk/callsQueues.thunk';
+import React from 'react';
+import { useSelector } from 'react-redux';
 import { CALL_CATEGORY_OPTIONS } from '../../../common/defaults/modal.defaults';
 import { averageValue } from '../../../common/utils/averageValue';
 import TimeInterval from '../../time-interval/time-interval';
 import { getCallTrackingInitialValues } from '../../../common/defaults/wallboards.defaults';
-import { getTimesCallTracking } from '../../../common/utils/getTimesCallTracking';
-import { EditIcon } from '../../../assets/static/icons/edit';
+import WidgetContainer from './widget-container';
 const GridCallTracking = ({ isPreview, isEditMode, widget, ...props }) => {
-  const dispatch = useDispatch();
-
   const callsStatistic = useSelector((state) => state.callsQueues.callsStatistic);
-
-  useEffect(() => {
-    if (!isPreview) {
-      dispatch(fetchCallStatisticThunk(getTimesCallTracking(widget), widget.id));
-      const interval = setInterval(() => {
-        dispatch(fetchCallStatisticThunk(getTimesCallTracking(widget), widget.id));
-      }, [2000]);
-      return () => clearInterval(interval);
-    }
-    // eslint-disable-next-line
-  }, [widget]);
 
   const getTimesData = () => {
     let aggregateData = getCallTrackingInitialValues();
@@ -130,47 +108,8 @@ const GridCallTracking = ({ isPreview, isEditMode, widget, ...props }) => {
     return aggregateData[widget.callCategory.id];
   };
   const callTrackingTableData = getTimesData();
-
-  const handleEditIcon = () => {
-    const onEditClick = () => {
-      dispatch(setWidgetComponentForEditAC(widget));
-      dispatch(handleWallboardActiveModalAC(DEFAULTS.MODAL.MODAL_NAMES.CALL_TRACKING));
-    };
-
-    return (
-      <div onClick={onEditClick} className="widget__edit-icon">
-        <EditIcon className="i--edit i--edit--margin-right" />
-      </div>
-    );
-  };
-
-  const handleDeleteIcon = () => {
-    const onDeleteClick = () => {
-      dispatch(setWallboardComponentForDeleteAC(widget));
-      dispatch(handleWallboardActiveModalAC(DEFAULTS.MODAL.MODAL_NAMES.DELETE_WALLBOARD_COMPONENT));
-    };
-    return (
-      <div onClick={onDeleteClick} className="widget__delete-icon">
-        <CloseIcon className="i--close i--close--small" />
-      </div>
-    );
-  };
   return (
-    <div className="widget">
-      <div className="widget__header">
-        <div className="widget__title">
-          <div className="widget__title--bold">{widget.title}: </div>
-          {widget.period.value}
-        </div>
-        <div className="widget__icons">
-          {isEditMode && (
-            <>
-              {handleEditIcon()}
-              {handleDeleteIcon()}
-            </>
-          )}
-        </div>
-      </div>
+    <WidgetContainer widget={widget} isEditMode={isEditMode}>
       <div className={`widget__body widget__body--call-status`}>
         {Object.keys(callTrackingTableData).map((key) => (
           <div key={key} className="widget__call-status-row">
@@ -187,7 +126,7 @@ const GridCallTracking = ({ isPreview, isEditMode, widget, ...props }) => {
           </div>
         ))}
       </div>
-    </div>
+    </WidgetContainer>
   );
 };
 export default GridCallTracking;

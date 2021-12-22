@@ -9,7 +9,7 @@ import WallboardGroupComponents from './wallboard-group-components';
 
 const WallboardGroupEdit = () => {
   const dispatch = useDispatch();
-  const { id } = useParams();
+  const id = atob(useParams().id).split('?d=')[0];
   const { fetchStatus, fetchMessage, statusCode, wallboardGroup } = useSelector((state) => state.wallboards.present.wallboardGroup);
 
   const { userInfo } = useSelector((state) => state.login);
@@ -36,7 +36,7 @@ const WallboardGroupEdit = () => {
       return (
         <div className="error-message-container">
           <h3 className="error-message--headline">Error 401:</h3>
-          <p className="error-message">{DEFAULTS.WALLBOARDS.MESSAGE.NOT_ALLOWED_EDIT}</p>
+          <p className="error-message">{DEFAULTS.WALLBOARDS.MESSAGE.WALLBOARD_GROUP_NOT_ALLOWED_EDIT}</p>
         </div>
       );
     }
@@ -48,7 +48,7 @@ const WallboardGroupEdit = () => {
         return (
           <div className="error-message-container">
             <h3 className="error-message--headline">Error 401:</h3>
-            <p className="error-message">{DEFAULTS.WALLBOARDS.MESSAGE.NOT_ALLOWED_EDIT}</p>
+            <p className="error-message">{DEFAULTS.WALLBOARDS.MESSAGE.WALLBOARD_GROUP_NOT_ALLOWED_EDIT}</p>
           </div>
         );
       }

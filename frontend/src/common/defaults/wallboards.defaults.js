@@ -18,13 +18,15 @@ export const WALLBOARDS = {
   MESSAGE: {
     LOADING: 'Wallboard loading...',
     NAME_WARNING: 'Wallboard name must contain only alphanumeric characters',
-    WALLBOARD_GROUP_NAME_WARNING: 'Wallboard Group name must contain only alphanumeric characters',
-    WALLBOARD_GROUP_STEP_VALUE: 'The minimum time value for one step is 1 second',
     NO_COMPONENTS: 'This wallboard has no components.',
     WALLBOARD_NOT_FOUND: 'Wallboard not found',
     ADD_COMPONENTS: 'To start adding components, click the button below.',
     NOT_ALLOWED_EDIT: 'You are not allowed to edit this wallboard. Please contact your Administrator',
-    NOT_ALLOWED_VIEW: "You don't have acces s to this wallboard! Please contact your Administrator.",
+    NOT_ALLOWED_VIEW: "You don't have access to this wallboard! Please contact your Administrator.",
+    WALLBOARD_GROUP_NOT_ALLOWED_EDIT: 'You are not allowed to edit this wallboard group. Please contact your Administrator',
+    WALLBOARD_GROUP_NOT_ALLOWED_VIEW: "You don't have access to this wallboard group! Please contact your Administrator.",
+    WALLBOARD_GROUP_STEP_VALUE: 'The minimum time value for one step is 1 second',
+    WALLBOARD_GROUP_NAME_WARNING: 'Wallboard Group name must contain only alphanumeric characters',
     WALLBOARD_GROUP_NO_COMPONENTS: 'This Wallboard Group has no Wallboards.',
   },
   PLACEHOLDER: {
@@ -434,8 +436,6 @@ export const COUNTRY_CODE = [
   { name: 'Yemen', dial_code: '+967', code: 'YE' },
   { name: 'Zambia', dial_code: '+260', code: 'ZM' },
   { name: 'Zimbabwe', dial_code: '+263', code: 'ZW' },
-  { name: 'land Islands', dial_code: '', code: 'AX' },
-  { name: 'Antarctica', dial_code: null, code: 'AQ' },
   { name: 'Bolivia, Plurinational State of', dial_code: '+591', code: 'BO' },
   { name: 'Brunei Darussalam', dial_code: '+673', code: 'BN' },
   { name: 'Cocos (Keeling) Islands', dial_code: '+61', code: 'CC' },
@@ -480,3 +480,25 @@ export const COUNTRY_CODE = [
   { name: 'Virgin Islands, British', dial_code: '+1 284', code: 'VG' },
   { name: 'Virgin Islands, U.S.', dial_code: '+1 340', code: 'VI' },
 ];
+
+export const getSvgLastLineInitialValues = () => ({
+  svgSize: {
+    x: 0,
+    y: 0,
+  },
+  arrowTranslate: {
+    x: 0,
+    y: 0,
+    rotate: 0,
+  },
+  points: [],
+});
+
+export const WALLBOARD_SVG_VALUES = {
+  startAnchor: 'auto',
+  path: 'straight',
+  zIndex: 1,
+  color: '#00a9ce',
+  strokeWidth: 1,
+  headSize: 12,
+};
