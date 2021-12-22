@@ -403,8 +403,10 @@ export const exportCSVUserLoginDataThunk =
         'download',
         `Export_Agent_Login_Report_${moment(timeStart).format('YYYY-MM-DD')}-${moment(timeEnd).format('YYYY-MM-DD')}.csv`
       );
-      document.body.appendChild(link);
+      const root = document.getElementById('root');
+      root.appendChild(link);
       link.click();
+      root.removeChild(link);
     } catch (error) {
       console.log(error);
     }
@@ -460,8 +462,10 @@ export const exportCSVUserStatusDataThunk =
         'download',
         `Export_Agent_Availability_State_Report_${moment(timeStart).format('YYYY-MM-DD')}-${moment(timeEnd).format('YYYY-MM-DD')}.csv`
       );
-      document.body.appendChild(link);
+      const root = document.getElementById('root');
+      root.appendChild(link);
       link.click();
+      root.removeChild(link);
     } catch (error) {
       console.log(error);
     }
