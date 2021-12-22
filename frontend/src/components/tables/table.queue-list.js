@@ -1,17 +1,10 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { CloseIcon } from '../../assets/static/icons/close';
-import { EditIcon } from '../../assets/static/icons/edit';
 import { SettingsIcon } from '../../assets/static/icons/settings';
 import { DEFAULTS } from '../../common/defaults/defaults';
 import { QUEUE_LIST_COLUMN_OPTIONS, QUEUE_LIST_INTERACTIVITY_OPTIONS_KEYS } from '../../common/defaults/modal.defaults';
 import { sortQueueList } from '../../common/sort/sort.queue-list';
 import { findCountruByPhoneNo } from '../../common/utils/findCountruByPhoneNo';
-import {
-  handleWallboardActiveModalAC,
-  setWallboardComponentForDeleteAC,
-  setWidgetComponentForEditAC,
-} from '../../store/actions/modal.action';
 import { listenLiveThunk } from '../../store/thunk/agents.thunk';
 import Dropdown from '../dropdown/dropdown';
 import WidgetContainer from '../grid/widgets/widget-container';
@@ -33,32 +26,6 @@ const QueueListTable = ({ isPreviewMode, isEditMode, tableData, widget, ...props
     filtredTableColumns.push({ value: QUEUE_LIST_COLUMN_OPTIONS.OPTIONS, text: 'Options', minWidth: 70, sortBy: false });
   }
   const totalWidth = filtredTableColumns.reduce((width, column) => width + column.minWidth, 0);
-  const handleDeleteIcon = () => {
-    const onDeleteClick = () => {
-      if (isPreviewMode) return;
-      dispatch(setWallboardComponentForDeleteAC(widget));
-      dispatch(handleWallboardActiveModalAC(DEFAULTS.MODAL.MODAL_NAMES.DELETE_WALLBOARD_COMPONENT));
-    };
-    return (
-      <div onClick={onDeleteClick} className="widget__delete-icon">
-        <CloseIcon className="i--close i--close--small" />
-      </div>
-    );
-  };
-
-  const handleEditIcon = () => {
-    if (isPreviewMode) return;
-    const onEditClick = () => {
-      dispatch(setWidgetComponentForEditAC(widget));
-      dispatch(handleWallboardActiveModalAC(DEFAULTS.MODAL.MODAL_NAMES.QUEUE_LIST));
-    };
-    return (
-      <div onClick={onEditClick} className="widget__edit-icon">
-        <EditIcon className="i--edit i--edit--margin-right" />
-      </div>
-    );
-  };
-
   const handleListenLive = (agentId) => {
     if (isPreviewMode) return;
     dispatch(listenLiveThunk(agentId));

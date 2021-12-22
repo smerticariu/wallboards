@@ -56,6 +56,24 @@ describe('Modal: Agent Login', () => {
     expect(wrapper.find('.c-modal__container').length).toBe(1);
   });
 
+  test(`In add mode the button must be with the text "Add"`, () => {
+    expect(wrapper.find('.c-button--m-left').text()).toBe('Add');
+  });
+
+  test(`In edit mode the button must be with the text "Save"`, () => {
+    initialStoreValues.modal.agentLogin.isEditMode = true;
+    const store = mockStore({
+      ...initialStoreValues,
+    });
+    let wrapper = mount(
+      <Provider store={store}>
+        <ModalAgentLogin />
+      </Provider>,
+    );
+
+    expect(wrapper.find('.c-button--m-left').text()).toBe('Save');
+  });
+
   test(`Number of period options must be ${DEFAULTS.MODAL.AGENT_LOGIN.PERIOD.length}`, () => {
     expect(wrapper.find({ name: 'period' }).find('option').length).toBe(DEFAULTS.MODAL.AGENT_LOGIN.PERIOD.length);
   });

@@ -6,13 +6,13 @@ export const filterAgentList = (agentsWithFullInfo, widget) => {
       agent.agentSkills.length === 0
         ? false
         : widget.skills.selectAll || agent.agentSkills.some((agentSkill) => widget.skills.selectedItems.includes(agentSkill.name));
-    isSkill = widget.view === DEFAULTS.MODAL.ADD_COMPONENT.MAIN_VIEWING_OPTIONS.CARD ? true : isSkill;
     isSkill =
       widget.skills.selectNone || (!widget.skills.selectAll && !widget.skills.selectedItems.length)
         ? agent.agentSkills.length === 0
           ? true
           : false
         : isSkill;
+    isSkill = widget.view === DEFAULTS.MODAL.ADD_COMPONENT.MAIN_VIEWING_OPTIONS.CARD ? true : isSkill;
     const isPresenceState = widget.presenceStates.selectAll || widget.presenceStates.selectedItems.includes(agent.status);
     const isAvailabilityState =
       widget.availabilityStates.selectAll ||

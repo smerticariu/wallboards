@@ -37,6 +37,23 @@ describe('Modal: Agent List -- view section', () => {
       <ModalAgentList />
     </Provider>,
   );
+  test(`In add mode the button must be with the text "Add"`, () => {
+    expect(wrapper.find('.c-button--m-left').text()).toBe('Add');
+  });
+
+  test(`In edit mode the button must be with the text "Save"`, () => {
+    initialStoreValues.modal.agentList.isEditMode = true;
+    const store = mockStore({
+      ...initialStoreValues,
+    });
+    let wrapper = mount(
+      <Provider store={store}>
+        <ModalAgentList />
+      </Provider>,
+    );
+    expect(wrapper.find('.c-button--m-left').text()).toBe('Save');
+  });
+
   test('View section should be rendered', () => {
     expect(wrapper.find('.c-modal--add-component__input-section--view').length).toBe(1);
   });
