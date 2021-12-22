@@ -399,6 +399,7 @@ export const exportCSVUserLoginDataThunk =
       let encodedUri = encodeURI(csvContent);
       let link = document.createElement('a');
       link.setAttribute('href', encodedUri);
+      link.target = '_blank'; 
       link.setAttribute(
         'download',
         `Export_Agent_Login_Report_${moment(timeStart).format('YYYY-MM-DD')}-${moment(timeEnd).format('YYYY-MM-DD')}.csv`
