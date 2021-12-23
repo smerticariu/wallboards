@@ -1,0 +1,124 @@
+.c-input {
+  background-color: $dark-grey;
+  border-radius: 28px;
+  border: none;
+  padding: 11px 29px;
+  font-size: 14px;
+  &--landing-search {
+    width: 560px;
+  }
+  &--new-walboard-title {
+    color: $turquoise-blue;
+    font-size: 20px;
+    font-family: $inter-regular;
+    font-weight: 900;
+    padding: 0;
+    background-color: transparent;
+    border-radius: 0px;
+    width: 350px;
+    background-color: $white;
+  }
+  &--seconds {
+    color: $natterbox-grey-col;
+    font-size: 16px;
+    font-family: $inter-regular;
+    padding: 10px;
+    background-color: $light-grey;
+    border-radius: 6px;
+    width: 50px;
+    text-align: center;
+    background-color: $white;
+    &::-webkit-inner-spin-button,
+    &::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      margin: 0;
+    }
+    &--absolute {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
+  }
+
+  &:focus-visible {
+    border: none;
+    outline: none;
+  }
+
+  &--grey {
+    padding: 4px 8px;
+    border-radius: 5px;
+    border: solid 1px $pinkish-grey;
+    font-size: 16px;
+    color: $slate-gray;
+    font-family: $public-sans-regular;
+    width: 100%;
+    &:focus-visible {
+      border: solid 1px $pinkish-grey;
+    }
+  }
+  &--small-size {
+    width: 60px;
+    &::-webkit-inner-spin-button {
+      opacity: 1;
+    }
+  }
+  &--margin-top {
+    margin-top: 10px;
+  }
+
+  &::placeholder {
+    font-family: $public-sans-thin;
+    color: $input-text-colour;
+  }
+  &__error-message {
+    color: $natterbox-red;
+    font-family: $public-sans-regular;
+    font-size: 12px;
+  }
+}
+
+.c-textarea {
+  background-color: $dark-grey;
+  padding: 12px 16px;
+  resize: none;
+  overflow: auto;
+  min-height: 75px;
+  max-height: 200px;
+
+  padding: 4px 8px;
+  border-radius: 5px;
+  border: solid 1px $pinkish-grey;
+  font-size: 16px;
+  color: $slate-gray;
+  font-family: $public-sans-regular;
+  width: 100%;
+  &:focus-visible {
+    outline: none;
+    border: solid 1px $pinkish-grey;
+  }
+  ::placeholder {
+    font-family: $public-sans-thin;
+    color: $input-text-colour;
+  }
+}
+.input-percent {
+  font-size: 14px;
+  font-family: $public-sans-regular;
+  color: $slate-gray;
+  margin-left: 3px;
+  margin-bottom: 2px;
+}
+.input-seconds {
+  display: grid;
+  grid-template-columns: calc(100% - 70px) 70px;
+  column-gap: 10px;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  font-family: $public-sans-regular;
+  color: $slate-gray;
+}

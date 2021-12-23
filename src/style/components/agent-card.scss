@@ -1,0 +1,158 @@
+.agent-c {
+  display: flex;
+  flex-direction: column;
+  width: 260px;
+  color: $natterbox-dark-blue-grey;
+  -webkit-font-smoothing: antialiased;
+  &--sun-yellow {
+    background-color: $sun-yellow;
+  }
+  &--lighter-red {
+    background-color: $natterbox-lighter-red;
+    color: $white;
+  }
+  &--orange {
+    background-color: $natterbox-orange;
+    color: $white;
+  }
+  &--magenta {
+    background-color: $natterbox-magenta;
+    color: $white;
+  }
+  &--aqua {
+    background-color: $natterbox-aqua;
+  }
+  &--sick-green {
+    background-color: $sick-green;
+  }
+  &--grey {
+    background-color: $pinkish-grey-two;
+  }
+  border-radius: 8px;
+  height: max-content;
+  margin: 7px;
+  &__header {
+    margin-top: 10px;
+    padding: 0 10px;
+    display: flex;
+    width: 100%;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
+  &__user {
+    display: flex;
+    &-image {
+      min-width: 30px;
+      height: 30px;
+      background-image: url('../../assets/static/images/not_exist_people.png');
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+      border-radius: 50%;
+      margin-right: 4px;
+    }
+    &-name {
+      font-family: $public-sans-thin;
+      font-size: 18px;
+      font-weight: 600;
+      max-width: 18ch;
+    }
+    &-ext {
+      font-family: $public-sans-regular;
+      font-size: 8px;
+    }
+  }
+  &__status-time {
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+  }
+  &__status {
+    width: 60%;
+    padding-left: 10px;
+    font-family: $public-sans-regular;
+    font-size: 9.5px;
+    line-height: 1.4;
+    font-weight: 500;
+    border-bottom-right-radius: 8px;
+    border-top-right-radius: 8px;
+    color: $natterbox-dark-blue-grey;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.2);
+    &--dropdown {
+      overflow: unset;
+    }
+    &--lighter-red {
+      background-color: $natterbox-lighter-red;
+    }
+    &--dark-blue {
+      background-color: $natterbox-dark-blue-grey;
+    }
+    &--red {
+      background-color: $natterbox-red;
+    }
+    &--green {
+      background-color: $natterbox-green;
+    }
+    &--grey {
+      background-color: $pinkish-grey;
+    }
+    &--white {
+      color: $white;
+    }
+  }
+  &__cog-icon {
+    display: flex;
+    width: 10px;
+  }
+  &__time {
+    background-color: rgba($white, 0.08);
+    width: fit-content;
+    padding: 0 10px;
+    font-family: $public-sans-regular;
+    font-size: 10px;
+    line-height: 1.4;
+    border-bottom-left-radius: 8px;
+    border-top-left-radius: 8px;
+    color: $natterbox-dark-blue-grey;
+    &--white {
+      color: $white;
+    }
+  }
+  &__body {
+    padding: 0 10px;
+    margin-top: 15px;
+  }
+  &__call {
+    &-time-text {
+      font-family: $public-sans-regular;
+      font-size: 9px;
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+    &-time-container {
+      display: flex;
+      width: 100%;
+      height: 40px;
+      align-items: center;
+      justify-content: center;
+      border-radius: 5px;
+      background-color: rgba($white, 0.08);
+    }
+    &-time {
+      font-family: $public-sans-bold;
+      font-size: 24px;
+      line-height: 24px;
+      font-weight: 500;
+    }
+  }
+  &__footer {
+    font-family: $public-sans-regular;
+    font-size: 14px;
+    font-weight: 500;
+    text-align: center;
+    margin: 5px 0 10px 0;
+  }
+}
