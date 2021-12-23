@@ -1,0 +1,10 @@
+{
+  "unsavedWB": "http://localhost:3000#/wallboard/MTUxMDQ5MC01NjAxODc5LXctMTY0MDE4MDA2MjE2ND9kPTE2NDAxODAwNjU0NDE=",
+  "disabledWB": "http://localhost:3000#/wallboard/MTUxMDQ5MC01NjAxODc5LXctMTY0MDE4MDA2NjkwNj9kPTE2NDAxODAwNjc4OTY=",
+  "savedWB": "http://localhost:3000#/wallboard/MTUxMDQ5MC01NjAxODc5LXctMTY0MDE4MDA3NTA3Mj9kPTE2NDAxODAwNzgxNDI=",
+  "deletedUrl": "http://localhost:3000#/wallboard/MTUxMDQ5MC01NjAxODc5LXctMTY0MDE4MDA4NjE3Mj9kPTE2NDAxODAwODcxMjc=",
+  "unsavedGroup": "http://localhost:3000#/group/MTUxMDQ5MC01NjAxODc5LWctMTY0MDE4MDA5NDI1OT9kPTE2NDAxODAwOTY0MTY=",
+  "disabledGroup": "http://localhost:3000#/group/MTUxMDQ5MC01NjAxODc5LWctMTY0MDE4MDA5Nzc5Nj9kPTE2NDAxODAxMDE3ODA=",
+  "savedGroup": "http://localhost:3000#/group/MTUxMDQ5MC01NjAxODc5LWctMTY0MDE4MDExMjE3NT9kPTE2NDAxODAxMTYwODQ=",
+  "deletedGroupUrl": "http://localhost:3000#/group/MTUxMDQ5MC01NjAxODc5LWctMTY0MDE4MDEyMjYzOD9kPTE2NDAxODAxMjQyMTk="
+}

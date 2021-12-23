@@ -17,11 +17,6 @@ Feature: Login User Permissions
             | basic user       |
           # | team leader user |
 
-    # Scenario: Basic user does not have access to the wallboards app on salesforce
-    # Given the basic user logs in
-    # When the user navigates the view the available apps
-    # Then the wallboards app is not displayed in the available apps
-
 
 #  TEAM LEADER Permissions
     # Scenario: Team leader user can access the wallboards app on salesforce

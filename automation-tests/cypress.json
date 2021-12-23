@@ -5,6 +5,8 @@
     "testsuitesTitle": false
   },
   "baseUrl": "http://localhost:3000/",
-  "chromeWebSecurity": false,
-  "browser": "chrome"
+  "browser": "chrome",
+
+  "videoRecording": true,
+  "screenshotOnRunFailure": true
 }

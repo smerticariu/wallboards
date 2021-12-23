@@ -19,6 +19,10 @@ class AccessURL_PO {
         return cy.get('div:nth-child(4) > button');
     }
 
+    urlButtonGroup() {
+        return cy.get('form > div:nth-child(3) > button')
+    }
+
     getURL() {
         return cy.get('div.c-modal__section.c-modal__section--read-only.c-modal__section--read-only__generate-link > input');
     }
@@ -34,6 +38,7 @@ class AccessURL_PO {
     saveWallboardChanges() {
         cy.get('.c-toolbar-right').contains('Save').click();
         cy.get('.c-modal__footer').contains('Save').click();
+        cy.wait(1500);
     }
 
     closeNotification() {
@@ -84,6 +89,10 @@ class AccessURL_PO {
 
     viewWallboard() {
         return cy.get('table > tbody > tr:nth-child(1) > td.c-landing-table__wb-name > p > a').invoke('removeAttr', 'target').click();
+    }
+
+    newWBTitle() {
+        return cy.get('.c-input.c-input--new-walboard-title')
     }
 
 

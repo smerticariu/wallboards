@@ -21,7 +21,7 @@ class AgentListComponent{
     }
 
     addComponent(){
-        return cy.get('div.c-toolbar-right > button.c-button.c-button--blue')
+        return cy.get('.c-toolbar-right').contains('+ Add Component')
     }
 
     selectAgentList(){
@@ -33,7 +33,11 @@ class AgentListComponent{
     }
     
     addButton(){
-        return cy.get('div.c-modal__buttons > button.c-button.c-button--m-left.c-button--green')
+        return cy.get('.c-modal__buttons').contains('Add')
+    }
+
+    forAdd(){
+        return cy.get('div.c-modal__buttons > button.c-button.c-button--m-left.c-button--blue')
     }
     
     runButton(){
@@ -45,7 +49,7 @@ class AgentListComponent{
     }
 
     titleWallboardlist(){
-        return cy.get('div.agent-list__header > div.agent-list__title > div')
+        return cy.get('.widget__header')
     }
 
     inputError(){
@@ -54,10 +58,6 @@ class AgentListComponent{
 
     cardCheck(){
         return cy.get('div.c-modal--add-component__preview-container > div.c-modal--add-component__agent-card')
-    }
-
-    tableCheck() {
-        return cy.get('div.c-modal--add-component__preview-container > div.c-modal--add-component__agent-table')
     }
 
     cardView(){
@@ -85,10 +85,10 @@ class AgentListComponent{
     }
 
     verifyDefaultTableView(){
-        cy.get('div.agent-t__header.agent-t__header--preview > div:nth-child(2)').contains('Name')
-        cy.get('div.agent-t__header.agent-t__header--preview > div:nth-child(3)').contains('Availability Status')
-        cy.get('div.agent-t__header.agent-t__header--preview > div:nth-child(4)').contains('Time on cur. call')
-        cy.get('div.agent-t__header.agent-t__header--preview > div:nth-child(5)').contains('Status')
+        cy.get('div.agent-list-table__header.agent-list-table__header--preview > div:nth-child(2)').contains('Name')
+        cy.get('div.agent-list-table__header.agent-list-table__header--preview > div:nth-child(3)').contains('Availability Status')
+        cy.get('div.agent-list-table__header.agent-list-table__header--preview > div:nth-child(4)').contains('Time on cur. call')
+        cy.get('div.agent-list-table__header.agent-list-table__header--preview > div:nth-child(5)').contains('Status')
     }
 
     verifyTableView(){
@@ -231,7 +231,7 @@ class AgentListComponent{
     }
 
     agent_list_title(){
-        return cy.get('div.agent-list__header > div.agent-list__title')
+        return cy.get('.widget__title')
     }
 
     select_skill_none() {
@@ -251,7 +251,7 @@ class AgentListComponent{
     }
 
     viewSkills() {
-        return cy.get('.agent-t__agent-info__skills')
+        return cy.get('.agent-list-table__agent-info__skills')
     }
 
     skillsList() {
@@ -267,11 +267,11 @@ class AgentListComponent{
     }
 
     getTableName(){
-        return cy.get('.agent-t__agent > div:nth-child(2)', {timeout: 7000});
+        return cy.get('.agent-list-table__agent-info.agent-list-table__agent-info--name.agent-list-table__agent-info--overflow', {timeout: 7000});
     }
 
     getTableTCAS(){
-        return cy.get('.agent-t__agent > div:nth-child(4)', {timeout:7000});
+        return cy.get('div:nth-child(4) > span', {timeout:7000});
     }
 
     getCardName(){
@@ -295,11 +295,11 @@ class AgentListComponent{
     }
 
     clickOutside() {
-        return cy.get('div.agent-list__body.agent-list__body--table > div > div.agent-t__header > div:nth-child(5)')
+        return cy.get('.agent-list-table__header').last();
     }
 
     agentsDisplayed() {
-        return cy.get('.agent-t__agent')
+        return cy.get('div[class=agent-list-table__agent]')
     }
 
     cardPresenceState() {
@@ -323,7 +323,7 @@ class AgentListComponent{
     }
 
     tablePreviewHeader() {
-        return cy.get('.agent-t__header.agent-t__header--preview')
+        return cy.get('div[class=agent-list-table]')
     }
 
     readOnlyCardMode() {
@@ -355,15 +355,11 @@ class AgentListComponent{
     }
 
     viewModeTableHeader() {
-        return cy.get('.agent-t__header');
-    }
-
-    items(){
-        return cy.get('.agent-t')
+        return cy.get('.agent-list-table__header');
     }
 
     bodyMessage() {
-        return cy.get('.agent-list__body')
+        return cy.get('.widget__body')
     }
 
     enableCardPresenceState(card_presence_state) {
@@ -403,7 +399,7 @@ class AgentListComponent{
     }
 
     tableStatus(){
-        return cy.get('.agent-t__agent-info.agent-t__agent-info--status')
+        return cy.get('.agent-list-table__agent-info.agent-list-table__agent-info--status')
     }
 
     cardStatus(){
@@ -427,7 +423,7 @@ class AgentListComponent{
     }
 
     tableAvailabilityState() {
-        return cy.get('div.agent-t__agent-info.agent-t__agent-info--overflow.agent-t__agent-info > span')
+        return cy.get('.agent-list-table__agent-info.agent-list-table__agent-info--overflow.agent-list-table__agent-info').find('.c-dropdown__trigger--agent-name');
     }
 
     enableCardAVState(card_availability) {
@@ -439,7 +435,7 @@ class AgentListComponent{
     }
 
     editComponentButton() {
-        return cy.get('div.agent-list__edit-icon')
+        return cy.get('.widget__edit-icon')
     }
 }
 export default AgentListComponent;

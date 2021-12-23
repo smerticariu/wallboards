@@ -35,7 +35,7 @@ Then ('the agent login component modal with default configuration is displayed',
     })
     agentLogin.modalTimeZone().find(':selected').should('have.text', 'UTC + 02');
     agentLogin.modalPeriod().find(':selected').should('have.text', 'This Hour');
-    agentLogin.modalIntervalExport().should('not.exist');
+    agentLogin.modalIntervalExport().should('exist');
 })
 
 
@@ -57,7 +57,7 @@ And ('the user adds a new agent login type component', () => {
 When ('the user changes the configuration', () => {
     agentLogin.modalTitle().clear().type('Agent login test')
     agentLogin.modalGroup().select('6743414')
-    agentLogin.modalLimitResults().clear().type('20')
+    agentLogin.modalLimitResults().clear().type('5')
     agentLogin.modalTimeZone().select('-660')
     agentLogin.modalPeriod().select('today')
 })
@@ -65,6 +65,9 @@ When ('the user changes the configuration', () => {
 Then ('the changes are displayed in the component preview', () => {
     agentLogin.previewTitle().contains('Agent login test')
     agentLogin.previewGroup().contains('test')
+    agentLogin.agentLoginRecords().then(($el) => {
+        expect($el.length).to.eq(parseInt('5'))
+    })
 })
 
 // Scenario Outline: Agent login component displays the options configured in the component modal
@@ -91,9 +94,9 @@ And ('the user navigates to add a new agent login component', () => {
 And ('the user configures the component options', () => {
     agentLogin.modalTitle().clear().type('Agent login test')
     agentLogin.modalGroup().select('6743414')
-    agentLogin.modalLimitResults().clear().type('20')
+    agentLogin.modalLimitResults().clear().type('12')
     agentLogin.modalTimeZone().select('-660')
-    agentLogin.modalPeriod().select('today')
+    agentLogin.modalPeriod().select('month')
 })
 When ('the component is saved', () => {
     agentLogin.addButton().click()
@@ -102,6 +105,9 @@ When ('the component is saved', () => {
 Then ('the configured options are displayed on the component', () => {
     agentLogin.component_title().contains('Agent login test')
     agentLogin.componentGroup().contains('test')
+    agentLogin.agentLoginRecords().then(($el) => {
+        expect($el.length).to.eq(parseInt('12'))
+    })
 })
 
 // Scenario: Existing agent login component configuration can be edited
@@ -112,19 +118,38 @@ Given ('the user is logged in', (user) => {
     agentLogin.loggedInTitle().should('contain', 'Recent Wallboards');
 })
 And ('a wallboard with one agent login component type is created', () => {
-    agentLogin.editButton().invoke('removeAttr', 'target').click();
+    agentLogin.newWallboard().click();
+    agentLogin.addComponent().click();
+    agentLogin.usersCategory().click();
+    agentLogin.componentTitle().contains('Agent login').click();
+    agentLogin.selectButton().click();
+    agentLogin.modalPeriod().select('month');
+    agentLogin.addButton().click();
+
+    agentLogin.agentLoginRecords().then(($el) => {
+        logDate = $el.text().split('-')[2].split(' ')[1].split(':')[0]
+    })
 })
 
 And ('the user edits the configuration options', () => {
-    agentLogin.editModal().click()
+    agentLogin.editModal().click();
+    agentLogin.modalTitle().clear().type('Agent login 123');
+    agentLogin.modalLimitResults().clear().type('3');
+    agentLogin.modalTimeZone().select('0');
 })
 When ('the edits are saved', () => {
-    agentLogin.addButton().click()
+    agentLogin.saveModal().click();
+    cy.wait(2000);
 })
 
 Then ('the new configuration is displayed on the saved component', () => {
-    agentLogin.component_title().contains('Agent login test')
-    agentLogin.componentGroup().contains('test')
+    agentLogin.component_title().contains('Agent login 123');
+    agentLogin.agentLoginRecords().then(($el) => {
+        expect($el.length).to.eq(parseInt('3'))
+    })
+    agentLogin.agentLoginRecords().first().then(($el) => {
+        expect($el.text().split('-')[2].split(' ')[1].split(':')[0]).to.not.eq(logDate)
+    })
 })
 
 // Scenario Outline: Agent login component updates when agent login status changes
@@ -216,10 +241,17 @@ Given ('that the {string} is logged in', (user) => {
     }
     else{
         cy.loginLeader()
+        agentLogin.visitLandingPage();
+        agentLogin.loggedInTitle().should('contain', 'Recent Wallboards');
     }
 })
 And ('a wallboard with one agent login component exists', () => {
-    agentLogin.editButton().invoke('removeAttr', 'target').click()
+    agentLogin.newWallboard().click();
+    agentLogin.addComponent().click();
+    agentLogin.usersCategory().click();
+    agentLogin.componentTitle().contains('Agent login').click();
+    agentLogin.selectButton().click();
+    agentLogin.addButton().click();
 })
 
 When ('the user navigates to remove the component', () => {
@@ -239,13 +271,18 @@ Given ('that the user is logged in', () => {
     agentLogin.loggedInTitle().should('contain', 'Recent Wallboards');
 })
 And ('a wallboard with an agent login component exists', () => {
-    agentLogin.editButton().invoke('removeAttr', 'target').click()
+    agentLogin.newWallboard().click();
+    agentLogin.addComponent().click();
+    agentLogin.usersCategory().click();
+    agentLogin.componentTitle().contains('Agent login').click();
+    agentLogin.selectButton().click();
+    agentLogin.addButton().click();
 })
 
 When ('the user navigates to edit component name by entering invalid characters', () => {
     agentLogin.editModalSetting().click({force:true})
     agentLogin.modalTitle().clear().type('#@')
-    agentLogin.addButton().click()
+    agentLogin.saveModal().click()
 })
 
 Then ('the user is informed that invalid characters are not allowed', () => {
@@ -261,13 +298,18 @@ Given ('that the user is logged in', () => {
     agentLogin.loggedInTitle().should('contain', 'Recent Wallboards');
 })
 And ('a wallboard with one agent login component is already created', () => {
-    agentLogin.editButton().invoke('removeAttr', 'target').click()
+    agentLogin.newWallboard().click();
+    agentLogin.addComponent().click();
+    agentLogin.usersCategory().click();
+    agentLogin.componentTitle().contains('Agent login').click();
+    agentLogin.selectButton().click();
+    agentLogin.addButton().click();
 })
 
 When ('the user navigates to edit component name by removing all characters in the name field', () => {
     agentLogin.editModalSetting().click({force:true})
     agentLogin.modalTitle().clear()
-    agentLogin.addButton().click()
+    agentLogin.saveModal().click()
 })
 
 Then ('the user is informed that component name cannot be empty', () => {
@@ -313,32 +355,59 @@ Then ('the time displayed updates', () => {
 // Scenario Outline: The agent login records are filtered based on the time period selected
 
 
-Given ('that a wallboard with a default agent login component is displayed', () => {
+Given ('that a wallboard with a default agent login component and a default agent list component is displayed', () => {
     cy.login();
     agentLogin.visitLandingPage();
     agentLogin.newWallboard().click();
+    agentLogin.addAgentList();
+
     agentLogin.addComponent().click();
     agentLogin.usersCategory().click();
     agentLogin.componentTitle().contains('Agent login').click();
     agentLogin.selectButton().click();
-
+    agentLogin.addButton().click();
 })
-And ('the user changes the current period to {string} period', (another) => {
+
+And ("the user changes the first agent's log in state", () => {
+    agentLogin.agentName().first().then(($el) => {
+        name = $el.text();
+        cy.log(name)
+    })
+
+    agentLogin.availabilityState().first().then(($el) => {
+        avState = $el.text();
+        cy.log(avState + ' original state')
+
+        if (avState !== 'Working') {
+            agentLogin.availabilityState().first().click();
+            agentLogin.avOption().contains('Working').click();
+        }
+        else if (avState == 'Working') {
+            agentLogin.availabilityState().first().click();
+            agentLogin.avOption().contains('Off Shift').click();
+        }
+    })
+})
+And ('the user changes the agent login component current period to {string} period', (another) => {
     if(another == 'This Hour'){
+        agentLogin.editLogin().click();
         agentLogin.modalPeriod().select('hour')
         period = another
     }
     else if(another == 'Rolling Hour'){
+        agentLogin.editLogin().click();
         agentLogin.modalPeriod().select('rolling-hour')
         period = another
 
     }
     else if(another == 'This Week'){
+        agentLogin.editLogin().click();
         agentLogin.modalPeriod().select('week')
         period = another
 
     }
     else if(another == 'This Month'){
+        agentLogin.editLogin().click();
         agentLogin.modalPeriod().select('month')
         period = another
 
@@ -346,48 +415,37 @@ And ('the user changes the current period to {string} period', (another) => {
 })
 
 When ('the new configuration is saved', () => {
-    agentLogin.addButton().click()
+    agentLogin.saveModal().click();
 })
 
-Then ('the records displayed fit the time period selected', () => {
+Then('the records displayed fit the time period selected', () => {
     var today = new Date();
     cy.wait(3000)
-    agentLogin.modal().invoke('text').then(($el)=>{
-        cy.log($el)
-        if($el.includes('No agents')){
-            agentLogin.modal().then(($el)=>{
-                expect($el.text()).to.include('No agents')
-            })
-        }
-        else{
-            if(period == 'This Hour'){
-                agentLogin.componentTimeZone().then(($time)=>{
-                    var date = $time.text().split(' ')[1].split(':')
-                    expect(date[0]).to.include(today.getHours())
-                })
-            }
-            else if(period == 'Rolling Hour'){
-                agentLogin.componentTimeZone().then(($time)=>{
-                    var date = $time.text().split(' ')[1].split(':')
-                    expect(date[0]).to.include(today.getHours()-1)
-                })
-            }
-            else if(period == 'This Week'){
-                agentLogin.componentTimeZone().then(($time)=>{
-                    var date = $time.text().split('-')
-                    expect(parseInt(date[1])).to.be.greaterThan(parseInt(today.getDate()-7))
-                })
-            }
-            else if(period == 'This Month'){
-                agentLogin.componentTimeZone().then(($time)=>{
-                    var time = $time.text().split('-')
-                    expect(time[2]).to.include(today.getMonth()+1)
-                })
-            }
-        }
-})
 
-    
+    if (period == 'This Hour') {
+        agentLogin.agentLoginRecords().each(($time) => {
+            var date = $time.text().split(' ')[2].split(':')
+            expect(date[0]).to.include(today.getHours())
+        })
+    }
+    else if (period == 'Rolling Hour') {
+        agentLogin.agentLoginRecords().each(($time) => {
+            var date = $time.text().split(' ')[2].split(':')
+            expect(date[0]).to.be.greaterThan(today.getHours() - 2)
+        })
+    }
+    else if (period == 'This Week') {
+        agentLogin.agentLoginRecords().each(($time) => {
+            var date = $time.text().split('-')
+            expect(parseInt(date[2])).to.be.greaterThan(parseInt(today.getDate() - 7))
+        })
+    }
+    else if (period == 'This Month') {
+        agentLogin.agentLoginRecords().each(($time) => {
+            var time = $time.text().split('-')
+            expect(time[1]).to.include(today.getMonth() + 1)
+        })
+    }
 })
 
 // Scenario: No file is generated when there are no events recorded for the interval selected
@@ -420,7 +478,7 @@ When ('the user enters dates for an interval export with no events', () => {
 
 Then ('the user is informed that there are no records', () => {
     agentLogin.export().click();
-    agentLogin.notification().should('be.visible').and('contain', 'No agents')
+    agentLogin.notification().should('be.visible').and('contain', 'No data for the selected interval.')
 })
 
 // Scenario Outline: Min 1 and max 100 records are displayed on the Agent login component

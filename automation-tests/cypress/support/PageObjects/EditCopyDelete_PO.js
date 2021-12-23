@@ -44,23 +44,8 @@ class EditCopyDelete_PO {
     }
 
     deleteMessage() {
-        return cy.get('.notification__body')
+        return cy.get('.notification__body', {timeout: 10000})
     }
-
-    // firstUrl() {
-    //     var firstURL = ''
-    //     cy.url().then((url) => {
-    //         firstURL = url
-    //         cy.log(firstURL)
-    //       });
-    // }
-    // verifyUrl() {
-    //     var firstURL = ''
-    //     cy.url().then((newUrl) => {
-    //         cy.log(newUrl);
-    //         expect(newUrl).to.contain(firstURL)
-    //       });
-    // }
 
     addDefaultAgentList(){
         cy.get('.c-toolbar').contains('+ Add Component').click();
@@ -72,7 +57,7 @@ class EditCopyDelete_PO {
     saveChanges() {
         cy.get('.c-toolbar-right').contains('Save').click();
         cy.get('.c-modal__footer').contains('Save').click();
-
+        cy.wait(1000);
     }
 
     create1ComponentWallboard() {
@@ -86,7 +71,7 @@ class EditCopyDelete_PO {
         cy.get('.c-modal__footer').contains('Save & Close').click();
     }
     editComponent() {
-        cy.get('.agent-list__edit-icon').first().click();
+        cy.get('.widget__edit-icon').first().click();
         cy.get('.c-radio__label').contains('Table').click();
         cy.get('.c-modal__buttons').contains('Save').click();
     }
@@ -138,7 +123,7 @@ class EditCopyDelete_PO {
     }
 
     componentBodies() {
-        return cy.get('.agent-list__body');
+        return cy.get('div[class=widget]');
     }
 
     wallboardDescription() {

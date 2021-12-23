@@ -1,4 +1,4 @@
-Feature: Edit / Copy / Delete / View Wallboards
+Feature: Edit / Copy / Delete / View Wallboards and Groups
 
 # EDIT WALLBOARD SCENARIOS
     Scenario: New component can be added to existing wallboard
@@ -41,14 +41,42 @@ Feature: Edit / Copy / Delete / View Wallboards
         When the user attempts to save the edit
         Then the user is warned that the wallboard name must be alphanumeric
 
+#  EDIT GROUPS SCENARIOS
+    Scenario: New wallboard can be added to existing wallboard group
+        Given that the wallboards landing page is displayed
+        And the user navigates to view the wallboard groups
+        And the user selects the edit option for a group
+        And the user adds a new wallboard
+        When the user saves the changes
+        Then the new wallboard selected is displayed on the group
 
-    # COPY WALLBOARD SCENARIOS
+    Scenario: Existing wallboard group name can be edited
+        Given the page with all wallboard groups is displayed
+        And the user selects the option to edit a group
+        And the user edits the group name
+        And the user saves the change
+        When the user navigates to view all groups
+        Then the edited name is displayed
+
+    Scenario: Editing group configuration options is unavailable in read-only mode
+        Given a wallboard group is opened in read-only mode
+        When the user inspects the options to edit group configuration
+        Then the option to add a new step, to edit group name, to edit group description are unavailable
+
+
+# COPY WALLBOARD SCENARIOS
     Scenario: Existing wallboard can be copied
         Given the landing page is displayed
         When the user selects the option to copy a wallboard
         Then a new wallboard is created, its name containing the original name + Copy word
 
-    # DELETE WALLBOARD SCENARIOS
+# COPY GROUP SCENARIO
+    Scenario: Existing wallboard group can be copied
+        Given that all wallboard groups page is displayed
+        When the user copies the first wallboard
+        Then a copy of the first wallboard is displayed
+
+# DELETE WALLBOARD SCENARIOS
     Scenario: Confirmation of deleting wallboard is required
         Given the landing page is displayed
         When the user selects the option to delete the wallboard
@@ -68,7 +96,13 @@ Feature: Edit / Copy / Delete / View Wallboards
         Then the confirmation message closes
         And the wallboard remains displayed on the landing page
 
-    # VIEW WALLBOARD SCENARIOS
+# DELETE WALLBOARD GROUPS SCENARIO
+    Scenario: Existing wallboard group can be deleted
+        Given that the page containing all wallboard groups is displayed
+        When the user deletes the first wallboard group displayed
+        Then the wallboard group is no longer displayed
+
+# VIEW WALLBOARD SCENARIOS
     Scenario: Existing wallboard can be opened in view mode from the landing page
         Given the wallboards landing page is displayed
         When the user clicks a wallboard name
@@ -86,8 +120,14 @@ Feature: Edit / Copy / Delete / View Wallboards
         Given a wallboard is created
         When the wallboard is opened in read only mode
         Then the settings option is not present on the read only mode view
+
+# VIEW WALLBOARD GROPUS SCENARIO
+    Scenario: Existing wallboard group can be opened in read-only mode
+        Given that the page for all wallboard groups is displayed
+        When the user selects the first group displayed
+        Then the wallboard group opens in read-only mode
     
-    # WALLBOARD DESCRIPTION SCENARIOS
+# WALLBOARD DESCRIPTION SCENARIOS
     Scenario: New wallboard description can be added
         Given the new wallboard page is displayed
         And the settings modal is opened
@@ -103,3 +143,12 @@ Feature: Edit / Copy / Delete / View Wallboards
         And the changes made are saved
         When the user clicks on the button to navigate to the landing page
         Then the new edited name is displayed
+
+# WALLBOARD GROUP DESCRIPTION SCENARIOS
+    Scenario: Existing wallboard group description can be edited
+        Given the page with all groups is displayed
+        And the user clicks on the option to edit a group
+        And the user edits the group description
+        And the user saves the description changes
+        When the user navigates to view all wallboard groups
+        Then the edited description is displayed

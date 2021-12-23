@@ -32,7 +32,6 @@ Feature: Monitoring the agents login data
         When the edits are saved
         Then the new configuration is displayed on the saved component
 
-
     Scenario Outline: Agent login component updates when agent login status changes
         Given that the '<user>' is logged in
         And a wallboard with one agent login and one agent list component is displayed
@@ -93,8 +92,9 @@ Feature: Monitoring the agents login data
         Then the time displayed updates
 
     Scenario Outline: The agent login records are filtered based on the time period selected
-        Given that a wallboard with a default agent login component is displayed
-        And the user changes the current period to '<another>' period
+        Given that a wallboard with a default agent login component and a default agent list component is displayed
+        And the user changes the first agent's log in state
+        And the user changes the agent login component current period to '<another>' period
         When the new configuration is saved
         Then the records displayed fit the time period selected
         Examples:
@@ -115,18 +115,3 @@ Feature: Monitoring the agents login data
         And the user navigates to edit configuration options
         When the user enters dates in the future for the interval export
         Then the option to export results is unavailable
-
-    #  To Be Manually Tested
-    # Scenario Outline: Agent login data can be exported in CSV format
-    #     Given that the '<user>' is logged in
-    #     And the wallboard with a default agent login component for this month period is displayed
-    #     And the user opens the editing options for the component
-    #     And the user selects the interval export dates from the first day of the current month to current day
-    #     And the user selects the option to export
-    #     And the component modal is closed
-    #     When the user opens the file generated
-    #     Then the data displayed on the component matches the data displayed in the file
-    #     Examples:
-    #         | user             |
-    #         | admin user       |
-            # | team leader user |

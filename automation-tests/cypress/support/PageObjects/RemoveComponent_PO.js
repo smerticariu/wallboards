@@ -23,7 +23,7 @@ class RemoveComponent_PO {
     }
 
     removeButton() {
-        return cy.get('.agent-list__delete-icon');
+        return cy.get('.widget__delete-icon');
     }
 
     removalConfirmation() {
@@ -47,7 +47,7 @@ class RemoveComponent_PO {
     }
 
     wallboardComponents() {
-        return cy.get('.agent-list');
+        return cy.get('.widget');
     }
     cancelRemovalButton() {
         return cy.get('.c-modal__footer').contains('Cancel');
