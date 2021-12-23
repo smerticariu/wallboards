@@ -33,13 +33,13 @@ Then('each {string} has a corresponding {string}', (presence_state, color) => {
         cy.log(newNumber)
 
         for (let i = 1; i <= newNumber; i++) {
-            cy.get('div.agent-list__body > div:nth-child(' + i + ') > div.agent-c__body > div.agent-c__footer').then((card) => {
+            cy.get('div.widget__body > div:nth-child(' + i + ') > div.agent-c__body > div.agent-c__footer').then((card) => {
                 state = card.text();
                 cy.log(state);
 
                 if (state == presence_state) {
                     cy.log(i)
-                    cy.get('div.agent-list__body > div:nth-child(' + i + ')').then(($el) => {
+                    cy.get('div.widget__body > div:nth-child(' + i + ')').then(($el) => {
                         expect($el).to.have.css('background-color', color)
                     })
                 }
@@ -67,18 +67,18 @@ When('the user adds the configured component', () => {
     color.addButton().click();
 })
 Then('each {string} has a {string} corresponding', (presence_state, column_color) => {
-    cy.get('.agent-t__agent-info.agent-t__agent-info--status', {timeout: 8000}).then((agents) => {
+    cy.get('.agent-list-table__agent-info__circle.agent-list-table__agent-info__circle', {timeout: 8000}).then((agents) => {
         newNumber = agents.length
         cy.log(newNumber)
 
         for (let i = 1; i <= newNumber; i++) {
-            cy.get('div.agent-t__body > div:nth-child(' + i + ') > div.agent-t__agent-info.agent-t__agent-info--status').then((status) => {
+            cy.get('div.agent-list-table__body > div:nth-child(' + i + ') > div.agent-list-table__agent-info.agent-list-table__agent-info--status').then((status) => {
                 state = status.text();
                 cy.log(state);
 
                 if (state == presence_state) {
                     cy.log(i)
-                    cy.get('div:nth-child(' + i + ') > div.agent-t__agent-info.agent-t__agent-info--status > div').then(($el) => {
+                    cy.get('div:nth-child(' + i + ') > div.agent-list-table__agent-info.agent-list-table__agent-info--status > div').then(($el) => {
                         expect($el).to.have.css('background-color', column_color)
                     })
                 }
@@ -115,7 +115,7 @@ Then('each {string} has a corresponding color {string}', (presence_state, availa
         cy.log(newNumber)
 
         for (let i = 1; i <= newNumber; i++) {
-            cy.get('div.agent-list__body > div:nth-child(' + i + ') > div.agent-c__body > div.agent-c__footer').then((card) => {
+            cy.get('div.widget__body > div:nth-child(' + i + ') > div.agent-c__body > div.agent-c__footer').then((card) => {
                 state = card.text();
                 cy.log(state);
 
@@ -154,18 +154,18 @@ When('the user selects the add button for the component', () => {
     cy.wait(2000);
 })
 Then('each {string} has a corresponding availability status {string}', (presence_state, colour) => {
-    cy.get('.agent-t__agent-info.agent-t__agent-info--status', {timeout: 8000}).then((agents) => {
+    cy.get('.agent-list-table__agent-info__circle.agent-list-table__agent-info__circle', {timeout: 8000}).then((agents) => {
         newNumber = agents.length
         cy.log(newNumber)
 
         for (let i = 1; i <= newNumber; i++) {
-            cy.get('div.agent-t__body > div:nth-child(' + i + ') > div.agent-t__agent-info.agent-t__agent-info--status').then((status) => {
+            cy.get('div.agent-list-table__body > div:nth-child(' + i + ') > div.agent-list-table__agent-info.agent-list-table__agent-info--status').then((status) => {
                 state = status.text();
                 cy.log(state);
 
                 if (state == presence_state) {
                     cy.log(i)
-                    cy.get('div:nth-child(' + i + ') > div.agent-t__agent-info:eq(2)').then(($el) => {
+                    cy.get('div:nth-child(' + i + ') > div.agent-list-table__agent-info.agent-list-table__agent-info--overflow.agent-list-table__agent-info:eq(2)').then(($el) => {
                         expect($el).to.have.css('background-color', colour)
                     })
                 }

@@ -1,14 +1,13 @@
 import { Before, Given, When, And, Then } from "cypress-cucumber-preprocessor/steps";
 import EditCopyDelete_PO from '../../support/PageObjects/EditCopyDelete_PO';
+import CreateGroup_PO from "../../support/PageObjects/CreateGroup_PO";
 
 
 beforeEach(() => {
-
-    //cy.clearLocalStorage()
     cy.login()
-    //cy.log("Login Successful")
 })
 
+const group = new CreateGroup_PO();
 const editCopyDelete_PO = new EditCopyDelete_PO();
 var wallboardText = ''
 var deletedWallboard = ''
@@ -16,6 +15,7 @@ var notDeletedWallboard = ''
 var hrefAttr = ''
 var firstURL = ''
 var originalDescription = ''
+var title = ''
 
 Given('the landing page is displayed', () => {
     editCopyDelete_PO.visitLandingPage();
@@ -281,7 +281,7 @@ When ('the user runs the wallboard', () => {
     editCopyDelete_PO.runButton().invoke('removeAttr', 'target').click();
 })
 Then ('the table type component is displayed on top of card type component', () => {
-    editCopyDelete_PO.componentBodies().first().should('have.class', 'agent-list__body agent-list__body--table');
+    editCopyDelete_PO.componentBodies().first().children().should('have.class', 'widget__body widget__body--table');
 })
 
 //Scenario: Wallboard settings is only available in edit mode view [NEW]
@@ -348,4 +348,174 @@ Then ('the new edited name is displayed', () => {
     editCopyDelete_PO.wallboardDescription().first().invoke('text').then((text) => {
         expect(text).to.eq(originalDescription + ' 2nd description');
     })
+})
+
+// Scenario: New wallboard can be added to existing wallboard group
+Given ('that the wallboards landing page is displayed', () => {
+    group.visitLandingPage();
+    group.pageTitle().should('contain', 'Recent Wallboards');
+    group.createGroup();
+})
+And ('the user navigates to view the wallboard groups', () => {
+    group.sideMenu();
+    group.allGroupsFilter().click();
+    group.closeMenu();
+    group.pageTitle().should('contain', 'Recent Groups');
+})
+And ('the user selects the edit option for a group', () => {
+    editCopyDelete_PO.editButton().first().invoke('removeAttr', 'target').click();
+})
+And ('the user adds a new wallboard', () => {
+    group.newStep().click();
+    group.newEmptyStep().first().click();
+    group.wallboardNameModal().first().then(($el) => {
+        title = $el.text();
+        cy.log(title);
+    })
+    group.wallboardNameModal().first().click();
+    group.modalButton().contains('Select').click();
+})
+When ('the user saves the changes', () => {
+    group.groupButton().contains('Save').click();
+    group.confirmationButton().contains('Save').click();
+})
+Then ('the new wallboard selected is displayed on the group', () => {
+    group.stepFooterWB().should('contain', title);
+})
+
+// Scenario: Existing wallboard group name can be edited
+Given ('the page with all wallboard groups is displayed', () => {
+    group.visitLandingPage();
+    group.sideMenu();
+    group.allGroupsFilter().click();
+    group.closeMenu();
+    group.pageTitle().should('contain', 'Recent Groups');
+})
+And ('the user selects the option to edit a group', () => {
+    editCopyDelete_PO.editButton().first().invoke('removeAttr', 'target').click();
+})
+And ('the user edits the group name', () => {
+    group.newGroupTitle().clear().type('2nd Group Name');
+})
+And ('the user saves the change', () => {
+    group.groupButton().contains('Save').click();
+    group.confirmationButton().contains('Save').click();
+    cy.wait(1000);
+})
+When ('the user navigates to view all groups', () => {
+    group.logo().click();
+    group.sideMenu();
+    group.allGroupsFilter().click();
+    group.closeMenu();
+})
+Then ('the edited name is displayed', () => {
+    editCopyDelete_PO.firstWallboardName().first().should('contain', '2nd Group Name');
+})
+
+// Scenario: Existing wallboard group description can be edited
+Given ('the page with all groups is displayed', () => {
+    group.visitLandingPage();
+    group.sideMenu();
+    group.allGroupsFilter().click();
+    group.closeMenu();
+    group.pageTitle().should('contain', 'Recent Groups');
+})
+And ('the user clicks on the option to edit a group', () => {
+    editCopyDelete_PO.editButton().first().invoke('removeAttr', 'target').click();
+})
+And ('the user edits the group description', () => {
+    editCopyDelete_PO.settingsCog().click();
+    editCopyDelete_PO.settingsWallboardDescription().clear().type('Newest Group Description');
+    editCopyDelete_PO.saveSettings().click();
+})
+And ('the user saves the description changes', () => {
+    group.groupButton().contains('Save').click();
+    group.confirmationButton().contains('Save').click();
+    cy.wait(1000);
+})
+When ('the user navigates to view all wallboard groups', () => {
+    group.logo().click();
+    group.sideMenu();
+    group.allGroupsFilter().click();
+    group.closeMenu();
+})
+Then ('the edited description is displayed', () => {
+    editCopyDelete_PO.wallboardDescription().first().should('contain', 'Newest Group Description')
+})
+
+// Scenario: Editing group configuration options is unavailable in read-only mode
+Given ('a wallboard group is opened in read-only mode', () => {
+    group.visitLandingPage();
+    group.sideMenu();
+    group.allGroupsFilter().click();
+    group.closeMenu();
+    editCopyDelete_PO.firstWallboardName().first().invoke('removeAttr', 'target').click();
+    cy.wait(2000);
+})
+When ('the user inspects the options to edit group configuration', () => {
+    group.readOnlyContent().should('be.visible');
+})
+Then ('the option to add a new step, to edit group name, to edit group description are unavailable', () => {
+    group.newStep().should('not.exist');
+    group.newGroupTitle().should('not.exist');
+    editCopyDelete_PO.settingsCog().should('not.exist');
+})
+
+// Scenario: Existing wallboard group can be copied
+Given ('that all wallboard groups page is displayed', () => {
+    group.visitLandingPage();
+    group.sideMenu();
+    group.allGroupsFilter().click();
+    group.closeMenu();
+    group.pageTitle().should('contain', 'Recent Groups');
+})
+When ('the user copies the first wallboard', () => {
+    editCopyDelete_PO.firstWallboardName().first().then(($el) => {
+        title = $el.text();
+    })
+    editCopyDelete_PO.copyButton().first().click();
+    cy.wait(2000);
+})
+Then ('a copy of the first wallboard is displayed', () => {
+    editCopyDelete_PO.firstWallboardName().first().then(($el) => {
+        expect($el.text()).to.contain(title + ' Copy');
+    })
+})
+
+// Scenario: Existing wallboard group can be deleted
+Given ('that the page containing all wallboard groups is displayed', () => {
+    group.visitLandingPage();
+    group.sideMenu();
+    group.allGroupsFilter().click();
+    group.closeMenu();
+    group.pageTitle().should('contain', 'Recent Groups');
+})
+When ('the user deletes the first wallboard group displayed', () => {
+    editCopyDelete_PO.firstWallboardName().first().then(($el) => {
+        title = $el.text();
+    })
+
+    editCopyDelete_PO.deleteButton().first().click();
+    editCopyDelete_PO.deleteButtonModal().click();
+    cy.wait(1000);
+})
+Then ('the wallboard group is no longer displayed', () => {
+    editCopyDelete_PO.firstWallboardName().each(($el) => {
+        expect($el).to.not.contain(title);
+    })
+})
+
+// Scenario: Existing wallboard group can be opened in read-only mode
+Given ('that the page for all wallboard groups is displayed', () => {
+    group.visitLandingPage();
+    group.sideMenu();
+    group.allGroupsFilter().click();
+    group.closeMenu();
+    group.pageTitle().should('contain', 'Recent Groups');
+})
+When ('the user selects the first group displayed', () => {
+    editCopyDelete_PO.firstWallboardName().first().invoke('removeAttr', 'target').click();
+})
+Then ('the wallboard group opens in read-only mode', () => {
+    group.readOnlyContent().should('be.visible');
 })

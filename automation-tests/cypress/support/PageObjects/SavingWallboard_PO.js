@@ -33,7 +33,7 @@ class SavingWallboard{
     }
 
     addButton(){
-        return cy.get('div.c-modal__buttons > button.c-button.c-button--m-left.c-button--green')
+        return cy.get('.c-modal__buttons').contains('Add')
     }
     
     runButton(){
@@ -63,7 +63,7 @@ class SavingWallboard{
     }
 
     editComponentButton(){
-        return cy.get('div.agent-list__icons > div.agent-list__edit-icon')
+        return cy.get('.widget__edit-icon')
     }
 
     tableView(){
@@ -75,11 +75,11 @@ class SavingWallboard{
     }
 
     editButtonfromComponent(){
-        return cy.get('div.c-modal__buttons > button.c-button.c-button--m-left.c-button--green')
+        return cy.get('.c-modal__buttons').contains('Save')
     }
 
     deleteComponent(){
-        return cy.get('div.agent-list__icons > div.agent-list__delete-icon')
+        return cy.get('.widget__delete-icon')
     }
 
     deleteAlertButton(){

@@ -12,7 +12,6 @@ const GridQueueList = ({ widget, ...props }) => {
   const callsWithGroup = useSelector((state) => state.agents.callsWithGroup);
   const agentQueues = useSelector((state) => state.agents.agentsQueues);
   const queuedCall = useSelector((state) => state.callsQueues.queuedCall);
-
   const dispatch = useDispatch();
   const [tableData, setTableData] = useState([]);
 
@@ -58,12 +57,12 @@ const GridQueueList = ({ widget, ...props }) => {
           [QUEUE_LIST_COLUMN_OPTIONS.DIAL_ATTEMPTS]: call.dialAttempts,
           [QUEUE_LIST_COLUMN_OPTIONS.STATUS]: call.status,
           [QUEUE_LIST_COLUMN_OPTIONS.AGENT_CONNECTED_TO]: user ? `${user.firstName} ${user.lastName}` : '',
-          [QUEUE_LIST_COLUMN_OPTIONS.SKILLS_REQUESTED]: 'none',
-          [QUEUE_LIST_COLUMN_OPTIONS.SKILLS_SHORTAGE]: 'none',
+          [QUEUE_LIST_COLUMN_OPTIONS.SKILLS_REQUESTED]: call.skillsRequested,
+          [QUEUE_LIST_COLUMN_OPTIONS.SKILLS_SHORTAGE]: call.skillsShortage,
           [QUEUE_LIST_COLUMN_OPTIONS.TIME_AT_HEAD_OF_QUEUE]: call.timeAtHeadOfQueue,
           [QUEUE_LIST_COLUMN_OPTIONS.CALLBACK_REQUESTED]: call.callbackRequested,
           [QUEUE_LIST_COLUMN_OPTIONS.CALLBACK_ATTEMPTS]: call.callbackAttempts,
-          [QUEUE_LIST_COLUMN_OPTIONS.FLAGS]: 'none',
+          [QUEUE_LIST_COLUMN_OPTIONS.FLAGS]: call.flags ? !!call.flags : call.skillsRequested || call.skillsShortage,
           uuid: call.uuid,
           agentId: user?.id,
         };

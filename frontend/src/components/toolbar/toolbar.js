@@ -42,7 +42,7 @@ const Toolbar = (props) => {
   const heading = () => {
     return (
       <div className="c-toolbar-left__wrapper">
-        <h1 className="c-toolbar-left__heading">Recent {isGroupsCategory ? 'Groups' : 'Wallboards'}</h1>
+        <h1 className="c-toolbar-left__heading">All {isGroupsCategory ? 'Groups' : 'Wallboards'}</h1>
         <p className="c-toolbar-left__wb-no">
           {wallboards.length} {isGroupsCategory ? 'Groups' : 'Wallboards'} Items
         </p>
@@ -264,7 +264,7 @@ const Toolbar = (props) => {
           </>
         );
       case DEFAULTS.TOOLBAR.NAME.NEW_WALLBOARD_GROUP: {
-        const isRunLinkDisabled = !wallboardGroup?.steps?.filter((step) => step.wallboardId)?.length || wallboardGroup.isNewWallboard;
+        const isRunLinkDisabled = !wallboardGroup?.steps?.filter((step) => step.wallboardId)?.length || wallboardGroup.isNewWallboardGroup;
         const runUrl = '/group/' + btoa(wallboardGroup.id);
 
         const isSaveBtnDisabled = !wallboardGroup.steps?.some((step) => step.wallboardId);

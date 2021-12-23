@@ -72,6 +72,14 @@ class Search_PO {
     createdByColumn(){
         return cy.get('tr > td:nth-child(2) > span.c-landing-table__filter')
     }
+
+    thirdGroup() {
+        return cy.get('tr:nth-child(3) > td.c-landing-table__wb-name > p > a')
+    }
+
+    editThird() {
+        return cy.get('tr:nth-child(3) > td.c-landing-table__wb-actions > a')
+    }
 }
 export default Search_PO;
 

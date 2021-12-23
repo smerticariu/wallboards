@@ -5,7 +5,6 @@ const callTracking = new CallTracking()
 var titlePreview = ''
 var categPreview = ''
 var periodPreview = ''
-var content = ''
 
 
 
@@ -183,37 +182,4 @@ Then ('the new options selected are displayed in the component preview', () => {
     callTracking.componentTitle().should('not.contain', titlePreview);
     callTracking.categoriesTitle().first().should('not.have.text', categPreview);
     callTracking.componentPeriod().should('not.contain', periodPreview);
-})
-
-// Needs at least one outbound call made prior to executing the test
-// Scenario: Call tracking metrics update when changing the time zone selected
-Given ('the wallboard with a default outbound call tracking component is displayed', () => {
-    cy.login();
-    callTracking.visitLandingPage();
-    callTracking.newWallboard().click();
-    callTracking.addComponent().click();
-    callTracking.callsCategory().click();
-    callTracking.componentCategTitle().contains('Call tracking').click();
-    callTracking.selectButton().click();
-    callTracking.selectCateg().select('outbound');
-    callTracking.addButton().click();
-    callTracking.categoriesTitle().first().invoke('text').should('eq', 'Un-Answered Calls');
-})
-And ('the user edits the time zone by selecting the first option in the time zone drop down', () => {
-    cy.wait(2000);
-    callTracking.widgetData().first().then((value) => {
-        content = value.text();
-        cy.log(content)
-    })
-    callTracking.editComponent().first().click();
-    callTracking.timeZone().select('-660');
-})
-When ('the user saves the edits', () => {
-    callTracking.saveModalButton().click();
-})
-Then ('the metrics displayed update', () => {
-    callTracking.widgetData().first().then((value) => {
-        expect(value.text()).to.not.deep.eq(content);
-        cy.log(value.text());
-    })
 })

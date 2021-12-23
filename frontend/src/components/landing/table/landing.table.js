@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { FetchStatus } from '../../..//store/reducers/wallboards.reducer';
 import { DEFAULTS } from '../../../common/defaults/defaults';
+import { SortIcon } from 'src/assets/static/icons/sort';
 import { handleWallboardActiveModalAC } from '../../../store/actions/modal.action';
 import { setWallboardIdForDeleteAC, setWallboardsByCategoryAC } from '../../../store/actions/wallboards.action';
-import { fetchAllWallboardsThunk, copyWallboardThunk, copyWallboardGroupThunk } from '../../../store/thunk/wallboards.thunk'; // import syncWallboardsWithConfig when needed - do not delete
+import { fetchAllWallboardsThunk, copyWallboardThunk, copyWallboardGroupThunk } from '../../../store/thunk/wallboards.thunk';
 
 const LandingTable = () => {
   const dispatch = useDispatch();
@@ -23,6 +24,7 @@ const LandingTable = () => {
   useEffect(() => {
     // dispatch(syncWallboardsWithConfig()); // import and use it when needed - do not delete
     dispatch(fetchAllWallboardsThunk());
+    return () => {};
     // eslint-disable-next-line
   }, []);
 
@@ -90,7 +92,7 @@ const LandingTable = () => {
         case 'All Wallboard Groups':
           setDataType('Group');
           const allGroups = wallboards.filter((wb) => wb.id.includes(DEFAULTS.WALLBOARDS.WALLBOARD_GROUP_SEPARATOR));
-          allGroups.length && allGroups.sort((a, b) => a.lastView.toString().localeCompare(b.lastView.toString())).reverse(); 
+          allGroups.length && allGroups.sort((a, b) => a.lastView.toString().localeCompare(b.lastView.toString())).reverse();
           return allGroups;
         default:
           return wallboards;
@@ -145,16 +147,19 @@ const LandingTable = () => {
               <td>
                 <span className="c-landing-table__filter" onClick={() => handleSortWallboards('name')}>
                   {dataType} Name & Description
+                  <SortIcon />
                 </span>
               </td>
               <td>
                 <span className="c-landing-table__filter" onClick={() => handleSortWallboards('author')}>
                   Created By
+                  <SortIcon />
                 </span>
               </td>
               <td>
                 <span className="c-landing-table__filter" onClick={() => handleSortWallboards('date')}>
                   Created On
+                  <SortIcon />
                 </span>
               </td>
             </tr>

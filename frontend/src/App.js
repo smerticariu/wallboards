@@ -38,7 +38,7 @@ import ModalEditWallboardGroup from './components/modal/edit-wallboard-group/mod
 function App() {
   const dispatch = useDispatch();
   const { userInfo, userTokenInfo, token } = useSelector((state) => state.login);
-  const { isAuthenticated, getAccessTokenSilently, isLoading } = useAuth0();
+  const { isAuthenticated, getAccessTokenSilently, isLoading, logout } = useAuth0();
   const activeModalName = useSelector((state) => state.modal.activeModalName);
   const { warningMessage } = useSelector((state) => state.modal);
   const sfToken = window?.WbConfig?.sfSessionId || localStorage.qaSfSessionId;
@@ -84,6 +84,7 @@ function App() {
 
     conn.query(DEFAULTS.SOQL.GET_USERS_PHOTOS, (err, sfUsers) => {
       if (err) {
+        if(err.name === 'INVALID_SESSION_ID') logout();
         return console.error(err);
       }
 

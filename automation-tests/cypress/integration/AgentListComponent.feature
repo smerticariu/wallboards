@@ -115,20 +115,6 @@ Feature: Configuring Agent List Component Type
             | card  |
             | table |
 
-    # MANUALLY TESTED - as it needs AVS app to simulate a call
-
-    # Scenario Outline: Agents displayed on the wallboard are sorted by the time on current call
-    #     Given the add component modal for agent list is displayed
-    #     And the '<view>' is selected
-    #     And the Time on current call sort option is selected
-    #     And the new wallboard configuration is saved
-    #     When the user opens the wallboard
-    #     Then the first agents in the list are displayed based on the most time on the phone
-    #     Examples:
-    #         | view  |
-    #         | card  |
-    #         | table |
-
     Scenario Outline: Agents displayed on the wallboard are sorted by the time spent in current availability state
         Given the add component modal for agent list is displayed
         And the '<view>' is selected
@@ -140,19 +126,6 @@ Feature: Configuring Agent List Component Type
             | view  |
             | card  |
             | table |
-
-# !!! Need time spent on the phone today to be implemented
-#     Scenario Outline: Agents displayed on the wallboard are sorted by the total time spent on the phone today
-#         Given the add component modal for agent list is displayed
-#         And the '<view>' is selected
-#         And the Total time spent on the phone today sort option
-#         And the new wallboard configuration is saved
-#         When the user opens the wallboard
-#         Then the first agents in the list are displayed based on the most time on the phone today
-#         Examples:
-#             | view  |
-#             | card  |
-#             | table |
 
     Scenario Outline: Agents with the selected presence state are displayed on the Card view component
         Given the add component modal for agent list is displayed
@@ -201,7 +174,7 @@ Feature: Configuring Agent List Component Type
             | div:nth-child(6) > div.c-modal--add-component__av-state-container > label:nth-child(5) |
             | div:nth-child(6) > div.c-modal--add-component__av-state-container > label:nth-child(6) |
             | div:nth-child(6) > div.c-modal--add-component__av-state-container > label:nth-child(7) |
-
+ 
     Scenario Outline: Agents with the presence state disabled are not displayed on the Table component
         Given that the modal for adding an agent list component is displayed
         And the Table view type is selected
@@ -223,7 +196,7 @@ Feature: Configuring Agent List Component Type
         And 1 Column option is selected
         When the user selects the 2 Columns option
         Then the table preview is displayed as two columns
-
+ 
     Scenario: Add component table preview dynamically changes to display one column
         Given the Table view is selected in the modal to add component
         And 2 Columns option is selected
@@ -300,28 +273,28 @@ Feature: Configuring Agent List Component Type
     Scenario Outline: Agents possessing the selected skill to view are displayed on the wallboard
         Given the add component modal for agent list is displayed
         And the Table view option with the skills column is selected
-        And <skill_option> is selected
+        And '<skill_option>' is selected
         And the wallboard is saved
         When the user opens the wallboard
-        Then the agents possessing the selected <skill_option> are displayed
+        Then the agents possessing the selected skill are displayed
         Examples:
             | skill_option                                                        |
-            | "div:nth-child(5) > div.c-modal--add-component__av-state-container > label:nth-child(1) " |
-            | "div:nth-child(5) > div.c-modal--add-component__av-state-container > label:nth-child(2) " |
-            | "div:nth-child(5) > div.c-modal--add-component__av-state-container > label:nth-child(5) " |
- 
+            | div.c-modal--add-component__input-section.c-modal--add-component__input-section--skills > div.c-modal--add-component__av-state-container > label:nth-child(1)  |
+            | div.c-modal--add-component__input-section.c-modal--add-component__input-section--skills > div.c-modal--add-component__av-state-container > label:nth-child(2)  |
+            | div.c-modal--add-component__input-section.c-modal--add-component__input-section--skills > div.c-modal--add-component__av-state-container > label:nth-child(3)  |
+
     Scenario Outline: Agents possessing only the disabled skill to view are not displayed on the wallboard
         Given the agent list add component modal is displayed
         And the Table view option is selected with the skills column enabled
         And the '<skill_option>' is disabled
         And the user navigates to save the wallboard
         When the user runs the wallboard
-        Then none of the one-skill-agents displayed possess the disabled '<skill_option>'
+        Then none of the one-skill-agents displayed possess the disabled skill
         Examples:
             | skill_option                                                        |
-            | div:nth-child(5) > div.c-modal--add-component__av-state-container > label:nth-child(1)  |
-            | div:nth-child(5) > div.c-modal--add-component__av-state-container > label:nth-child(2)  |
-            | div:nth-child(5) > div.c-modal--add-component__av-state-container > label:nth-child(5)  |
+            | div.c-modal--add-component__input-section.c-modal--add-component__input-section--skills > div.c-modal--add-component__av-state-container > label:nth-child(1)  |
+            | div.c-modal--add-component__input-section.c-modal--add-component__input-section--skills > div.c-modal--add-component__av-state-container > label:nth-child(2)  |
+            | div.c-modal--add-component__input-section.c-modal--add-component__input-section--skills > div.c-modal--add-component__av-state-container > label:nth-child(3)  |
 
     Scenario: Agent not possessing any of the skills is displayed when select none option is enabled
         Given the add component modal for agent list is displayed

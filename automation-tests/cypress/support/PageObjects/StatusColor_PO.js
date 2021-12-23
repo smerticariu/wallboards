@@ -17,11 +17,11 @@ class StatusColor {
     }
 
     selectButton(){
-        return cy.get('div.c-modal__buttons > button.c-button.c-button--m-left.c-button--blue')
+        return cy.get('.c-modal__buttons').contains('Select')
     }
 
     addButton(){
-        return cy.get('div.c-modal__buttons > button.c-button.c-button--m-left.c-button--green')
+        return cy.get('.c-modal__buttons').contains('Add')
     }
 
     tableView(){

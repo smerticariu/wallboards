@@ -53,7 +53,7 @@ class CreateWallboard {
     }
 
     addButton(){
-        return cy.get('div.c-modal__buttons > button.c-button.c-button--m-left.c-button--green')
+        return cy.get('.c-modal__buttons').contains('Add')
     }
     runButton(){
         return cy.get('div.c-toolbar > div.c-toolbar-right > a')

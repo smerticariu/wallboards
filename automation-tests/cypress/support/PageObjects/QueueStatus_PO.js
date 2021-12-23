@@ -94,6 +94,10 @@ class QueueStatus_PO {
         return cy.get('div.widget__body.widget__body--call-status > div:nth-child(1)')
     }
 
+    avAgentsNumber() {
+        return cy.get('div.widget__body.widget__body--call-status > div:nth-child(1) > div.widget__call-status-data > div')
+    }
+
     busyAgents() {
         return cy.get('div.widget__body.widget__body--call-status > div:nth-child(2)')
     }
@@ -108,6 +112,18 @@ class QueueStatus_PO {
     
     totalAgents() {
         return cy.get('div.widget__body.widget__body--call-status > div:nth-child(5)')
+    }
+
+    agentAvailability() {
+        return cy.get('.c-dropdown.c-dropdown--availability-state');
+    }
+
+    avState() {
+        return cy.get('.c-dropdown__item')
+    }
+
+    card() {
+        return cy.get('.agent-c.agent-c')
     }
 }
 export default QueueStatus_PO
