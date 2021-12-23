@@ -12,7 +12,6 @@ const GridQueueList = ({ widget, ...props }) => {
   const callsWithGroup = useSelector((state) => state.agents.callsWithGroup);
   const agentQueues = useSelector((state) => state.agents.agentsQueues);
   const queuedCall = useSelector((state) => state.callsQueues.queuedCall);
-  console.log(queuedCall);
   const dispatch = useDispatch();
   const [tableData, setTableData] = useState([]);
 

@@ -49,10 +49,10 @@ And('the component is added', () =>{
 
 And('the wallboard read-only URL is copied', () =>{
     interactivity.createReadOnly();
-    interactivity.CopyReadOnlyLink().then(($URL)=>{
-        read_only_url = $URL.val()
+    interactivity.CopyReadOnlyLink().invoke('val').then(($URL)=>{
+        read_only_url = $URL
+        cy.wrap(read_only_url)
     })
-    cy.log(read_only_url)
 })
 
 And('the newly configured wallboard is saved', () =>{
@@ -139,7 +139,7 @@ Then ("the user can change agent's availability state", () => {
                 interactivity.get_dropdown_table().click()
                 interactivity.dropdown_table_first().click().then(($first_card_text)=>{
                     if($first_card_text.text() == initial_text){
-                        interactivity.get_dropdown_card().click()
+                        interactivity.get_dropdown_table().click()
                         interactivity.get_dropdown_table()
                         interactivity.dropdown_table_second().click()
                     }

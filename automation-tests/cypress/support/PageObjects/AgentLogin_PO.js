@@ -8,6 +8,18 @@ class AgentLogin_PO {
         return cy.get('.c-toolbar-left__heading')
     }
 
+    addAgentList() {
+        cy.get('.c-toolbar-right').contains('+ Add Component').click();
+        cy.get('.c-modal--new-wallboard__nav-item').contains('Queues').click();
+        cy.get('.c-modal--new-wallboard__list-title').contains('Agent list').click();
+        cy.get('.c-modal__buttons').contains('Select').click();
+        cy.get('.c-modal__buttons').contains('Add').click();
+    }
+
+    editLogin() {
+        return cy.get('div > div:nth-child(2) > div > div.widget__header > div.widget__icons > div.widget__edit-icon')
+    }
+
     newWallboard() {
         return cy.get('.c-toolbar-right').contains('+ New Wallboard')
     }
@@ -93,7 +105,7 @@ class AgentLogin_PO {
     }
 
     editModalSetting(){
-        return cy.get('div.widget__icons > div.widget__edit-icon > svg > path')
+        return cy.get('.widget__edit-icon')
     }
 
     saveButton(){
@@ -197,12 +209,12 @@ class AgentLogin_PO {
     }
 
     availabilityState() {
-        return cy.get('.c-button.c-button--empty.c-dropdown__trigger--agent-name.agent-t__arrow-container.agent-t__arrow-container--card')
+        return cy.get('div.agent-c__status-time > div.agent-c__status.agent-c__status--dropdown.agent-c__status.agent-c__status> span > span > button')
     }
 
     avOption() {
         return cy.get('.c-dropdown__item')
     }
-    
+
 }
 export default AgentLogin_PO

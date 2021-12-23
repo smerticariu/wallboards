@@ -25,7 +25,7 @@ When ('the user adds a call status component', () => {
     callStatus.callCategory().click();
     callStatus.componentTitle().contains('Call status').click();
     callStatus.selectButton().click();
-    callStatus.saveButton().click();
+    callStatus.modalButton().contains('Add').click();
 })
 Then('the call status component displays the following call categories: Inbound, Outbound, Internal, Relayed, Feature, Uncategorized', () => {
     var categories1 = ['inbound', 'outbound', 'internal', 'relayed', 'feature', 'uncategorised']
@@ -48,12 +48,12 @@ And ('a wallboard with a call status component is displayed', () => {
     callStatus.callCategory().click();
     callStatus.componentTitle().contains('Call status').click();
     callStatus.selectButton().click();
-    callStatus.saveButton().click();
+    callStatus.modalButton().contains('Add').click();
 })
 When ('the user navigates to edit component name by entering invalid characters', () => {
     callStatus.editComponentButton().click();
     callStatus.modalTitle().type('!@#');
-    callStatus.saveButton().click();
+    callStatus.modalButton().contains('Save').click();
 })
 Then ('the user is informed that invalid characters are not allowed', () => {
     callStatus.error().should('contain', 'Title must be alphanumeric');
@@ -71,12 +71,12 @@ And ('a wallboard with one call status component is displayed', () => {
     callStatus.callCategory().click();
     callStatus.componentTitle().contains('Call status').click();
     callStatus.selectButton().click();
-    callStatus.saveButton().click();
+    callStatus.modalButton().contains('Add').click();
 })
 When ('the user navigates to edit component name by removing all characters in the name field', () => {
     callStatus.editComponentButton().click();
     callStatus.modalTitle().clear();
-    callStatus.saveButton().click();
+    callStatus.modalButton().contains('Save').click();
 })
 Then ('the user is informed that component name must be alphanumeric', () => {
     callStatus.error().should('contain', 'Title must be alphanumeric');
@@ -100,7 +100,7 @@ And ('a wallboard with one call status component is displayed', () => {
     callStatus.callCategory().click();
     callStatus.componentTitle().contains('Call status').click();
     callStatus.selectButton().click();
-    callStatus.saveButton().click();
+    callStatus.modalButton().contains('Add').click();
 })
 When ('the user navigates to remove the component', () => {
     callStatus.removeComponent().click();
@@ -108,49 +108,4 @@ When ('the user navigates to remove the component', () => {
 })
 Then ('the component is no longer displayed on the wallboard', () => {
     callStatus.callStatusBody().should('not.exist');
-})
-
-// Scenario Outline: Internal calls are displayed on the call status component
-Given ('that the {string} is logged in', (user) => {
-    if(user == 'admin user') {
-        cy.login();
-        callStatus.visitLandingPage();
-    }
-    else {
-        cy.loginLeader()
-        callStatus.visitLandingPage(); 
-    }
-    callStatus.loggedInTitle().should('contain', 'Recent Wallboards');
-})
-And ('the user creates a wallboard', () => {
-    callStatus.newWallboard().click();
-})
-And ('the user adds an agent list component with all interactivity options enabled', () => {
-    callStatus.addComponent().click();
-    callStatus.defaultAgentList();
-    cy.wait(3000)
-    callStatus.agentListBody().then((message) => {
-        content = message.text();
-        cy.log(content);
-    })
-})
-And ('the user adds a call status component', () => {
-    callStatus.addComponent().click();
-    callStatus.callCategory().click();
-    callStatus.componentTitle().contains('Call status').click();
-    callStatus.selectButton().click();
-    callStatus.saveButton().click();
-})
-When('the user calls the first agent displayed on the agent list component', () => {
-    if (content == 'No agents') {
-        cy.log('There are no agents in the selected queue')
-    }
-    else {
-        callStatus.callAgent();
-    }
-})
-Then ('the call status component reflects the internal call', () => {
-    callStatus.internalCateg().then(($el) => {
-        expect($el.text()).to.eq('1');
-    })
 })

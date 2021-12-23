@@ -45,7 +45,7 @@ class Interactivity{
     }
 
     addButton(){
-        return cy.get('div.c-modal__buttons > button.c-button.c-button--m-left.c-button--green')
+        return cy.get('.c-modal__buttons').contains('Add');
     }
 
     createReadOnly(){
@@ -74,18 +74,18 @@ class Interactivity{
     }
 
     get_dropdown_table(){
-        return cy.get('div.agent-t__body > div:nth-child(1) > div.agent-t__agent-info.agent-t__agent-info--overflow.agent-t__agent-info > span > span > div', {timeout:10000})
+        return cy.get('div.widget__body.widget__body--table > div > div.agent-list-table__body > div:nth-child(1) > div.agent-list-table__agent-info.agent-list-table__agent-info--overflow.agent-list-table__agent-info > span > span > div').last()
     }
 
     dropdown_table_first(){
-        return cy.get('div.agent-t__agent-info > span > div > div:nth-child(1)', {timeout:10000})
+        return cy.get('.c-dropdown__item', {timeout:10000}).first()
     }
 
     dropdown_table_second(){
-        return cy.get('div.agent-t__agent-info > span > div > div:nth-child(2)', {timeout:10000})
+        return cy.get('.c-dropdown__item', {timeout:10000}).last()
     }
     get_dropdown_card(){
-        return cy.get('div.agent-list__body > div:nth-child(1) > div.agent-c__status-time > div.agent-c__status.agent-c__status.agent-c__status', {timeout:10000})
+        return cy.get('.c-button.c-button--empty.c-dropdown__trigger--agent-name.agent-list-table__arrow-container.agent-list-table__arrow-container--card', {timeout:10000}).first();
     }
 
     dropdown_card_first(){

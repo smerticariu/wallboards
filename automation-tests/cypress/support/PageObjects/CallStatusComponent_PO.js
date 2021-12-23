@@ -27,8 +27,8 @@ class CallStatusComponent {
         return cy.get('.c-modal__buttons').contains('Select')
     }
 
-    saveButton(){
-        return cy.get('.c-modal__buttons').contains('Save')
+    modalButton(){
+        return cy.get('.c-modal__buttons')
     }
 
     callStatusTitle() {

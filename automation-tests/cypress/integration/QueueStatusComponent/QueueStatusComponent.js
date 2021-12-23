@@ -1,8 +1,11 @@
 import { Before, Given, When, And, Then } from "cypress-cucumber-preprocessor/steps";
 import QueueStatus_PO from '../../support/PageObjects/QueueStatus_PO';
+import AgentLogin_PO from "../../support/PageObjects/AgentLogin_PO";
+
 
 const queueStatus = new QueueStatus_PO()
-var content = ''
+const agentLogin = new AgentLogin_PO()
+var content, avState = ''
 var title = ''
 var statuses = []
 var available = 0
@@ -31,7 +34,7 @@ When ('a new queue status component is added', () => {
     queueStatus.queuesCategory().click();
     queueStatus.componentModalTitle().contains('Queue status').click();
     queueStatus.selectButton().click();
-    queueStatus.saveModalButton().click();
+    queueStatus.addModalButton().click();
 })
 Then ('the following metrics are displayed: Available Agents, Busy Agents, Wrapped Up Agents, Logged Off Agents, Total Agents, Total Calls Queueing, Longest Time in Queue, Most Dial Attempts', () => {
     var categories = ['available agents', 'busy agents', 'wrapped up agents', 'logged off agents', 'total agents', 'total calls queueing', 'longest time in queue', 'most dial attempts'];
@@ -54,7 +57,7 @@ And ('a wallboard with a queue status component exists', () => {
     queueStatus.queuesCategory().click();
     queueStatus.componentModalTitle().contains('Queue status').click();
     queueStatus.selectButton().click();
-    queueStatus.saveModalButton().click();
+    queueStatus.addModalButton().click();
 })
 When ('the user navigates to edit component name by entering invalid characters', () => {
     queueStatus.editComponent().click();
@@ -77,7 +80,7 @@ And ('a wallboard with one queue status component is already created', () => {
     queueStatus.queuesCategory().click();
     queueStatus.componentModalTitle().contains('Queue status').click();
     queueStatus.selectButton().click();
-    queueStatus.saveModalButton().click();
+    queueStatus.addModalButton().click();
 })
 When ('the user navigates to edit component name by removing all characters in the name field', () => {
     queueStatus.editComponent().click();
@@ -107,7 +110,7 @@ And ('a wallboard with one queue status component is displayed', () => {
     queueStatus.queuesCategory().click();
     queueStatus.componentModalTitle().contains('Queue status').click();
     queueStatus.selectButton().click();
-    queueStatus.saveModalButton().click();
+    queueStatus.addModalButton().click();
 })
 When ('the user navigates to remove the component', () => {
     queueStatus.deleteComponent().click();
@@ -136,11 +139,10 @@ And ('the user adds an agent list component for a given call queue', () => {
 
     queueStatus.componentBody().then(($el) => {
         content = $el.text();
-        cy.log(content)
     })
 
     queueStatus.widgetTitle().then(($title) => {
-        title = $title.text().split(':').slice(1)
+        title = $title.text().split(': ').slice(1)
         cy.log(title)
     })
 
@@ -157,7 +159,7 @@ And ('the user adds a queue status component for the same selected call queue', 
     queueStatus.componentModalTitle().contains('Queue status').click();
     queueStatus.selectButton().click();
     queueStatus.selectCallQ().select(title);
-    queueStatus.saveModalButton().click();
+    queueStatus.addModalButton().click();
 })
 When('the user inspects the details for the queue status component', () => {
 // actions performed in step below
@@ -220,7 +222,7 @@ And ('the queue status component modal for an empty call queue is open', () => {
     queueStatus.selectCallQ().select(2);
 })
 When ('the user saves the component', () => {
-    queueStatus.saveModalButton().click();
+    queueStatus.addModalButton().click();
 })
 Then ('the all queue status metrics indicate there are no agents in the selected queue', () => {
     queueStatus.categRowData().each(($el) => {
@@ -239,7 +241,7 @@ Given ('the queue status component is displayed', () => {
     queueStatus.queuesCategory().click();
     queueStatus.componentModalTitle().contains('Queue status').click();
     queueStatus.selectButton().click();
-    queueStatus.saveModalButton().click();
+    queueStatus.addModalButton().click();
     queueStatus.widgetTitle().should('contain', 'Queue Status');
 })
 And ('no call is made to the selected call queue', () => {
