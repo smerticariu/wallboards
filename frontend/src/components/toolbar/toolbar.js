@@ -42,7 +42,7 @@ const Toolbar = (props) => {
   const heading = () => {
     return (
       <div className="c-toolbar-left__wrapper">
-        <h1 className="c-toolbar-left__heading">Recent {isGroupsCategory ? 'Groups' : 'Wallboards'}</h1>
+        <h1 className="c-toolbar-left__heading">All {isGroupsCategory ? 'Groups' : 'Wallboards'}</h1>
         <p className="c-toolbar-left__wb-no">
           {wallboards.length} {isGroupsCategory ? 'Groups' : 'Wallboards'} Items
         </p>

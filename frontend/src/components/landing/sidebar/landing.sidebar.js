@@ -31,7 +31,7 @@ const LandingSidebar = forwardRef(({ isSidebarOpen, handleIsSidebarOpen, ...prop
           return (
             <div key={index} className="c-landing-sidebar-item">
               <ul className="c-landing-sidebar-list">
-                <li className="c-landing-sidebar-list__headline">{categories.NAME}.</li>
+                <li className="c-landing-sidebar-list__headline">{categories.NAME}</li>
                 {categories.ELEMENTS.map((category, index) => {
                   return (
                     <li key={index} className="c-landing-sidebar-list__filter" onClick={(e) => handleClick(e, category)}>
