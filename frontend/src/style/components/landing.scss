@@ -67,6 +67,8 @@
 
     &__filter {
       cursor: pointer;
+      display: inline-flex;
+      align-items: center;
     }
 
     &__edit-btn {
