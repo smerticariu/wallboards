@@ -58,7 +58,7 @@
       max-width: 18ch;
     }
     &-ext {
-      font-family: $public-sans-thin;
+      font-family: $public-sans-regular;
       font-size: 8px;
     }
   }
@@ -111,7 +111,7 @@
     background-color: rgba($white, 0.08);
     width: fit-content;
     padding: 0 10px;
-    font-family: $public-sans-thin;
+    font-family: $public-sans-regular;
     font-size: 10px;
     line-height: 1.4;
     border-bottom-left-radius: 8px;
