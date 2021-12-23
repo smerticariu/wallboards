@@ -1,7 +1,7 @@
 import React from 'react';
 import Autosuggest from 'react-autosuggest';
-import match from 'autosuggest-highlight/match';
-import parse from 'autosuggest-highlight/parse';
+import Highlighter from "react-highlight-words";
+
 import { useState } from 'react';
 const CustomAutosuggest = ({ allTitles, value, name, placeholder = '', isSmallSize, onChange, ...props }) => {
   const [searchSuggestions, setSearchSuggestions] = useState([]);
@@ -12,10 +12,10 @@ const CustomAutosuggest = ({ allTitles, value, name, placeholder = '', isSmallSi
 
   function getSuggestions(value) {
     const escapedValue = value?.value?.length ? escapeRegexCharacters(value.value.trim()) : [];
-
     if (!escapedValue.length) {
       return [];
     }
+    
     return allTitles
       .filter((title) => {
         return title?.toLowerCase().includes(escapedValue.toLowerCase());
@@ -27,22 +27,14 @@ const CustomAutosuggest = ({ allTitles, value, name, placeholder = '', isSmallSi
     return suggestion;
   }
 
-  function renderSuggestion(suggestion, query) {
-    const matches = match(suggestion, query.query);
-    const parts = parse(suggestion, matches);
-
+  function renderSuggestion(suggestion, query) {  
     return (
-      <span>
-        {parts.map((part, index) => {
-          const className = part.highlight ? 'react-autosuggest__suggestion-match' : null;
-
-          return (
-            <span className={className} key={index}>
-              {part.text}
-            </span>
-          );
-        })}
-      </span>
+      <Highlighter
+        highlightClassName="react-autosuggest__suggestion-match"
+        searchWords={[query.query.toLowerCase()]}
+        autoEscape={true}
+        textToHighlight={suggestion}
+      />
     );
   }
 
