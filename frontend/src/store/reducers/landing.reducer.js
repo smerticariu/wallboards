@@ -13,6 +13,8 @@ export const landingReducer = (state = landingInitialState, action) => {
         ...state,
         category: action.payload,
       };
+    case wallboardsActions.RESET_LANDING_FILTERS:
+      return { ...landingInitialState };
     case wallboardsActions.SET_FILTERED_WALLBOARDS:
       return {
         ...state,

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import LandingSidebar from './sidebar/landing.sidebar';
 import LandingTable from './table/landing.table';
 import Toolbar from '../toolbar/toolbar';
@@ -7,15 +7,20 @@ import useOnClickOutside from '../../common/hooks/useOnClickOutside';
 import { DEFAULTS } from '../../common/defaults/defaults';
 import useWindowSize from '../../common/hooks/useWindowSize';
 import { fixLandingScrollBar } from '../../common/utils/fixLandingScrollbar';
+import { resetLandingPageFiltersAC } from '../../store/actions/wallboards.action';
 
 const Landing = () => {
   const [isSidebarOpen, handleIsSidebarOpen] = useState(false);
   const sidebarRef = useRef();
+  const dispatch = useDispatch();
   useOnClickOutside(sidebarRef, () => handleIsSidebarOpen(false));
   const { userInfo } = useSelector((state) => state.login);
   const adminPermissions = userInfo.isAdmin;
   const teamleaderPermissions = userInfo.isTeamLeader;
-
+  useEffect(() => {
+    dispatch(resetLandingPageFiltersAC());
+    // eslint-disable-next-line
+  }, []);
   const { width } = useWindowSize();
   useEffect(() => {
     if (width) {
