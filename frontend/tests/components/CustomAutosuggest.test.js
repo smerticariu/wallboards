@@ -34,7 +34,7 @@ describe('Autosuggest', () => {
     );
     expect(autosuggest.find('.react-autosuggest__suggestions-container--open').length).toBe(0);
     autosuggest.find('input').simulate('focus');
-    expect(autosuggest.find('.react-autosuggest__suggestion-match').length).toBe(3);
+    expect(autosuggest.find('.react-autosuggest__suggestion-match').length).toBe(4);
   });
   test('4 options must be displayed', () => {
     let autosuggest = mount(
