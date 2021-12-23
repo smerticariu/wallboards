@@ -23,6 +23,7 @@ const LandingTable = () => {
   useEffect(() => {
     // dispatch(syncWallboardsWithConfig()); // import and use it when needed - do not delete
     dispatch(fetchAllWallboardsThunk());
+    return () => {};
     // eslint-disable-next-line
   }, []);
 
@@ -90,7 +91,7 @@ const LandingTable = () => {
         case 'All Wallboard Groups':
           setDataType('Group');
           const allGroups = wallboards.filter((wb) => wb.id.includes(DEFAULTS.WALLBOARDS.WALLBOARD_GROUP_SEPARATOR));
-          allGroups.length && allGroups.sort((a, b) => a.lastView.toString().localeCompare(b.lastView.toString())).reverse(); 
+          allGroups.length && allGroups.sort((a, b) => a.lastView.toString().localeCompare(b.lastView.toString())).reverse();
           return allGroups;
         default:
           return wallboards;

@@ -141,35 +141,4 @@ describe('Agent table', () => {
     );
     expect(agentTable.find('.agent-list-table__agent-info').prop('style')).toHaveProperty('width', '100%');
   });
-
-  test('User can see only one interactivity option', () => {
-    const agentTable = mount(
-      <Provider store={store}>
-        <AgentListTable
-          columnsToView={Object.keys(ADD_COMPONENT_COLUMN_OPTIONS)}
-          canListenLive={true}
-          agents={[
-            {
-              callStatusKey: PRESENCE_STATE_KEYS.AGENT_STATUS_IDLE,
-              agentName: 'Megan Carter',
-              agentExtNo: '0000',
-              currAvaiState: 'Busy on calls',
-              currPresState: 'Inbound Call',
-              noCallsOffered: '0',
-              noCallsAnswered: '0',
-              noCallsMissed: '0',
-              timeInCurrentPresenceState: 0,
-              timeInCurrentAvailabilityState: 0,
-              timeInCurrentCall: 0,
-              timeInCurrentWrapup: 0,
-              listOfSkills: ['Skill'],
-            },
-          ]}
-        />
-      </Provider>,
-    );
-    expect(agentTable.find('.c-dropdown__item').length).toBe(0);
-    agentTable.find('.c-dropdown__trigger').find('.i--settings--table').last().simulate('click');
-    expect(agentTable.find('.c-dropdown__item').length).toBe(1);
-  });
 });
